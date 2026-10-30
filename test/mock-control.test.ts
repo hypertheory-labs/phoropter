@@ -52,4 +52,36 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
   }
   // Pumice's as-built predates grommet; its guess stays unanswered here.
   assert.deepEqual(site.plans[0].entries.filter((e) => e.kind === 'Guess').map((e) => e.answeredBy.length), [0]);
+
+  // Tallow revisits pumice, and pumice shows it without being edited.
+  const [pumice, , tallow, vellum] = site.plans;
+  assert.equal(tallow.revisits, pumice);
+  assert.deepEqual(pumice.revisitedBy, [tallow]);
+
+  // Anchors at another plan's entry resolve to the entry, both ways, and make
+  // no file page for the plan's markdown.
+  const targets = site.plans
+    .flatMap((p) => (p.asBuilt ? [p, p.asBuilt] : [p]))
+    .flatMap((d) => d.entries.flatMap((e) => e.resolved.filter((a) => a.entry).map((a) => `${d.file} -> ${a.entry!.doc.file}#${a.entry!.entry.slug}`)));
+  assert.deepEqual(targets, [
+    'plans/2026-10-30-tallow.md -> plans/2026-10-29-pumice.md#selectors-use-the-library-s-prefix-mock-panel',
+    'plans/2026-10-30-tallow.as-built.md -> plans/2026-10-30-vellum.as-built.md#pin-msw-2-in-the-install-step-rather-than-support-msw-3',
+    'plans/2026-10-30-vellum.md -> plans/2026-10-29-pumice.md#tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules',
+  ]);
+  assert.equal(vellum.asBuilt!.entries[0].anchoredBy[0].plan, tallow);
+  assert.ok(!site.places.some((p) => p.href.startsWith('files/plans/')));
+});
+
+const aide = new URL('../../aide', import.meta.url).pathname;
+
+test('aide at 248a2a5: anchors between plans, one with a quote', { skip: !existsSync(aide) && 'no ../aide' }, () => {
+  const site = buildSite(new Repo(aide), '248a2a5');
+  const anchors = site.plans.flatMap((p) => p.entries.flatMap((e) => e.resolved)).filter((a) => a.target.kind === 'plan');
+  assert.equal(anchors.length, 7);
+  assert.ok(anchors.every((a) => a.entry));
+
+  // Grommet quotes one sentence of lanyard's entry: one view, inside the entry.
+  const quoted = anchors.filter((a) => a.anchor.quote !== undefined);
+  assert.equal(quoted.length, 1);
+  assert.deepEqual(quoted[0].views.map((v) => [v.role, v.status, v.hunks[0].marked]), [['generated', 'found', [39]]]);
 });

@@ -6,7 +6,7 @@ import { basename } from 'node:path';
 import type { Repo } from './git.ts';
 import { parsePlan, slugify, type Anchor, type Entry, type PlanDoc } from './plan.ts';
 import { indexCommit, packageName, type Definition } from './scip.ts';
-import { resolveAt, target, type Hunk, type Target, type View } from './resolve.ts';
+import { resolveAt, resolveInEntry, target, type Hunk, type Target, type View } from './resolve.ts';
 
 export type Commit = { sha: string; short: string; role: string };
 
@@ -14,16 +14,19 @@ export type ResolvedAnchor = {
   anchor: Anchor;
   target: Target;
   place?: Place;
+  entry?: EntryRef; // an anchor at another plan's entry
+  plan?: Plan; // an anchor at a whole plan or as-built file
   views: View[];
   note?: string; // for anchors that are shown but not resolved
 };
 
-export type EntryRef = { doc: Doc; entry: ResolvedEntry };
+export type EntryRef = { plan: Plan; doc: Doc; entry: ResolvedEntry };
 
 export type ResolvedEntry = Entry & {
   resolved: ResolvedAnchor[];
   answers?: EntryRef; // an Answered, to its plan's Guess of the same title
   answeredBy: EntryRef[]; // a Guess, to the answers in its as-built
+  anchoredBy: EntryRef[]; // entries in other plans whose anchors name this one
 };
 
 export type Doc = {
@@ -35,7 +38,12 @@ export type Doc = {
   entries: ResolvedEntry[];
 };
 
-export type Plan = Doc & { name: string; asBuilt?: Doc }; // name: from the filename, `2026-10-29-pumice.md` is `pumice`
+export type Plan = Doc & {
+  name: string; // from the filename: `2026-10-29-pumice.md` is `pumice`
+  asBuilt?: Doc;
+  revisits?: Plan; // bodkin's `revisits:`, when it names a plan on this site
+  revisitedBy: Plan[];
+};
 
 export type Place = {
   key: string;
@@ -70,7 +78,7 @@ export function buildSite(repo: Repo, ref: string): Site {
     // without one would share a page.
     const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');
     const href = `plans/${slugify(name)}/`;
-    const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [] };
+    const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [], revisitedBy: [] };
     const asBuiltFile = file.replace(/\.md$/, '.as-built.md');
     if (files.includes(asBuiltFile)) {
       const abDoc = parsePlan(repo.show(sha, asBuiltFile)!);
@@ -79,13 +87,27 @@ export function buildSite(repo: Repo, ref: string): Site {
     return plan;
   });
 
-  // Index each commit that a SCIP anchor needs, once.
+  for (const plan of plans) {
+    const revisits = plans.find((p) => p.file === plan.doc.frontmatter.revisits);
+    if (revisits) {
+      plan.revisits = revisits;
+      revisits.revisitedBy.push(plan);
+    }
+  }
+
+  // Every entry exists before any anchor resolves, since an anchor can name
+  // an entry in a plan that comes later.
   const docs = plans.flatMap((p) => (p.asBuilt ? [p, p.asBuilt] : [p]));
+  const planOf = new Map<Doc, Plan>(plans.flatMap((p) => (p.asBuilt ? [[p, p], [p.asBuilt, p]] : [[p, p]])));
+  const onSite = new Set(docs.map((d) => d.file));
+  for (const d of docs) d.entries = d.doc.entries.map((entry) => ({ ...entry, resolved: [], answeredBy: [], anchoredBy: [] }));
+
+  // Index each commit that a SCIP anchor needs, once.
   const packages = new Set<string>();
   for (const d of docs) {
     for (const e of d.doc.entries) {
       for (const a of e.anchors) {
-        const t = target(a, repoName);
+        const t = target(a, repoName, onSite);
         if (t.kind === 'symbol' && !a.isNew) packages.add(packageName(t.symbol)!);
       }
     }
@@ -101,13 +123,33 @@ export function buildSite(repo: Repo, ref: string): Site {
   for (const plan of plans) {
     for (const d of plan.asBuilt ? [plan, plan.asBuilt] : [plan]) {
       const commits = d.before && d.before.sha !== sha ? [d.before, generated] : [generated];
-      d.entries = d.doc.entries.map((entry) => {
-        const re: ResolvedEntry = { ...entry, resolved: [], answeredBy: [] };
-        re.resolved = entry.anchors.map((anchor) => {
-          const t = target(anchor, repoName);
+      for (const re of d.entries) {
+        re.resolved = re.anchors.map((anchor) => {
+          const t = target(anchor, repoName, onSite);
           const ra: ResolvedAnchor = { anchor, target: t, views: [] };
           if (t.kind === 'cross-repo') {
             ra.note = `in ${t.repo}, which this site doesn't read`;
+            return ra;
+          }
+          if (t.kind === 'plan') {
+            const doc = docs.find((x) => x.file === t.file)!;
+            const owner = planOf.get(doc)!;
+            const where = doc === owner ? owner.name : `${owner.name}'s as-built`;
+            if (t.title === undefined) {
+              ra.plan = owner;
+              if (anchor.quote !== undefined && !anchor.isNew) {
+                ra.views = commits.map((c) => resolveAt(repo, { kind: 'file', file: t.file, path: [] }, anchor.quote, c, undefined));
+              }
+              return ra;
+            }
+            const entry = doc.entries.find((e) => e.title === t.title);
+            if (!entry) {
+              ra.note = `no entry titled this in ${where}`;
+              return ra;
+            }
+            ra.entry = { plan: owner, doc, entry };
+            entry.anchoredBy.push({ plan, doc: d, entry: re });
+            if (anchor.quote !== undefined) ra.views = [resolveInEntry(repo, t.file, t.title, anchor.quote, generated)];
             return ra;
           }
           ra.place = placeFor(places, t, indexFor(generated));
@@ -123,8 +165,7 @@ export function buildSite(repo: Repo, ref: string): Site {
           ra.views = commits.map((c) => resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? indexFor(c) : undefined));
           return ra;
         });
-        return re;
-      });
+      }
     }
   }
 
@@ -135,8 +176,8 @@ export function buildSite(repo: Repo, ref: string): Site {
       if (answer.kind !== 'Answered') continue;
       const guess = plan.entries.find((e) => e.kind === 'Guess' && e.title === answer.title);
       if (!guess) continue;
-      answer.answers = { doc: plan, entry: guess };
-      guess.answeredBy.push({ doc: plan.asBuilt!, entry: answer });
+      answer.answers = { plan, doc: plan, entry: guess };
+      guess.answeredBy.push({ plan, doc: plan.asBuilt!, entry: answer });
     }
   }
 

@@ -3,7 +3,7 @@
 // the profile page defines.
 
 import { marked } from 'marked';
-import type { Doc, Place, Plan, ResolvedAnchor, ResolvedEntry, Site } from './site.ts';
+import type { Doc, EntryRef, Place, Plan, ResolvedAnchor, ResolvedEntry, Site } from './site.ts';
 import type { Hunk, View } from './resolve.ts';
 
 export type Page = { href: string; title: string; html: string };
@@ -26,9 +26,10 @@ function home(site: Site): Page {
   const plans = site.plans
     .map((p) => {
       const asBuilt = p.asBuilt ? `, with <a href="${rel(here, p.asBuilt.href)}">an as-built</a>` : '';
+      const revisits = p.revisits ? `, revisits <a href="${rel(here, p.revisits.href)}">${esc(p.revisits.name)}</a>` : '';
       return `<li itemprop="plan" itemscope>
   <a rel="item" itemprop="url" href="${rel(here, p.href)}"><span itemprop="title">${inline(p.doc.title)}</span></a>
-  <span class="meta"><span itemprop="name">${esc(p.name)}</span>, base ${baseHtml(p)}, ${count(p.entries.length, 'entry', 'entries')}${asBuilt}</span>
+  <span class="meta"><span itemprop="name">${esc(p.name)}</span>, base ${baseHtml(p)}, ${count(p.entries.length, 'entry', 'entries')}${asBuilt}${revisits}</span>
 </li>`;
     })
     .join('\n');
@@ -68,7 +69,8 @@ ${plan.doc.frontmatter.cart !== undefined ? `<dt>Cart</dt><dd itemprop="cart">${
 <dt>Base</dt><dd>${baseHtml(plan)}</dd>
 <dt>File</dt><dd><code itemprop="file">${esc(plan.file)}</code></dd>
 ${asBuilt}
-${frontmatterRest(plan.doc.frontmatter, ['cart', 'base'])}
+${revisitsHtml(here, plan)}
+${frontmatterRest(plan.doc.frontmatter, ['cart', 'base', 'revisits'])}
 </dl>
 ${plan.doc.intro ? `<div class="intro" itemprop="intro">${block(plan.doc.intro)}</div>` : ''}
 ${plan.entries.map((e) => entryHtml(here, plan, e)).join('\n')}
@@ -135,17 +137,19 @@ function profile(site: Site): Page {
     ['collection', 'registered', 'What is this a member of? From a plan or place to the home page.'],
     ['up', 'registered', 'What is this part of? From an as-built page to its plan.'],
     ['as-built', 'phoropter', 'What changed while this plan was being built? From a plan to its as-built file.'],
-    ['anchored-at', 'phoropter', 'Where in the code does this entry point? From an anchor on an entry to the page for its symbol or file.'],
-    ['anchored-by', 'phoropter', 'Which plans point here? From a symbol or file page to each entry anchored there.'],
+    ['anchored-at', 'phoropter', 'Where does this entry point? From an anchor on an entry to the page for its symbol or file, or to another plan’s entry, or to a whole plan.'],
+    ['anchored-by', 'phoropter', 'Which plans point here? From a symbol or file page to each entry anchored there, and from an entry to each entry in another plan whose anchor names it.'],
+    ['revisits', 'phoropter', 'Whose ground is this plan standing on? From a plan to the one plan its <code>revisits:</code> names (bodkin).'],
+    ['revisited-by', 'phoropter', 'Has this plan’s ground been revisited? From a plan to each plan that revisits it.'],
     ['answers', 'phoropter', 'Which guess does this answer? From an as-built’s <code>Answered:</code> entry to the plan’s <code>Guess:</code> with the same title.'],
     ['answered-by', 'phoropter', 'Has this guess been answered? From a plan’s <code>Guess:</code> to the <code>Answered:</code> entry in its as-built.'],
   ];
   const props: [string, string][] = [
     ['(header)', 'Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).'],
-    ['plan', 'A plan: <code>title</code>, <code>name</code> (from its filename), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, and its <code>entry</code> items.'],
+    ['plan', 'A plan: <code>title</code>, <code>name</code> (from its filename), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items.'],
     ['asBuilt', 'An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.'],
-    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, and <code>answers</code> or <code>answeredBy</code> links.'],
-    ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, and one <code>view</code> per commit.'],
+    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
+    ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, <code>note</code>, and <code>code</code>.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
     ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code>, and <code>anchoredBy</code> items.'],
@@ -173,6 +177,7 @@ function entryHtml(here: string, doc: Doc, entry: ResolvedEntry): string {
   return `<section class="entry" id="${entry.slug}" itemprop="entry" itemscope>
 <h2><a class="self" href="#${entry.slug}">${heading}</a></h2>
 ${pairHtml(here, entry)}
+${anchoredByHtml(here, entry)}
 ${entry.resolved.map((a) => anchorHtml(here, doc, a)).join('\n')}
 ${entry.body ? `<div class="reason" itemprop="reason">${block(entry.body)}</div>` : ''}
 </section>`;
@@ -189,19 +194,55 @@ function pairHtml(here: string, entry: ResolvedEntry): string {
   return '';
 }
 
+function anchoredByHtml(here: string, entry: ResolvedEntry): string {
+  if (!entry.anchoredBy.length) return '';
+  const items = entry.anchoredBy.map(
+    (r) => `<a rel="anchored-by" itemprop="anchoredBy" href="${rel(here, r.doc.href)}#${r.entry.slug}">${docName(r)}, ${kindTitle(r.entry)}</a>`,
+  );
+  return `<p class="pair">Anchored by ${items.join('; ')}.</p>`;
+}
+
+function revisitsHtml(here: string, plan: Plan): string {
+  const text = plan.doc.frontmatter.revisits;
+  const out: string[] = [];
+  if (plan.revisits) {
+    out.push(`<dt>Revisits</dt><dd><a rel="revisits" itemprop="revisits" href="${rel(here, plan.revisits.href)}">${inline(plan.revisits.doc.title)}</a> <span class="meta">${esc(plan.revisits.name)}</span></dd>`);
+  } else if (text !== undefined) {
+    out.push(`<dt>Revisits</dt><dd><code itemprop="revisits">${esc(text)}</code> <span class="note">not a plan on this site</span></dd>`);
+  }
+  if (plan.revisitedBy.length) {
+    const links = plan.revisitedBy.map((p) => `<a rel="revisited-by" itemprop="revisitedBy" href="${rel(here, p.href)}">${inline(p.doc.title)}</a> <span class="meta">${esc(p.name)}</span>`);
+    out.push(`<dt>Revisited by</dt><dd>${links.join('<br>')}</dd>`);
+  }
+  return out.join('\n');
+}
+
+function docName(r: EntryRef): string {
+  return esc(r.doc === r.plan ? r.plan.name : `${r.plan.name}'s as-built`);
+}
+
+function kindTitle(entry: ResolvedEntry): string {
+  return entry.kind ? `${esc(entry.kind)}: ${inline(entry.title)}` : inline(entry.title);
+}
+
 function anchorHtml(here: string, doc: Doc, ra: ResolvedAnchor): string {
   const { anchor } = ra;
   const label = anchor.isNew ? 'where (new)' : 'where';
   const place = ra.place
     ? ` <a rel="anchored-at" itemprop="place" href="${rel(here, ra.place.href)}">${ra.place.kind} page</a>`
     : '';
+  const target = ra.entry
+    ? `<p class="target"><span class="label">entry</span> <a rel="anchored-at" itemprop="target" href="${rel(here, ra.entry.doc.href)}#${ra.entry.entry.slug}">${kindTitle(ra.entry.entry)}</a> <span class="meta">in ${docName(ra.entry)}</span></p>`
+    : ra.plan
+      ? `<p class="target"><span class="label">plan</span> <a rel="anchored-at" itemprop="target" href="${rel(here, ra.plan.href)}">${inline(ra.plan.doc.title)}</a> <span class="meta">${esc(ra.plan.name)}</span></p>`
+      : '';
   const quote = anchor.quote !== undefined ? `<p class="quote"><span class="label">quote</span> <code itemprop="quote">${esc(anchor.quote)}</code></p>` : '';
   const note = ra.note ? `<p class="note" itemprop="note">${esc(ra.note)}</p>` : '';
   const views = ra.views.length ? `<div class="views">${ra.views.map(viewHtml).join('\n')}</div>` : '';
   return `<div class="anchor" itemprop="anchor" itemscope>
 ${anchor.isNew ? '<meta itemprop="new" content="true">' : ''}
 <p class="where"><span class="label">${label}</span> <code itemprop="where">${esc(anchor.where)}</code>${place}</p>
-${quote}${note}${views}
+${target}${quote}${note}${views}
 </div>`;
 }
 

@@ -8,18 +8,22 @@ import { isScipSymbol, withoutVersion, type Definition } from './scip.ts';
 
 export type Target =
   | { kind: 'symbol'; symbol: string } // version-less
+  | { kind: 'plan'; file: string; title?: string } // a plan or as-built on this site, and an entry in it
   | { kind: 'file'; file: string; path: string[] } // path: heading or key path after the file
   | { kind: 'cross-repo'; repo: string; rest: string };
 
 const CONTEXT = 3;
 const DECLARATION = 2 * CONTEXT + 1; // as many lines as a found quote's view, at most
 
-export function target(anchor: Anchor, repoName: string): Target {
+// `plans` is the plan and as-built files on this site; an anchor into one of
+// them points at the plan, or at an entry by its title, not at a file.
+export function target(anchor: Anchor, repoName: string, plans: Set<string> = new Set()): Target {
   const cross = /^([\w.-]+): (.+)$/.exec(anchor.where);
   if (cross && cross[1] !== repoName) return { kind: 'cross-repo', repo: cross[1], rest: cross[2] };
   const where = cross ? cross[2] : anchor.where;
   if (isScipSymbol(where)) return { kind: 'symbol', symbol: withoutVersion(where) };
   const [file, ...path] = where.split(' › ');
+  if (plans.has(file.trim())) return { kind: 'plan', file: file.trim(), title: path.length ? path.join(' › ') : undefined };
   return { kind: 'file', file: file.trim(), path: path.map((p) => p.trim()) };
 }
 
@@ -86,7 +90,7 @@ export function resolveAt(
     return view;
   }
 
-  if (t.kind === 'cross-repo') throw new Error('cross-repo anchors are not resolved');
+  if (t.kind === 'cross-repo' || t.kind === 'plan') throw new Error(`${t.kind} anchors are not resolved here`);
 
   view.file = t.file;
   const text = repo.show(commit.sha, t.file);
@@ -111,6 +115,32 @@ export function resolveAt(
   view.hunks = found.map((m) => around(lines, m, 1, lines.length));
   const where = describeLines(found.flat());
   view.note = found.length === 1 ? `quote at ${where}` : `quote matches ${found.length} times, at ${where}`;
+  return view;
+}
+
+// A quote inside one entry of a plan or as-built, at one commit. Both are
+// frozen once their work lands (awl), so one commit is enough. The search
+// stays inside the entry, from its heading to the next.
+export function resolveInEntry(repo: Repo, file: string, title: string, quote: string, commit: { sha: string; short: string; role: string }): View {
+  const view: View = { ...commit, status: 'not-found', file, matches: 0, hunks: [], note: '' };
+  const lines = (repo.show(commit.sha, file) ?? '').split('\n');
+  const heading = lines.findIndex((l) => /^## /.test(l) && l.replace(/^## (?:\w+: )?/, '') === title);
+  if (heading === -1) {
+    view.note = `no entry titled this at \`${commit.short}\``;
+    return view;
+  }
+  let end = lines.findIndex((l, i) => i > heading && /^## /.test(l));
+  if (end === -1) end = lines.length;
+  while (end > heading + 1 && !lines[end - 1].trim()) end--;
+  const found = findQuote(lines.slice(heading, end), quote.trim()).map((m) => m.map((n) => n + heading));
+  view.matches = found.length;
+  if (!found.length) {
+    view.note = `quote not found in this entry at \`${commit.short}\``;
+    return view;
+  }
+  view.status = 'found';
+  view.hunks = [{ start: heading + 1, lines: lines.slice(heading, end), marked: found.flat() }];
+  view.note = `quote at ${describeLines(found.flat())}`;
   return view;
 }
 
