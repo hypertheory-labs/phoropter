@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisit quince: an answer's verdict is structure · phoropter at 4ffb7d8</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="meta">4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4</span>
+<span class="links"><a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 4ffb7d8</a></nav>
+<article itemscope>
+<h1 itemprop="title">Revisit quince: an answer&#39;s verdict is structure</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">burlap</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7d740348899bf78b239fd308031f317f3cd2e42e"><code>7d74034</code></data> <time datetime="2026-10-30T19:30:12.000Z">19:30 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="e92038c5c810a57419ee3e7e470dfce39839c043"><code>e92038c</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-burlap.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/burlap/as-built/">plans/2026-10-30-burlap.as-built.md</a></dd>
+<dt>Revisits</dt><dd><a rel="revisits" itemprop="revisits" href="../../plans/quince/">Name plans by their file, and read grommet&#39;s kinds</a> <span class="meta">quince</span></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Quince read grommet&#39;s kinds and paired each <code>Answered:</code> with its <code>Guess:</code>, and it
+declined to pull the verdict out of the answer. Jeff asked for exactly that in sorrel&#39;s
+cart, so this plan stands where quince stood and asks its question again: how much of
+grommet&#39;s answer format should the page carry as structure?</p>
+</div>
+<section class="entry" id="what-moved-is-our-understanding-not-the-world-or-the-code" itemprop="entry" itemscope>
+<h2><a class="self" href="#what-moved-is-our-understanding-not-the-world-or-the-code"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">What moved is our understanding, not the world or the code</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">plans/2026-10-30-quince.md › Reading the verdict (held, disproved, not tested) out of an answer's prose</code></p>
+<p class="target"><span class="label">entry</span> <a rel="anchored-at" itemprop="target" href="../../plans/quince/#reading-the-verdict-held-disproved-not-tested-out-of-an-answer-s-prose">Decline: Reading the verdict (held, disproved, not tested) out of an answer&#39;s prose</a> <span class="meta">in quince</span></p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> grommet already said an answer opens with held,
+disproved, partly disproved, or not tested when quince declined it. Quince read that
+as prose and called pulling a word out of it a guess. It&#39;s a convention with a closed
+set of four, which is structure written in words, like the <code>Because (…)</code> that marl now
+reads. What we learned was what it&#39;s for. &quot;Which guesses are still open, and which were
+disproved?&quot; is the question an agent arriving at code most needs answered, and today it
+takes two hops per guess (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="the-verdict-is-the-answer-s-first-word-or-words-when-they-re-one-of-grommet-s-four" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-verdict-is-the-answer-s-first-word-or-words-when-they-re-one-of-grommet-s-four"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The verdict is the answer&#39;s first word or words, when they&#39;re one of grommet&#39;s four</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/plan.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/plan.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e92038c5c810a57419ee3e7e470dfce39839c043"><code>e92038c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/plan.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="64"><meta itemprop="endLine" content="64"></span>
+<span class="note" itemprop="note">quote at line 64</span>
+</figcaption>
+<meta itemprop="codeStart" content="61"><pre itemprop="code" data-start="61"><code><span class="ln">61</span>  doc.intro = doc.intro.trim();
+<span class="ln">62</span>  for (const entry of doc.entries) {
+<span class="ln">63</span>    entry.body = entry.body.trim();
+<mark><span class="ln">64</span>    entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];</mark>
+<span class="ln">65</span>  }
+<span class="ln">66</span>  return doc;
+<span class="ln">67</span>}</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="5cf200fd005740e0ac10c3909e22776cb956ddde"><code>5cf200f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/plan.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="69"><meta itemprop="endLine" content="69"></span>
+<span class="note" itemprop="note">quote at line 69</span>
+</figcaption>
+<meta itemprop="codeStart" content="66"><pre itemprop="code" data-start="66"><code><span class="ln">66</span>  doc.intro = doc.intro.trim();
+<span class="ln">67</span>  for (const entry of doc.entries) {
+<span class="ln">68</span>    entry.body = entry.body.trim();
+<mark><span class="ln">69</span>    entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];</mark>
+<span class="ln">70</span>    if (entry.kind === 'Answered') {
+<span class="ln">71</span>      const after = /^\*\*Answer \(.*?\):\*\*\s*(.*)/s.exec(entry.body)?.[1] ?? '';
+<span class="ln">72</span>      entry.verdict = VERDICTS.find((v) =&gt; after.startsWith(v) &amp;&amp; !/[a-z]/i.test(after.charAt(v.length)));</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/plan.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="69"><meta itemprop="endLine" content="69"></span>
+<span class="note" itemprop="note">quote at line 69</span>
+</figcaption>
+<meta itemprop="codeStart" content="66"><pre itemprop="code" data-start="66"><code><span class="ln">66</span>  doc.intro = doc.intro.trim();
+<span class="ln">67</span>  for (const entry of doc.entries) {
+<span class="ln">68</span>    entry.body = entry.body.trim();
+<mark><span class="ln">69</span>    entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];</mark>
+<span class="ln">70</span>    if (entry.kind === 'Answered') {
+<span class="ln">71</span>      const after = /^\*\*Answer \(.*?\):\*\*\s*(.*)/s.exec(entry.body)?.[1] ?? '';
+<span class="ln">72</span>      // &quot;Held.&quot; is the same verdict as &quot;held.&quot;; it's always given lowercase.</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">grommet, Jeff and Claude</span>):</strong> after <code>**Answer (…):**</code>, the text starts with
+<code>held</code>, <code>disproved</code>, <code>partly disproved</code>, or <code>not tested</code>, followed by punctuation, a
+space, or the end. Anything after it (&quot;as far as a dry run can tell,&quot; &quot;on ten of
+ten&quot;) stays prose, where the reader sees it. Every answer in mock-control and phoropter
+opens this way today: six <code>held</code> and one <code>disproved</code>.</p>
+</div>
+</section>
+<section class="entry" id="the-verdict-shows-on-the-answer-and-on-its-guess" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-verdict-shows-on-the-answer-and-on-its-guess"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The verdict shows on the answer and on its guess</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">if (entry.answers) return `&lt;p class=&quot;pair&quot;&gt;Answers ${link('answers', 'answers', entry.answers, 'the plan’s guess')}.&lt;/p&gt;`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e92038c5c810a57419ee3e7e470dfce39839c043"><code>e92038c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="200"><meta itemprop="endLine" content="200"></span>
+<span class="note" itemprop="note">quote at line 200</span>
+</figcaption>
+<meta itemprop="codeStart" content="197"><pre itemprop="code" data-start="197"><code><span class="ln">197</span>function pairHtml(here: string, entry: ResolvedEntry): string {
+<span class="ln">198</span>  const link = (r: string, prop: string, to: { doc: Doc; entry: ResolvedEntry }, text: string) =&gt;
+<span class="ln">199</span>    `&lt;a rel=&quot;${r}&quot; itemprop=&quot;${prop}&quot; href=&quot;${rel(here, to.doc.href)}#${to.entry.slug}&quot;&gt;${text}&lt;/a&gt;`;
+<mark><span class="ln">200</span>  if (entry.answers) return `&lt;p class=&quot;pair&quot;&gt;Answers ${link('answers', 'answers', entry.answers, 'the plan’s guess')}.&lt;/p&gt;`;</mark>
+<span class="ln">201</span>  if (entry.kind === 'Answered') return '&lt;p class=&quot;pair note&quot;&gt;No guess in the plan has this title.&lt;/p&gt;';
+<span class="ln">202</span>  if (entry.answeredBy.length) {
+<span class="ln">203</span>    return `&lt;p class=&quot;pair&quot;&gt;Answered in ${entry.answeredBy.map((a) =&gt; link('answered-by', 'answeredBy', a, 'the as-built')).join(', ')}.&lt;/p&gt;`;</code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="5cf200fd005740e0ac10c3909e22776cb956ddde"><code>5cf200f</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>5cf200f</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="5cf200f">
+<span class="note" itemprop="note">same as at <code>5cf200f</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> on the guess is where it&#39;s needed. A reader on a plan page sees
+&quot;Answered in the as-built: held&quot; without leaving the page, and one pass over the plan
+pages finds every guess that was disproved. Both carry <code>itemprop=&quot;verdict&quot;</code>. A guess
+with no answer has no verdict, which is how a reader finds the open ones.</p>
+</div>
+</section>
+<section class="entry" id="an-answer-that-doesn-t-open-with-one-of-the-four-says-it-has-no-verdict" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-answer-that-doesn-t-open-with-one-of-the-four-says-it-has-no-verdict"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An answer that doesn&#39;t open with one of the four says it has no verdict</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, agreed by Jeff</span>):</strong> the same as an answer with no matching guess. The
+page says so plainly rather than guessing at the prose.</p>
+</div>
+</section>
+<section class="entry" id="reading-qualifiers-or-a-fifth-verdict" itemprop="entry" itemscope>
+<h2><a class="self" href="#reading-qualifiers-or-a-fifth-verdict"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Reading qualifiers, or a fifth verdict</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude</span>):</strong> &quot;held on what exists, and not yet tested against what would
+disprove it&quot; is quince&#39;s own answer, and its first word is <code>held</code>. Reading on to decide
+it&#39;s really &quot;not tested&quot; would be the guess quince declined, and it would overrule the
+answer&#39;s author. The prose is right under it.</p>
+</div>
+</section>
+<section class="entry" id="an-answer-s-first-word-is-the-verdict-its-author-meant" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-answer-s-first-word-is-the-verdict-its-author-meant"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">An answer&#39;s first word is the verdict its author meant</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/burlap/as-built/#an-answer-s-first-word-is-the-verdict-its-author-meant">the as-built</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> an answer opens with a verdict that its own prose contradicts, so that
+a reader trusting the structure would be misled. Quince&#39;s answer is the case to look
+at: &quot;held,&quot; then &quot;not yet tested.&quot;</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

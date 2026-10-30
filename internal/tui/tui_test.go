@@ -96,7 +96,7 @@ func TestWalkAPlan(t *testing.T) {
 	press(t, m, "esc", "j", "j", "j", "enter")
 	screenText(t, m)
 	press(t, m, "g")
-	if s := screenText(t, m); !strings.Contains(s, "match-line-prose") {
+	if s := screenText(t, m); !strings.Contains(s, "new-never-resolved") {
 		t.Fatalf("gaps:\n%s", s)
 	}
 }

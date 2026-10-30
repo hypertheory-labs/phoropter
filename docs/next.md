@@ -15,6 +15,12 @@ separate client app is the ground for this.
 
 ## 1. Let the ledger go quiet
 
+*Started:* selvage's six closed gaps are read from properties, with fixtures at
+`4ffb7d8` and `TestSelvageGapsStayClosed` guarding them. What's left is the `span.ln`
+half of `line-numbers-unprofiled`, the three that need path resolution, `same-as-deref`
+(the profile allows it, so it may simply be the shape), and section 2's file-page
+items.
+
 - Rebuild `testdata/` from both repos at their new heads (`node src/build.ts <repo>
   <commit> --out …` from `../phoropter`), and keep the old fixtures until the new
   code passes on both.

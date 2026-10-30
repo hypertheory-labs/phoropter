@@ -5,7 +5,6 @@ package substrate
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -93,11 +92,14 @@ type View struct {
 	Commit                   Ref
 	Matches                  int
 	StartLine, EndLine       int
-	MatchLine                int // 0 when unknown
+	Match                    []Range // the lines each match covers
+	MatchLine                int     // the first match's first line, or 0
 	SameAs                   string
 	Code                     *Excerpt
 	CodeFrom                 string // the commit the code was copied from, for sameAs
 }
+
+type Range struct{ Start, End int }
 
 type Excerpt struct {
 	Start int
@@ -163,47 +165,25 @@ func (c *Client) Home() (*Home, error) {
 	h := &Home{URL: p.URL, Repository: p.Repository, Commit: p.Commit}
 	for _, it := range p.Main.Items("plan") {
 		s := PlanSummary{
-			URL:   it.Str("url"),
-			Title: prose(it.Get("title")),
-			Name:  it.Str("name"),
-			Date:  it.Str("date"),
-			Added: refOf(it.Get("added")),
-			Base:  c.base(it.Get("base"), p.URL),
+			URL:         it.Str("url"),
+			Title:       prose(it.Get("title")),
+			Name:        it.Str("name"),
+			Date:        it.Str("date"),
+			Added:       refOf(it.Get("added")),
+			Base:        refOf(it.Get("base")),
+			AsBuiltURL:  it.Str("asBuilt"),
+			RevisitsURL: it.Str("revisits"),
 		}
-		// Everything else on the line is prose and unmarked links.
-		meta := microdata.Squash(microdata.TextContent(it.Node))
-		if m := entriesRE.FindStringSubmatch(meta); m != nil {
-			s.Entries, _ = strconv.Atoi(m[1])
-			c.Ledger.Note("home-entries-prose", p.URL, "%q", m[0])
-		}
-		for _, a := range anchorsIn(it.Node) {
-			text := microdata.Squash(microdata.TextContent(a))
-			href := c.Resolve(microdata.Attr(a, "href"))
-			if microdata.Attr(a, "rel") != "" {
-				continue
-			}
-			switch {
-			case strings.Contains(text, "as-built"):
-				s.AsBuiltURL = href
-				c.Ledger.Note("home-as-built-unmarked", p.URL, "link text %q", text)
-			case strings.Contains(precedingText(a), "revisits"):
-				s.RevisitsURL = href
-				c.Ledger.Note("home-revisits-unmarked", p.URL, "link text %q", text)
-			}
-		}
+		s.Entries, _ = strconv.Atoi(it.Str("entryCount"))
 		h.Plans = append(h.Plans, s)
 	}
 	for _, it := range p.Main.Items("place") {
 		s := PlaceSummary{URL: it.Str("url"), Name: it.Str("name"), Kind: it.Str("kind")}
-		if m := entriesRE.FindStringSubmatch(microdata.Squash(microdata.TextContent(it.Node))); m != nil {
-			s.Entries, _ = strconv.Atoi(m[1])
-		}
+		s.Entries, _ = strconv.Atoi(it.Str("entryCount"))
 		h.Places = append(h.Places, s)
 	}
 	return h, nil
 }
-
-var entriesRE = regexp.MustCompile(`(\d+) entr(?:y|ies)`)
 
 // Doc reads a plan or as-built page.
 func (c *Client) Doc(ref string) (*Doc, error) {
@@ -232,7 +212,7 @@ func (c *Client) Doc(ref string) (*Doc, error) {
 		d.PlanURL = v.Text
 	}
 	if v := it.Get("base"); v != nil {
-		d.Base = c.base(v, p.URL)
+		d.Base = refOf(v)
 	}
 	if v := it.Get("asBuilt"); v != nil {
 		d.AsBuiltURL = v.Text
@@ -319,8 +299,6 @@ func (c *Client) anchor(it *microdata.Item, page string) Anchor {
 	return a
 }
 
-var lineRE = regexp.MustCompile(`quote at line (\d+)`)
-
 func (c *Client) view(it *microdata.Item, page string) View {
 	v := View{
 		Role:   it.Str("role"),
@@ -333,52 +311,65 @@ func (c *Client) view(it *microdata.Item, page string) View {
 	v.Matches, _ = strconv.Atoi(it.Str("matches"))
 	v.StartLine, _ = strconv.Atoi(it.Str("startLine"))
 	v.EndLine, _ = strconv.Atoi(it.Str("endLine"))
-	if code := it.Get("code"); code != nil {
-		v.Code = c.excerpt(code.Node, page)
-		for _, l := range v.Code.Lines {
-			if l.Marked {
-				v.MatchLine = l.N
-				break
+	for _, m := range it.Items("match") {
+		var r Range
+		r.Start, _ = strconv.Atoi(m.Str("startLine"))
+		r.End, _ = strconv.Atoi(m.Str("endLine"))
+		v.Match = append(v.Match, r)
+	}
+	if len(v.Match) > 0 {
+		v.MatchLine = v.Match[0].Start
+	}
+	if codes := c.codes(it, page); len(codes) > 0 {
+		v.Code = codes[0]
+		for i := range v.Code.Lines {
+			l := &v.Code.Lines[i]
+			for _, r := range v.Match {
+				l.Marked = l.Marked || (r.Start <= l.N && l.N <= r.End)
 			}
 		}
-	}
-	if m := lineRE.FindStringSubmatch(v.Note); m != nil {
-		if n, _ := strconv.Atoi(m[1]); v.MatchLine == 0 || v.MatchLine == n {
-			v.MatchLine = n
-		}
-		c.Ledger.Note("match-line-prose", page, "note %q", v.Note)
 	}
 	return v
 }
 
-// excerpt reads a <pre itemprop="code">: each line is a span.ln with its
-// number, then the text, and the matched lines are wrapped in <mark>.
-func (c *Client) excerpt(pre *html.Node, page string) *Excerpt {
-	ex := &Excerpt{}
-	ex.Start, _ = strconv.Atoi(microdata.Attr(pre, "data-start"))
-	var walk func(n *html.Node, inLn, inMark bool)
-	walk = func(n *html.Node, inLn, inMark bool) {
-		if n.Type == html.ElementNode {
-			inLn = inLn || microdata.HasClass(n, "ln")
-			inMark = inMark || n.Data == "mark"
+// codes reads an item's excerpts. The nth codeStart is the first line of the
+// nth code.
+func (c *Client) codes(it *microdata.Item, page string) []*Excerpt {
+	starts := it.Props["codeStart"]
+	var out []*Excerpt
+	for i, v := range it.Props["code"] {
+		ex := &Excerpt{}
+		if i < len(starts) {
+			ex.Start, _ = strconv.Atoi(starts[i].Text)
+		}
+		for j, text := range strings.Split(c.codeText(v.Node, page), "\n") {
+			ex.Lines = append(ex.Lines, Line{N: ex.Start + j, Text: text})
+		}
+		out = append(out, ex)
+	}
+	return out
+}
+
+// codeText is a code's text without its line numbers. Each line starts with
+// its number in a span.ln, inside the property, so the property's own value
+// has them run into the code.
+func (c *Client) codeText(pre *html.Node, page string) string {
+	var b strings.Builder
+	var walk func(n *html.Node)
+	walk = func(n *html.Node) {
+		if n.Type == html.ElementNode && microdata.HasClass(n, "ln") {
+			return
 		}
 		if n.Type == html.TextNode {
-			if inLn {
-				num, _ := strconv.Atoi(strings.TrimSpace(n.Data))
-				ex.Lines = append(ex.Lines, Line{N: num, Marked: inMark})
-			} else if len(ex.Lines) > 0 {
-				last := &ex.Lines[len(ex.Lines)-1]
-				// The newline between lines sits outside the line's own text.
-				last.Text += strings.SplitN(n.Data, "\n", 2)[0]
-			}
+			b.WriteString(n.Data)
 		}
 		for ch := n.FirstChild; ch != nil; ch = ch.NextSibling {
-			walk(ch, inLn, inMark)
+			walk(ch)
 		}
 	}
-	walk(pre, false, false)
+	walk(pre)
 	c.Ledger.Note("line-numbers-unprofiled", page, "")
-	return ex
+	return strings.TrimSuffix(b.String(), "\n")
 }
 
 // Place reads a symbol or file page.
@@ -397,8 +388,8 @@ func (c *Client) Place(ref string) (*Place, error) {
 	}
 	pl.StartLine, _ = strconv.Atoi(it.Str("startLine"))
 	pl.EndLine, _ = strconv.Atoi(it.Str("endLine"))
-	if v := it.Get("code"); v != nil {
-		pl.Code = c.excerpt(v.Node, p.URL)
+	if codes := c.codes(it, p.URL); len(codes) > 0 {
+		pl.Code = codes[0]
 	}
 	if pl.Kind == "symbol" && pl.File != "" {
 		pl.FileURL = c.Resolve("files/" + pl.File + "/")
@@ -415,28 +406,14 @@ func (c *Client) Place(ref string) (*Place, error) {
 			Where: r.Str("where"),
 			Added: refOf(r.Get("added")),
 		}
-		if v := r.Get("new"); v != nil {
-			pr.New = true
-			if v.Node.Data != "meta" {
-				c.Ledger.Note("new-two-shapes", p.URL, "<%s>%s</%s>", v.Node.Data, microdata.Squash(v.Text), v.Node.Data)
-			}
-		}
+		pr.New = r.Str("new") == "true"
 		pl.AnchoredBy = append(pl.AnchoredBy, pr)
 	}
 	return pl, nil
 }
 
-func (c *Client) base(v *microdata.Value, page string) Ref {
-	if v == nil {
-		return Ref{}
-	}
-	if v.Node.Data != "data" {
-		c.Ledger.Note("base-not-commit", page, "%q", microdata.Squash(v.Text))
-		return Ref{Label: microdata.Squash(v.Text)}
-	}
-	return refOf(v)
-}
-
+// refOf reads a commit: a <data> with the full sha when it names a commit
+// here, and otherwise the text as written ("none, a new repo").
 func refOf(v *microdata.Value) Ref {
 	if v == nil {
 		return Ref{}
@@ -519,28 +496,6 @@ func facts(n *html.Node) [][2]string {
 	}
 	walk(n)
 	return out
-}
-
-func anchorsIn(n *html.Node) []*html.Node {
-	var out []*html.Node
-	var walk func(*html.Node)
-	walk = func(n *html.Node) {
-		if n.Type == html.ElementNode && n.Data == "a" {
-			out = append(out, n)
-		}
-		for ch := n.FirstChild; ch != nil; ch = ch.NextSibling {
-			walk(ch)
-		}
-	}
-	walk(n)
-	return out
-}
-
-func precedingText(n *html.Node) string {
-	if s := n.PrevSibling; s != nil && s.Type == html.TextNode {
-		return s.Data
-	}
-	return ""
 }
 
 func stripFragment(u string) string {

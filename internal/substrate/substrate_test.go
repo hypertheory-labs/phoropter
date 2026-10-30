@@ -121,7 +121,7 @@ func TestCrawlLedger(t *testing.T) {
 	for _, g := range l.Gaps() {
 		seen[g.ID] = true
 	}
-	for _, id := range []string{"match-line-prose", "home-as-built-unmarked", "home-revisits-unmarked", "new-never-resolved", "symbol-file-unlinked", "answer-elsewhere", "same-as-deref"} {
+	for _, id := range []string{"line-numbers-unprofiled", "new-never-resolved", "symbol-file-unlinked", "answer-elsewhere", "same-as-deref"} {
 		if !seen[id] {
 			t.Errorf("crawl didn't note %s", id)
 		}
@@ -129,7 +129,7 @@ func TestCrawlLedger(t *testing.T) {
 }
 
 func TestPhoropterCrawls(t *testing.T) {
-	c, err := NewClient("../../testdata/phoropter-e8107f3", NewLedger())
+	c, err := NewClient("../../testdata/phoropter-4ffb7d8", NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -137,10 +137,53 @@ func TestPhoropterCrawls(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(s.Home.Plans) != 7 || len(s.Docs) != 14 {
+	if len(s.Home.Plans) != 8 || len(s.Docs) != 16 {
 		t.Errorf("plans = %d, docs = %d", len(s.Home.Plans), len(s.Docs))
 	}
 	if s.Home.Plans[0].Base.SHA != "" {
 		t.Errorf("gimlet's base should be text: %+v", s.Home.Plans[0].Base)
+	}
+}
+
+// Selvage, the plan that put into markup what the pages said in prose, closed
+// these gaps. Each is read from a property now, with no fallback, so if the
+// property goes missing this fails rather than the ledger quietly growing.
+func TestSelvageGapsStayClosed(t *testing.T) {
+	c, _ := client(t)
+	h, err := c.Home()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, p := range h.Plans {
+		if p.AsBuiltURL == "" || p.Entries == 0 {
+			t.Errorf("home-as-built-unmarked, home-entries-prose: %+v", p)
+		}
+	}
+	for _, p := range h.Places {
+		if p.Entries == 0 {
+			t.Errorf("home-entries-prose: %+v", p)
+		}
+	}
+	d, err := c.Doc("plans/pumice/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The brief's own example: pumice's note says "quote at line 94".
+	v := d.Entries[0].Anchors[0].Views[0]
+	if v.MatchLine != 94 || len(v.Match) != v.Matches || v.Code.Start != 91 || v.Code.Lines[3].Text != "### Wiring it into an app" || !v.Code.Lines[3].Marked {
+		t.Errorf("match-line-prose, line-numbers-unprofiled: %+v %+v", v, v.Code)
+	}
+	p, err := c.Place("files/projects/mock-control/README.md/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	news := 0
+	for _, r := range p.AnchoredBy {
+		if r.New {
+			news++
+		}
+	}
+	if news == 0 {
+		t.Errorf("new-two-shapes: no anchoredBy item is new")
 	}
 }

@@ -9,7 +9,7 @@ projection, and this is what it ran into.
 Every time the TUI reads past the profile (parses prose, leans on a class name, or has
 nothing to show), it notes a gap. `phoropter-tui gaps <site>` crawls a site and prints
 them. The counts here are from mock-control at `f02528f` (4 plans) and phoropter at
-`e8107f3` (7 plans); both sites are in this repo's `testdata/`, built by phoropter's own
+`e8107f3` (7 plans), except where an item says otherwise; both sites are in this repo's `testdata/`, built by phoropter's own
 `build.ts`.
 
 Nothing here is a format decision. Each item says what a reader wanted to ask, what the
@@ -26,17 +26,38 @@ HTML lacks, the person would see more than the agent.
 
 Ordered by how much they cost a reader.
 
-### The matched line isn't a property
+### Closed by selvage, and the answer to its guess
 
-*Reader question:* where in this excerpt is the quote?
-*Now:* a view's `note` says "quote at line 94" in prose, and the matched line is a
-`<mark>`. The excerpt's first line is `data-start` and each line number is a `span.ln`;
-neither is in the profile. Only symbols get `startLine`/`endLine`.
-*Seen:* 28 views in mock-control, 74 in phoropter (`match-line-prose`,
-`line-numbers-unprofiled`). E.g. `plans/pumice/`, the entry about the README being a
-setup guide.
-*Ask:* a `line` (or `matchLine`) property on a view, and the excerpt's start as a
-property. Possibly one per match, since `matches` can be more than 1.
+Selvage (say in markup what the pages already say in prose) closed six gaps outright.
+phoropter-tui now reads each one from a property, with the workaround deleted, on
+fixtures rebuilt at `4ffb7d8`:
+
+- `match-line-prose`: each view's `match` items give the lines. Pumice's README view
+  reads `startLine` 94, as its note says.
+- `home-as-built-unmarked`, `home-revisits-unmarked`, `home-entries-prose`: the home
+  list's `asBuilt`, `revisits` and `entryCount`.
+- `new-two-shapes`: one `<meta>`, everywhere.
+- `base-not-commit`: the profile now says a `base` is text when it isn't a commit here.
+  The TUI no longer treats that as a gap.
+
+Selvage's guess was "once phoropter-tui reads these, none of the closed gaps need prose
+or class names." **Answer: partly disproved.** Six of the seven need nothing. The
+seventh, `line-numbers-unprofiled`, is half closed. `codeStart` numbers the lines, but
+each line's number is still a `<span class="ln">` *inside* the `code` property
+(`render.ts:313`). So the property's value, read as microdata, is "91**Mocks are for…",
+with the numbers run into the text. The profile doesn't say so. A reader has to know to
+drop `span.ln` by class name. That's 30 code values in mock-control and 87 in
+phoropter.
+
+*Ask:* keep the numbers out of the property's text. Draw them with a CSS counter
+started from `codeStart`, or put them in an attribute shown through `::before`. Or have
+the profile say that each line starts with its number in a `span.ln`. The first keeps
+`code` true to its name.
+
+### Still open: the three that need a `›` path to resolve
+
+Selvage left these on the shelf, since resolving a path is more than markup. They
+stand together: the second makes the other two possible.
 
 ### `where (new)` anchors never resolve, even where the work made them
 
@@ -64,23 +85,6 @@ nothing to fall back to.
 *Seen:* 7 in mock-control, 29 in phoropter (`view-no-code`).
 *Ask:* with path resolution, fall back to the `›` range, the way a symbol falls back to
 its declaration.
-
-### The home list's links are unmarked
-
-*Reader question:* which plans are done, and which revisit something, without opening
-each one?
-*Now:* "with an as-built" and "revisits pumice" are plain `<a>`s, and "9 entries" is
-prose.
-*Seen:* `home-as-built-unmarked`, `home-revisits-unmarked`, `home-entries-prose`.
-*Ask:* `rel="as-built" itemprop="asBuilt"` and `rel="revisits" itemprop="revisits"` on
-the home list, as on plan pages, and an entry count property.
-
-### Small inconsistencies
-
-- `new` is `<meta content="true">` on an anchor and `<span>new</span>` on a place
-  page's anchoredBy item (`new-two-shapes`).
-- `base` is usually `<data value="sha">`, but gimlet's is `<span>none, a new repo</span>`
-  (`base-not-commit`). Reasonable, but the profile should say `base` can be text.
 
 ### Not a gap: answers in another plan
 

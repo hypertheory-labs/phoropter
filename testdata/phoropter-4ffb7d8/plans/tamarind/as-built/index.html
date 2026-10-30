@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: tamarind · phoropter at 4ffb7d8</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="meta">4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4</span>
+<span class="links"><a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/tamarind/">Show the evidence, not the whole symbol</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: tamarind</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/tamarind/">plans/2026-10-30-tamarind.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-tamarind.as-built.md</code></dd>
+
+</dl>
+
+<section class="entry" id="the-plan-was-written-and-committed-while-the-cart-was-still-open" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-plan-was-written-and-committed-while-the-cart-was-still-open"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">The plan was written and committed while the cart was still open</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p>The work came before the round ended, and plans are committed before the work. So the
+plan was written from Claude&#39;s daily, which already had Jeff&#39;s notes dissolved into it,
+and the cart stays open. Converting it is still Jeff&#39;s call. If more comes up in the
+cart, it&#39;s a new plan, not an edit to this one.</p>
+</div>
+</section>
+<section class="entry" id="a-declaration-is-7-lines-and-context-stays-inside-the-symbol" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-declaration-is-7-lines-and-context-stays-inside-the-symbol"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">A declaration is 7 lines, and context stays inside the symbol</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const DECLARATION = 2 * CONTEXT + 1; // as many lines as a found quote's view, at most</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="15"><meta itemprop="endLine" content="15"></span>
+<span class="note" itemprop="note">quote at line 15</span>
+</figcaption>
+<meta itemprop="codeStart" content="12"><pre itemprop="code" data-start="12"><code><span class="ln">12</span>  | { kind: 'cross-repo'; repo: string; rest: string };
+<span class="ln">13</span> 
+<span class="ln">14</span>const CONTEXT = 3;
+<mark><span class="ln">15</span>const DECLARATION = 2 * CONTEXT + 1; // as many lines as a found quote's view, at most</mark>
+<span class="ln">16</span> 
+<span class="ln">17</span>export function target(anchor: Anchor, repoName: string): Target {
+<span class="ln">18</span>  const cross = /^([\w.-]+): (.+)$/.exec(anchor.where);</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="16"><meta itemprop="endLine" content="16"></span>
+<span class="note" itemprop="note">quote at line 16</span>
+</figcaption>
+<meta itemprop="codeStart" content="13"><pre itemprop="code" data-start="13"><code><span class="ln">13</span>  | { kind: 'cross-repo'; repo: string; rest: string };
+<span class="ln">14</span> 
+<span class="ln">15</span>const CONTEXT = 3;
+<mark><span class="ln">16</span>const DECLARATION = 2 * CONTEXT + 1; // as many lines as a found quote's view, at most</mark>
+<span class="ln">17</span> 
+<span class="ln">18</span>// `plans` is the plan and as-built files on this site; an anchor into one of
+<span class="ln">19</span>// them points at the plan, or at an entry by its title, not at a file.</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan didn&#39;t say how many lines a declaration is.
+Seven is the size of a single-line quote&#39;s view, so the two sides of an entry come out
+about the same height. A found quote&#39;s context is clamped to the symbol&#39;s range, so the
+base side of the selector entry shows lines 9 to 13, not the code before the decorator.
+A symbol shorter than 7 lines shows whole.</p>
+</div>
+</section>
+<section class="entry" id="the-symbol-page-shows-the-definition-at-the-generated-commit-only" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-symbol-page-shows-the-definition-at-the-generated-commit-only"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">The symbol page shows the definition at the generated commit only</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">place.code = { start: def.startLine, lines, marked: [] };</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="127"><meta itemprop="endLine" content="127"></span>
+<span class="note" itemprop="note">quote at line 127</span>
+</figcaption>
+<meta itemprop="codeStart" content="124"><pre itemprop="code" data-start="124"><code><span class="ln">124</span>    const def = place.definition;
+<span class="ln">125</span>    if (!def) continue;
+<span class="ln">126</span>    const lines = (repo.show(sha, def.file) ?? '').split('\n').slice(def.startLine - 1, def.endLine);
+<mark><span class="ln">127</span>    place.code = { start: def.startLine, lines, marked: [] };</mark>
+<span class="ln">128</span>  }
+<span class="ln">129</span> 
+<span class="ln">130</span>  return {</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="203"><meta itemprop="endLine" content="203"></span>
+<span class="note" itemprop="note">quote at line 203</span>
+</figcaption>
+<meta itemprop="codeStart" content="200"><pre itemprop="code" data-start="200"><code><span class="ln">200</span>    const def = place.definition;
+<span class="ln">201</span>    if (!def) continue;
+<span class="ln">202</span>    const lines = (repo.show(sha, def.file) ?? '').split('\n').slice(def.startLine - 1, def.endLine);
+<mark><span class="ln">203</span>    place.code = { start: def.startLine, lines, marked: [] };</mark>
+<span class="ln">204</span>  }
+<span class="ln">205</span> 
+<span class="ln">206</span>  // A reverse page lists newest first: someone arriving at a file usually</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a symbol page belongs to the symbol, not to any one
+plan. Each plan&#39;s base is that plan&#39;s, so showing it here would mean picking one plan&#39;s
+base. The bases stay on the plan pages.</p>
+</div>
+</section>
+<section class="entry" id="the-guess-can-t-be-tested-on-pumice-yet" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guess-can-t-be-tested-on-pumice-yet"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">The guess can&#39;t be tested on pumice yet</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p>Pumice has one SCIP anchor, and its quote is in the decorator, so the declaration
+happens to show exactly what changed. That&#39;s the case where the guess is right by
+construction. The case that could disprove it, a quote deep in a method body that goes
+missing, needs a plan that doesn&#39;t exist yet.</p>
+</div>
+</section>
+<section class="entry" id="the-branch-started-at-9b1f311-not-the-plan-s-base" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-branch-started-at-9b1f311-not-the-plan-s-base"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">The branch started at <code>9b1f311</code>, not the plan&#39;s base</span></a></h2>
+
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../../plans/twill/#an-as-built-freezes-once-someone-else-could-have-read-it">twill, Decision: An as-built freezes once someone else could have read it</a>.</p>
+
+<div class="reason" itemprop="reason"><p>The plan says <code>base: 700f8af</code>, but Jeff&#39;s <code>9b1f311</code> (<code>.gitignore</code> and <code>CLAUDE.md</code>) was
+already on main when the branch was cut. Claude read <code>git log</code> wrong when writing the
+base. Nothing anchored moved between the two, so the views are the same either way.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

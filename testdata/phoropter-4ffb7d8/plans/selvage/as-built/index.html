@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: selvage · phoropter at 4ffb7d8</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="meta">4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4</span>
+<span class="links"><a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/selvage/">Say in markup what the pages already say in prose</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: selvage</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/selvage/">plans/2026-10-30-selvage.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-selvage.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Written straight to <code>plans/</code> without a draft: Jeff picked this from the brief&#39;s list
+and said &quot;now&quot;, and nothing in it decides anything about reasons. Nothing departed from
+the plan, so there&#39;s no <code>Changed:</code>. On mock-control at <code>f02528f</code>, all 44 views list as
+many match items as they have matches (35 in all), and every <code>code</code> has its
+<code>codeStart</code>. Pumice&#39;s README match is the brief&#39;s own example: <code>startLine</code> 94, the line
+its note says in prose.</p>
+</div>
+<section class="entry" id="a-match-is-a-hidden-item-so-the-page-looks-the-same" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-match-is-a-hidden-item-so-the-page-looks-the-same"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A match is a hidden item, so the page looks the same</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">function matchHtml(lines: number[]): string {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="303"><meta itemprop="endLine" content="303"></span>
+<span class="note" itemprop="note">quote at line 303</span>
+</figcaption>
+<meta itemprop="codeStart" content="300"><pre itemprop="code" data-start="300"><code><span class="ln">300</span>}
+<span class="ln">301</span> 
+<span class="ln">302</span>// One item per match, so a reader finds the quote's lines without the note.
+<mark><span class="ln">303</span>function matchHtml(lines: number[]): string {</mark>
+<span class="ln">304</span>  return `&lt;span itemprop=&quot;match&quot; itemscope hidden&gt;&lt;meta itemprop=&quot;startLine&quot; content=&quot;${lines[0]}&quot;&gt;&lt;meta itemprop=&quot;endLine&quot; content=&quot;${lines[lines.length - 1]}&quot;&gt;&lt;/span&gt;`;
+<span class="ln">305</span>}
+<span class="ln">306</span> </code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="303"><meta itemprop="endLine" content="303"></span><meta itemprop="sameAs" content="42ed1b2">
+<span class="note" itemprop="note">same as at <code>42ed1b2</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a person already sees the match as the <code>&lt;mark&gt;</code> and
+the note; the item is for readers that can&#39;t see either. It&#39;s a <code>&lt;span hidden&gt;</code>
+holding two metas, the shape <code>startLine</code> and <code>endLine</code> already have on a symbol view.</p>
+</div>
+</section>
+<section class="entry" id="the-view-keeps-the-lines-it-matched-rather-than-recovering-them-from-the-excerpt" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-view-keeps-the-lines-it-matched-rather-than-recovering-them-from-the-excerpt"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The view keeps the lines it matched, rather than recovering them from the excerpt</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">at: number[][]; // the lines each match covers, in order</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="45"><meta itemprop="endLine" content="45"></span>
+<span class="note" itemprop="note">quote at line 45</span>
+</figcaption>
+<meta itemprop="codeStart" content="42"><pre itemprop="code" data-start="42"><code><span class="ln">42</span>  startLine?: number; // the symbol's range, for SCIP anchors
+<span class="ln">43</span>  endLine?: number;
+<span class="ln">44</span>  matches: number; // how many times the quote matched in the file or range
+<mark><span class="ln">45</span>  at: number[][]; // the lines each match covers, in order</mark>
+<span class="ln">46</span>  hunks: Hunk[];
+<span class="ln">47</span>  note: string; // plain words for the reader
+<span class="ln">48</span>  sameAs?: string; // short sha of the as-built head this view matches exactly; its code is not repeated</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="45"><meta itemprop="endLine" content="45"></span><meta itemprop="sameAs" content="42ed1b2">
+<span class="note" itemprop="note">same as at <code>42ed1b2</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> an entry-quote view has one excerpt holding every
+match, so the excerpt&#39;s marked lines can&#39;t say where one match ends and the next
+begins. The lines are known when the quote is found, so they&#39;re kept there.</p>
+</div>
+</section>
+<section class="entry" id="once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names" itemprop="entry" itemscope>
+<h2><a class="self" href="#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Once phoropter-tui reads these, none of the closed gaps need prose or class names</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/selvage/#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names">the plan’s guess</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude</span>):</strong> not tested. Phoropter-tui hasn&#39;t switched to the new properties
+yet; its own next steps rebuild its fixtures at this head and delete each workaround.
+Phoropter&#39;s tests check the markup is there and consistent, which isn&#39;t the same as a
+reader finding it sufficient.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

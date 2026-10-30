@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: marl · phoropter at 4ffb7d8</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="meta">4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4</span>
+<span class="links"><a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/marl/">What an agent can read without reading prose: source, date, and the plan&#39;s own work</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: marl</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/marl/">plans/2026-10-30-marl.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-marl.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>The first plan put up as a draft in its cart before being committed. Jeff said &quot;go&quot;
+without annotating, so the plan was the draft with its two open questions turned into
+their fallbacks, labeled as such. Nothing departed from the plan, so there&#39;s no
+<code>Changed:</code>.</p>
+</div>
+<section class="entry" id="the-source-is-wrapped-in-place-inside-the-bold-lead" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-source-is-wrapped-in-place-inside-the-bold-lead"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The source is wrapped in place, inside the bold lead</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">// The source stays as written, inside the bold lead where the reader sees it;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="191"><meta itemprop="endLine" content="191"></span>
+<span class="note" itemprop="note">quote at line 191</span>
+</figcaption>
+<meta itemprop="codeStart" content="188"><pre itemprop="code" data-start="188"><code><span class="ln">188</span>&lt;/section&gt;`;
+<span class="ln">189</span>}
+<span class="ln">190</span> 
+<mark><span class="ln">191</span>// The source stays as written, inside the bold lead where the reader sees it;</mark>
+<span class="ln">192</span>// the span only makes it findable.
+<span class="ln">193</span>function withSource(html: string): string {
+<span class="ln">194</span>  return html.replace(/^&lt;p&gt;&lt;strong&gt;(Because|Answer) \((.*?)\):&lt;\/strong&gt;/, '&lt;p&gt;&lt;strong&gt;$1 (&lt;span itemprop=&quot;source&quot;&gt;$2&lt;/span&gt;):&lt;/strong&gt;');</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="206"><meta itemprop="endLine" content="206"></span>
+<span class="note" itemprop="note">quote at line 206</span>
+</figcaption>
+<meta itemprop="codeStart" content="203"><pre itemprop="code" data-start="203"><code><span class="ln">203</span>&lt;/section&gt;`;
+<span class="ln">204</span>}
+<span class="ln">205</span> 
+<mark><span class="ln">206</span>// The source stays as written, inside the bold lead where the reader sees it;</mark>
+<span class="ln">207</span>// the span only makes it findable.
+<span class="ln">208</span>function withSource(html: string): string {
+<span class="ln">209</span>  return html.replace(/^&lt;p&gt;&lt;strong&gt;(Because|Answer) \((.*?)\):&lt;\/strong&gt;/, '&lt;p&gt;&lt;strong&gt;$1 (&lt;span itemprop=&quot;source&quot;&gt;$2&lt;/span&gt;):&lt;/strong&gt;');</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a person reads &quot;Because (measured):&quot; exactly as before,
+and an agent finds <code>itemprop=&quot;source&quot;</code> holding &quot;measured.&quot; Only a reason&#39;s leading
+<code>**Because (…):**</code> or <code>**Answer (…):**</code> counts. All 30 in mock-control at <code>f02528f</code> are
+marked.</p>
+</div>
+</section>
+<section class="entry" id="times-are-shown-in-utc-and-say-so" itemprop="entry" itemscope>
+<h2><a class="self" href="#times-are-shown-in-utc-and-say-so"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Times are shown in UTC, and say so</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">return `${date}, added in &lt;data itemprop=&quot;added&quot; value=&quot;${plan.added.sha}&quot;&gt;&lt;code&gt;${esc(plan.added.short)}&lt;/code&gt;&lt;/data&gt; &lt;time datetime=&quot;${at}&quot;&gt;${at.slice(11, 16)} UTC&lt;/time&gt;`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="320"><meta itemprop="endLine" content="320"></span>
+<span class="note" itemprop="note">quote at line 320</span>
+</figcaption>
+<meta itemprop="codeStart" content="317"><pre itemprop="code" data-start="317"><code><span class="ln">317</span>  const date = plan.date ? `&lt;time itemprop=&quot;date&quot; datetime=&quot;${plan.date}&quot;&gt;${plan.date}&lt;/time&gt;` : 'no date';
+<span class="ln">318</span>  if (!plan.added) return date;
+<span class="ln">319</span>  const at = new Date(plan.added.time * 1000).toISOString();
+<mark><span class="ln">320</span>  return `${date}, added in &lt;data itemprop=&quot;added&quot; value=&quot;${plan.added.sha}&quot;&gt;&lt;code&gt;${esc(plan.added.short)}&lt;/code&gt;&lt;/data&gt; &lt;time datetime=&quot;${at}&quot;&gt;${at.slice(11, 16)} UTC&lt;/time&gt;`;</mark>
+<span class="ln">321</span>}
+<span class="ln">322</span> 
+<span class="ln">323</span>function baseHtml(plan: Plan): string {</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="355"><meta itemprop="endLine" content="355"></span>
+<span class="note" itemprop="note">quote at line 355</span>
+</figcaption>
+<meta itemprop="codeStart" content="352"><pre itemprop="code" data-start="352"><code><span class="ln">352</span>  const date = plan.date ? `&lt;time itemprop=&quot;date&quot; datetime=&quot;${plan.date}&quot;&gt;${plan.date}&lt;/time&gt;` : 'no date';
+<span class="ln">353</span>  if (!plan.added) return date;
+<span class="ln">354</span>  const at = new Date(plan.added.time * 1000).toISOString();
+<mark><span class="ln">355</span>  return `${date}, added in &lt;data itemprop=&quot;added&quot; value=&quot;${plan.added.sha}&quot;&gt;&lt;code&gt;${esc(plan.added.short)}&lt;/code&gt;&lt;/data&gt; &lt;time datetime=&quot;${at}&quot;&gt;${at.slice(11, 16)} UTC&lt;/time&gt;`;</mark>
+<span class="ln">356</span>}
+<span class="ln">357</span> 
+<span class="ln">358</span>function baseHtml(plan: Plan): string {</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the page is static and can&#39;t know the reader&#39;s
+timezone. The commit&#39;s time is what orders plans that share a date, so it&#39;s shown with
+its zone rather than in a guessed local one. Vellum is 17:23 UTC, which is 13:23 in
+Jeff&#39;s own timezone.</p>
+</div>
+</section>
+<section class="entry" id="a-collapsed-view-keeps-its-status-and-its-commit" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-collapsed-view-keeps-its-status-and-its-commit"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A collapsed view keeps its status and its commit</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">last.note = `same as at \`${head.short}\``;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="59"><meta itemprop="endLine" content="59"></span>
+<span class="note" itemprop="note">quote at line 59</span>
+</figcaption>
+<meta itemprop="codeStart" content="56"><pre itemprop="code" data-start="56"><code><span class="ln">56</span>  const same = (v: View) =&gt; JSON.stringify([v.status, v.file, v.startLine, v.endLine, v.matches, v.hunks]);
+<span class="ln">57</span>  if (same(head) !== same(last)) return views;
+<span class="ln">58</span>  last.sameAs = head.short;
+<mark><span class="ln">59</span>  last.note = `same as at \`${head.short}\``;</mark>
+<span class="ln">60</span>  last.hunks = [];
+<span class="ln">61</span>  return views;
+<span class="ln">62</span>}</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="60"><meta itemprop="endLine" content="60"></span>
+<span class="note" itemprop="note">quote at line 60</span>
+</figcaption>
+<meta itemprop="codeStart" content="57"><pre itemprop="code" data-start="57"><code><span class="ln">57</span>  const same = (v: View) =&gt; JSON.stringify([v.status, v.file, v.startLine, v.endLine, v.matches, v.hunks]);
+<span class="ln">58</span>  if (same(head) !== same(last)) return views;
+<span class="ln">59</span>  last.sameAs = head.short;
+<mark><span class="ln">60</span>  last.note = `same as at \`${head.short}\``;</mark>
+<span class="ln">61</span>  last.hunks = [];
+<span class="ln">62</span>  return views;
+<span class="ln">63</span>}</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan said the generated view collapses to one line.
+It&#39;s still a view, with its role, commit, and status (<code>not-found</code> for tallow&#39;s
+Requirements quote), plus <code>sameAs</code> naming the head, and only the code is dropped. An
+agent reading three views gets three answers, and doesn&#39;t have to know a view went
+missing.</p>
+</div>
+</section>
+<section class="entry" id="a-plan-s-anchors-reuse-the-as-built-s-role-name-as-built-head" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-plan-s-anchors-reuse-the-as-built-s-role-name-as-built-head"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A plan&#39;s anchors reuse the as-built&#39;s role name, &quot;as-built head&quot;</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const head = d === plan ? plan.asBuilt?.before : undefined;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="137"><meta itemprop="endLine" content="137"></span>
+<span class="note" itemprop="note">quote at line 137</span>
+</figcaption>
+<meta itemprop="codeStart" content="134"><pre itemprop="code" data-start="134"><code><span class="ln">134</span>      // A plan's anchors show at its base, at its as-built's head (where its own
+<span class="ln">135</span>      // work landed, so lanyard's drift starts there), and at the generated
+<span class="ln">136</span>      // commit. An as-built's show at its head and the generated commit.
+<mark><span class="ln">137</span>      const head = d === plan ? plan.asBuilt?.before : undefined;</mark>
+<span class="ln">138</span>      const commits: Commit[] = [generated];
+<span class="ln">139</span>      if (head &amp;&amp; head.sha !== sha) commits.unshift(head);
+<span class="ln">140</span>      if (d.before &amp;&amp; !commits.some((c) =&gt; c.sha === d.before!.sha)) commits.unshift(d.before);</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="137"><meta itemprop="endLine" content="137"></span><meta itemprop="sameAs" content="32bf4c1">
+<span class="note" itemprop="note">same as at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it&#39;s the same commit an as-built&#39;s own anchors already
+call that, so one name means one thing. Pumice gets a third view as well, and it says
+something new: the selector quote is already gone at pumice&#39;s head <code>e92db76</code>, so
+pumice&#39;s own work renamed it, which its plan said it would.</p>
+</div>
+</section>
+<section class="entry" id="the-commit-that-added-a-plan-gives-the-order-people-mean" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-commit-that-added-a-plan-gives-the-order-people-mean"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">The commit that added a plan gives the order people mean</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/marl/#the-commit-that-added-a-plan-gives-the-order-people-mean">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> held, in three repos. In mock-control, backfilled pumice still
+sorts first; its file was added at <code>90c65b9</code>, a day after its work, but before any
+other plan. In aide, lanyard, grommet, bodkin, and awl all share a date, and their
+commits order them as they cite each other: bodkin&#39;s base is the commit that added
+grommet. Phoropter&#39;s five plans are in the order they were written. No case yet of a
+plan added later that was decided earlier, which is what would disprove it.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>
