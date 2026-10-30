@@ -41,6 +41,10 @@ function home(site: Site): Page {
     .join('\n');
   return layout(site, here, title, `
 <h1>${esc(title)}</h1>
+<div class="orientation">
+<p>This is <strong>${esc(site.repoName)}</strong> read through its plans: the plans and their as-built files in <code>plans/</code>, each anchored to the code it was about, at commit <code>${esc(site.generated.short)}</code>. Nothing here is written to; it’s generated from git.</p>
+<p>To find out why some code is the way it is, start from a file or symbol under <em>Anchored places</em>, which lists the plans that touch it, newest first. To read the history, start from <em>Plans</em>, oldest first. The <a href="${rel(here, 'profile/')}">profile</a> defines every link relation and microdata property on these pages.</p>
+</div>
 <div itemscope>
 <section>
 <h2>Plans</h2>
@@ -296,6 +300,7 @@ function layout(site: Site, here: string, title: string, main: string): Page {
 Generated from <span itemprop="repository">${esc(site.repoName)}</span>
 at <data itemprop="commit" value="${site.generated.sha}"><code>${esc(site.generated.short)}</code></data>
 <span class="meta">${site.generated.sha}</span>
+<a class="profile-link" href="${rel(here, 'profile/')}">profile</a>
 </header>
 <main>
 ${main}
