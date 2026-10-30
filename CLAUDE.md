@@ -24,7 +24,11 @@ pace with the work, not coverage.
   sentence made of plan names reads as Dr. Seuss.
 - **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's
   `plans/`, which are mostly plan-to-plan anchors.
-- **Claude commits; Jeff pushes.**
+- **The rels and microdata are a public API.** The profile defines them, and readers
+  other than a browser may depend on them (Jeff may build a TUI on them, in another
+  repo). Renaming one breaks someone; it's a plan, not a tidy-up.
+- **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it
+  short and true for the next session.
 - **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects
   `../mock-control`; pass a later commit to see the newer plans); the tests also read
   `../aide`, and skip what isn't there. `node src/build.ts <repo> [commit]` writes
