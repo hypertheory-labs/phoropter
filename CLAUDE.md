@@ -16,6 +16,7 @@ an agent read code through the plans that shaped it. The thinking happens in
   produces one plan; if it wants two, it splits. A `shelf/` with no `current/` is a seed
   waiting for a cart to open.
 - **Claude commits; Jeff pushes.**
-- **Running:** `npm run dev` serves mock-control at `90c65b9` (expects `../mock-control`);
+- **Running:** `npm run dev` serves mock-control at `90c65b9` (expects `../mock-control`;
+  the tests also read `../aide`, and skip what isn't there);
   `node src/build.ts <repo> [commit]` writes `site/`, which is gitignored. `npm test`,
   `npm run check`. Node 24+ runs the `.ts` sources directly; there's no build step.
