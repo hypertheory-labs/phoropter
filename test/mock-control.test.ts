@@ -40,7 +40,9 @@ test('pumice at 90c65b9', { skip: !existsSync(dir) && 'no ../mock-control' }, ()
 test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no ../mock-control' }, () => {
   const site = buildSite(new Repo(dir), 'f02528f');
   // Three of these plans share a cart line; each still gets its own page.
-  assert.deepEqual(site.plans.map((p) => p.href), ['plans/pumice/', 'plans/ferrule/', 'plans/tallow/', 'plans/vellum/']);
+  // Three share a date too; the commits that added them give the order.
+  assert.deepEqual(site.plans.map((p) => p.href), ['plans/pumice/', 'plans/vellum/', 'plans/ferrule/', 'plans/tallow/']);
+  assert.deepEqual(site.plans.map((p) => `${p.date} ${p.added?.short}`), ['2026-10-29 90c65b9', '2026-10-30 5639bce', '2026-10-30 a19bf72', '2026-10-30 24f61b9']);
 
   // Every answer in grommet's kinds pairs with its guess, and back.
   const answers = site.plans.flatMap((p) => p.asBuilt?.entries ?? []).filter((e) => e.kind === 'Answered');
@@ -54,7 +56,7 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
   assert.deepEqual(site.plans[0].entries.filter((e) => e.kind === 'Guess').map((e) => e.answeredBy.length), [0]);
 
   // Tallow revisits pumice, and pumice shows it without being edited.
-  const [pumice, , tallow, vellum] = site.plans;
+  const [pumice, vellum, , tallow] = site.plans;
   assert.equal(tallow.revisits, pumice);
   assert.deepEqual(pumice.revisitedBy, [tallow]);
 
@@ -64,9 +66,9 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
     .flatMap((p) => (p.asBuilt ? [p, p.asBuilt] : [p]))
     .flatMap((d) => d.entries.flatMap((e) => e.resolved.filter((a) => a.entry).map((a) => `${d.file} -> ${a.entry!.doc.file}#${a.entry!.entry.slug}`)));
   assert.deepEqual(targets, [
+    'plans/2026-10-30-vellum.md -> plans/2026-10-29-pumice.md#tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules',
     'plans/2026-10-30-tallow.md -> plans/2026-10-29-pumice.md#selectors-use-the-library-s-prefix-mock-panel',
     'plans/2026-10-30-tallow.as-built.md -> plans/2026-10-30-vellum.as-built.md#pin-msw-2-in-the-install-step-rather-than-support-msw-3',
-    'plans/2026-10-30-vellum.md -> plans/2026-10-29-pumice.md#tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules',
   ]);
   assert.equal(vellum.asBuilt!.entries[0].anchoredBy[0].plan, tallow);
   assert.ok(!site.places.some((p) => p.href.startsWith('files/plans/')));

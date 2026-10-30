@@ -37,6 +37,14 @@ export class Repo {
     return this.git(...args).split('\n').filter(Boolean);
   }
 
+  // The commit that first added `path`, as seen from `sha`, and its time.
+  added(sha: string, path: string): { sha: string; time: number } | undefined {
+    const first = this.git('log', '--diff-filter=A', '--format=%H %ct', '--reverse', sha, '--', path).split('\n')[0];
+    if (!first) return undefined;
+    const [full, time] = first.split(' ');
+    return { sha: full, time: Number(time) };
+  }
+
   show(sha: string, path: string): string | undefined {
     try {
       return execFileSync('git', ['-C', this.dir, 'show', `${sha}:${path}`], {

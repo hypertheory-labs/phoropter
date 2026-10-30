@@ -40,6 +40,8 @@ export type Doc = {
 
 export type Plan = Doc & {
   name: string; // from the filename: `2026-10-29-pumice.md` is `pumice`
+  date?: string; // from the filename too, which is the only place it's written
+  added?: Commit & { time: number }; // the commit that added the file; what orders plans
   asBuilt?: Doc;
   revisits?: Plan; // bodkin's `revisits:`, when it names a plan on this site
   revisitedBy: Plan[];
@@ -72,13 +74,16 @@ export function buildSite(repo: Repo, ref: string): Site {
   const files = repo.files(sha, 'plans').filter((f) => /^plans\/[^/]+\.md$/.test(f));
   const planFiles = files.filter((f) => !f.endsWith('.as-built.md') && !f.endsWith('.notes.md'));
 
-  const plans: Plan[] = planFiles.sort().map((file) => {
+  const plans: Plan[] = planFiles.map((file) => {
     const doc = parsePlan(repo.show(sha, file)!);
     // The filename, not the cart: a cart is optional (lanyard), and plans
     // without one would share a page.
     const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');
     const href = `plans/${slugify(name)}/`;
     const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [], revisitedBy: [] };
+    plan.date = /^(\d{4}-\d{2}-\d{2})-/.exec(basename(file))?.[1];
+    const added = repo.added(sha, file);
+    if (added) plan.added = { sha: added.sha, short: repo.short(added.sha), role: 'added', time: added.time };
     const asBuiltFile = file.replace(/\.md$/, '.as-built.md');
     if (files.includes(asBuiltFile)) {
       const abDoc = parsePlan(repo.show(sha, asBuiltFile)!);
@@ -86,6 +91,10 @@ export function buildSite(repo: Repo, ref: string): Site {
     }
     return plan;
   });
+
+  // Oldest first: by the commit that added each plan, since several plans can
+  // share a date. The filename breaks a tie.
+  plans.sort((a, b) => (a.added?.time ?? 0) - (b.added?.time ?? 0) || a.file.localeCompare(b.file));
 
   for (const plan of plans) {
     const revisits = plans.find((p) => p.file === plan.doc.frontmatter.revisits);
@@ -186,6 +195,12 @@ export function buildSite(repo: Repo, ref: string): Site {
     if (!def) continue;
     const lines = (repo.show(sha, def.file) ?? '').split('\n').slice(def.startLine - 1, def.endLine);
     place.code = { start: def.startLine, lines, marked: [] };
+  }
+
+  // A reverse page lists newest first: someone arriving at a file usually
+  // wants what touched it last.
+  for (const place of places.values()) {
+    place.refs.sort((a, b) => (b.plan.added?.time ?? 0) - (a.plan.added?.time ?? 0));
   }
 
   return {

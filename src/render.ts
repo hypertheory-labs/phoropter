@@ -29,7 +29,7 @@ function home(site: Site): Page {
       const revisits = p.revisits ? `, revisits <a href="${rel(here, p.revisits.href)}">${esc(p.revisits.name)}</a>` : '';
       return `<li itemprop="plan" itemscope>
   <a rel="item" itemprop="url" href="${rel(here, p.href)}"><span itemprop="title">${inline(p.doc.title)}</span></a>
-  <span class="meta"><span itemprop="name">${esc(p.name)}</span>, base ${baseHtml(p)}, ${count(p.entries.length, 'entry', 'entries')}${asBuilt}${revisits}</span>
+  <span class="meta"><span itemprop="name">${esc(p.name)}</span>, ${whenHtml(p)}, base ${baseHtml(p)}, ${count(p.entries.length, 'entry', 'entries')}${asBuilt}${revisits}</span>
 </li>`;
     })
     .join('\n');
@@ -66,6 +66,7 @@ function planPage(site: Site, plan: Plan): Page {
 <dl class="facts">
 <dt>Name</dt><dd itemprop="name">${esc(plan.name)}</dd>
 ${plan.doc.frontmatter.cart !== undefined ? `<dt>Cart</dt><dd itemprop="cart">${esc(plan.doc.frontmatter.cart)}</dd>` : ''}
+<dt>Date</dt><dd>${whenHtml(plan)}</dd>
 <dt>Base</dt><dd>${baseHtml(plan)}</dd>
 <dt>File</dt><dd><code itemprop="file">${esc(plan.file)}</code></dd>
 ${asBuilt}
@@ -110,7 +111,7 @@ function placePage(site: Site, place: Place): Page {
   const refs = place.refs
     .map(({ plan, doc, entry, anchor }) => `<li itemprop="anchoredBy" itemscope>
   <a rel="anchored-by" itemprop="url" href="${rel(here, doc.href)}#${entry.slug}">${entry.kind ? `<span itemprop="kind">${esc(entry.kind)}</span>: ` : ''}<span itemprop="title">${inline(entry.title)}</span></a>
-  <span class="meta">in <span itemprop="plan">${esc(plan.name)}</span>${doc === plan ? '' : ' (as-built)'}${anchor.isNew ? ', <span itemprop="new">new</span>' : ''}</span>
+  <span class="meta">in <span itemprop="plan">${esc(plan.name)}</span>, ${whenHtml(plan)}${doc === plan ? '' : ' (as-built)'}${anchor.isNew ? ', <span itemprop="new">new</span>' : ''}</span>
   <code class="where" itemprop="where">${esc(anchor.where)}</code>
 </li>`)
     .join('\n');
@@ -146,7 +147,7 @@ function profile(site: Site): Page {
   ];
   const props: [string, string][] = [
     ['(header)', 'Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).'],
-    ['plan', 'A plan: <code>title</code>, <code>name</code> (from its filename), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items.'],
+    ['plan', 'A plan: <code>title</code>, <code>name</code> and <code>date</code> (from its filename), <code>added</code> (the commit that added it, which orders plans), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items.'],
     ['asBuilt', 'An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.'],
     ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>source</code> (the parenthesis after <em>Because</em> or <em>Answer</em>, exactly as written), <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
@@ -303,6 +304,15 @@ ${main}
 </html>
 `;
   return { href: here, title, html };
+}
+
+// The filename's date, and the commit that added the plan, which is what
+// orders plans that share a date.
+function whenHtml(plan: Plan): string {
+  const date = plan.date ? `<time itemprop="date" datetime="${plan.date}">${plan.date}</time>` : 'no date';
+  if (!plan.added) return date;
+  const at = new Date(plan.added.time * 1000).toISOString();
+  return `${date}, added in <data itemprop="added" value="${plan.added.sha}"><code>${esc(plan.added.short)}</code></data> <time datetime="${at}">${at.slice(11, 16)} UTC</time>`;
 }
 
 function baseHtml(plan: Plan): string {
