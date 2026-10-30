@@ -7,6 +7,13 @@ test('code spans unwrap the CommonMark way', () => {
   assert.equal(unwrapCodeSpan('`` a`b ``'), 'a`b');
   assert.equal(unwrapCodeSpan("`selector: 'x',`"), "selector: 'x',");
   assert.equal(unwrapCodeSpan('not code'), 'not code');
+  // Lenient on purpose: awl (aide 248a2a5) wraps a title that contains
+  // backticks in single backticks. CommonMark would split it; phoropter reads
+  // the whole span, so the anchor still names grommet's entry.
+  assert.equal(
+    unwrapCodeSpan('`plans/2026-10-30-grommet.md › An as-built has `head:` in its frontmatter, the commit where the work landed`'),
+    'plans/2026-10-30-grommet.md › An as-built has `head:` in its frontmatter, the commit where the work landed',
+  );
 });
 
 test('entries, anchors, and quotes', () => {
