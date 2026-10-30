@@ -3,13 +3,14 @@
 // the profile page defines.
 
 import { marked } from 'marked';
+import type { Guide } from './guide.ts';
 import type { Doc, EntryRef, Place, Plan, ResolvedAnchor, ResolvedEntry, Site } from './site.ts';
 import type { Hunk, View } from './resolve.ts';
 
 export type Page = { href: string; title: string; html: string };
 
-export function renderSite(site: Site): Page[] {
-  const pages: Page[] = [home(site), profile(site)];
+export function renderSite(site: Site, guide: Guide): Page[] {
+  const pages: Page[] = [home(site), profile(site), guidePage(site, guide)];
   for (const plan of site.plans) {
     pages.push(planPage(site, plan));
     if (plan.asBuilt) pages.push(asBuiltPage(site, plan, plan.asBuilt));
@@ -43,7 +44,7 @@ function home(site: Site): Page {
 <h1>${esc(title)}</h1>
 <div class="orientation">
 <p>This is <strong>${esc(site.repoName)}</strong> read through its plans: the plans and their as-built files in <code>plans/</code>, each anchored to the code it was about, at commit <code>${esc(site.generated.short)}</code>. Nothing here is written to; it’s generated from git.</p>
-<p>To find out why some code is the way it is, start from a file or symbol under <em>Anchored places</em>, which lists the plans that touch it, newest first. To read the history, start from <em>Plans</em>, oldest first. The <a href="${rel(here, 'profile/')}">profile</a> defines every link relation and microdata property on these pages.</p>
+<p>To find out why some code is the way it is, start from a file or symbol under <em>Anchored places</em>, which lists the plans that touch it, newest first. To read the history, start from <em>Plans</em>, oldest first. The <a rel="help" href="${rel(here, 'guide/')}">guide</a> says how plans are written, and the <a href="${rel(here, 'profile/')}">profile</a> defines every link relation and microdata property on these pages.</p>
 </div>
 <div itemscope>
 <section>
@@ -138,6 +139,7 @@ function profile(site: Site): Page {
   const here = 'profile/';
   const rels: [string, string, string][] = [
     ['profile', 'registered', 'What do the rels and properties on this page mean? This document.'],
+    ['help', 'registered', 'How are plans written? From every page to the guide, which is the same on every site.'],
     ['item', 'registered', 'What does this collection hold? From the home page to each plan and anchored place.'],
     ['collection', 'registered', 'What is this a member of? From a plan or place to the home page.'],
     ['up', 'registered', 'What is this part of? From an as-built page to its plan.'],
@@ -171,6 +173,19 @@ ${rels.map(([name, source, q]) => `<dt id="${name}"><code>${name}</code> <span c
 <dl class="defs">
 ${props.map(([name, d]) => `<dt id="prop-${name}"><code>${name}</code></dt><dd>${d}</dd>`).join('\n')}
 </dl>`);
+}
+
+// The same guide on every site. Its own links are relative to `guide/`.
+function guidePage(site: Site, guide: Guide): Page {
+  const here = 'guide/';
+  const html = block(guide.markdown);
+  const title = /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(html)?.[1] ?? 'Guide';
+  const version = `<p class="meta">From phoropter, ${esc(guide.version)}. It describes the tool, so it’s the same on every site phoropter generates.</p>`;
+  return layout(site, here, title, `
+<nav><a href="${rel(here, '')}">${esc(site.repoName)} at ${esc(site.generated.short)}</a></nav>
+<article class="guide">
+${html.replace(/(<\/h1>)/, `$1\n${version}`)}
+</article>`);
 }
 
 // --- parts ---
@@ -304,6 +319,7 @@ function layout(site: Site, here: string, title: string, main: string): Page {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(here ? `${stripMarkdown(title)} · ${provenance}` : provenance)}</title>
 <link rel="profile" href="${rel(here, 'profile/')}">
+<link rel="help" href="${rel(here, 'guide/')}">
 <link rel="stylesheet" href="${rel(here, 'style.css')}">
 </head>
 <body>
@@ -311,7 +327,8 @@ function layout(site: Site, here: string, title: string, main: string): Page {
 Generated from <span itemprop="repository">${esc(site.repoName)}</span>
 at <data itemprop="commit" value="${site.generated.sha}"><code>${esc(site.generated.short)}</code></data>
 <span class="meta">${site.generated.sha}</span>
-<a class="profile-link" href="${rel(here, 'profile/')}">profile</a>
+<span class="links"><a rel="help" href="${rel(here, 'guide/')}">guide</a>
+<a class="profile-link" href="${rel(here, 'profile/')}">profile</a></span>
 </header>
 <main>
 ${main}

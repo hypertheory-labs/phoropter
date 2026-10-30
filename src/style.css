@@ -59,8 +59,9 @@ code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; fo
 }
 
 .meta { color: var(--muted); font-size: 0.875rem; }
-.provenance .profile-link { float: right; }
-.orientation { max-width: 46rem; }
+.provenance .links { float: right; }
+.provenance .links a + a { margin-left: 0.75rem; }
+.orientation, .guide { max-width: 46rem; }
 .provenance .meta { margin-left: 0.5rem; font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem; }
 
 nav { font-size: 0.875rem; margin-bottom: 0.5rem; }

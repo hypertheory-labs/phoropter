@@ -5,12 +5,13 @@ import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { Repo } from './git.ts';
+import { readGuide } from './guide.ts';
 import { renderSite } from './render.ts';
 import { buildSite } from './site.ts';
 
 export function build(repoDir: string, ref: string, out: string): { pages: number; title: string } {
   const site = buildSite(new Repo(resolve(repoDir)), ref);
-  const pages = renderSite(site);
+  const pages = renderSite(site, readGuide());
   rmSync(out, { recursive: true, force: true });
   for (const page of pages) {
     const file = join(out, page.href, 'index.html');
