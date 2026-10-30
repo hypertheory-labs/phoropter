@@ -1,0 +1,25 @@
+{
+  "name": "phoropter",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Read code through the plans that shaped it: a static site from one repo at one commit.",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "node src/build.ts",
+    "serve": "node src/serve.ts",
+    "dev": "node src/serve.ts ../mock-control 90c65b9",
+    "check": "tsc --noEmit",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@sourcegraph/scip-typescript": "0.4.0",
+    "marked": "18.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}
