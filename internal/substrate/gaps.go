@@ -32,7 +32,7 @@ var catalog = map[string]string{
 	"base-not-commit":         "A plan's base is text, not a commit (<span>, not <data value>); the profile doesn't say it can be.",
 	"new-two-shapes":          "new is <meta content=\"true\"> on an anchor and <span>new</span> on an anchoredBy item.",
 	"symbol-file-unlinked":    "A symbol page names its file but doesn't link a file page, so \"other plans in this file\" misses it.",
-	"answer-elsewhere":        "A guess answered in another plan has no answeredBy; it's reached through anchoredBy, then that entry's answeredBy.",
+	"answer-elsewhere":        "A guess answered in another plan is two hops away (anchoredBy, then answeredBy). Deliberate: sorrel declined a skipping link, since only the answering plan's prose says it answers this one.",
 	"place-url-convention":    "There's no declared way to find a place by path; files/<path>/ is a convention the profile doesn't state.",
 }
 
