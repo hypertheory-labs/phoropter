@@ -11,6 +11,10 @@ an agent read code through the plans that shaped it. The thinking happens in
 - **The first plan is also the brief:** `plans/2026-10-30-gimlet.md`. Its two Guesses
   are what the as-built should answer.
 - **Test data:** `~/Projects/mock-control`, whose plan is `plans/2026-10-29-pumice.md`.
+- **Carts:** one human and one agent, gitignored in `.loom/cart/`. The agreement is
+  `~/Projects/aide/.loom/externals/git.hypertheory-labs.dev/loom/cart/cart.md`. A cart
+  produces one plan; if it wants two, it splits. A `shelf/` with no `current/` is a seed
+  waiting for a cart to open.
 - **Claude commits; Jeff pushes.**
 - **Running:** `npm run dev` serves mock-control at `90c65b9` (expects `../mock-control`);
   `node src/build.ts <repo> [commit]` writes `site/`, which is gitignored. `npm test`,
