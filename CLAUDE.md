@@ -12,3 +12,6 @@ an agent read code through the plans that shaped it. The thinking happens in
   are what the as-built should answer.
 - **Test data:** `~/Projects/mock-control`, whose plan is `plans/2026-10-29-pumice.md`.
 - **Claude commits; Jeff pushes.**
+- **Running:** `npm run dev` serves mock-control at `90c65b9` (expects `../mock-control`);
+  `node src/build.ts <repo> [commit]` writes `site/`, which is gitignored. `npm test`,
+  `npm run check`. Node 24+ runs the `.ts` sources directly; there's no build step.
