@@ -41,4 +41,15 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
   const site = buildSite(new Repo(dir), 'f02528f');
   // Three of these plans share a cart line; each still gets its own page.
   assert.deepEqual(site.plans.map((p) => p.href), ['plans/pumice/', 'plans/ferrule/', 'plans/tallow/', 'plans/vellum/']);
+
+  // Every answer in grommet's kinds pairs with its guess, and back.
+  const answers = site.plans.flatMap((p) => p.asBuilt?.entries ?? []).filter((e) => e.kind === 'Answered');
+  assert.equal(answers.length, 4);
+  for (const a of answers) {
+    assert.equal(a.answers?.entry.kind, 'Guess');
+    assert.equal(a.answers?.entry.title, a.title);
+    assert.ok(a.answers?.entry.answeredBy.some((r) => r.entry === a));
+  }
+  // Pumice's as-built predates grommet; its guess stays unanswered here.
+  assert.deepEqual(site.plans[0].entries.filter((e) => e.kind === 'Guess').map((e) => e.answeredBy.length), [0]);
 });

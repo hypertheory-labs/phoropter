@@ -30,11 +30,14 @@ Intro.
 
 ## Guess: It works
 **Disproved if:** it doesn't.
+
+## Chose: A thing
+## Answered: It works
 `);
   assert.deepEqual(doc.frontmatter, { cart: 'test', base: 'abc1234' });
   assert.equal(doc.title, 'A plan');
   assert.equal(doc.intro, 'Intro.');
-  assert.equal(doc.entries.length, 2);
+  assert.deepEqual(doc.entries.map((e) => e.kind), ['Decision', 'Guess', 'Chose', 'Answered']);
   const [d, g] = doc.entries;
   assert.equal(d.kind, 'Decision');
   assert.equal(d.slug, 'do-the-thing');

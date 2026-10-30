@@ -137,12 +137,14 @@ function profile(site: Site): Page {
     ['as-built', 'phoropter', 'What changed while this plan was being built? From a plan to its as-built file.'],
     ['anchored-at', 'phoropter', 'Where in the code does this entry point? From an anchor on an entry to the page for its symbol or file.'],
     ['anchored-by', 'phoropter', 'Which plans point here? From a symbol or file page to each entry anchored there.'],
+    ['answers', 'phoropter', 'Which guess does this answer? From an as-built’s <code>Answered:</code> entry to the plan’s <code>Guess:</code> with the same title.'],
+    ['answered-by', 'phoropter', 'Has this guess been answered? From a plan’s <code>Guess:</code> to the <code>Answered:</code> entry in its as-built.'],
   ];
   const props: [string, string][] = [
     ['(header)', 'Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).'],
     ['plan', 'A plan: <code>title</code>, <code>name</code> (from its filename), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, and its <code>entry</code> items.'],
     ['asBuilt', 'An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.'],
-    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess, Changed), <code>title</code>, <code>anchor</code> items, and <code>reason</code>.'],
+    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, and <code>answers</code> or <code>answeredBy</code> links.'],
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, and one <code>view</code> per commit.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, <code>note</code>, and <code>code</code>.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
@@ -170,9 +172,21 @@ function entryHtml(here: string, doc: Doc, entry: ResolvedEntry): string {
     : `<span itemprop="title">${inline(entry.title)}</span>`;
   return `<section class="entry" id="${entry.slug}" itemprop="entry" itemscope>
 <h2><a class="self" href="#${entry.slug}">${heading}</a></h2>
+${pairHtml(here, entry)}
 ${entry.resolved.map((a) => anchorHtml(here, doc, a)).join('\n')}
 ${entry.body ? `<div class="reason" itemprop="reason">${block(entry.body)}</div>` : ''}
 </section>`;
+}
+
+function pairHtml(here: string, entry: ResolvedEntry): string {
+  const link = (r: string, prop: string, to: { doc: Doc; entry: ResolvedEntry }, text: string) =>
+    `<a rel="${r}" itemprop="${prop}" href="${rel(here, to.doc.href)}#${to.entry.slug}">${text}</a>`;
+  if (entry.answers) return `<p class="pair">Answers ${link('answers', 'answers', entry.answers, 'the plan’s guess')}.</p>`;
+  if (entry.kind === 'Answered') return '<p class="pair note">No guess in the plan has this title.</p>';
+  if (entry.answeredBy.length) {
+    return `<p class="pair">Answered in ${entry.answeredBy.map((a) => link('answered-by', 'answeredBy', a, 'the as-built')).join(', ')}.</p>`;
+  }
+  return '';
 }
 
 function anchorHtml(here: string, doc: Doc, ra: ResolvedAnchor): string {

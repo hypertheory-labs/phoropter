@@ -11,7 +11,7 @@ export type Anchor = {
 };
 
 export type Entry = {
-  kind: string; // Decision, Decline, Guess, Changed, or '' for a plain section
+  kind: string; // Decision, Decline, Guess, Changed, Chose, Answered, or '' for a plain section
   title: string; // markdown, inline
   slug: string;
   anchors: Anchor[];
@@ -38,7 +38,7 @@ export function parsePlan(source: string): PlanDoc {
       continue;
     }
     if (token.type === 'heading' && token.depth === 2) {
-      const match = /^(Decision|Decline|Guess|Changed):\s*(.*)$/.exec(token.text);
+      const match = /^(Decision|Decline|Guess|Changed|Chose|Answered):\s*(.*)$/.exec(token.text);
       const title = match ? match[2] : token.text;
       current = { kind: match ? match[1] : '', title, slug: uniqueSlug(title, slugs), anchors: [], body: '' };
       doc.entries.push(current);

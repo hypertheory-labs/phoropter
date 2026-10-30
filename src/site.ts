@@ -18,7 +18,13 @@ export type ResolvedAnchor = {
   note?: string; // for anchors that are shown but not resolved
 };
 
-export type ResolvedEntry = Entry & { resolved: ResolvedAnchor[] };
+export type EntryRef = { doc: Doc; entry: ResolvedEntry };
+
+export type ResolvedEntry = Entry & {
+  resolved: ResolvedAnchor[];
+  answers?: EntryRef; // an Answered, to its plan's Guess of the same title
+  answeredBy: EntryRef[]; // a Guess, to the answers in its as-built
+};
 
 export type Doc = {
   file: string; // repo-relative markdown path
@@ -96,7 +102,7 @@ export function buildSite(repo: Repo, ref: string): Site {
     for (const d of plan.asBuilt ? [plan, plan.asBuilt] : [plan]) {
       const commits = d.before && d.before.sha !== sha ? [d.before, generated] : [generated];
       d.entries = d.doc.entries.map((entry) => {
-        const re: ResolvedEntry = { ...entry, resolved: [] };
+        const re: ResolvedEntry = { ...entry, resolved: [], answeredBy: [] };
         re.resolved = entry.anchors.map((anchor) => {
           const t = target(anchor, repoName);
           const ra: ResolvedAnchor = { anchor, target: t, views: [] };
@@ -119,6 +125,18 @@ export function buildSite(repo: Repo, ref: string): Site {
         });
         return re;
       });
+    }
+  }
+
+  // Grommet titles an answer with its guess's own title, so they pair by
+  // exact title.
+  for (const plan of plans) {
+    for (const answer of plan.asBuilt?.entries ?? []) {
+      if (answer.kind !== 'Answered') continue;
+      const guess = plan.entries.find((e) => e.kind === 'Guess' && e.title === answer.title);
+      if (!guess) continue;
+      answer.answers = { doc: plan, entry: guess };
+      guess.answeredBy.push({ doc: plan.asBuilt!, entry: answer });
     }
   }
 
