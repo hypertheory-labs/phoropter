@@ -69,7 +69,8 @@ export function parsePlan(source: string): PlanDoc {
     entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];
     if (entry.kind === 'Answered') {
       const after = /^\*\*Answer \(.*?\):\*\*\s*(.*)/s.exec(entry.body)?.[1] ?? '';
-      entry.verdict = VERDICTS.find((v) => after.startsWith(v) && !/[a-z]/i.test(after.charAt(v.length)));
+      // "Held." is the same verdict as "held."; it's always given lowercase.
+      entry.verdict = VERDICTS.find((v) => after.toLowerCase().startsWith(v) && !/[a-z]/i.test(after.charAt(v.length)));
     }
   }
   return doc;

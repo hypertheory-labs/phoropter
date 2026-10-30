@@ -44,12 +44,15 @@ Intro.
 
 ## Answered: Unclear
 **Answer (measured):** mostly fine.
+
+## Answered: Capitalized
+**Answer (Jeff):** Held. Every time.
 `);
   assert.deepEqual(doc.frontmatter, { cart: 'test', base: 'abc1234' });
   assert.equal(doc.title, 'A plan');
   assert.equal(doc.intro, 'Intro.');
-  assert.deepEqual(doc.entries.map((e) => e.kind), ['Decision', 'Guess', 'Chose', 'Answered', 'Answered']);
-  assert.deepEqual(doc.entries.slice(3).map((e) => e.verdict), ['partly disproved', undefined]);
+  assert.deepEqual(doc.entries.map((e) => e.kind), ['Decision', 'Guess', 'Chose', 'Answered', 'Answered', 'Answered']);
+  assert.deepEqual(doc.entries.slice(3).map((e) => e.verdict), ['partly disproved', undefined, 'held']);
   const [d, g] = doc.entries;
   assert.equal(d.kind, 'Decision');
   assert.equal(d.slug, 'do-the-thing');
