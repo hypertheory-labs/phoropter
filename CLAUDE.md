@@ -6,12 +6,12 @@ an agent read code through the plans that shaped it. The thinking happens in
 pace with the work, not coverage.
 
 - **Plans:** `plans/YYYY-MM-DD-<name>.md`, committed before the work and never edited
-  after. The format lives in aide's `plans/`: lanyard (the format), grommet (as-builts:
-  `head:`, and `Changed:` / `Chose:` / `Answered:`), bodkin (revisits), awl (when an
-  as-built freezes, and leave `cart:` out when there's no cart). Read them before
-  changing how phoropter reads plans; a format question goes to aide, not into code.
-- **Changing your mind about an earlier plan is a revisit** (bodkin): its own plan,
-  with `revisits:`, asked in that plan's frame, saying what moved.
+  after. Phoropter owns the format, and `guide.md` states it; every site serves it at
+  `guide/`. Read it before writing a plan or changing how phoropter reads them. A
+  format change is a phoropter plan, and the guide changes in the same work. Aide's
+  format plans (lanyard, grommet, bodkin, awl) are history, not the rules.
+- **Changing your mind about an earlier plan is a revisit**: its own plan, with
+  `revisits:`, asked in that plan's frame, saying what moved.
 - **Drafts:** when you're unsure or the shared understanding looks thin, put the plan up
   as a draft in the cart before committing it, so Jeff can question it before it's
   testimony. Never an approval gate: every open question has a fallback, and silence
