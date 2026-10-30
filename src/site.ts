@@ -29,7 +29,7 @@ export type Doc = {
   entries: ResolvedEntry[];
 };
 
-export type Plan = Doc & { cart: string; asBuilt?: Doc };
+export type Plan = Doc & { name: string; asBuilt?: Doc }; // name: from the filename, `2026-10-29-pumice.md` is `pumice`
 
 export type Place = {
   key: string;
@@ -60,9 +60,11 @@ export function buildSite(repo: Repo, ref: string): Site {
 
   const plans: Plan[] = planFiles.sort().map((file) => {
     const doc = parsePlan(repo.show(sha, file)!);
-    const cart = doc.frontmatter.cart || basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');
-    const href = `plans/${slugify(cart)}/`;
-    const plan: Plan = { file, href, doc, cart, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [] };
+    // The filename, not the cart: a cart is optional (lanyard), and plans
+    // without one would share a page.
+    const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+    const href = `plans/${slugify(name)}/`;
+    const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [] };
     const asBuiltFile = file.replace(/\.md$/, '.as-built.md');
     if (files.includes(asBuiltFile)) {
       const abDoc = parsePlan(repo.show(sha, asBuiltFile)!);

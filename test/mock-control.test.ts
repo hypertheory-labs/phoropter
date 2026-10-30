@@ -11,7 +11,7 @@ const dir = new URL('../../mock-control', import.meta.url).pathname;
 
 test('pumice at 90c65b9', { skip: !existsSync(dir) && 'no ../mock-control' }, () => {
   const site = buildSite(new Repo(dir), '90c65b9');
-  const pumice = site.plans.find((p) => p.cart === 'pumice')!;
+  const pumice = site.plans.find((p) => p.name === 'pumice')!;
   assert.equal(pumice.before?.short, 'da023f1');
 
   const statuses = (slug: string) =>
@@ -35,4 +35,10 @@ test('pumice at 90c65b9', { skip: !existsSync(dir) && 'no ../mock-control' }, ()
 
   const panel = site.places.find((p) => p.href === 'symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/')!;
   assert.equal(panel.code?.lines.length, 152 - 9 + 1);
+});
+
+test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no ../mock-control' }, () => {
+  const site = buildSite(new Repo(dir), 'f02528f');
+  // Three of these plans share a cart line; each still gets its own page.
+  assert.deepEqual(site.plans.map((p) => p.href), ['plans/pumice/', 'plans/ferrule/', 'plans/tallow/', 'plans/vellum/']);
 });
