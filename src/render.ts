@@ -153,7 +153,7 @@ function profile(site: Site): Page {
     ['(header)', 'Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).'],
     ['plan', 'A plan: <code>title</code>, <code>name</code> and <code>date</code> (from its filename), <code>added</code> (the commit that added it, which orders plans), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items.'],
     ['asBuilt', 'An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.'],
-    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>source</code> (the parenthesis after <em>Because</em> or <em>Answer</em>, exactly as written), <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
+    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>source</code> (the parenthesis after <em>Because</em> or <em>Answer</em>, exactly as written), <code>verdict</code> (an answer’s opening word: held, disproved, partly disproved, or not tested; on a guess, inside its <code>answeredBy</code> link’s sentence), <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, <code>note</code>, <code>code</code>, and <code>sameAs</code> when a generated view matches the as-built head’s exactly and its code isn’t repeated. A plan’s anchors have up to three views: base, as-built head (where the plan’s own work landed), and generated.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
@@ -197,12 +197,23 @@ function withSource(html: string): string {
 function pairHtml(here: string, entry: ResolvedEntry): string {
   const link = (r: string, prop: string, to: { doc: Doc; entry: ResolvedEntry }, text: string) =>
     `<a rel="${r}" itemprop="${prop}" href="${rel(here, to.doc.href)}#${to.entry.slug}">${text}</a>`;
-  if (entry.answers) return `<p class="pair">Answers ${link('answers', 'answers', entry.answers, 'the plan’s guess')}.</p>`;
-  if (entry.kind === 'Answered') return '<p class="pair note">No guess in the plan has this title.</p>';
+  if (entry.kind === 'Answered') {
+    const verdict = verdictHtml(entry);
+    if (entry.answers) return `<p class="pair">Answers ${link('answers', 'answers', entry.answers, 'the plan’s guess')}: ${verdict}.</p>`;
+    return `<p class="pair">${verdict}. <span class="note">No guess in the plan has this title.</span></p>`;
+  }
   if (entry.answeredBy.length) {
-    return `<p class="pair">Answered in ${entry.answeredBy.map((a) => link('answered-by', 'answeredBy', a, 'the as-built')).join(', ')}.</p>`;
+    return `<p class="pair">Answered in ${entry.answeredBy.map((a) => `${link('answered-by', 'answeredBy', a, 'the as-built')}: ${verdictHtml(a.entry)}`).join(', ')}.</p>`;
   }
   return '';
+}
+
+// Grommet's opening word, or a plain statement that there isn't one. The
+// qualifiers after it stay in the prose.
+function verdictHtml(answer: ResolvedEntry): string {
+  return answer.verdict
+    ? `<strong class="verdict verdict-${answer.verdict.replace(' ', '-')}" itemprop="verdict">${answer.verdict}</strong>`
+    : '<span class="note">no verdict (it doesn’t open with held, disproved, partly disproved, or not tested)</span>';
 }
 
 function anchoredByHtml(here: string, entry: ResolvedEntry): string {

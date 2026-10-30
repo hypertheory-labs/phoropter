@@ -17,7 +17,12 @@ export type Entry = {
   anchors: Anchor[];
   body: string; // markdown
   source?: string; // the parenthesis in a leading `**Because (…):**` or `**Answer (…):**`, as written
+  verdict?: string; // an Answered's opening words, when they're one of grommet's four
 };
+
+// Grommet: an answer opens with one of these. Longest first, so "partly
+// disproved" isn't read as "disproved".
+const VERDICTS = ['partly disproved', 'not tested', 'disproved', 'held'];
 
 export type PlanDoc = {
   frontmatter: Record<string, string>;
@@ -62,6 +67,10 @@ export function parsePlan(source: string): PlanDoc {
   for (const entry of doc.entries) {
     entry.body = entry.body.trim();
     entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];
+    if (entry.kind === 'Answered') {
+      const after = /^\*\*Answer \(.*?\):\*\*\s*(.*)/s.exec(entry.body)?.[1] ?? '';
+      entry.verdict = VERDICTS.find((v) => after.startsWith(v) && !/[a-z]/i.test(after.charAt(v.length)));
+    }
   }
   return doc;
 }

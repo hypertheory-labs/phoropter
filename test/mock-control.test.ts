@@ -56,6 +56,8 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
     assert.equal(a.answers?.entry.title, a.title);
     assert.ok(a.answers?.entry.answeredBy.some((r) => r.entry === a));
   }
+  // Each answer's opening word is its verdict (burlap).
+  assert.deepEqual(answers.map((a) => a.verdict), ['held', 'disproved', 'held', 'held']);
   // Pumice's as-built predates grommet; its guess stays unanswered here.
   assert.deepEqual(site.plans[0].entries.filter((e) => e.kind === 'Guess').map((e) => e.answeredBy.length), [0]);
 
