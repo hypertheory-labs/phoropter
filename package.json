@@ -12,7 +12,7 @@
     "serve": "node src/serve.ts",
     "dev": "node src/serve.ts ../mock-control 90c65b9",
     "check": "tsc --noEmit",
-    "test": "node --test"
+    "test": "node --test test/"
   },
   "dependencies": {
     "@sourcegraph/scip-typescript": "0.4.0",
