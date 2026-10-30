@@ -26,5 +26,12 @@ test('pumice at 90c65b9', { skip: !existsSync(dir) && 'no ../mock-control' }, ()
   // Each found quote matched exactly once (the plan's second guess).
   for (const e of pumice.entries) for (const a of e.resolved) for (const v of a.views) if (v.status === 'found') assert.equal(v.matches, 1);
 
+  // A SCIP view shows the quote in context, or the declaration when the quote
+  // is gone; the whole range is on the symbol page.
+  const [base, generated] = pumice.entries.find((e) => e.slug === 'selectors-use-the-library-s-prefix-mock-panel')!.resolved[0].views;
+  assert.deepEqual(base.hunks.map((h) => [h.start, h.lines.length, h.marked]), [[9, 5, [10]]]);
+  assert.deepEqual(generated.hunks.map((h) => [h.start, h.lines.length, h.marked]), [[9, 7, []]]);
+  assert.equal(generated.hunks[0].lines[1], "  selector: 'mock-panel',");
+
   assert.ok(site.places.some((p) => p.href === 'symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/'));
 });

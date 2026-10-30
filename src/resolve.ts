@@ -12,6 +12,7 @@ export type Target =
   | { kind: 'cross-repo'; repo: string; rest: string };
 
 const CONTEXT = 3;
+const DECLARATION = 2 * CONTEXT + 1; // as many lines as a found quote's view, at most
 
 export function target(anchor: Anchor, repoName: string): Target {
   const cross = /^([\w.-]+): (.+)$/.exec(anchor.where);
@@ -62,19 +63,25 @@ export function resolveAt(
     view.file = def.file;
     view.startLine = def.startLine;
     view.endLine = def.endLine;
+    const range = `lines ${def.startLine}–${def.endLine}`;
     const body = lines.slice(def.startLine - 1, def.endLine);
-    const found = needle ? findQuote(body, needle) : [];
-    const marked = found.flat().map((n) => n + def.startLine - 1);
+    const found = (needle ? findQuote(body, needle) : []).map((m) => m.map((n) => n + def.startLine - 1));
     view.matches = found.length;
-    view.hunks = [{ start: def.startLine, lines: body, marked }];
-    if (!needle) {
-      view.note = `lines ${def.startLine}–${def.endLine}`;
-    } else if (view.matches) {
+    if (found.length) {
       view.status = 'found';
-      view.note = `lines ${def.startLine}–${def.endLine}; quote at ${describeLines(marked)}`;
-    } else {
+      view.hunks = found.map((m) => around(lines, m, def.startLine, def.endLine));
+      view.note = `${range}; quote at ${describeLines(found.flat())}`;
+      return view;
+    }
+    // No quote to centre on, so show the declaration: the symbol is still
+    // here, even if the quote isn't. The whole range is on the symbol page.
+    const end = Math.min(def.endLine, def.startLine + DECLARATION - 1);
+    view.hunks = [{ start: def.startLine, lines: lines.slice(def.startLine - 1, end), marked: [] }];
+    if (needle) {
       view.status = 'not-found';
-      view.note = `lines ${def.startLine}–${def.endLine}; quote not found at \`${commit.short}\``;
+      view.note = `${range}; quote not found at \`${commit.short}\`, so this is the declaration`;
+    } else {
+      view.note = `${range}; no quote, so this is the declaration`;
     }
     return view;
   }
@@ -101,14 +108,17 @@ export function resolveAt(
     return view;
   }
   view.status = 'found';
-  view.hunks = found.map((m) => {
-    const start = Math.max(1, m[0] - CONTEXT);
-    const end = Math.min(lines.length, m.at(-1)! + CONTEXT);
-    return { start, lines: lines.slice(start - 1, end), marked: m };
-  });
+  view.hunks = found.map((m) => around(lines, m, 1, lines.length));
   const where = describeLines(found.flat());
   view.note = found.length === 1 ? `quote at ${where}` : `quote matches ${found.length} times, at ${where}`;
   return view;
+}
+
+// A match with CONTEXT lines either side, kept within lines lo..hi (1-based).
+function around(lines: string[], match: number[], lo: number, hi: number): Hunk {
+  const start = Math.max(lo, match[0] - CONTEXT);
+  const end = Math.min(hi, match.at(-1)! + CONTEXT);
+  return { start, lines: lines.slice(start - 1, end), marked: match };
 }
 
 // Each match is the list of 1-based line numbers (relative to `lines`) that it
