@@ -26,18 +26,18 @@ function home(site: Site): Page {
   const title = `${site.repoName} at ${site.generated.short}`;
   const plans = site.plans
     .map((p) => {
-      const asBuilt = p.asBuilt ? `, with <a href="${rel(here, p.asBuilt.href)}">an as-built</a>` : '';
-      const revisits = p.revisits ? `, revisits <a href="${rel(here, p.revisits.href)}">${esc(p.revisits.name)}</a>` : '';
+      const asBuilt = p.asBuilt ? `, with <a rel="as-built" itemprop="asBuilt" href="${rel(here, p.asBuilt.href)}">an as-built</a>` : '';
+      const revisits = p.revisits ? `, revisits <a rel="revisits" itemprop="revisits" href="${rel(here, p.revisits.href)}">${esc(p.revisits.name)}</a>` : '';
       return `<li itemprop="plan" itemscope>
   <a rel="item" itemprop="url" href="${rel(here, p.href)}"><span itemprop="title">${inline(p.doc.title)}</span></a>
-  <span class="meta"><span itemprop="name">${esc(p.name)}</span>, ${whenHtml(p)}, base ${baseHtml(p)}, ${count(p.entries.length, 'entry', 'entries')}${asBuilt}${revisits}</span>
+  <span class="meta"><span itemprop="name">${esc(p.name)}</span>, ${whenHtml(p)}, base ${baseHtml(p)}, ${entryCount(p.entries.length)}${asBuilt}${revisits}</span>
 </li>`;
     })
     .join('\n');
   const places = site.places
     .map((pl) => `<li itemprop="place" itemscope>
   <a rel="item" itemprop="url" href="${rel(here, pl.href)}"><code itemprop="name">${esc(pl.label)}</code></a>
-  <span class="meta"><span itemprop="kind">${pl.kind}</span>, ${count(pl.refs.length, 'entry', 'entries')}</span>
+  <span class="meta"><span itemprop="kind">${pl.kind}</span>, ${entryCount(pl.refs.length)}</span>
 </li>`)
     .join('\n');
   return layout(site, here, title, `
@@ -116,7 +116,7 @@ function placePage(site: Site, place: Place): Page {
   const refs = place.refs
     .map(({ plan, doc, entry, anchor }) => `<li itemprop="anchoredBy" itemscope>
   <a rel="anchored-by" itemprop="url" href="${rel(here, doc.href)}#${entry.slug}">${entry.kind ? `<span itemprop="kind">${esc(entry.kind)}</span>: ` : ''}<span itemprop="title">${inline(entry.title)}</span></a>
-  <span class="meta">in <span itemprop="plan">${esc(plan.name)}</span>, ${whenHtml(plan)}${doc === plan ? '' : ' (as-built)'}${anchor.isNew ? ', <span itemprop="new">new</span>' : ''}</span>
+  <span class="meta">in <span itemprop="plan">${esc(plan.name)}</span>, ${whenHtml(plan)}${doc === plan ? '' : ' (as-built)'}${anchor.isNew ? ', new<meta itemprop="new" content="true">' : ''}</span>
   <code class="where" itemprop="where">${esc(anchor.where)}</code>
 </li>`)
     .join('\n');
@@ -153,13 +153,13 @@ function profile(site: Site): Page {
   ];
   const props: [string, string][] = [
     ['(header)', 'Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).'],
-    ['plan', 'A plan: <code>title</code>, <code>name</code> and <code>date</code> (from its filename), <code>added</code> (the commit that added it, which orders plans), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items.'],
+    ['plan', 'A plan: <code>title</code>, <code>name</code> and <code>date</code> (from its filename), <code>added</code> (the commit that added it, which orders plans), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items. On the home page, a plan has <code>entryCount</code> instead of its entries. When a <code>base</code> (or an as-built’s <code>head</code>) names a commit here, it’s a <code>&lt;data&gt;</code> whose value is the full sha. Otherwise its value is the text as written, like “none, a new repo”, or a commit a squash merge replaced; a missing base is “not given”.'],
     ['asBuilt', 'An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.'],
     ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>source</code> (the parenthesis after <em>Because</em> or <em>Answer</em>, exactly as written), <code>verdict</code> (an answer’s opening word: held, disproved, partly disproved, or not tested; on a guess, inside its <code>answeredBy</code> link’s sentence), <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
-    ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
-    ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, <code>note</code>, <code>code</code>, and <code>sameAs</code> when a generated view matches the as-built head’s exactly and its code isn’t repeated. A plan’s anchors have up to three views: base, as-built head (where the plan’s own work landed), and generated.'],
+    ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> (content <code>true</code>) for <code>where (new)</code>, in the same shape wherever it appears, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
+    ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, one <code>match</code> item per match with the <code>startLine</code> and <code>endLine</code> the quote covers, <code>note</code>, <code>code</code> (each one preceded by <code>codeStart</code>, the line number of its first line; the nth <code>codeStart</code> belongs to the nth <code>code</code>), and <code>sameAs</code> when a generated view matches the as-built head’s exactly and its code isn’t repeated. A plan’s anchors have up to three views: base, as-built head (where the plan’s own work landed), and generated.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
-    ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code>, and <code>anchoredBy</code> items.'],
+    ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code> with its <code>codeStart</code>, <code>entryCount</code> on the home page, and <code>anchoredBy</code> items.'],
   ];
   return layout(site, here, 'Profile', `
 <nav><a href="${rel(here, '')}">${esc(site.repoName)} at ${esc(site.generated.short)}</a></nav>
@@ -292,13 +292,20 @@ function viewHtml(v: View): string {
 <data itemprop="commit" value="${v.sha}"><code>${esc(v.short)}</code></data>
 <span class="status" itemprop="status">${v.status}</span>
 ${v.file ? `<code class="file" itemprop="file">${esc(v.file)}</code>` : ''}
-<meta itemprop="matches" content="${v.matches}">${range}${v.sameAs ? `<meta itemprop="sameAs" content="${v.sameAs}">` : ''}
+<meta itemprop="matches" content="${v.matches}">${v.at.map(matchHtml).join('')}${range}${v.sameAs ? `<meta itemprop="sameAs" content="${v.sameAs}">` : ''}
 <span class="note" itemprop="note">${inline(v.note)}</span>
 </figcaption>
 ${code}
 </figure>`;
 }
 
+// One item per match, so a reader finds the quote's lines without the note.
+function matchHtml(lines: number[]): string {
+  return `<span itemprop="match" itemscope hidden><meta itemprop="startLine" content="${lines[0]}"><meta itemprop="endLine" content="${lines[lines.length - 1]}"></span>`;
+}
+
+// codeStart comes just before the code it numbers; microdata keeps document
+// order, so the nth codeStart belongs to the nth code.
 function hunkHtml(h: Hunk): string {
   const marked = new Set(h.marked);
   const lines = h.lines.map((line, i) => {
@@ -306,7 +313,7 @@ function hunkHtml(h: Hunk): string {
     const text = `<span class="ln">${n}</span>${esc(line) || ' '}`;
     return marked.has(n) ? `<mark>${text}</mark>` : text;
   });
-  return `<pre itemprop="code" data-start="${h.start}"><code>${lines.join('\n')}</code></pre>`;
+  return `<meta itemprop="codeStart" content="${h.start}"><pre itemprop="code" data-start="${h.start}"><code>${lines.join('\n')}</code></pre>`;
 }
 
 function layout(site: Site, here: string, title: string, main: string): Page {
@@ -378,6 +385,10 @@ function block(md: string): string {
 
 function stripMarkdown(md: string): string {
   return md.replace(/`/g, '');
+}
+
+function entryCount(n: number): string {
+  return `<data itemprop="entryCount" value="${n}">${count(n, 'entry', 'entries')}</data>`;
 }
 
 function count(n: number, one: string, many: string): string {

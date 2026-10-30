@@ -42,6 +42,7 @@ export type View = {
   startLine?: number; // the symbol's range, for SCIP anchors
   endLine?: number;
   matches: number; // how many times the quote matched in the file or range
+  at: number[][]; // the lines each match covers, in order
   hunks: Hunk[];
   note: string; // plain words for the reader
   sameAs?: string; // short sha of the as-built head this view matches exactly; its code is not repeated
@@ -68,7 +69,7 @@ export function resolveAt(
   commit: { sha: string; short: string; role: string },
   definitions: Map<string, Definition> | undefined,
 ): View {
-  const view: View = { ...commit, status: 'no-quote', matches: 0, hunks: [], note: '' };
+  const view: View = { ...commit, status: 'no-quote', matches: 0, at: [], hunks: [], note: '' };
   const needle = quote?.trim();
 
   if (t.kind === 'symbol') {
@@ -86,6 +87,7 @@ export function resolveAt(
     const body = lines.slice(def.startLine - 1, def.endLine);
     const found = (needle ? findQuote(body, needle) : []).map((m) => m.map((n) => n + def.startLine - 1));
     view.matches = found.length;
+    view.at = found;
     if (found.length) {
       view.status = 'found';
       view.hunks = found.map((m) => around(lines, m, def.startLine, def.endLine));
@@ -121,6 +123,7 @@ export function resolveAt(
   const lines = text.split('\n');
   const found = findQuote(lines, needle);
   view.matches = found.length;
+  view.at = found;
   if (found.length === 0) {
     view.status = 'not-found';
     view.note = `quote not found at \`${commit.short}\``;
@@ -137,7 +140,7 @@ export function resolveAt(
 // frozen once their work lands (awl), so one commit is enough. The search
 // stays inside the entry, from its heading to the next.
 export function resolveInEntry(repo: Repo, file: string, title: string, quote: string, commit: { sha: string; short: string; role: string }): View {
-  const view: View = { ...commit, status: 'not-found', file, matches: 0, hunks: [], note: '' };
+  const view: View = { ...commit, status: 'not-found', file, matches: 0, at: [], hunks: [], note: '' };
   const lines = (repo.show(commit.sha, file) ?? '').split('\n');
   const heading = lines.findIndex((l) => /^## /.test(l) && l.replace(/^## (?:\w+: )?/, '') === title);
   if (heading === -1) {
@@ -149,6 +152,7 @@ export function resolveInEntry(repo: Repo, file: string, title: string, quote: s
   while (end > heading + 1 && !lines[end - 1].trim()) end--;
   const found = findQuote(lines.slice(heading, end), quote.trim()).map((m) => m.map((n) => n + heading));
   view.matches = found.length;
+  view.at = found;
   if (!found.length) {
     view.note = `quote not found in this entry at \`${commit.short}\``;
     return view;
