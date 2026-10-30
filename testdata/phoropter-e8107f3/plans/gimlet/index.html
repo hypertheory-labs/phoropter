@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phoropter v0: open one plan and walk it · phoropter at e8107f3</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="meta">e8107f3a5912c405809baca5e26279f2da60a474</span>
+<span class="links"><a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at e8107f3</a></nav>
+<article itemscope>
+<h1 itemprop="title">Phoropter v0: open one plan and walk it</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">gimlet</dd>
+<dt>Cart</dt><dd itemprop="cart">gimlet</dd>
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="d2484b674e3fb8f915a9f46909287fdde7b35928"><code>d2484b6</code></data> <time datetime="2026-10-30T16:16:25.000Z">16:16 UTC</time></dd>
+<dt>Base</dt><dd><span itemprop="base">none, a new repo</span></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-gimlet.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/gimlet/as-built/">plans/2026-10-30-gimlet.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>A static site generated from one repo at one commit: its <code>plans/</code>, their as-built
+files, and a SCIP index, rendered as HTML with microdata and <code>rel</code> links. A person
+opens it in a browser and an agent fetches it, and both read the same pages. A small
+dev server serves it. The data is mock-control at <code>90c65b9</code>, whose only plan is pumice.</p>
+<p>This plan is also the brief. Whoever builds it records what changed in
+<code>&lt;this plan&gt;.as-built.md</code>, and that file answers this plan&#39;s guesses.</p>
+</div>
+<section class="entry" id="a-static-site-generator-plus-a-dev-server-not-a-running-api" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-static-site-generator-plus-a-dev-server-not-a-running-api"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A static site generator plus a dev server, not a running API</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> git is immutable, so the site for a commit is a pure function of
+the commit and its index. Nothing goes stale; a page is only ever old.</p>
+</div>
+</section>
+<section class="entry" id="the-html-is-the-api" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-html-is-the-api"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The HTML is the API</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> the human and the agent should work from exactly the same substrate.
+Structure is carried by <code>rel</code> links and microdata, not by a separate JSON shape.</p>
+</div>
+</section>
+<section class="entry" id="read-only" itemprop="entry" itemscope>
+<h2><a class="self" href="#read-only"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Read-only</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> truth stays in git and markdown. The site is a projection of it,
+never a place to write.</p>
+</div>
+</section>
+<section class="entry" id="every-page-says-which-repo-and-commit-it-was-generated-from" itemprop="entry" itemscope>
+<h2><a class="self" href="#every-page-says-which-repo-and-commit-it-was-generated-from"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Every page says which repo and commit it was generated from</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, agreed by Jeff</span>):</strong> &quot;code at HEAD&quot; becomes &quot;code at this commit,&quot;
+so a reader can always tell what they&#39;re looking at.</p>
+</div>
+</section>
+<section class="entry" id="each-anchor-is-shown-at-the-plan-s-base-and-at-the-generated-commit" itemprop="entry" itemscope>
+<h2><a class="self" href="#each-anchor-is-shown-at-the-plan-s-base-and-at-the-generated-commit"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Each anchor is shown at the plan&#39;s base and at the generated commit</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">mock-control: plans/2026-10-29-pumice.md › Selectors use the library's prefix, `mock-panel`</code></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">- quote: `selector: 'app-mock-panel',` </code></p><p class="note" itemprop="note">in mock-control, which this site doesn't read</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured, mock-control at <code>90c65b9</code></span>):</strong> anchors point at the base, and the
+plan&#39;s own work moves them. Pumice&#39;s selector quote matches at its base <code>da023f1</code> and
+not at <code>90c65b9</code>, because pumice renamed it; the README heading moved for the same
+reason. Showing only the later commit would make the plan&#39;s own work look like drift.
+v0 shows both, side by side, and doesn&#39;t judge the difference.</p>
+</div>
+</section>
+<section class="entry" id="scip-anchors-resolve-through-the-index-other-anchors-by-their-quote" itemprop="entry" itemscope>
+<h2><a class="self" href="#scip-anchors-resolve-through-the-index-other-anchors-by-their-quote"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">SCIP anchors resolve through the index; other anchors by their quote</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, agreed by Jeff</span>):</strong> the spike showed <code>defn_enclosing_ranges</code> gives a
+symbol&#39;s line range, so its code is a lookup plus <code>git show</code>. Pumice&#39;s other anchors
+are a markdown heading path and a JSON key path; for those, finding the quote in the
+named file is enough to show the code. When it isn&#39;t found, the page says so plainly:
+&quot;quote not found at <code>&lt;commit&gt;</code>.&quot;</p>
+</div>
+</section>
+<section class="entry" id="quote-search-looks-only-in-the-anchor-s-file" itemprop="entry" itemscope>
+<h2><a class="self" href="#quote-search-looks-only-in-the-anchor-s-file"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Quote search looks only in the anchor&#39;s file</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> searching the whole repo for pumice&#39;s quotes matches the plan
+itself, which quotes them.</p>
+</div>
+</section>
+<section class="entry" id="where-new-anchors-are-shown-not-resolved" itemprop="entry" itemscope>
+<h2><a class="self" href="#where-new-anchors-are-shown-not-resolved"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>where (new)</code> anchors are shown, not resolved</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> they have no quote by design. Resolving them means
+finding where the work landed, which is the drift question, and v0 declines drift.</p>
+</div>
+</section>
+<section class="entry" id="cross-repo-anchors-are-shown-as-text" itemprop="entry" itemscope>
+<h2><a class="self" href="#cross-repo-anchors-are-shown-as-text"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Cross-repo anchors are shown as text</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> v0 reads one repo. Lanyard&#39;s anchors into pumice
+are the first case, and they wait.</p>
+</div>
+</section>
+<section class="entry" id="reverse-pages-one-per-anchored-symbol-or-file-listing-the-plans-there" itemprop="entry" itemscope>
+<h2><a class="self" href="#reverse-pages-one-per-anchored-symbol-or-file-listing-the-plans-there"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Reverse pages, one per anchored symbol or file, listing the plans there</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude&#39;s proposal, unanswered, so its fallback</span>):</strong> the first brick of
+level 3, archaeology, and it makes the link graph go both ways from the start. With
+one plan each page lists one plan.</p>
+</div>
+</section>
+<section class="entry" id="the-first-rels-and-a-profile-document-that-defines-them" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-first-rels-and-a-profile-document-that-defines-them"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The first rels, and a profile document that defines them</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> v0 can&#39;t avoid starting the vocabulary. Registered
+rels where they fit (<code>profile</code>, <code>item</code>, <code>collection</code>, <code>up</code>); ours are <code>as-built</code>,
+<code>anchored-at</code> (entry to anchor page), and <code>anchored-by</code> (anchor page to entry). The
+profile document is one page in the site, and each rel&#39;s definition says what
+question it answers.</p>
+</div>
+</section>
+<section class="entry" id="typescript-indexing-with-scip-typescript-at-the-generated-commit" itemprop="entry" itemscope>
+<h2><a class="self" href="#typescript-indexing-with-scip-typescript-at-the-generated-commit"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">TypeScript, indexing with scip-typescript at the generated commit</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude, aide&#39;s CLAUDE.md</span>):</strong> start where SCIP indexing is strong.
+The spike indexed mock-control in about half a second, so indexing each commit it
+needs (the generated one, and each plan&#39;s base) is cheap. Libraries and layout are
+the builder&#39;s call, recorded in the as-built.</p>
+</div>
+</section>
+<section class="entry" id="the-generated-site-isn-t-committed" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-generated-site-isn-t-committed"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The generated site isn&#39;t committed</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> it&#39;s reproducible from the commit, and generated output
+in git would bury the plans in diff noise. Output goes to a gitignored directory.</p>
+</div>
+</section>
+<section class="entry" id="a-separate-client-app" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-separate-client-app"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A separate client app</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> a second representation would let the person and the
+agent see different things. A client, Angular or otherwise, can come later as one more
+projection of the same pages.</p>
+</div>
+</section>
+<section class="entry" id="a-separate-brief-beside-the-plan" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-separate-brief-beside-the-plan"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A separate brief beside the plan</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, agreed by Jeff</span>):</strong> two copies of what to build can disagree. Lanyard
+designed the plan plus as-built for exactly this handoff, and v0 is its first test.</p>
+</div>
+</section>
+<section class="entry" id="drift-guesses-and-triangulation-the-heat-map-the-lsp-adapter-the-angular-language-service-and-cross-company-queries" itemprop="entry" itemscope>
+<h2><a class="self" href="#drift-guesses-and-triangulation-the-heat-map-the-lsp-adapter-the-angular-language-service-and-cross-company-queries"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Drift, guesses and triangulation, the heat map, the LSP adapter, the Angular language service, and cross-company queries</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> each was raised, and none is needed to walk one plan.
+They&#39;re recorded so nobody adds them helpfully.</p>
+</div>
+</section>
+<section class="entry" id="the-plan-is-enough-of-a-brief" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-plan-is-enough-of-a-brief"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">The plan is enough of a brief</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> the builder has to ask for something this plan doesn&#39;t say, or the
+as-built records a gap that a brief would have filled.</p>
+</div>
+</section>
+<section class="entry" id="quote-search-is-enough-for-anchors-that-aren-t-scip-symbols" itemprop="entry" itemscope>
+<h2><a class="self" href="#quote-search-is-enough-for-anchors-that-aren-t-scip-symbols"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Quote search is enough for anchors that aren&#39;t SCIP symbols</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> a quote matches more than once in its file at the base, or a reader
+can&#39;t tell from the page which lines the anchor meant.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: vellum · mock-control at f02528f</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">mock-control</span>
+at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
+<span class="links"><a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/vellum/">Follow the README in a fresh app, and test the <code>@source</code> guess</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: vellum</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/vellum/">plans/2026-10-30-vellum.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="983183f645c932ecb9d7b590e3b04ab9799d5e5d"><code>983183f</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-vellum.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>The first as-built in grommet&#39;s kinds (aide <code>plans/2026-10-30-grommet.md</code>). No entry
+departs from the plan, so there&#39;s no <code>Changed:</code>.</p>
+</div>
+<section class="entry" id="pin-msw-2-in-the-install-step-rather-than-support-msw-3" itemprop="entry" itemscope>
+<h2><a class="self" href="#pin-msw-2-in-the-install-step-rather-than-support-msw-3"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Pin MSW 2 in the install step, rather than support MSW 3</span></a></h2>
+
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../../plans/tallow/as-built/#plain-msw-in-the-install-step-undoing-vellum-s-pin">tallow's as-built, Chose: Plain <code>msw</code> in the install step, undoing vellum&#39;s pin</a>.</p>
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 1. Install</code> <a rel="anchored-at" itemprop="place" href="../../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">npm install -D @hypertheory-labs/mock-control msw@2 daisyui@5</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="983183f645c932ecb9d7b590e3b04ab9799d5e5d"><code>983183f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 25</span>
+</figcaption>
+<pre itemprop="code" data-start="22"><code><span class="ln">22</span>### 1. Install
+<span class="ln">23</span> 
+<span class="ln">24</span>```sh
+<mark><span class="ln">25</span>npm install -D @hypertheory-labs/mock-control msw@2 daisyui@5</mark>
+<span class="ln">26</span>npx msw init public --save
+<span class="ln">27</span>```
+<span class="ln">28</span> </code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>f02528f</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured, then Claude, not asked</span>):</strong> step 1&#39;s plain <code>msw</code> installed 3.0.3, now
+npm&#39;s <code>latest</code>. npm allowed it although the package&#39;s peer range is <code>^2.15.0</code>; only
+<code>npm ls</code> called it invalid. Step 4&#39;s <code>worker.start({ onUnhandledRequest })</code> then fails
+to compile. The Requirements already said MSW 2; the command didn&#39;t. Supporting MSW 3
+was the other way out, and I didn&#39;t take it: the README&#39;s known limits were measured
+on 2.15, so a port is its own round with its own measurements, and it should be Jeff&#39;s
+call whether the class apps move.</p>
+</div>
+</section>
+<section class="entry" id="daisyui-goes-in-the-install-step-and-requirements-says-how-tailwind-arrives" itemprop="entry" itemscope>
+<h2><a class="self" href="#daisyui-goes-in-the-install-step-and-requirements-says-how-tailwind-arrives"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">daisyUI goes in the install step, and Requirements says how Tailwind arrives</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Requirements</code> <a rel="anchored-at" itemprop="place" href="../../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">up Tailwind; daisyUI is installed in step 1.</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="983183f645c932ecb9d7b590e3b04ab9799d5e5d"><code>983183f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 18</span>
+</figcaption>
+<pre itemprop="code" data-start="15"><code><span class="ln">15</span>- Angular 22, with MSW 2.
+<span class="ln">16</span>- **Tailwind CSS v4 and daisyUI 5 in the app.** The panel uses their classes and ships no
+<span class="ln">17</span>  styles of its own. This is a stopgap; see step 5 below. `ng new --style=tailwind` sets
+<mark><span class="ln">18</span>  up Tailwind; daisyUI is installed in step 1.</mark>
+<span class="ln">19</span> 
+<span class="ln">20</span>## Setup
+<span class="ln">21</span> </code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 18</span>
+</figcaption>
+<pre itemprop="code" data-start="15"><code><span class="ln">15</span>- Angular 22, with MSW 3 or 2.15+.
+<span class="ln">16</span>- **Tailwind CSS v4 and daisyUI 5 in the app.** The panel uses their classes and ships no
+<span class="ln">17</span>  styles of its own. This is a stopgap; see step 5 below. `ng new --style=tailwind` sets
+<mark><span class="ln">18</span>  up Tailwind; daisyUI is installed in step 1.</mark>
+<span class="ln">19</span> 
+<span class="ln">20</span>## Setup
+<span class="ln">21</span> </code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> <code>ng new --style=tailwind</code> sets up Tailwind v4 but not daisyUI,
+and nothing in the README installed it; step 5&#39;s <code>@plugin &#39;daisyui&#39;</code> assumed it.</p>
+</div>
+</section>
+<section class="entry" id="say-the-example-s-catalog-and-findtitle-are-the-reader-s" itemprop="entry" itemscope>
+<h2><a class="self" href="#say-the-example-s-catalog-and-findtitle-are-the-reader-s"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Say the example&#39;s <code>catalog</code> and <code>findTitle</code> are the reader&#39;s</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 2. Write the handlers</code> <a rel="anchored-at" itemprop="place" href="../../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">// `catalog` (the API's base URL) and `findTitle` stand in for your own code.</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="983183f645c932ecb9d7b590e3b04ab9799d5e5d"><code>983183f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 41</span>
+</figcaption>
+<pre itemprop="code" data-start="38"><code><span class="ln">38</span>// src/mocks/handlers.ts
+<span class="ln">39</span>import { HttpResponse } from 'msw';
+<span class="ln">40</span>import { configurable } from '@hypertheory-labs/mock-control';
+<mark><span class="ln">41</span>// `catalog` (the API's base URL) and `findTitle` stand in for your own code.</mark>
+<span class="ln">42</span> 
+<span class="ln">43</span>export const handlers = [
+<span class="ln">44</span>  configurable(</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1"><meta itemprop="sameAs" content="983183f">
+<span class="note" itemprop="note">same as at <code>983183f</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> copied as written, step 2 fails with two &quot;Cannot find name&quot;
+errors. Most readers would guess they&#39;re placeholders. Saying so costs one line.</p>
+</div>
+</section>
+<section class="entry" id="tailwind-finds-the-panel-s-classes-through-the-source-line" itemprop="entry" itemscope>
+<h2><a class="self" href="#tailwind-finds-the-panel-s-classes-through-the-source-line"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Tailwind finds the panel&#39;s classes through the <code>@source</code> line</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/vellum/#tailwind-finds-the-panel-s-classes-through-the-source-line">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> held. In a fresh Angular 22 app with the package installed from
+<code>npm pack</code> of <code>dist/mock-control</code>, six classes only the panel uses (<code>modal-end</code>,
+<code>tabs-border</code>, <code>badge-warning</code>, <code>btn-circle</code>, <code>tab-active</code>, <code>modal-box</code>) are all in the
+built CSS with the line, and none are without it (121 KB against 28 KB). Repeated in a
+second fresh app following the fixed README. Not checked: how it looks in a browser.
+The CSS is the evidence; nobody has seen the panel render outside this workspace yet.
+This also answers pumice&#39;s guess, and clears what pumice said publishing waits on.</p>
+</div>
+</section>
+<section class="entry" id="the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">The README&#39;s setup works without knowing anything it doesn&#39;t say</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/vellum/#the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say">the plan’s guess</a>: <strong class="verdict verdict-disproved" itemprop="verdict">disproved</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> disproved, at step 1, and twice more. MSW 3 broke step 4,
+daisyUI was never installed, and the handler example didn&#39;t compile as written. Each is
+fixed in the README, and the fixed steps build in a second fresh app, in development
+and production. One thing I still had to know: <code>ng new --style=tailwind</code>. The README
+now says it, but whether a reader who doesn&#39;t know Angular&#39;s options needs more is a
+question only a reader can answer.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

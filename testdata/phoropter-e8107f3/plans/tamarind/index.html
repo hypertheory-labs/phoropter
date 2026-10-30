@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Show the evidence, not the whole symbol · phoropter at e8107f3</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="meta">e8107f3a5912c405809baca5e26279f2da60a474</span>
+<span class="links"><a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at e8107f3</a></nav>
+<article itemscope>
+<h1 itemprop="title">Show the evidence, not the whole symbol</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">tamarind</dd>
+<dt>Cart</dt><dd itemprop="cart">tamarind</dd>
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="98b66353c80fe42f5a62c97aa768112208dce588"><code>98b6635</code></data> <time datetime="2026-10-30T17:06:14.000Z">17:06 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="700f8af2a835b1cc34b7cb60a907d0f83e7c9ea1"><code>700f8af</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-tamarind.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/tamarind/as-built/">plans/2026-10-30-tamarind.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Gimlet&#39;s site, read by aide&#39;s Claude through curl the way an agent would, showed all of
+<code>MockPanel#</code> (144 lines) at both commits to support one selector quote. This round
+makes a plan page carry only the evidence for each entry and moves the whole symbol
+one link away. It also fixes a doubled title.</p>
+<p>The cart ran on aide&#39;s cart rules, as play-acting (Jeff): aide&#39;s work is about to change
+the cart&#39;s form, so phoropter records nothing about carts yet.</p>
+</div>
+<section class="entry" id="a-scip-view-shows-the-quote-with-a-few-lines-of-context-not-the-whole-range" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-scip-view-shows-the-quote-with-a-few-lines-of-context-not-the-whole-range"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A SCIP view shows the quote with a few lines of context, not the whole range</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">view.hunks = [{ start: def.startLine, lines: body, marked }];</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="700f8af2a835b1cc34b7cb60a907d0f83e7c9ea1"><code>700f8af</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 69</span>
+</figcaption>
+<pre itemprop="code" data-start="66"><code><span class="ln">66</span>    const found = needle ? findQuote(body, needle) : [];
+<span class="ln">67</span>    const marked = found.flat().map((n) =&gt; n + def.startLine - 1);
+<span class="ln">68</span>    view.matches = found.length;
+<mark><span class="ln">69</span>    view.hunks = [{ start: def.startLine, lines: body, marked }];</mark>
+<span class="ln">70</span>    if (!needle) {
+<span class="ln">71</span>      view.note = `lines ${def.startLine}–${def.endLine}`;
+<span class="ln">72</span>    } else if (view.matches) {</code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>350e257</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="350e257">
+<span class="note" itemprop="note">same as at <code>350e257</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">aide&#39;s Claude, agreed by Jeff</span>):</strong> the whole range is a wall for a person and
+a token cost for an agent, and the entry meant a few lines of it. The view still says
+the range. Context is the same 3 lines as file anchors.</p>
+</div>
+</section>
+<section class="entry" id="when-the-quote-isn-t-found-or-there-s-none-the-view-shows-the-symbol-s-declaration" itemprop="entry" itemscope>
+<h2><a class="self" href="#when-the-quote-isn-t-found-or-there-s-none-the-view-shows-the-symbol-s-declaration"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">When the quote isn&#39;t found, or there&#39;s none, the view shows the symbol&#39;s declaration</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">view.hunks = [{ start: def.startLine, lines: body, marked }];</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="700f8af2a835b1cc34b7cb60a907d0f83e7c9ea1"><code>700f8af</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 69</span>
+</figcaption>
+<pre itemprop="code" data-start="66"><code><span class="ln">66</span>    const found = needle ? findQuote(body, needle) : [];
+<span class="ln">67</span>    const marked = found.flat().map((n) =&gt; n + def.startLine - 1);
+<span class="ln">68</span>    view.matches = found.length;
+<mark><span class="ln">69</span>    view.hunks = [{ start: def.startLine, lines: body, marked }];</mark>
+<span class="ln">70</span>    if (!needle) {
+<span class="ln">71</span>      view.note = `lines ${def.startLine}–${def.endLine}`;
+<span class="ln">72</span>    } else if (view.matches) {</code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>350e257</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="350e257">
+<span class="note" itemprop="note">same as at <code>350e257</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> showing nothing would make a missing quote look like a missing
+symbol. For <code>MockPanel#</code> at <code>90c65b9</code> the declaration is the decorator, so the renamed
+selector shows beside the base&#39;s old one. Claude&#39;s first fallback was no code at all.</p>
+</div>
+</section>
+<section class="entry" id="a-view-shows-no-code-only-when-the-symbol-isn-t-in-that-commit-s-index" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-view-shows-no-code-only-when-the-symbol-isn-t-in-that-commit-s-index"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A view shows no code only when the symbol isn&#39;t in that commit&#39;s index</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">view.note = `symbol not in the index at ${commit.short}`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="700f8af2a835b1cc34b7cb60a907d0f83e7c9ea1"><code>700f8af</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 58</span>
+</figcaption>
+<pre itemprop="code" data-start="55"><code><span class="ln">55</span>    const def = definitions?.get(t.symbol);
+<span class="ln">56</span>    if (!def) {
+<span class="ln">57</span>      view.status = 'no-symbol';
+<mark><span class="ln">58</span>      view.note = `symbol not in the index at ${commit.short}`;</mark>
+<span class="ln">59</span>      return view;
+<span class="ln">60</span>    }
+<span class="ln">61</span>    const lines = (repo.show(commit.sha, def.file) ?? '').split('\n');</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 59</span>
+</figcaption>
+<pre itemprop="code" data-start="56"><code><span class="ln">56</span>    const def = definitions?.get(t.symbol);
+<span class="ln">57</span>    if (!def) {
+<span class="ln">58</span>      view.status = 'no-symbol';
+<mark><span class="ln">59</span>      view.note = `symbol not in the index at ${commit.short}`;</mark>
+<span class="ln">60</span>      return view;
+<span class="ln">61</span>    }
+<span class="ln">62</span>    const lines = (repo.show(commit.sha, def.file) ?? '').split('\n');</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 78</span>
+</figcaption>
+<pre itemprop="code" data-start="75"><code><span class="ln">75</span>    const def = definitions?.get(t.symbol);
+<span class="ln">76</span>    if (!def) {
+<span class="ln">77</span>      view.status = 'no-symbol';
+<mark><span class="ln">78</span>      view.note = `symbol not in the index at ${commit.short}`;</mark>
+<span class="ln">79</span>      return view;
+<span class="ln">80</span>    }
+<span class="ln">81</span>    const lines = (repo.show(commit.sha, def.file) ?? '').split('\n');</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> then &quot;no code&quot; means one thing.</p>
+</div>
+</section>
+<section class="entry" id="the-symbol-page-shows-the-whole-range-at-the-generated-commit" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-symbol-page-shows-the-whole-range-at-the-generated-commit"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The symbol page shows the whole range at the generated commit</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;&lt;code itemprop=&quot;file&quot;&gt;${esc(def.file)}&lt;/code&gt;, lines &lt;span itemprop=&quot;startLine&quot;&gt;${def.startLine}&lt;/span&gt;–&lt;span itemprop=&quot;endLine&quot;&gt;${def.endLine}&lt;/span&gt;&lt;/dd&gt;`</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="700f8af2a835b1cc34b7cb60a907d0f83e7c9ea1"><code>700f8af</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 103</span>
+</figcaption>
+<pre itemprop="code" data-start="100"><code><span class="ln">100</span>  const here = place.href;
+<span class="ln">101</span>  const def = place.definition;
+<span class="ln">102</span>  const location = def
+<mark><span class="ln">103</span>    ? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;&lt;code itemprop=&quot;file&quot;&gt;${esc(def.file)}&lt;/code&gt;, lines &lt;span itemprop=&quot;startLine&quot;&gt;${def.startLine}&lt;/span&gt;–&lt;span itemprop=&quot;endLine&quot;&gt;${def.endLine}&lt;/span&gt;&lt;/dd&gt;`</mark>
+<span class="ln">104</span>    : place.kind === 'symbol'
+<span class="ln">105</span>      ? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;not in the index&lt;/dd&gt;`
+<span class="ln">106</span>      : '';</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 103</span>
+</figcaption>
+<pre itemprop="code" data-start="100"><code><span class="ln">100</span>  const here = place.href;
+<span class="ln">101</span>  const def = place.definition;
+<span class="ln">102</span>  const location = def
+<mark><span class="ln">103</span>    ? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;&lt;code itemprop=&quot;file&quot;&gt;${esc(def.file)}&lt;/code&gt;, lines &lt;span itemprop=&quot;startLine&quot;&gt;${def.startLine}&lt;/span&gt;–&lt;span itemprop=&quot;endLine&quot;&gt;${def.endLine}&lt;/span&gt;&lt;/dd&gt;`</mark>
+<span class="ln">104</span>    : place.kind === 'symbol'
+<span class="ln">105</span>      ? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;not in the index&lt;/dd&gt;`
+<span class="ln">106</span>      : '';</code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 112</span>
+</figcaption>
+<pre itemprop="code" data-start="109"><code><span class="ln">109</span>  const here = place.href;
+<span class="ln">110</span>  const def = place.definition;
+<span class="ln">111</span>  const location = def
+<mark><span class="ln">112</span>    ? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;&lt;code itemprop=&quot;file&quot;&gt;${esc(def.file)}&lt;/code&gt;, lines &lt;span itemprop=&quot;startLine&quot;&gt;${def.startLine}&lt;/span&gt;–&lt;span itemprop=&quot;endLine&quot;&gt;${def.endLine}&lt;/span&gt;&lt;/dd&gt;`</mark>
+<span class="ln">113</span>    : place.kind === 'symbol'
+<span class="ln">114</span>      ? `&lt;dt&gt;At ${esc(site.generated.short)}&lt;/dt&gt;&lt;dd&gt;not in the index&lt;/dd&gt;`
+<span class="ln">115</span>      : '';</code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">aide&#39;s Claude, agreed by Jeff</span>):</strong> the plan page carries the entry&#39;s evidence
+and the symbol page carries the symbol. This is the first concrete case of Jeff&#39;s open
+question, what is actually <em>in</em> the substrate.</p>
+</div>
+</section>
+<section class="entry" id="the-home-page-s-title-is-said-once" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-home-page-s-title-is-said-once"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The home page&#39;s title is said once</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;title&gt;${esc(stripMarkdown(title))} · ${esc(site.repoName)} at ${esc(site.generated.short)}&lt;/title&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="700f8af2a835b1cc34b7cb60a907d0f83e7c9ea1"><code>700f8af</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1">
+<span class="note" itemprop="note">quote at line 224</span>
+</figcaption>
+<pre itemprop="code" data-start="221"><code><span class="ln">221</span>&lt;head&gt;
+<span class="ln">222</span>&lt;meta charset=&quot;utf-8&quot;&gt;
+<span class="ln">223</span>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+<mark><span class="ln">224</span>&lt;title&gt;${esc(stripMarkdown(title))} · ${esc(site.repoName)} at ${esc(site.generated.short)}&lt;/title&gt;</mark>
+<span class="ln">225</span>&lt;link rel=&quot;profile&quot; href=&quot;${rel(here, 'profile/')}&quot;&gt;
+<span class="ln">226</span>&lt;link rel=&quot;stylesheet&quot; href=&quot;${rel(here, 'style.css')}&quot;&gt;
+<span class="ln">227</span>&lt;/head&gt;</code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="350e25719a52e1dafa93371ac1165a4ac3ee5da4"><code>350e257</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>350e257</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="350e257">
+<span class="note" itemprop="note">same as at <code>350e257</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">aide&#39;s Claude</span>):</strong> the layout appends the provenance, and the home page&#39;s
+title already is the provenance. A plain bug.</p>
+</div>
+</section>
+<section class="entry" id="adopting-head-chose-and-answered-now" itemprop="entry" itemscope>
+<h2><a class="self" href="#adopting-head-chose-and-answered-now"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Adopting <code>head:</code>, <code>Chose:</code>, and <code>Answered:</code> now</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> they&#39;re agreed in aide but not yet written as a plan, and
+adopting them from a description would copy a conversation, not a plan. Phoropter&#39;s
+parser knows only <code>Decision</code>, <code>Decline</code>, <code>Guess</code>, and <code>Changed</code>, so a <code>Chose:</code> heading
+renders as a section with no kind until then.</p>
+</div>
+</section>
+<section class="entry" id="replacing-the-deep-import-into-scip-typescript-or-the-repo-s-name-being-its-directory" itemprop="entry" itemscope>
+<h2><a class="self" href="#replacing-the-deep-import-into-scip-typescript-or-the-repo-s-name-being-its-directory"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Replacing the deep import into scip-typescript, or the repo&#39;s name being its directory</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">aide&#39;s Claude, agreed by Jeff and Claude</span>):</strong> both are labeled in gimlet&#39;s
+as-built, and the second is the stable-id problem, which comes back with drift.</p>
+</div>
+</section>
+<section class="entry" id="using-phoropter-during-real-work" itemprop="entry" itemscope>
+<h2><a class="self" href="#using-phoropter-during-real-work"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Using phoropter during real work</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> skipping ahead.</p>
+</div>
+</section>
+<section class="entry" id="the-declaration-is-enough-to-read-a-missing-quote" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-declaration-is-enough-to-read-a-missing-quote"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">The declaration is enough to read a missing quote</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> on a real plan, a quote that went missing sat deep in a body, and the
+declaration lines didn&#39;t help a reader tell what happened to it.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

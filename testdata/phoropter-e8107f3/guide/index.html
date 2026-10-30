@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working with plans · phoropter at e8107f3</title>
+<link rel="profile" href="../profile/">
+<link rel="help" href="../guide/">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="meta">e8107f3a5912c405809baca5e26279f2da60a474</span>
+<span class="links"><a rel="help" href="../guide/">guide</a>
+<a class="profile-link" href="../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a href="../">phoropter at e8107f3</a></nav>
+<article class="guide">
+<h1>Working with plans</h1>
+<p class="meta">From phoropter, commit e8107f3. It describes the tool, so it’s the same on every site phoropter generates.</p>
+<p>A plan is a short markdown file that records what you were thinking before a piece of
+work: what you decided, what you turned down, and what you guessed, each with its reason
+and where the reason came from. The code shows what was done. The plan shows why, in a
+form you can argue with later.</p>
+<p>This guide is the format, in the present tense. Each rule names the plan that decided it,
+so the reasoning is there when you want it. Phoropter, the tool serving this page, reads
+plans written this way and links them to the code they&#39;re about.</p>
+<h2>An example</h2>
+<p>From mock-control, a plan about getting a library ready to publish:</p>
+<pre><code class="language-markdown">## Decision: Selectors use the library&#39;s prefix, `mock-panel`
+- where: `` scip-typescript npm @hypertheory-labs/mock-control . src/lib/panel/`mock-panel.ts`/MockPanel# ``
+- quote: `selector: &#39;app-mock-panel&#39;,`
+
+**Because (Jeff):** a rename is cheapest before the first publish. Breaking the class
+apps is fine.
+</code></pre>
+<p>A heading says what kind of entry it is. The list says what code it&#39;s about, with a
+quote of the exact text as it was. The bold lead says where the reason came from. The
+quote no longer matches today, because this plan&#39;s own work renamed it, and phoropter
+shows both versions side by side.</p>
+<h2>1. Write the plan</h2>
+<p>Name it <code>plans/YYYY-MM-DD-&lt;name&gt;.md</code>. The date is the day you say &quot;we&#39;re implementing
+this,&quot; and it&#39;s written only in the filename, so it can&#39;t disagree with a second copy.
+The name is any unique word that means nothing, so it can&#39;t turn into a category.
+<em>(Decided in lanyard, aide&#39;s first plan, which defined the format.)</em></p>
+<p>The frontmatter has <code>base:</code>, the commit you&#39;re deciding against. Then a <code># Title</code>, and a
+short opening paragraph saying what the work is and why now, before any entries:</p>
+<pre><code class="language-markdown">---
+base: e92038c
+---
+
+# Get the library ready to publish
+
+The class apps have used mock-control from inside the workspace. Before anyone installs
+it from npm, its names and setup should be the ones we&#39;d keep.
+
+## Decision: …
+</code></pre>
+<h3>Entries</h3>
+<p>Three kinds, each a <code>##</code> heading:</p>
+<ul>
+<li><code>## Decision: &lt;title&gt;</code>, then <code>**Because (&lt;source&gt;):**</code> and the reason in prose.</li>
+<li><code>## Decline: &lt;title&gt;</code>, the same, for something you considered and didn&#39;t do. Only
+for alternatives someone actually raised. Never invent strawmen to look thorough.</li>
+<li><code>## Guess: &lt;title&gt;</code>, then <code>**Disproved if:**</code> and what would show it wrong.</li>
+</ul>
+<p>Reasons stay prose. A reason squeezed into a field gets shorter and worse.
+<em>(lanyard)</em></p>
+<h3>Sources</h3>
+<p>Every reason says where it came from, in the parentheses: a person&#39;s name, <code>measured</code>,
+or <code>Claude, not asked</code> (or whichever agent). Combine them when that&#39;s the truth: <code>Jeff and Claude</code>, <code>measured, then Claude, not asked</code>. An agent told to do something won&#39;t ask
+why, so the record has to show when nobody said. A reason the agent guessed stays
+labeled that way until someone confirms it. <em>(lanyard)</em></p>
+<p>When a draft&#39;s open question went unanswered and its fallback became the decision, say
+so: <code>Claude, unanswered, so its fallback</code>. <em>(phoropter: first used in the plans for links between plans, sorrel, and for source and date, marl)</em></p>
+<h3>Anchors</h3>
+<p>An entry can say what it&#39;s about, as a list under its heading:</p>
+<ul>
+<li><code>- where:</code> a file path, optionally narrowed with <code>›</code>: a heading path in markdown
+(<code>README.md › Setup › 1. Install</code>), or a key path in JSON (<code>package.json › version</code>).
+Or a SCIP symbol, with the package version written as <code>.</code> so a release doesn&#39;t
+change it. Or another plan&#39;s entry: <code>plans/&lt;file&gt;.md › &lt;entry title&gt;</code>.</li>
+<li><code>- quote:</code> exact text from the file at the base, so a reader can tell which lines you
+meant. It&#39;s searched for only in the anchor&#39;s own file.</li>
+<li><code>- where (new):</code> something the work will create. No quote, since it doesn&#39;t exist
+yet.</li>
+</ul>
+<p>Values go in code spans. When a value contains a backtick, use a double-backtick span:
+<code>`a `b` c`</code> breaks; <code>`` a `b` c ``</code> doesn&#39;t. <em>(lanyard; the double-backtick rule is phoropter&#39;s, after awl, aide&#39;s plan on when
+as-builts freeze, wrote one wrong)</em></p>
+<p>Anchor at the code as it is when you decide. The plan&#39;s own work will move it, and
+that isn&#39;t drift: drift is measured from where the work landed. <em>(lanyard)</em></p>
+<p>Keep a plan small enough for one person to review in one sitting. <em>(lanyard, where it&#39;s
+still a guess)</em></p>
+<h2>2. Commit it before the work</h2>
+<p>That&#39;s how git shows the plan came first. From then on it&#39;s never edited. You don&#39;t
+revise what you believed; you write a new plan that links the old one. <em>(lanyard)</em></p>
+<h2>3. Do the work, and depart from the plan when the code disagrees</h2>
+<p>Don&#39;t force a plan through code that doesn&#39;t share its understanding, and don&#39;t quietly
+do something else. Depart, and write it down in the as-built. Whether the departure was
+right is a later conversation. <em>(lanyard)</em></p>
+<h2>4. Write the as-built</h2>
+<p><code>&lt;plan&gt;.as-built.md</code>, beside the plan. Its frontmatter has <code>head:</code>, the commit where the
+work landed. Its anchors point at that commit, because they&#39;re about code the work made.
+<em>(aide&#39;s grommet, the second version of as-builts)</em></p>
+<p>Three kinds of entry:</p>
+<ul>
+<li><code>## Changed: &lt;title&gt;</code>: the work departed from the plan. <code>**Because (&lt;source&gt;):**</code></li>
+<li><code>## Chose: &lt;title&gt;</code>: the plan left something open, and you decided it.
+<code>**Because (&lt;source&gt;):**</code></li>
+<li><code>## Answered: &lt;the guess&#39;s own title&gt;</code>: one of the plan&#39;s guesses, answered against its
+<code>Disproved if</code>. <code>**Answer (&lt;source&gt;):**</code>, then one of <code>held</code>, <code>disproved</code>, <code>partly disproved</code>, or <code>not tested</code>, then how much evidence that rests on.</li>
+</ul>
+<p>Keep departures and choices apart. A reviewer wants the departures first, and <code>Chose:</code>
+is the comfortable label. <em>(grommet; reading the verdict as structure is phoropter&#39;s burlap)</em></p>
+<p>Anything else worth knowing, like a finding that isn&#39;t an answer to a guess, goes in
+the as-built&#39;s opening prose, not in an entry. <em>(phoropter: burlap&#39;s as-built, which filed a finding as an answer first)</em></p>
+<p>An as-built can say nothing changed. Nothing requires one, and nothing flags a missing
+one. <em>(lanyard)</em></p>
+<h2>5. It freezes</h2>
+<p>An as-built is frozen once someone else could have read it, because from then on
+someone may have anchored to it, and it mustn&#39;t change underneath them. Before that, fix
+it freely. When that is depends on how your team shares work: a push, a pull request, a
+merge. If you&#39;re unsure, treat it as frozen once it&#39;s merged into your main line.
+Anything learned after that belongs in a new plan or a revisit. Phoropter can&#39;t tell
+when this happened and doesn&#39;t check; it&#39;s advice with a reason, not a rule it enforces.
+<em>(aide&#39;s awl said &quot;committed&quot;; phoropter&#39;s twill, the plan that brought this guide
+here, made it &quot;once someone else could have read it&quot;)</em></p>
+<h2>6. When an earlier plan&#39;s ground is wrong, revisit it</h2>
+<p>If the work runs into something an earlier plan decided or assumed, don&#39;t decide it
+inside the current plan; that re-decides the old plan in the wrong frame. Stop, and say
+so in the current as-built: <code>## Changed:</code> &quot;stopped here; revisiting …&quot;. Then write a
+revisit: a new plan with <code>revisits: plans/&lt;file&gt;.md</code> in its frontmatter, naming exactly
+one plan. It asks the question in that plan&#39;s frame, and every reason says what moved:
+the world, the code, or your understanding. The outcome can be &quot;it still holds.&quot;
+Revisiting your own plan is the same move. <em>(aide&#39;s bodkin, on revisits; phoropter&#39;s burlap is one, reversing quince&#39;s decision
+not to read verdicts)</em></p>
+<p>Sometimes the earlier plan never wrote down what it assumed. Then the revisit anchors
+where the assumption shows, in the code or the docs, and says it wasn&#39;t in the plan.
+That records a gap in the old plan, which is worth knowing too. <em>(mock-control&#39;s tallow,
+the first revisit, about MSW 3: &quot;MSW 2&quot; was a line in the README, never an entry in the
+plan it revisited)</em></p>
+<p>To answer a guess from an earlier plan, restate it as a <code>## Guess:</code> in your plan,
+anchored at the original, and answer it in your as-built. <em>(mock-control&#39;s vellum, following its README in a fresh app, answered pumice&#39;s
+<code>@source</code> guess this way)</em></p>
+<h2>Drafts (optional)</h2>
+<p>When you&#39;re unsure, or the shared understanding looks thin, put the plan up as a draft
+before committing it, so someone can question it before it becomes testimony. The agent
+decides when. A draft can have no questions at all: &quot;look, then tell me to go.&quot; Every
+open question carries its fallback, so &quot;go&quot; and silence both mean proceed, and only
+annotations change anything. It&#39;s never an approval gate.</p>
+<p>Drafts are done by hand for now: the draft is a markdown file the person reads and
+annotates in their editor. Phoropter doesn&#39;t serve them yet. <em>(phoropter: marl, on source and date, was the first)</em></p>
+<h2>Older plans</h2>
+<p>Plans are read as written. Plans from before a rule here existed may use earlier forms,
+like an as-built that uses <code>Changed:</code> for everything, or a <code>cart:</code> line. Phoropter
+shows them as they are and doesn&#39;t rewrite or flag them.</p>
+<h2>Squash merges and rebases</h2>
+<p>Plans record commits: <code>base:</code> and <code>head:</code>. A squash merge or a rebase replaces the
+work&#39;s commits with new ones, and the as-built was written before that happened, so its
+<code>head:</code> names a commit that isn&#39;t on your main line. Once the branch is deleted, that
+commit may be gone. Phoropter doesn&#39;t reconcile this today: when <code>head:</code> isn&#39;t a commit
+it can find, it shows the text as written, and the as-built&#39;s anchors are shown only at
+the generated commit. Plans read best on a history of meaningful commits that are
+merged, not squashed. <em>(phoropter&#39;s twill; not yet seen in a real repository)</em></p>
+<h2>Reading the site</h2>
+<p>Every page says which repository and commit it was generated from. The home page lists
+plans oldest first and the places they anchor; each place lists the plans that touch
+it, newest first. The <a href="../profile/">profile</a> defines every link relation and microdata
+property, so an agent can read the same pages a person does.</p>
+
+</article>
+</main>
+</body>
+</html>
