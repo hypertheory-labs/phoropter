@@ -43,6 +43,6 @@ createServer((req, res) => {
   res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });
   if (req.method === 'HEAD') res.end();
   else createReadStream(file).pipe(res);
-}).listen(args.port, () => {
+}).listen(args.port, '127.0.0.1', () => {
   console.log(`${title}: ${pages} pages, serving http://localhost:${args.port}/`);
 });
