@@ -44,7 +44,22 @@ export type View = {
   matches: number; // how many times the quote matched in the file or range
   hunks: Hunk[];
   note: string; // plain words for the reader
+  sameAs?: string; // short sha of the as-built head this view matches exactly; its code is not repeated
 };
+
+// When the generated view matches the as-built head's exactly, it says so and
+// drops its code. A fact about two commits, not a judgment about drift.
+export function collapse(views: View[]): View[] {
+  const head = views.find((v) => v.role === 'as-built head');
+  const last = views.at(-1);
+  if (!head || !last || last === head || last.role !== 'generated') return views;
+  const same = (v: View) => JSON.stringify([v.status, v.file, v.startLine, v.endLine, v.matches, v.hunks]);
+  if (same(head) !== same(last)) return views;
+  last.sameAs = head.short;
+  last.note = `same as at \`${head.short}\``;
+  last.hunks = [];
+  return views;
+}
 
 export function resolveAt(
   repo: Repo,

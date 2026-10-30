@@ -17,21 +17,25 @@ test('pumice at 90c65b9', { skip: !existsSync(dir) && 'no ../mock-control' }, ()
   const statuses = (slug: string) =>
     pumice.entries.find((e) => e.slug === slug)!.resolved[0].views.map((v) => `${v.role} ${v.status}`);
 
-  // The selector quote matches at the base and not at the generated commit,
-  // because pumice renamed it; the README heading moved for the same reason.
-  assert.deepEqual(statuses('selectors-use-the-library-s-prefix-mock-panel'), ['base found', 'generated not-found']);
-  assert.deepEqual(statuses('the-readme-is-a-setup-guide-for-an-angular-app'), ['base found', 'generated not-found']);
-  assert.deepEqual(statuses('publish-to-npm-later-and-stay-at-0-0-1'), ['base found', 'generated found']);
+  // The selector quote matches at the base and not after, because pumice
+  // renamed it: it's already gone at pumice's own as-built head, so the plan
+  // did it. The README heading moved for the same reason.
+  assert.deepEqual(statuses('selectors-use-the-library-s-prefix-mock-panel'), ['base found', 'as-built head not-found', 'generated not-found']);
+  assert.deepEqual(statuses('the-readme-is-a-setup-guide-for-an-angular-app'), ['base found', 'as-built head not-found', 'generated not-found']);
+  assert.deepEqual(statuses('publish-to-npm-later-and-stay-at-0-0-1'), ['base found', 'as-built head found', 'generated found']);
 
   // Each found quote matched exactly once (the plan's second guess).
   for (const e of pumice.entries) for (const a of e.resolved) for (const v of a.views) if (v.status === 'found') assert.equal(v.matches, 1);
 
   // A SCIP view shows the quote in context, or the declaration when the quote
   // is gone; the whole range is on the symbol page.
-  const [base, generated] = pumice.entries.find((e) => e.slug === 'selectors-use-the-library-s-prefix-mock-panel')!.resolved[0].views;
+  const [base, head, generated] = pumice.entries.find((e) => e.slug === 'selectors-use-the-library-s-prefix-mock-panel')!.resolved[0].views;
   assert.deepEqual(base.hunks.map((h) => [h.start, h.lines.length, h.marked]), [[9, 5, [10]]]);
-  assert.deepEqual(generated.hunks.map((h) => [h.start, h.lines.length, h.marked]), [[9, 7, []]]);
-  assert.equal(generated.hunks[0].lines[1], "  selector: 'mock-panel',");
+  assert.deepEqual(head.hunks.map((h) => [h.start, h.lines.length, h.marked]), [[9, 7, []]]);
+  assert.equal(head.hunks[0].lines[1], "  selector: 'mock-panel',");
+  // Nothing changed it since, so the generated view says so and shows no code.
+  assert.equal(generated.sameAs, 'e92db76');
+  assert.deepEqual(generated.hunks, []);
 
   const panel = site.places.find((p) => p.href === 'symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/')!;
   assert.equal(panel.code?.lines.length, 152 - 9 + 1);
@@ -55,6 +59,15 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
   // Pumice's as-built predates grommet; its guess stays unanswered here.
   assert.deepEqual(site.plans[0].entries.filter((e) => e.kind === 'Guess').map((e) => e.answeredBy.length), [0]);
 
+  // Tallow's Requirements quote: found at its base, gone at its head, still
+  // gone at f02528f. Tallow's own work removed it.
+  const requirements = tallowOf(site).entries.find((e) => e.slug === 'what-moved-is-our-understanding-not-the-world')!.resolved[0].views;
+  assert.deepEqual(requirements.map((v) => `${v.role} ${v.short} ${v.status}${v.sameAs ? ` same as ${v.sameAs}` : ''}`), [
+    'base 3c59d26 found',
+    'as-built head 4d28b68 not-found',
+    'generated f02528f not-found same as 4d28b68',
+  ]);
+
   // Tallow revisits pumice, and pumice shows it without being edited.
   const [pumice, vellum, , tallow] = site.plans;
   assert.equal(tallow.revisits, pumice);
@@ -73,6 +86,10 @@ test('vellum, ferrule, and tallow at f02528f', { skip: !existsSync(dir) && 'no .
   assert.equal(vellum.asBuilt!.entries[0].anchoredBy[0].plan, tallow);
   assert.ok(!site.places.some((p) => p.href.startsWith('files/plans/')));
 });
+
+function tallowOf(site: ReturnType<typeof buildSite>) {
+  return site.plans.find((p) => p.name === 'tallow')!;
+}
 
 const aide = new URL('../../aide', import.meta.url).pathname;
 

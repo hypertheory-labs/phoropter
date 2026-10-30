@@ -6,7 +6,7 @@ import { basename } from 'node:path';
 import type { Repo } from './git.ts';
 import { parsePlan, slugify, type Anchor, type Entry, type PlanDoc } from './plan.ts';
 import { indexCommit, packageName, type Definition } from './scip.ts';
-import { resolveAt, resolveInEntry, target, type Hunk, type Target, type View } from './resolve.ts';
+import { collapse, resolveAt, resolveInEntry, target, type Hunk, type Target, type View } from './resolve.ts';
 
 export type Commit = { sha: string; short: string; role: string };
 
@@ -131,7 +131,13 @@ export function buildSite(repo: Repo, ref: string): Site {
   const places = new Map<string, Place>();
   for (const plan of plans) {
     for (const d of plan.asBuilt ? [plan, plan.asBuilt] : [plan]) {
-      const commits = d.before && d.before.sha !== sha ? [d.before, generated] : [generated];
+      // A plan's anchors show at its base, at its as-built's head (where its own
+      // work landed, so lanyard's drift starts there), and at the generated
+      // commit. An as-built's show at its head and the generated commit.
+      const head = d === plan ? plan.asBuilt?.before : undefined;
+      const commits: Commit[] = [generated];
+      if (head && head.sha !== sha) commits.unshift(head);
+      if (d.before && !commits.some((c) => c.sha === d.before!.sha)) commits.unshift(d.before);
       for (const re of d.entries) {
         re.resolved = re.anchors.map((anchor) => {
           const t = target(anchor, repoName, onSite);
@@ -147,7 +153,7 @@ export function buildSite(repo: Repo, ref: string): Site {
             if (t.title === undefined) {
               ra.plan = owner;
               if (anchor.quote !== undefined && !anchor.isNew) {
-                ra.views = commits.map((c) => resolveAt(repo, { kind: 'file', file: t.file, path: [] }, anchor.quote, c, undefined));
+                ra.views = collapse(commits.map((c) => resolveAt(repo, { kind: 'file', file: t.file, path: [] }, anchor.quote, c, undefined)));
               }
               return ra;
             }
@@ -171,7 +177,7 @@ export function buildSite(repo: Repo, ref: string): Site {
             ra.note = 'no quote, so nothing to search for';
             return ra;
           }
-          ra.views = commits.map((c) => resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? indexFor(c) : undefined));
+          ra.views = collapse(commits.map((c) => resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? indexFor(c) : undefined)));
           return ra;
         });
       }
