@@ -6,7 +6,7 @@ import { basename } from 'node:path';
 import type { Repo } from './git.ts';
 import { parsePlan, slugify, type Anchor, type Entry, type PlanDoc } from './plan.ts';
 import { indexCommit, packageName, type Definition } from './scip.ts';
-import { resolveAt, target, type Target, type View } from './resolve.ts';
+import { resolveAt, target, type Hunk, type Target, type View } from './resolve.ts';
 
 export type Commit = { sha: string; short: string; role: string };
 
@@ -38,6 +38,7 @@ export type Place = {
   full: string; // the symbol or path in full
   href: string;
   definition?: Definition; // at the generated commit, for symbols
+  code?: Hunk; // the whole definition at the generated commit
   refs: { plan: Plan; doc: Doc; entry: ResolvedEntry; anchor: Anchor }[];
 };
 
@@ -117,6 +118,13 @@ export function buildSite(repo: Repo, ref: string): Site {
         return re;
       });
     }
+  }
+
+  for (const place of places.values()) {
+    const def = place.definition;
+    if (!def) continue;
+    const lines = (repo.show(sha, def.file) ?? '').split('\n').slice(def.startLine - 1, def.endLine);
+    place.code = { start: def.startLine, lines, marked: [] };
   }
 
   return {

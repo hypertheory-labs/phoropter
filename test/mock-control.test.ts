@@ -33,5 +33,6 @@ test('pumice at 90c65b9', { skip: !existsSync(dir) && 'no ../mock-control' }, ()
   assert.deepEqual(generated.hunks.map((h) => [h.start, h.lines.length, h.marked]), [[9, 7, []]]);
   assert.equal(generated.hunks[0].lines[1], "  selector: 'mock-panel',");
 
-  assert.ok(site.places.some((p) => p.href === 'symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/'));
+  const panel = site.places.find((p) => p.href === 'symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/')!;
+  assert.equal(panel.code?.lines.length, 152 - 9 + 1);
 });

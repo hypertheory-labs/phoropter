@@ -4,7 +4,7 @@
 
 import { marked } from 'marked';
 import type { Doc, Place, Plan, ResolvedAnchor, ResolvedEntry, Site } from './site.ts';
-import type { View } from './resolve.ts';
+import type { Hunk, View } from './resolve.ts';
 
 export type Page = { href: string; title: string; html: string };
 
@@ -120,6 +120,7 @@ function placePage(site: Site, place: Place): Page {
 <dt>${place.kind === 'symbol' ? 'Symbol' : 'Path'}</dt><dd><code itemprop="${place.kind}">${esc(place.full)}</code></dd>
 ${location}
 </dl>
+${place.code ? `<div class="view">${hunkHtml(place.code)}</div>` : ''}
 <h2>Plans anchored here</h2>
 <ul class="list">${refs}</ul>
 </article>`);
@@ -144,7 +145,7 @@ function profile(site: Site): Page {
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, and one <code>view</code> per commit.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, <code>note</code>, and <code>code</code>.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
-    ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, and <code>anchoredBy</code> items.'],
+    ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code>, and <code>anchoredBy</code> items.'],
   ];
   return layout(site, here, 'Profile', `
 <nav><a href="${rel(here, '')}">${esc(site.repoName)} at ${esc(site.generated.short)}</a></nav>
@@ -191,17 +192,7 @@ ${quote}${note}${views}
 
 function viewHtml(v: View): string {
   const range = v.startLine ? `<meta itemprop="startLine" content="${v.startLine}"><meta itemprop="endLine" content="${v.endLine}">` : '';
-  const code = v.hunks
-    .map((h) => {
-      const marked = new Set(h.marked);
-      const lines = h.lines.map((line, i) => {
-        const n = h.start + i;
-        const text = `<span class="ln">${n}</span>${esc(line) || ' '}`;
-        return marked.has(n) ? `<mark>${text}</mark>` : text;
-      });
-      return `<pre itemprop="code" data-start="${h.start}"><code>${lines.join('\n')}</code></pre>`;
-    })
-    .join('\n');
+  const code = v.hunks.map(hunkHtml).join('\n');
   return `<figure class="view status-${v.status}" itemprop="view" itemscope>
 <figcaption>
 <span class="role" itemprop="role">${esc(v.role)}</span>
@@ -215,13 +206,25 @@ ${code}
 </figure>`;
 }
 
+function hunkHtml(h: Hunk): string {
+  const marked = new Set(h.marked);
+  const lines = h.lines.map((line, i) => {
+    const n = h.start + i;
+    const text = `<span class="ln">${n}</span>${esc(line) || ' '}`;
+    return marked.has(n) ? `<mark>${text}</mark>` : text;
+  });
+  return `<pre itemprop="code" data-start="${h.start}"><code>${lines.join('\n')}</code></pre>`;
+}
+
 function layout(site: Site, here: string, title: string, main: string): Page {
+  // The home page's title already is the provenance, so it isn't said twice.
+  const provenance = `${site.repoName} at ${site.generated.short}`;
   const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(stripMarkdown(title))} · ${esc(site.repoName)} at ${esc(site.generated.short)}</title>
+<title>${esc(here ? `${stripMarkdown(title)} · ${provenance}` : provenance)}</title>
 <link rel="profile" href="${rel(here, 'profile/')}">
 <link rel="stylesheet" href="${rel(here, 'style.css')}">
 </head>
