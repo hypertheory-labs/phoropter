@@ -148,7 +148,7 @@ function profile(site: Site): Page {
     ['(header)', 'Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).'],
     ['plan', 'A plan: <code>title</code>, <code>name</code> (from its filename), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items.'],
     ['asBuilt', 'An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.'],
-    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
+    ['entry', 'One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>source</code> (the parenthesis after <em>Because</em> or <em>Answer</em>, exactly as written), <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.'],
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> for <code>where (new)</code>, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, <code>note</code>, and <code>code</code>.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
@@ -179,8 +179,14 @@ function entryHtml(here: string, doc: Doc, entry: ResolvedEntry): string {
 ${pairHtml(here, entry)}
 ${anchoredByHtml(here, entry)}
 ${entry.resolved.map((a) => anchorHtml(here, doc, a)).join('\n')}
-${entry.body ? `<div class="reason" itemprop="reason">${block(entry.body)}</div>` : ''}
+${entry.body ? `<div class="reason" itemprop="reason">${withSource(block(entry.body))}</div>` : ''}
 </section>`;
+}
+
+// The source stays as written, inside the bold lead where the reader sees it;
+// the span only makes it findable.
+function withSource(html: string): string {
+  return html.replace(/^<p><strong>(Because|Answer) \((.*?)\):<\/strong>/, '<p><strong>$1 (<span itemprop="source">$2</span>):</strong>');
 }
 
 function pairHtml(here: string, entry: ResolvedEntry): string {

@@ -53,6 +53,8 @@ Intro.
     { where: 'src/c.ts', isNew: true },
   ]);
   assert.match(d.body, /a list that is prose/);
+  assert.equal(d.source, 'Jeff');
+  assert.equal(g.source, undefined);
   assert.equal(g.kind, 'Guess');
   assert.deepEqual(g.anchors, []);
 });

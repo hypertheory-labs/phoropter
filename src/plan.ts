@@ -16,6 +16,7 @@ export type Entry = {
   slug: string;
   anchors: Anchor[];
   body: string; // markdown
+  source?: string; // the parenthesis in a leading `**Because (…):**` or `**Answer (…):**`, as written
 };
 
 export type PlanDoc = {
@@ -58,7 +59,10 @@ export function parsePlan(source: string): PlanDoc {
     current.body += token.raw;
   }
   doc.intro = doc.intro.trim();
-  for (const entry of doc.entries) entry.body = entry.body.trim();
+  for (const entry of doc.entries) {
+    entry.body = entry.body.trim();
+    entry.source = /^\*\*(?:Because|Answer) \((.*?)\):\*\*/.exec(entry.body)?.[1];
+  }
   return doc;
 }
 
