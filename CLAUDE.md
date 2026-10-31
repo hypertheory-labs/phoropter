@@ -57,8 +57,9 @@ pace with the work, not coverage.
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols
   <file>` lists symbols to anchor, and `phoropter index --check <dir>` tests an
-  indexer. The Go one needs scip-go v0.1.23 (`go install …@v0.1.23`; newer needs a newer
-  Go).
+  indexer. The Go one needs Go 1.25+ and scip-go, which moved to
+  `github.com/scip-code/scip-go` (`go install …/cmd/scip-go@latest`); it reads 0.1 and
+  0.2 alike.
 - **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects
   `../mock-control`; pass a later commit to see the newer plans); the tests also read
   `../aide`, and skip what isn't there. `node src/build.ts <repo> [commit]` writes

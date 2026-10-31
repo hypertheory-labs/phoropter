@@ -29,7 +29,7 @@ Print one JSON object and exit 0:
 
 - **`indexer`:** its name.
 - **`version`:** its version. Put the version of anything it wraps in here too, like
-  `"0.1.0 (scip-go 0.1.23)"`. Stored indexes name it.
+  `"0.1.0 (scip-go 0.2.9)"`. Stored indexes name it.
 - **`scheme`:** the first word of every symbol it produces. Anchors starting with this
   word are sent to this indexer. See below.
 - **`extensions`:** the file extensions it indexes. `phoropter symbols <file>` picks
@@ -44,7 +44,7 @@ every package you find. Print one JSON object on stdout and exit 0:
 ```json
 {
   "indexer": "phoropter-index-go",
-  "version": "0.1.0 (scip-go 0.1.23)",
+  "version": "0.1.0 (scip-go 0.2.9)",
   "scheme": "scip-go",
   "packages": {
     "phoropter-tui": {

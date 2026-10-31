@@ -22,7 +22,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -60,14 +60,15 @@ func main() {
 			asked = append(asked, m)
 		}
 	}
-	res := out{Indexer: "phoropter-index-go", Version: version + " (" + scipGoVersion(scipGo) + ")", Scheme: "scip-go", Packages: map[string]pkgOut{}, Missing: []string{}}
+	scipGoVer := scipGoVersion(scipGo)
+	res := out{Indexer: "phoropter-index-go", Version: version + " (scip-go " + scipGoVer + ")", Scheme: "scip-go", Packages: map[string]pkgOut{}, Missing: []string{}}
 	for _, mod := range asked {
 		modDir, ok := modules[mod]
 		if !ok {
 			res.Missing = append(res.Missing, mod)
 			continue
 		}
-		defs, err := index(scipGo, dir, modDir, mod)
+		defs, err := index(scipGo, scipGoVer, dir, modDir, mod)
 		if err != nil {
 			fail(fmt.Sprintf("scip-go failed on %s: %v", mod, err))
 		}
@@ -101,15 +102,21 @@ func findModules(dir string) map[string]string {
 
 // index runs scip-go on one module and keeps its definitions: the symbol with
 // its version written as ".", the file relative to dir, and the lines.
-func index(scipGo, dir, modDir, mod string) (map[string][3]any, error) {
+func index(scipGo, scipGoVer, dir, modDir, mod string) (map[string][3]any, error) {
 	tmp, err := os.CreateTemp("", "phoropter-index-go-*.scip")
 	if err != nil {
 		return nil, err
 	}
 	tmp.Close()
 	defer os.Remove(tmp.Name())
-	rel, _ := filepath.Rel(modDir, dir)
-	cmd := exec.Command(scipGo, "-q", "-o", tmp.Name(), "--module-root=.", "--repository-root="+rel)
+	// scip-go 0.2 has an index command and skips tests itself; 0.1 took flags
+	// alone and needed the repository's root.
+	args := []string{"index", "-q", "-o", tmp.Name(), "--module-root=.", "--skip-tests"}
+	if strings.HasPrefix(scipGoVer, "0.1.") {
+		rel, _ := filepath.Rel(modDir, dir)
+		args = []string{"-q", "-o", tmp.Name(), "--module-root=.", "--repository-root=" + rel}
+	}
+	cmd := exec.Command(scipGo, args...)
 	cmd.Dir = modDir
 	if b, err := cmd.CombinedOutput(); err != nil {
 		return nil, fmt.Errorf("%v: %s", err, strings.TrimSpace(string(b)))
@@ -145,14 +152,15 @@ func index(scipGo, dir, modDir, mod string) (map[string][3]any, error) {
 			if _, seen := defs[key]; seen {
 				continue
 			}
-			r := occ.EnclosingRange
-			if len(r) == 0 {
-				r = occ.Range
+			// SourceRange and EnclosingSourceRange read both the typed ranges
+			// newer scip-go writes and the older repeated-int32 form.
+			r, ok := occ.EnclosingSourceRange()
+			if !ok {
+				if r, ok = occ.SourceRange(); !ok {
+					continue
+				}
 			}
-			start, end := r[0]+1, r[0]+1
-			if len(r) == 4 {
-				end = r[2] + 1
-			}
+			start, end := r.Start.Line+1, r.End.Line+1
 			// scip-go gives a definition's name, not its extent; the parser
 			// knows where the declaration ends.
 			if end == start {
@@ -215,16 +223,16 @@ func findScipGo() string {
 	if p := filepath.Join(gopath, "bin", "scip-go"); fileExists(p) {
 		return p
 	}
-	fail("scip-go isn't installed: go install github.com/sourcegraph/scip-go/cmd/scip-go@v0.1.23 (newer versions need a newer Go)")
+	fail("scip-go isn't installed: go install github.com/scip-code/scip-go/cmd/scip-go@latest")
 	return ""
 }
 
 func scipGoVersion(scipGo string) string {
 	b, err := exec.Command(scipGo, "--version").CombinedOutput()
 	if err != nil {
-		return "scip-go"
+		return "unknown"
 	}
-	return "scip-go " + strings.TrimSpace(string(b))
+	return strings.TrimPrefix(strings.TrimSpace(string(b)), "v")
 }
 
 func fileExists(p string) bool {
