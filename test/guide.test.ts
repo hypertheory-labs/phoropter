@@ -20,6 +20,7 @@ test('every page links the guide, which says which phoropter it came from', () =
   for (const page of pages) {
     const depth = page.href.split('/').filter(Boolean).length;
     assert.ok(page.html.includes(`<link rel="help" href="${'../'.repeat(depth)}guide/">`), page.href);
+    assert.ok(page.html.includes(`<a class="home-link" href="${'../'.repeat(depth) || './'}">home</a>`), page.href); // tassel
   }
 });
 

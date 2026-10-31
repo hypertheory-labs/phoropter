@@ -81,5 +81,5 @@ function send(res: import('node:http').ServerResponse, method: string | undefine
 function withDraftLink(html: string, here: string): string {
   if (!hasDraft(repoDir)) return html;
   const dir = here.endsWith('/') || here === '' ? here : here.slice(0, here.lastIndexOf('/') + 1);
-  return html.replace('<span class="links">', `<span class="links"><a rel="draft" href="${rel(dir, 'draft/')}">draft</a>\n`);
+  return html.replace(/(<a class="home-link"[^>]*>home<\/a>)/, `$1\n<a rel="draft" href="${rel(dir, 'draft/')}">draft</a>`);
 }

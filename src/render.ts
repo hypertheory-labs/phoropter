@@ -408,7 +408,8 @@ at <data itemprop="commit" value="${site.generated.sha}"><code>${esc(site.genera
 <body>
 <header class="provenance" itemscope>
 ${header}
-<span class="links"><a rel="help" href="${rel(here, 'guide/')}">guide</a>
+<span class="links"><a class="home-link" href="${rel(here, '')}">home</a>
+<a rel="help" href="${rel(here, 'guide/')}">guide</a>
 <a class="profile-link" href="${rel(here, 'profile/')}">profile</a></span>
 </header>
 <main>
