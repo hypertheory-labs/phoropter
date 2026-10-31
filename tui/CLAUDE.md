@@ -33,10 +33,10 @@ true.
   in `shelf/`.
 - **Plans** are in the root `plans/`, by the guide, with phoropter's. A TUI plan can
   anchor and revisit phoropter entries now. Symbol anchors work for Go now (seersucker):
-  `npx phoropter symbols tui/internal/tui/screens.go` lists them, ready to paste. File
-  anchors with a quote still work, with paths from the repository root
-  (`tui/internal/tui/screens.go`). The TUI's plans from before the
-  move anchor `internal/…` and show `no-file` at later commits; they're read as written.
+  `phoropter symbols tui/app/screens.go` lists them, ready to paste (their package is the
+  module, `github.com/hypertheory-labs/phoropter`). File anchors with a quote still
+  work, with paths from the repository root (`tui/app/screens.go`). Plans from before a
+  move anchor older paths and show `no-file` at later commits; they're read as written.
 - **Drafts:** one, `drafts/plan.draft.md`, and notes on landed plans beside it in
   `drafts/` (tarlatan, organza). Serve the repository with
   `npx phoropter` from anywhere in it, and point the TUI at what `npx phoropter url`
@@ -53,16 +53,17 @@ true.
 - **Where this is going:** `docs/next.md` (file mode, what's already at a draft's
   places, `init`, `why`, reasons to re-check, and a phoropter CLI with UIs and indexers
   as plugins, `gh`- or `kubectl`-style, where this TUI is one UI).
-- **Layout:** `internal/microdata` (generic WHATWG microdata), `internal/substrate`
-  (typed pages, the ledger, the crawl), `internal/notes` (the notes file; the only
-  thing that writes), `internal/tui` (Bubble Tea v1). Page kind is decided from the
-  main item's properties, not the URL.
-- **Running** (from `tui/`): `go build -o bin/phoropter-tui .`, then
-  `bin/phoropter-tui [url|dir]` (default `http://localhost:4173/`), and `go test ./...`.
-  `npm test` at the root doesn't run these, and that's deliberate. The tests read
-  `testdata/`, sites built by `node src/build.ts <repo> <commit> --out …` at the root.
-  Rebuild them in the same work as a profile change.
-- **Dependencies are pinned** for Go 1.24: bubbletea v1.3.4, lipgloss v1.1.0,
-  `charmbracelet/x/ansi` v0.8.0. `go mod tidy` will bump `x/ansi`, which breaks
-  lipgloss's `cellbuf`. Pin it back with `GOTOOLCHAIN=local go get …@v0.8.0`.
+- **Layout** (organdy: one module, the TUI inside phoropter's binary): `tui/microdata`
+  (generic WHATWG microdata), `tui/substrate` (typed pages, the ledger, the crawl),
+  `tui/notes` (the notes file; the only thing that writes), `tui/app` (Bubble Tea v1,
+  and `Run`, which is `phoropter ui`). Page kind is decided from the main item's
+  properties, not the URL. `tui/app/boundary_test.go` fails if anything under `tui/`
+  imports phoropter's own packages.
+- **Running:** `phoropter ui [url|dir]` (default: the server `phoropter url` finds, then
+  `http://localhost:4173/`), `phoropter ui gaps [site]`, and `go test ./...` at the root.
+  The tests read `tui/testdata/`, sites built by phoropter; rebuild them in the same work
+  as a profile change.
+- **Dependencies are pinned:** bubbletea v1.3.4, lipgloss v1.1.0, `charmbracelet/x/ansi`
+  v0.8.0, in the root `go.mod`. `go mod tidy` can bump `x/ansi`, which breaks lipgloss's
+  `cellbuf`; pin it back with `go get …@v0.8.0`.
 - **Claude commits; Jeff pushes.**

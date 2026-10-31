@@ -12,19 +12,25 @@ The plan format itself is in [`guide.md`](guide.md), and every site serves it at
 
 ## Install
 
-You need Node 24 or later, and git.
+phoropter is one Go binary, with the terminal reader inside. You need git, and Go 1.25+
+to build it.
+
+```sh
+go install github.com/hypertheory-labs/phoropter@latest
+```
+
+Or from a clone, which also finds the first-party indexers in `indexers/`:
 
 ```sh
 git clone https://github.com/hypertheory-labs/phoropter.git
-cd phoropter && npm install
-ln -s "$PWD/src/cli.ts" ~/.local/bin/phoropter   # any directory on your PATH
+cd phoropter && go build -o bin/phoropter .
+ln -s "$PWD/bin/phoropter" ~/.local/bin/phoropter   # any directory on your PATH
 ```
 
-`npm link` works too, unless a Node version manager keeps its global bin off your
-`PATH`. Check it with `phoropter help`.
+Check it with `phoropter help`.
 
 **Indexers**, for anchors on symbols (a class, a method) rather than files and quotes:
-- **TypeScript:** included.
+- **TypeScript:** in a clone, `npm install` (it runs scip-typescript, which is Node).
 - **Go:** needs Go 1.25+ and `go install github.com/scip-code/scip-go/cmd/scip-go@latest`.
 - **C# / .NET:** install `phoropter-index-roslyn` on your `PATH`. It's a separate
   repository with an `install.sh`.
@@ -104,16 +110,11 @@ guide first: it's at `guide/` on the site (`phoropter url` prints the address), 
 
 ## The TUI
 
-`tui/` is a terminal reader for the same site, written in Go. It's a projection of the
-served pages, and it reads nothing else.
-
-```sh
-cd tui && go build -o ../bin/phoropter-tui .
-bin/phoropter-tui "$(phoropter url)"
-```
-
-Run it inside the repository the site is about, so it can find the draft to annotate.
-`?` lists the keys. [`tui/README.md`](tui/README.md) has more.
+`phoropter ui` is a terminal reader for the same site. It's a projection of the served
+pages and reads nothing else; a test keeps it from importing phoropter's own code. It
+opens the site `phoropter url` finds for the repository you're in, or the address you
+give it. Run it inside the repository the site is about, so it can find the draft to
+annotate. `?` lists the keys. [`tui/README.md`](tui/README.md) has more.
 
 ## Publishing
 

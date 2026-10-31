@@ -41,20 +41,27 @@ pace with the work, not coverage.
 - **The rels and microdata are a public API.** The profile defines them, and readers
   other than a browser depend on them. Renaming one breaks someone; it's a plan, not a
   tidy-up.
-- **`tui/` is a reader of that API, first-party** (dowlas). It's a Go terminal reader that
-  reads only served or built pages, never `src/`, and keeps a ledger of every place it
-  had to read past the profile. Its gaps are phoropter's to close. A session working
+- **phoropter is Go, one binary** (organdy): `main.go` is the command, `internal/site/` is
+  phoropter itself (plans, resolution, the store, indexers, rendering, the dev server),
+  and the TUI ships in it as `phoropter ui`. The TypeScript is gone; only the TypeScript
+  indexer is Node, because scip-typescript is. `testdata/golden/` holds sites the Node
+  version built, and the Go version must match them in microdata.
+- **`tui/` is a reader of that API, first-party** (dowlas). It reads only served or built
+  pages, never `internal/site/`, and a test in `tui/app/` fails the build if any TUI
+  package imports phoropter's own. It keeps a ledger of every place it had to read past
+  the profile. Its gaps are phoropter's to close. A session working
   in `tui/` reads `tui/CLAUDE.md`. Its plans are in `plans/` with everyone's.
 - **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it
   short and true for the next session.
-- **The command** (batik): `npx phoropter` in any repository serves it (port 4173, or
-  the next free one; `npx phoropter url` prints where), `phoropter build` writes the
-  static site, and `phoropter index` commits the indexes plans need into
-  `.phoropter/index/`. That's the one write into a repository, and only when run on
-  purpose. Other indexes are cached in `~/.cache/phoropter/`. To put `phoropter` on your
-  path, symlink `src/cli.ts` into a directory on it (Jeff's is
-  `~/.local/bin/phoropter`). `npm link` works too, unless a Node version manager keeps
-  its global bin off `PATH`, as vite-plus did here.
+- **The command** (batik): `phoropter` in any repository serves it (port 4173, or the
+  next free one; `phoropter url` prints where), `phoropter build` writes the static
+  site, `phoropter index` commits the indexes plans need into `.phoropter/index/`, and
+  `phoropter ui` opens the TUI. Committing indexes is the one write into a repository,
+  and only when run on purpose. Other indexes are cached in `~/.cache/phoropter/`.
+  `go install github.com/hypertheory-labs/phoropter@latest` installs it; here,
+  `go build -o bin/phoropter .`, and Jeff's `~/.local/bin/phoropter` is a symlink to
+  `bin/phoropter`. A binary built in this repository finds `indexers/` by walking up
+  from itself; anywhere else, indexers come from `PATH`.
 - **Indexers** (seersucker) are programs in `indexers/` (TypeScript, Go), or on `PATH` as
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols
@@ -62,8 +69,9 @@ pace with the work, not coverage.
   indexer. The Go one needs Go 1.25+ and scip-go, which moved to
   `github.com/scip-code/scip-go` (`go install …/cmd/scip-go@latest`); it reads 0.1 and
   0.2 alike.
-- **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects
-  `../mock-control`; pass a later commit to see the newer plans); the tests also read
-  `../aide`, and skip what isn't there. `node src/build.ts <repo> [commit]` writes
-  `site/`, which is gitignored. `npm test`, `npm run check`. Node 24+ runs the `.ts`
-  sources directly; there's no build step.
+- **Running:** `go test ./...` runs everything, the golden comparison included (the
+  tests read `../mock-control`, and skip what needs it when it isn't there).
+  `phoropter ../mock-control --at 90c65b9` serves mock-control's older plans. `npm
+  install` is only for the TypeScript indexer. The TUI's dependency pins (Bubble Tea
+  v1.3.4, lipgloss v1.1.0, `charmbracelet/x/ansi` v0.8.0) still hold: `go mod tidy` can
+  bump `x/ansi` and break lipgloss's `cellbuf`, so pin it back if it does.

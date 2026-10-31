@@ -14,12 +14,13 @@ This will be completely read only. There is an "edge" feature coming that will h
 
 ## Running it
 
+The TUI is part of the `phoropter` binary (organdy):
+
 ```sh
-go build -o bin/phoropter-tui .
-bin/phoropter-tui                                # http://localhost:4173/, phoropter's npm run dev
-bin/phoropter-tui testdata/phoropter-1a83dbc     # or a built site on disk
-bin/phoropter-tui gaps [site]                    # crawl, and list where it read past the profile
-go test ./...
+phoropter ui                                     # the site phoropter url finds, or http://localhost:4173/
+phoropter ui tui/testdata/phoropter-1a83dbc      # or a built site on disk
+phoropter ui gaps [site]                         # crawl, and list where it read past the profile
+go test ./...                                    # from the repository's root
 ```
 
 Reasons come only from the substrate's pages; the TUI reads no git history. It writes
@@ -47,8 +48,8 @@ and how notes are written is in `docs/annotating.md`. What it asked phoropter fo
 before the move is in `docs/for-phoropter.md`, superseded by seeds in the root
 `shelf/`.
 
-`testdata/` holds sites built by phoropter (`node src/build.ts <repo> <commit> --out
-…`, at the root) from mock-control at `f02528f` and phoropter at `1a83dbc`, both built by phoropter at
+`testdata/` holds sites built by phoropter (`phoropter build <repo> --at <commit> --out
+…`) from mock-control at `f02528f` and phoropter at `1a83dbc`, both built by phoropter at
 `1a83dbc`, so tests don't need a server. Rebuild them when the profile changes.
 `mock-control-draft/` is a draft page from phoropter's dev server, and
 `mock-control-draft.source.md` is the draft it was served from.
