@@ -116,3 +116,14 @@ h2 { font-size: 1.15rem; line-height: 1.3; }
 .view pre code { display: block; white-space: pre; }
 .view mark { background: var(--mark); color: inherit; display: inline-block; min-width: 100%; }
 .line::before { counter-increment: line; content: counter(line); display: inline-block; width: 3.5em; padding-right: 0.8em; text-align: right; color: var(--muted); }
+
+/* The draft (loden): working tree, not a commit. */
+.draft-label { display: inline-block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--guess); border: 1px solid var(--guess); border-radius: 3px; padding: 0.1rem 0.4rem; }
+.prompt { max-width: 46rem; margin: 0.75rem 0 0.75rem 1rem; padding: 0.5rem 0.75rem; border-left: 3px solid var(--guess); background: var(--code-bg); border-radius: 0 4px 4px 0; }
+.prompt-heading { font-weight: 600; margin: 0 0 0.3rem; }
+.prompt .kind { color: var(--guess); }
+.prompt .fallback { margin: 0.3rem 0; }
+.prompt .answer { border-top: 1px dashed var(--rule); margin-top: 0.4rem; padding-top: 0.3rem; }
+.annotation { max-width: 46rem; margin: 0.75rem 0 0.75rem 1rem; padding: 0.4rem 0.75rem; border-left: 3px solid var(--chose); }
+.annotation .meta { margin: 0; }
+.annotation blockquote { margin: 0.3rem 0; padding-left: 0.6rem; border-left: 2px solid var(--rule); color: var(--muted); white-space: pre-wrap; font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem; }

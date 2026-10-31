@@ -7,9 +7,9 @@ import { parseArgs } from 'node:util';
 import { Repo } from './git.ts';
 import { readGuide } from './guide.ts';
 import { renderSite } from './render.ts';
-import { buildSite } from './site.ts';
+import { buildSite, type Site } from './site.ts';
 
-export function build(repoDir: string, ref: string, out: string): { pages: number; title: string } {
+export function build(repoDir: string, ref: string, out: string): { pages: number; title: string; site: Site } {
   const site = buildSite(new Repo(resolve(repoDir)), ref);
   const pages = renderSite(site, readGuide());
   rmSync(out, { recursive: true, force: true });
@@ -19,7 +19,7 @@ export function build(repoDir: string, ref: string, out: string): { pages: numbe
     writeFileSync(file, page.html);
   }
   copyFileSync(new URL('./style.css', import.meta.url), join(out, 'style.css'));
-  return { pages: pages.length, title: `${site.repoName} at ${site.generated.short}` };
+  return { pages: pages.length, title: `${site.repoName} at ${site.generated.short}`, site };
 }
 
 export function cli(argv: string[]): { repo: string; ref: string; out: string; port: number } {

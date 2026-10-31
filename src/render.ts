@@ -3,6 +3,7 @@
 // the profile page defines.
 
 import { marked } from 'marked';
+import type { Annotation, Draft, Prompt } from './draft.ts';
 import type { Guide } from './guide.ts';
 import type { Doc, EntryRef, Place, Plan, ResolvedAnchor, ResolvedEntry, Site } from './site.ts';
 import type { Hunk, View } from './resolve.ts';
@@ -140,6 +141,7 @@ function profile(site: Site): Page {
   const rels: [string, string, string][] = [
     ['profile', 'registered', 'What do the rels and properties on this page mean? This document.'],
     ['help', 'registered', 'How are plans written? From every page to the guide, which is the same on every site.'],
+    ['draft', 'phoropter', 'Is a plan being drafted? From every page to <code>draft/</code>, the repository’s one draft, while <code>plan.draft.md</code> exists. Only the dev server adds it; a built site never has a draft.'],
     ['item', 'registered', 'What does this collection hold? From the home page to each plan and anchored place.'],
     ['collection', 'registered', 'What is this a member of? From a plan or place to the home page.'],
     ['up', 'registered', 'What is this part of? From an as-built page to its plan.'],
@@ -159,6 +161,10 @@ function profile(site: Site): Page {
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> (content <code>true</code>) for <code>where (new)</code>, in the same shape wherever it appears, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, one <code>match</code> item per match with the <code>startLine</code> and <code>endLine</code> the quote covers, <code>note</code>, <code>code</code> (each one preceded by <code>codeStart</code>, the line number of its first line; the nth <code>codeStart</code> belongs to the nth <code>code</code>), and <code>sameAs</code> when a generated view matches the as-built head’s exactly and its code isn’t repeated. A plan’s anchors have up to three views: base, as-built head (where the plan’s own work landed), and generated.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
+    ['(draft header)', 'On the draft page, the header says it’s the working tree, not a commit: <code>file</code> (<code>plan.draft.md</code>), <code>repository</code>, <code>readAt</code>, the draft’s <code>sha256</code>, and the <code>commit</code> its anchors resolve at.'],
+    ['draft', 'The draft page’s item: <code>title</code>, <code>base</code>, <code>revisits</code>, <code>notesSha256</code> and <code>annotates</code> (the draft version the notes were written against, when it isn’t this one), <code>intro</code>, <code>entry</code> items as on a plan (but never listed on places or other plans’ entries), <code>prompt</code> items, and <code>annotation</code> items.'],
+    ['prompt', 'An open question in a draft, in the annotating agreement’s form: <code>kind</code> (Question, Select, Affirm), <code>text</code>, <code>option</code> for each of a Select’s choices, <code>fallback</code> (what happens if it goes unanswered), and <code>answer</code> when the notes restate it. It follows the entry (or intro) it belongs to.'],
+    ['annotation', 'A note from <code>plan.draft.notes.md</code>: <code>heading</code> as written, <code>quote</code> (the draft’s source text it quotes), and <code>comment</code>. It follows the entry whose source holds its quote; a note without a quote, or whose quote isn’t in the draft anymore, comes first.'],
     ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code> with its <code>codeStart</code>, <code>entryCount</code> on the home page, and <code>anchoredBy</code> items.'],
   ];
   return layout(site, here, 'Profile', `
@@ -186,6 +192,73 @@ function guidePage(site: Site, guide: Guide): Page {
 <article class="guide">
 ${html.replace(/(<\/h1>)/, `$1\n${version}`)}
 </article>`);
+}
+
+// The one draft, rendered per request by the dev server (loden). It says it's
+// the working tree, not a commit; its anchors still resolve at commits.
+export function draftPage(site: Site, draft: Draft): Page {
+  const here = 'draft/';
+  const { plan, notes } = draft;
+  const at = draft.readAt.toISOString();
+  const header = `Draft, not committed: <code itemprop="file">${esc(plan.file)}</code> in <span itemprop="repository">${esc(site.repoName)}</span>,
+read at <time itemprop="readAt" datetime="${at}">${at.slice(11, 19)} UTC</time>
+<span class="meta">sha256 <data itemprop="sha256" value="${draft.sha256}">${draft.sha256.slice(0, 12)}</data>; anchors at <data itemprop="commit" value="${site.generated.sha}">${esc(site.generated.short)}</data></span>`;
+  const byPlace = (key: string) => (notes?.annotations ?? []).filter((a) => a.found && a.at === key);
+  const top = (notes?.annotations ?? []).filter((a) => a.quote === undefined || !a.found);
+  const extras = (key: string) => (draft.prompts.get(key) ?? []).map(promptHtml).join('\n') + byPlace(key).map(annotationHtml).join('\n');
+  const notesFact = notes
+    ? `<dt>Notes</dt><dd><code>plan.draft.notes.md</code>, sha256 <data itemprop="notesSha256" value="${notes.sha256}">${notes.sha256.slice(0, 12)}</data>${notesAnnotate(draft)}</dd>`
+    : '<dt>Notes</dt><dd class="note">none yet</dd>';
+  return layout(site, here, plan.doc.title || 'Draft', `
+<nav><a href="${rel(here, '')}">${esc(site.repoName)} at ${esc(site.generated.short)}</a></nav>
+<article class="draft" itemscope>
+<p class="draft-label">Draft. Nothing here is testimony yet.</p>
+<h1 itemprop="title">${inline(plan.doc.title || 'Untitled draft')}</h1>
+<dl class="facts">
+<dt>Base</dt><dd>${baseHtml(plan)}</dd>
+${revisitsHtml(here, plan)}
+${notesFact}
+</dl>
+${top.map(annotationHtml).join('\n')}
+${plan.doc.intro ? `<div class="intro" itemprop="intro">${block(plan.doc.intro)}</div>` : ''}
+${extras('intro')}
+${plan.entries.map((e) => entryHtml(here, plan, e) + extras(e.slug)).join('\n')}
+</article>`, header);
+}
+
+// Notes say which version of the draft they annotate. When it isn't this one,
+// their quotes may have come loose.
+function notesAnnotate(draft: Draft): string {
+  const annotates = draft.notes?.annotates;
+  if (!annotates) return '';
+  return draft.notes!.current
+    ? `, annotating this version`
+    : `, annotating <data itemprop="annotates" value="${annotates}">${annotates}</data> <span class="note">an earlier version of the draft; quotes may have come loose</span>`;
+}
+
+function promptHtml(p: Prompt): string {
+  const options = p.options.length ? `<ul>${p.options.map((o) => `<li itemprop="option">${inline(o)}</li>`).join('')}</ul>` : '';
+  const fallback = p.fallback
+    ? `<p class="fallback"><strong>If unanswered:</strong> <span itemprop="fallback">${inline(p.fallback)}</span></p>`
+    : '<p class="fallback note">No fallback given, so silence doesn’t say what happens.</p>';
+  const answer = p.answer
+    ? `<div class="answer" itemprop="answer">${block(p.answer.comment)}</div>`
+    : '<p class="note">Not answered yet.</p>';
+  return `<div class="prompt" itemprop="prompt" itemscope>
+<p class="prompt-heading"><span class="kind" itemprop="kind">${esc(p.kind)}</span>: <span itemprop="text">${inline(p.text)}</span></p>
+${p.body ? block(p.body) : ''}${options}
+${fallback}
+${answer}
+</div>`;
+}
+
+function annotationHtml(a: Annotation): string {
+  const missing = a.quote !== undefined && !a.found ? '<p class="note">quote not found in the draft: it moved under the note</p>' : '';
+  return `<aside class="annotation" itemprop="annotation" itemscope>
+<p class="meta" itemprop="heading">${esc(a.heading)}</p>
+${a.quote !== undefined ? `<blockquote itemprop="quote">${esc(a.quote)}</blockquote>` : ''}${missing}
+${a.comment ? `<div itemprop="comment">${block(a.comment)}</div>` : ''}
+</aside>`;
 }
 
 // --- parts ---
@@ -316,9 +389,12 @@ function hunkHtml(h: Hunk): string {
   return `<meta itemprop="codeStart" content="${h.start}"><pre itemprop="code" data-start="${h.start}"><code style="counter-reset: line ${h.start - 1}">${lines.join('\n')}</code></pre>`;
 }
 
-function layout(site: Site, here: string, title: string, main: string): Page {
+function layout(site: Site, here: string, title: string, main: string, header?: string): Page {
   // The home page's title already is the provenance, so it isn't said twice.
   const provenance = `${site.repoName} at ${site.generated.short}`;
+  header ??= `Generated from <span itemprop="repository">${esc(site.repoName)}</span>
+at <data itemprop="commit" value="${site.generated.sha}"><code>${esc(site.generated.short)}</code></data>
+<span class="meta">${site.generated.sha}</span>`;
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -331,9 +407,7 @@ function layout(site: Site, here: string, title: string, main: string): Page {
 </head>
 <body>
 <header class="provenance" itemscope>
-Generated from <span itemprop="repository">${esc(site.repoName)}</span>
-at <data itemprop="commit" value="${site.generated.sha}"><code>${esc(site.generated.short)}</code></data>
-<span class="meta">${site.generated.sha}</span>
+${header}
 <span class="links"><a rel="help" href="${rel(here, 'guide/')}">guide</a>
 <a class="profile-link" href="${rel(here, 'profile/')}">profile</a></span>
 </header>
