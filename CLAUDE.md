@@ -51,8 +51,10 @@ pace with the work, not coverage.
   the next free one; `npx phoropter url` prints where), `phoropter build` writes the
   static site, and `phoropter index` commits the indexes plans need into
   `.phoropter/index/`. That's the one write into a repository, and only when run on
-  purpose. Other indexes are cached in `~/.cache/phoropter/`. `npm link` puts
-  `phoropter` on your path.
+  purpose. Other indexes are cached in `~/.cache/phoropter/`. To put `phoropter` on your
+  path, symlink `src/cli.ts` into a directory on it (Jeff's is
+  `~/.local/bin/phoropter`). `npm link` works too, unless a Node version manager keeps
+  its global bin off `PATH`, as vite-plus did here.
 - **Indexers** (seersucker) are programs in `indexers/` (TypeScript, Go), or on `PATH` as
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols
