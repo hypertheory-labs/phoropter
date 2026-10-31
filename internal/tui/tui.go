@@ -11,6 +11,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 
+	"phoropter-tui/internal/notes"
 	"phoropter-tui/internal/substrate"
 )
 
@@ -59,9 +60,9 @@ func (m *Model) Init() tea.Cmd { return m.open("") }
 // open loads the page at u and pushes the screen for it.
 func (m *Model) open(u string) tea.Cmd {
 	m.loading = true
-	c := m.c
+	c, dir := m.c, m.workDir()
 	return func() tea.Msg {
-		s, err := load(c, u)
+		s, err := load(c, dir, u)
 		if err != nil {
 			return errMsg{err}
 		}
@@ -76,9 +77,9 @@ func (m *Model) reload() tea.Cmd {
 		m.c.Forget(u)
 	}
 	m.loading = true
-	c := m.c
+	c, dir := m.c, m.workDir()
 	return func() tea.Msg {
-		s, err := load(c, at)
+		s, err := load(c, dir, at)
 		if err != nil {
 			return errMsg{err}
 		}
@@ -87,7 +88,8 @@ func (m *Model) reload() tea.Cmd {
 }
 
 // load decides what a page is from its main item's properties, not its URL.
-func load(c *substrate.Client, u string) (screen, error) {
+// dir is where to look for a draft on disk that the site doesn't link.
+func load(c *substrate.Client, dir, u string) (screen, error) {
 	p, err := c.Page(u)
 	if err != nil {
 		return nil, err
@@ -124,7 +126,13 @@ func load(c *substrate.Client, u string) (screen, error) {
 		if err != nil {
 			return nil, err
 		}
-		return &listScreen{home: h}, nil
+		var draft *substrate.Doc
+		if h.DraftURL != "" {
+			if draft, err = c.Doc(h.DraftURL); err != nil {
+				return nil, err
+			}
+		}
+		return newListScreen(h, draft, draft == nil && notes.DraftOnDisk(dir)), nil
 	}
 }
 
@@ -135,6 +143,11 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case loadedMsg:
 		m.loading, m.status = false, ""
 		if msg.replace && len(m.stack) > 0 {
+			if n, ok := msg.s.(*listScreen); ok {
+				if o, ok := m.top().(*listScreen); ok {
+					n.oldest, n.cur = o.oldest, min(o.cur, len(n.home.Plans))
+				}
+			}
 			m.stack[len(m.stack)-1] = msg.s
 		} else {
 			m.stack = append(m.stack, msg.s)
@@ -214,11 +227,20 @@ func (m *Model) View() string {
 		}
 		return "loading " + m.c.Root.String() + " …"
 	}
+	// Every crumb but the last is shortened, so the last stays readable.
 	var crumbs []string
-	for _, s := range m.stack {
-		crumbs = append(crumbs, s.title())
+	for i, s := range m.stack {
+		t := s.title()
+		if i < len(m.stack)-1 {
+			t = ansi.Truncate(t, 28, "…")
+		}
+		crumbs = append(crumbs, t)
 	}
-	header := styles.header.Width(m.w).Render(ansi.Truncate(strings.Join(crumbs, " › "), m.w-2, "…"))
+	hs := styles.header
+	if a, ok := m.top().(interface{ accent() bool }); ok && a.accent() {
+		hs = styles.draftHeader
+	}
+	header := hs.Width(m.w).Render(ansi.Truncate(strings.Join(crumbs, " › "), m.w-2, "…"))
 
 	gaps := len(m.ledger.Gaps())
 	right := fmt.Sprintf("gaps %d (g) · ? help · q quit", gaps)
@@ -262,7 +284,8 @@ func (m *Model) gapsView(w int) string {
 
 const helpText = `Keys
 
-  plan list     j/k move · enter open (a draft, when there is one, is first)
+  plan list     j/k move · enter open · o newest or oldest first
+                the draft, when there is one, is in the slot at the top
   plan          j/k entry · tab next anchor · 1 2 3 or [ ] layer
                 J/K scroll the right pane · enter links from here · esc back
   place         j/k move · enter open that plan at its entry · esc back
@@ -272,9 +295,9 @@ const helpText = `Keys
   anywhere      r read this page again · g gaps ledger · ? this help · q quit
 
 Layers are the commits phoropter shows an anchor at:
-  1 base           what the plan was deciding against
-  2 as-built head  where the plan's own work landed
-  3 generated      the commit this site was built from: "now"
+  1 before    what the plan was deciding against (its base)
+  2 as built  where the plan's own work landed (the as-built's head)
+  3 now       the commit this site was built from
 
 A layer with nothing to show says why. That's the substrate's answer, not
 an error.

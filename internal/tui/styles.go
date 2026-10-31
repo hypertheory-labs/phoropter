@@ -4,7 +4,12 @@ import "github.com/charmbracelet/lipgloss"
 
 type styleSet struct {
 	header, footer, title, dim, err, cursor, marked, gutter, active, missing, rule lipgloss.Style
+	draftHeader, slot, slotEmpty                                                   lipgloss.Style
 }
+
+// accent is a draft's color, used nowhere else. A palette number, so it
+// follows the terminal's theme.
+var accent = lipgloss.Color("13")
 
 var styles = styleSet{
 	header:  lipgloss.NewStyle().Bold(true).Padding(0, 1).Background(lipgloss.AdaptiveColor{Light: "254", Dark: "236"}),
@@ -18,6 +23,10 @@ var styles = styleSet{
 	active:  lipgloss.NewStyle().Reverse(true).Bold(true).Padding(0, 1),
 	missing: lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "250", Dark: "238"}).Padding(0, 1),
 	rule:    lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "250", Dark: "238"}),
+
+	draftHeader: lipgloss.NewStyle().Bold(true).Padding(0, 1).Background(accent).Foreground(lipgloss.Color("0")),
+	slot:        lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(accent).Padding(0, 1),
+	slotEmpty:   lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.AdaptiveColor{Light: "250", Dark: "238"}).Padding(0, 1),
 }
 
 var kindColors = map[string]string{

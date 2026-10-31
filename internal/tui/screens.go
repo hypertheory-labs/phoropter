@@ -2,6 +2,7 @@ package tui
 
 import (
 	"fmt"
+	"path"
 	"strings"
 	"time"
 
@@ -49,93 +50,190 @@ func move(cur, n int, k string) int {
 // ---- the plan list
 
 type listScreen struct {
-	home *substrate.Home
-	cur  int // with a draft, 0 is the draft and the plans follow
+	home   *substrate.Home
+	draft  *substrate.Doc // the draft's page, when the home page links one
+	onDisk bool           // no draft linked, but plan.draft.md is in this repo
+	oldest bool           // newest first unless flipped
+	cur    int            // 0 is the draft's slot; the plans follow
 }
 
-func (s *listScreen) offset() int {
-	if s.home.DraftURL != "" {
-		return 1
+func newListScreen(h *substrate.Home, draft *substrate.Doc, onDisk bool) *listScreen {
+	s := &listScreen{home: h, draft: draft, onDisk: onDisk}
+	if draft == nil && len(h.Plans) > 0 {
+		s.cur = 1
 	}
-	return 0
+	return s
+}
+
+// plan is the plan at a position in the list, in the order shown.
+func (s *listScreen) plan(i int) substrate.PlanSummary {
+	if s.oldest {
+		return s.home.Plans[i]
+	}
+	return s.home.Plans[len(s.home.Plans)-1-i]
 }
 
 func (s *listScreen) title() string {
 	return fmt.Sprintf("%s at %s", s.home.Repository, s.home.Commit)
 }
 
-func (s *listScreen) help() string { return "j/k move · enter open plan · r refresh" }
+func (s *listScreen) help() string {
+	return "j/k move · enter open · o oldest/newest first · r refresh"
+}
 
-func (s *listScreen) refresh() ([]string, string) { return []string{s.home.URL}, s.home.URL }
+func (s *listScreen) refresh() ([]string, string) {
+	return []string{s.home.URL, s.home.DraftURL}, s.home.URL
+}
 
 func (s *listScreen) key(m *Model, k string) tea.Cmd {
-	n := s.offset() + len(s.home.Plans)
-	if n == 0 {
+	switch k {
+	case "o":
+		// The same plan stays chosen.
+		if s.cur > 0 {
+			s.cur = len(s.home.Plans) + 1 - s.cur
+		}
+		s.oldest = !s.oldest
 		return nil
-	}
-	s.cur = move(s.cur, n, k)
-	if k == "enter" || k == "l" || k == "right" {
-		if s.cur < s.offset() {
+	case "enter", "l", "right":
+		if s.cur == 0 {
+			if s.draft == nil {
+				m.status = "there's no draft to open"
+				return nil
+			}
 			return m.open(s.home.DraftURL)
 		}
-		return m.open(s.home.Plans[s.cur-s.offset()].URL)
+		return m.open(s.plan(s.cur - 1).URL)
 	}
+	s.cur = move(s.cur, len(s.home.Plans)+1, k)
 	return nil
 }
 
-func (s *listScreen) view(m *Model, w, h int) string {
-	if len(s.home.Plans) == 0 && s.offset() == 0 {
-		return clip("No plans on this site.", w, h, 0)
-	}
-	lw := min(max(w*2/5, 30), w/2)
-	var rows []string
-	if s.offset() > 0 {
-		row := ansi.Truncate("✎ draft     the plan being drafted, not committed", lw, "…")
-		if s.cur == 0 {
-			row = styles.cursor.Render(row)
-		}
-		rows = append(rows, row)
-	}
-	for i, p := range s.home.Plans {
-		i += s.offset()
-		mark := "  "
-		if p.AsBuiltURL != "" {
-			mark = styles.kind("Answered").Render("✓ ")
-		}
-		row := ansi.Truncate(fmt.Sprintf("%s%-9s %s", mark, p.Name, p.Title), lw, "…")
-		if i == s.cur {
-			row = styles.cursor.Render(ansi.Strip(row))
-		}
-		rows = append(rows, row)
-	}
-	rw := detailWidth(w)
-	if s.cur < s.offset() {
-		text := styles.title.Render("The draft") + "\n\n" + wrap("The repository's one draft, plan.draft.md, read from the working tree on every request. Nothing in it is testimony yet. Open it to read its entries, its open questions and the notes on it; r there reads it again.", rw)
-		return split(listWindow(rows, s.cur, h), text, w, h, 0)
-	}
-	p := s.home.Plans[s.cur-s.offset()]
-	var b strings.Builder
-	b.WriteString(styles.title.Render(wrap(p.Title, rw)) + "\n\n")
-	fact := func(k, v string) {
-		if v != "" {
-			fmt.Fprintf(&b, "%s %s\n", styles.dim.Render(fmt.Sprintf("%-9s", k)), v)
+func openPrompts(d *substrate.Doc) int {
+	n := 0
+	for _, p := range d.Prompts {
+		if p.Answer == "" {
+			n++
 		}
 	}
-	fact("name", p.Name)
-	fact("date", p.Date)
-	fact("added", p.Added.Label)
-	fact("base", p.Base.Label)
-	fact("entries", fmt.Sprint(p.Entries))
+	return n
+}
+
+// slot is the draft's place at the top of the list, there with or without one.
+func (s *listScreen) slot(w int) string {
+	var head, sub string
+	switch {
+	case s.draft != nil:
+		head = "✎ " + s.draft.Title
+		sub = "draft, read at " + readAt(s.draft.Draft)
+		if n := openPrompts(s.draft); n > 0 {
+			sub += " · " + plural(n, "open prompt")
+		}
+	case s.onDisk:
+		head = "✎ There's a draft on disk"
+		sub = "this site doesn't serve drafts; phoropter's dev server does"
+	default:
+		head = "No draft"
+		sub = "when plan.draft.md exists, the dev server shows it here"
+	}
+	inner := w - 4
+	head = ansi.Truncate(head, inner, "…")
+	if s.cur == 0 {
+		head = styles.cursor.Render(head)
+	} else if s.draft != nil {
+		head = styles.title.Render(head)
+	}
+	box := styles.slot
+	if s.draft == nil {
+		box = styles.slotEmpty
+	}
+	return box.Width(w - 2).Render(head + "\n" + styles.dim.Render(ansi.Truncate(sub, inner, "…")))
+}
+
+// meta is a plan's dim line: what the page keeps in its metadata.
+func meta(p substrate.PlanSummary) string {
+	parts := []string{p.Name, p.Date, plural(p.Entries, "entry")}
 	if p.AsBuiltURL != "" {
-		fact("as-built", "yes")
-	} else {
-		fact("as-built", styles.dim.Render("none yet"))
+		parts = append(parts, "✓ as-built")
 	}
 	if p.RevisitsURL != "" {
-		fact("revisits", strings.TrimSuffix(strings.TrimPrefix(p.RevisitsURL, m.c.Root.String()), "/"))
+		parts = append(parts, "revisits "+path.Base(strings.TrimSuffix(p.RevisitsURL, "/")))
 	}
-	b.WriteString("\n" + styles.dim.Render("Oldest first, by the commit that added each plan."))
-	return split(listWindow(rows, s.cur, h), b.String(), w, h, 0)
+	return strings.Join(parts, " · ")
+}
+
+func (s *listScreen) view(m *Model, w, h int) string {
+	lw := min(max(w*2/5, 30), w/2)
+	slot := s.slot(lw)
+	order := "newest first"
+	if s.oldest {
+		order = "oldest first"
+	}
+	left := []string{slot, styles.dim.Render(ansi.Truncate(fmt.Sprintf("Plans · %s · o flips", order), lw, "…"))}
+	if len(s.home.Plans) == 0 {
+		left = append(left, styles.dim.Render("No plans on this site yet."))
+	}
+	// Two lines a plan; scroll so the chosen one shows.
+	room := max(1, (h-lipgloss.Height(slot)-1)/2)
+	first := 0
+	if s.cur > room {
+		first = s.cur - room
+	}
+	for i := first; i < len(s.home.Plans) && i < first+room; i++ {
+		p := s.plan(i)
+		title := ansi.Truncate("  "+p.Title, lw, "…")
+		if i+1 == s.cur {
+			title = styles.cursor.Render(ansi.Strip(title))
+		}
+		left = append(left, title, styles.dim.Render(ansi.Truncate("  "+meta(p), lw, "…")))
+	}
+
+	rw := detailWidth(w)
+	var b strings.Builder
+	if s.cur == 0 {
+		switch {
+		case s.draft != nil:
+			d := s.draft
+			b.WriteString(styles.title.Render(wrap(d.Title, rw)) + "\n\n")
+			b.WriteString(field("read at", readAt(d.Draft), rw))
+			b.WriteString(field("anchors at", d.AnchorsAt.Label, rw))
+			b.WriteString(field("entries", fmt.Sprint(len(d.Entries)), rw))
+			b.WriteString(field("prompts", fmt.Sprintf("%d, %d open", len(d.Prompts), openPrompts(d)), rw))
+			b.WriteString(field("notes", fmt.Sprint(len(d.Annotations)), rw))
+			if d.Intro != "" {
+				b.WriteString("\n" + wrap(d.Intro, rw) + "\n")
+			}
+			b.WriteString("\n" + styles.dim.Render(wrap("The repository's one draft, plan.draft.md, read from the working tree on every request. Nothing in it is testimony yet. enter opens it.", rw)))
+		case s.onDisk:
+			b.WriteString(styles.title.Render("A draft this site doesn't show") + "\n\n" + wrap("plan.draft.md exists in this repository, but a built site is a function of one commit and never holds a draft. Phoropter's dev server shows it: node src/serve.ts <repo>, from phoropter.", rw))
+		default:
+			b.WriteString(styles.title.Render("No draft") + "\n\n" + wrap("A repository has at most one draft, plan.draft.md at its root. Most plans never are one. A draft is for when the shared understanding is thin; when it exists, phoropter's dev server shows it, and this slot opens it.", rw))
+		}
+		return split(strings.Join(left, "\n"), b.String(), w, h, 0)
+	}
+	p := s.plan(s.cur - 1)
+	b.WriteString(styles.title.Render(wrap(p.Title, rw)) + "\n\n")
+	b.WriteString(field("name", p.Name, rw))
+	b.WriteString(field("date", p.Date, rw))
+	b.WriteString(field("added", p.Added.Label, rw))
+	b.WriteString(field("base", p.Base.Label, rw))
+	b.WriteString(field("entries", fmt.Sprint(p.Entries), rw))
+	if p.AsBuiltURL != "" {
+		b.WriteString(field("as-built", "yes", rw))
+	} else {
+		b.WriteString(field("as-built", styles.dim.Render("none yet"), rw))
+	}
+	if p.RevisitsURL != "" {
+		b.WriteString(field("revisits", path.Base(strings.TrimSuffix(p.RevisitsURL, "/")), rw))
+	}
+	b.WriteString("\n" + styles.dim.Render(wrap("Ordered by the commit that added each plan, "+order+".", rw)))
+	return split(strings.Join(left, "\n"), b.String(), w, h, 0)
+}
+
+func readAt(d *substrate.Draft) string {
+	if t, err := time.Parse(time.RFC3339, d.ReadAt); err == nil {
+		return t.UTC().Format("15:04 UTC")
+	}
+	return d.ReadAt
 }
 
 // ---- a plan and its as-built
@@ -208,7 +306,11 @@ type menuItem struct {
 	rel, label, url string
 }
 
-var layers = []string{"base", "as-built head", "generated"}
+// layers are the profile's view roles; layerNames are what a person reads.
+var (
+	layers     = []string{"base", "as-built head", "generated"}
+	layerNames = []string{"before", "as built", "now"}
+)
 
 func newDocScreen(plan, asBuilt *substrate.Doc) *docScreen {
 	s := &docScreen{plan: plan, asBuilt: asBuilt}
@@ -297,14 +399,12 @@ func viewAt(a *substrate.Anchor, role string) *substrate.View {
 func (s *docScreen) title() string {
 	d := s.plan.Draft
 	if d == nil {
-		return s.plan.Name
+		return s.plan.Title
 	}
-	at := d.ReadAt
-	if t, err := time.Parse(time.RFC3339, d.ReadAt); err == nil {
-		at = t.UTC().Format("15:04 UTC")
-	}
-	return fmt.Sprintf("draft, not committed, read at %s · anchors at %s", at, s.plan.AnchorsAt)
+	return fmt.Sprintf("draft: %s · not committed, read at %s · anchors at %s", s.plan.Title, readAt(d), s.plan.AnchorsAt)
 }
+
+func (s *docScreen) accent() bool { return s.plan.Draft != nil }
 
 func (s *docScreen) help() string {
 	if s.form != nil {
@@ -449,7 +549,7 @@ func (s *docScreen) view(m *Model, w, h int) string {
 		case r.entry == nil && r.doc.IsAsBuilt:
 			text = "── As built, head " + r.doc.Head.Label
 		case r.entry == nil && r.doc.Draft != nil:
-			text = "── About this draft"
+			text = "── About this draft · a to note it"
 		case r.entry == nil:
 			text = "── About this plan"
 		default:
@@ -512,6 +612,9 @@ func (s *docScreen) detail(w int) string {
 		}
 		if len(d.Entries) == 0 {
 			b.WriteString("\n" + styles.dim.Render("No entries.") + "\n")
+		}
+		if d.Draft != nil {
+			b.WriteString("\n" + styles.dim.Render(wrap("a here writes a note on the whole draft. On an entry, a notes that entry; on a prompt, it answers.", w)) + "\n")
 		}
 		return b.String()
 	}
@@ -607,7 +710,7 @@ func (s *docScreen) lensBar(a *substrate.Anchor) string {
 	var parts []string
 	for i, role := range layers {
 		v := viewAt(a, role)
-		text := fmt.Sprintf("%d %s", i+1, role)
+		text := fmt.Sprintf("%d %s", i+1, layerNames[i])
 		if v != nil {
 			text += " " + v.Commit.Label + " " + statusMarks[v.Status]
 			if v.SameAs != "" {

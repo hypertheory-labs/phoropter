@@ -258,6 +258,16 @@ func (d *Draft) Save() error {
 	return os.WriteFile(d.NotesPath, []byte(d.Notes.String()), 0o644)
 }
 
+// DraftOnDisk is whether the repository holding dir has a plan.draft.md.
+func DraftOnDisk(dir string) bool {
+	root, err := repoRoot(dir)
+	if err != nil {
+		return false
+	}
+	_, err = os.Stat(filepath.Join(root, "plan.draft.md"))
+	return err == nil
+}
+
 func repoRoot(dir string) (string, error) {
 	dir, err := filepath.Abs(dir)
 	if err != nil {

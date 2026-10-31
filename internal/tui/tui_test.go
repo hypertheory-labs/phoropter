@@ -65,11 +65,22 @@ func TestWalkAPlan(t *testing.T) {
 	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
 	drive(t, m, m.Init())
 
-	if s := screenText(t, m); !strings.Contains(s, "pumice") || !strings.Contains(s, "tallow") {
+	// Titles first, newest first, the empty draft slot on top.
+	s := screenText(t, m)
+	if !strings.Contains(s, "No draft") || !strings.Contains(s, "Plans · newest first") || strings.Index(s, "Revisit pumice: MSW 3") > strings.Index(s, "Get mock-control ready to publish") || !strings.Contains(s, "pumice · 2026-10-29 · 9 entries · ✓ as-built") {
 		t.Fatalf("plan list:\n%s", s)
 	}
-	press(t, m, "enter", "j", "j")
-	s := screenText(t, m)
+	// o flips the order and keeps tallow chosen; home is the slot, j is pumice.
+	press(t, m, "o")
+	if s := screenText(t, m); !strings.Contains(s, "oldest first") || !strings.Contains(s, "revisits    pumice") {
+		t.Fatalf("after o:\n%s", s)
+	}
+	press(t, m, "home", "j", "enter", "j", "j")
+	s = screenText(t, m)
+	if !strings.Contains(s, "Get mock-control ready to publish") || !strings.Contains(s, "1 before") {
+		t.Fatalf("pumice by its title, layers by their names:\n%s", s)
+	}
+	s = screenText(t, m)
 	if !strings.Contains(s, "selector: 'app-mock-panel'") {
 		t.Fatalf("base layer should show the old selector:\n%s", s)
 	}
@@ -90,7 +101,7 @@ func TestWalkAPlan(t *testing.T) {
 		t.Fatalf("place:\n%s", s)
 	}
 	press(t, m, "enter")
-	if s := screenText(t, m); !strings.Contains(s, "pumice") {
+	if s := screenText(t, m); !strings.Contains(s, "Get mock-control ready") {
 		t.Fatalf("back into a plan:\n%s", s)
 	}
 
@@ -114,12 +125,12 @@ func TestReadADraft(t *testing.T) {
 	m := New(c, c.Ledger)
 	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
 	drive(t, m, m.Init())
-	if s := screenText(t, m); !strings.Contains(s, "✎ draft") {
-		t.Fatalf("plan list should start with the draft:\n%s", s)
+	if s := screenText(t, m); !strings.Contains(s, "✎ Let the panel remember") || !strings.Contains(s, "draft, read at 16:49 UTC") {
+		t.Fatalf("the slot should hold the draft:\n%s", s)
 	}
 	press(t, m, "enter")
 	s := screenText(t, m)
-	for _, want := range []string{"draft, not committed, read at 16:49 UTC · anchors at f02528f", "About this draft", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "✓ Select: Which corners count?"} {
+	for _, want := range []string{"draft: Let the panel remember which corner it was in · not committed, read at 16:49 UTC", "About this draft · a to note it", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "✓ Select: Which corners count?"} {
 		if !strings.Contains(s, want) {
 			t.Fatalf("draft screen lacks %q:\n%s", want, s)
 		}
@@ -198,5 +209,15 @@ func TestAnswerADraft(t *testing.T) {
 	}
 	if b, _ := os.ReadFile(filepath.Join(repo, "plan.draft.md")); string(b) != string(src) {
 		t.Error("the draft was changed")
+	}
+}
+
+// What's typed past the pane's edge wraps, so it can be seen (challis).
+func TestTextBoxWraps(t *testing.T) {
+	f := newNoteForm(-1, "the whole draft", false)
+	f.text = []rune(strings.Repeat("word ", 30) + "last")
+	s := ansi.Strip(f.view(40))
+	if !strings.Contains(s, "last▏") || strings.Contains(s, "…") {
+		t.Fatalf("text box:\n%s", s)
 	}
 }

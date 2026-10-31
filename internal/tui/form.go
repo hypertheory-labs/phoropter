@@ -178,17 +178,18 @@ func (f *form) view(w int) string {
 		b.WriteString(styles.kind("Changed").Render(wrap("This creates plan.draft.notes.md, which fixes the draft until it converts or the notes are deleted.", w)) + "\n\n")
 	}
 	box := func(label string, t []rune, focused bool) {
-		lines := strings.Split(string(t), "\n")
+		text := string(t)
 		if focused {
-			lines[len(lines)-1] += "▏"
+			text += "▏"
 		}
 		head := styles.dim.Render(label)
 		if focused {
 			head = styles.active.Render(label)
 		}
 		b.WriteString(head + "\n")
-		for _, l := range lines {
-			b.WriteString("  " + ansi.Truncate(l, max(1, w-2), "…") + "\n")
+		// Wrapped, not cut off, so what's typed past the edge can be seen.
+		for _, l := range strings.Split(wrap(text, w-2), "\n") {
+			b.WriteString("  " + l + "\n")
 		}
 		b.WriteString("\n")
 	}
