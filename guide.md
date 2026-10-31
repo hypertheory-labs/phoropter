@@ -165,14 +165,45 @@ anchored at the original, and answer it in your as-built. *(mock-control's vellu
 
 ## Drafts (optional)
 
-When you're unsure, or the shared understanding looks thin, put the plan up as a draft
-before committing it, so someone can question it before it becomes testimony. The agent
-decides when. A draft can have no questions at all: "look, then tell me to go." Every
-open question carries its fallback, so "go" and silence both mean proceed, and only
-annotations change anything. It's never an approval gate.
+Most plans are never drafts: they go straight to `plans/`. A draft is for when the
+agent's confidence or the shared understanding is thin, or when the pair has agreed,
+for a session, that the person sees every plan first, not to judge it but to follow
+it. Who decides that is the pair's to work out. It's never an approval gate: a draft
+serves the agent's confidence and the person's understanding, not permission.
+*(phoropter's loden, which served the first draft)*
 
-Drafts are done by hand for now: the draft is a markdown file the person reads and
-annotates in their editor. Phoropter doesn't serve them yet. *(phoropter: marl, on source and date, was the first)*
+A repository has at most one draft, `plan.draft.md` at its root. One fixed name means
+anyone can see whether a plan is being drafted, and drafts can't pile up into a
+backlog. Each branch or worktree has its own working tree, so parallel work isn't
+blocked. A draft that wants to be two plans gets smaller; the rest waits for the next
+one. Ignoring the draft in git is a suggestion: on a branch, committing it lets a
+mentor or senior read it before the code exists.
+
+Annotations go in `plan.draft.notes.md` beside it, in the
+[annotating agreement](https://github.com/JeffryGonzalez/annotations.nvim)'s format.
+An open question is one of that agreement's prompts, at any heading level below the
+entry it belongs to, with what happens if nobody answers:
+
+```markdown
+### Question: Should phoropter also look anywhere else for a draft?
+**If unanswered:** no. One name, and nothing else to configure.
+```
+
+`Select` lists its options as the first bulleted list; `Affirm` is yes or no. A draft
+can have no questions at all: "look, then tell me to go."
+
+When the pair is confident, the draft converts, whether or not every prompt is
+answered, since silence means proceed. Converting writes `plans/YYYY-MM-DD-<name>.md`
+(the date is today, the day you say "we're implementing this"), folds each answer into
+its entry's reason, labels a fallback that became the decision (`Claude, unanswered, so
+its fallback`), drops the prompts, and deletes the draft and its notes. The notes
+aren't kept: they're mostly the questions that lined up someone's understanding, and
+what mattered from them is in the reasons now.
+
+Phoropter's dev server shows the draft at `draft/`, re-read on every request, with its
+anchors resolved, its prompts and their fallbacks and answers, and each annotation
+after the entry it quotes. It says it's the working tree, not a commit. A built site
+never contains a draft.
 
 ## Older plans
 

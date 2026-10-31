@@ -12,14 +12,15 @@ pace with the work, not coverage.
   format plans (lanyard, grommet, bodkin, awl) are history, not the rules.
 - **Changing your mind about an earlier plan is a revisit**: its own plan, with
   `revisits:`, asked in that plan's frame, saying what moved.
-- **Drafts:** when you're unsure or the shared understanding looks thin, put the plan up
-  as a draft in the cart before committing it, so Jeff can question it before it's
-  testimony. Never an approval gate: every open question has a fallback, and silence
-  means proceed. Most work just goes.
-- **Carts:** one human and one agent, gitignored in `.loom/cart/`. The agreement is
-  `~/Projects/aide/.loom/externals/git.hypertheory-labs.dev/loom/cart/cart.md`; carts
-  here act it out. A cart produces one plan; if it wants two, it splits. A `shelf/` with
-  no `current/` is a seed waiting for a cart to open.
+- **Drafts:** `plan.draft.md` at the root, one at a time, as the guide says. Put one up
+  when you're unsure or the understanding looks thin, or when Jeff asks to see every
+  plan for a session. Never an approval gate; silence means proceed. Most work just
+  goes. Serve this repo (`node src/serve.ts . HEAD`) and it's at `draft/`; Jeff
+  annotates in nvim. Convert when confident, and delete the draft and its notes.
+- **Carts are thinking, not drafting.** `.loom/cart/` (gitignored) is where Jeff and
+  Claude think something through; a cart's result is "let's draft a plan from this."
+  Phoropter knows nothing about carts. A `shelf/` holds seeds for later; restate a seed
+  into a draft when it's picked up, and delete it then.
 - **When you refer to a plan in prose, say what it's about**, not just its name. A
   sentence made of plan names reads as Dr. Seuss.
 - **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's
