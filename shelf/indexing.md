@@ -10,3 +10,6 @@ failure; phoropter reads SCIP with its own bindings rather than scip-typescript'
 `dist`; historical commits are the hard part (toolchains, module downloads), so cache
 per commit and package. Part of a larger idea: a `phoropter` CLI, `gh`- or
 `kubectl`-style, with UIs and indexers as plugins.
+
+The store this needs, where indexes live and how they are kept, is worked out in
+`shelf/index-store.md`: a full plan, shelved until the command with no arguments lands.
