@@ -26,7 +26,7 @@ type form struct {
 	note    []rune // **Note:** on any answer
 	field   int    // 0 the answer, 1 the note
 	first   bool   // no notes file yet, so writing fixes the draft
-	request bool   // a note on a landed plan, asking for a revisit
+	landed  bool   // a note on a landed plan, kept in drafts/
 	leaving bool   // esc once with something typed; esc again discards
 	err     string
 }
@@ -174,12 +174,12 @@ func (f *form) view(w int) string {
 	switch {
 	case f.prompt != nil:
 		verb = "Answer"
-	case f.request:
-		verb = "Request to revisit, on"
+	case f.landed:
+		verb = "Note on"
 	}
 	b.WriteString(styles.title.Render(wrap(verb+" · "+f.about, w)) + "\n\n")
-	if f.request {
-		b.WriteString(styles.dim.Render(wrap("This goes in drafts/, as a request to revisit this plan. The plan stays as written, and a revisit answers the request.", w)) + "\n\n")
+	if f.landed {
+		b.WriteString(styles.dim.Render(wrap("This goes in drafts/, beside the plan's other notes. The plan stays as written.", w)) + "\n\n")
 	}
 	if f.first {
 		b.WriteString(styles.kind("Changed").Render(wrap("This creates plan.draft.notes.md, which fixes the draft until it converts or the notes are deleted.", w)) + "\n\n")
@@ -259,8 +259,8 @@ func (m *Model) openDraft(d *substrate.Doc) (*notes.Draft, error) {
 // again, so what shows is what phoropter made of it.
 func (m *Model) write(s *docScreen, f *form, skip bool) tea.Cmd {
 	open := m.openDraft
-	if f.request {
-		open = func(d *substrate.Doc) (*notes.Draft, error) { return notes.OpenRequest(m.workDir(), d.File) }
+	if f.landed {
+		open = func(d *substrate.Doc) (*notes.Draft, error) { return notes.OpenPlanNotes(m.workDir(), d.File) }
 	}
 	d, err := open(s.plan)
 	if err != nil {

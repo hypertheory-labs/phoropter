@@ -206,28 +206,33 @@ anchors resolved, its prompts and their fallbacks and answers, and each annotati
 after the entry it quotes. It says it's the working tree, not a commit. A built site
 never contains a draft.
 
-### Asking for a landed plan to be revisited
+### Notes on a landed plan
 
-A landed plan is never edited. To say one may not hold anymore, write notes on it, in
-the same format as a draft's, in `drafts/`: for `plans/2026-10-31-ramie.md`, the notes
-are `drafts/2026-10-31-ramie.notes.md`, and their `annotates:` line names the plan. A
-note quotes an entry's heading line to be about that entry, or has no quote to be
-about the whole plan. The agreement puts notes beside their file. These live in
-`drafts/` instead, so that `plans/` holds only testimony. A landed plan never changes,
-so the quotes can't come loose.
+A landed plan is never edited, but it can take notes: a person saying the plan matters
+to something now. For `plans/2026-10-31-ramie.md`, the notes are
+`drafts/2026-10-31-ramie.notes.md`, in the same format as a draft's, and their
+`annotates:` line names the plan. A note quotes an entry's heading line to be about that
+entry, or has no quote to be about the whole plan. The agreement puts notes beside their
+file. These live in `drafts/` instead, so that `plans/` holds only testimony. A landed
+plan never changes, so the quotes can't come loose.
 
-Notes on a landed plan are a request, and a revisit answers it: a draft whose
-`revisits:` names the plan, and whose opening says what moved, citing the notes.
-Converting the revisit deletes the request with the draft's own notes. If the agent
-thinks the plan still holds, it says so in a note of its own in the request, and the
-request stays until the person agrees, or a revisit lands anyway. A request isn't a
-veto either way: the person can always ask for the revisit.
+A note may say the plan's ground has moved, or "weigh this in what we're deciding now",
+or just say something. Answer it in kind:
+- **A revisit,** when the ground has moved: a draft whose `revisits:` names the plan,
+  and whose opening says what moved, citing the notes. Converting it deletes the notes
+  it answered.
+- **A citation,** when the plan bears on the work at hand: the current draft anchors the
+  entry the note is about, and its reason weighs it.
+- **A note in reply,** when the agent thinks the plan holds, or there's nothing to do.
 
-On a branch, a committed request is how a teammate says "look at my branch, here's what
+Notes stay until the person who wrote them is satisfied, and nobody holds a veto: the
+person can always ask for a revisit.
+
+On a branch, committed notes are how a teammate says "look at my branch, here's what
 I'm thinking about this old plan." Some teams keep a long-lived branch for this kind of
-work. That's a way of working, not a rule. Phoropter's dev server shows a plan's
-request on the plan's page, after the entries the notes quote, and marks the plan on
-the home page. A built site never shows one. *(phoropter's tarlatan)*
+work. That's a way of working, not a rule. Phoropter's dev server shows a plan's notes
+on its page, after the entries they quote, and counts them on the home page. A built
+site never shows them. *(phoropter's tarlatan and organza)*
 
 ## Older plans
 

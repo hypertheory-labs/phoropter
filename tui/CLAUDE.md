@@ -20,7 +20,7 @@ true.
   declined a separate client app for this reason; the TUI is the "projection of the same
   pages" it allowed. No git history in the TUI.
 - **It writes only notes, in `drafts/`,** by `docs/annotating.md` (`internal/notes`): a
-  draft's, and requests to revisit landed plans. Never the draft, never a landed plan
+  draft's, and notes on landed plans. Never the draft, never a landed plan
   (nankeen declined editing plans), never the substrate. It reads notes back from the
   dev server's pages, never from the files.
 - **The gaps ledger is half the point.** Whenever the code reads past the profile, it
@@ -36,8 +36,8 @@ true.
   the repository root: `tui/internal/tui/screens.go`). Phoropter indexes only
   TypeScript, so a Go symbol anchor won't resolve yet. The TUI's plans from before the
   move anchor `internal/…` and show `no-file` at later commits; they're read as written.
-- **Drafts:** one, `drafts/plan.draft.md`, and requests to revisit landed plans beside it
-  in `drafts/` (tarlatan). Serve the repository with
+- **Drafts:** one, `drafts/plan.draft.md`, and notes on landed plans beside it in
+  `drafts/` (tarlatan, organza). Serve the repository with
   `node src/serve.ts . HEAD` from the root and point the TUI at it. To try the TUI on a
   draft, `mkdir -p drafts && cp tui/testdata/sample.draft.md drafts/plan.draft.md`.
 - **Working with Jeff.** Jeff reads drafts before code, so propose the bigger or bolder

@@ -237,9 +237,9 @@ func TestTabCycles(t *testing.T) {
 	}
 }
 
-// tarlatan: a landed plan takes notes, never edits. a on an entry writes a
-// request to revisit into drafts/, quoting the entry's heading; the plan's
-// file is never touched. The request already on pumice shows as rows.
+// tarlatan and organza: a landed plan takes notes, never edits. a on an entry
+// writes a note into drafts/, quoting the entry's heading; the plan's file is
+// never touched. The notes already on pumice show as rows.
 func TestAskForARevisit(t *testing.T) {
 	src, err := os.ReadFile("../../testdata/mock-control-pumice.plan.md")
 	if err != nil {
@@ -260,20 +260,20 @@ func TestAskForARevisit(t *testing.T) {
 	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
 	drive(t, m, m.Init())
 	if s := screenText(t, m); !strings.Contains(s, "✎ 2 notes") {
-		t.Fatalf("the list should mark pumice's request:\n%s", s)
+		t.Fatalf("the list should mark pumice's notes:\n%s", s)
 	}
 	m.c.Forget("plans/pumice/")
 	drive(t, m, m.open("plans/pumice/"))
 	s := screenText(t, m)
-	for _, want := range []string{"About this plan · a to ask for a revisit", "✎ — jeff", "✎ L22 — jeff"} {
+	for _, want := range []string{"About this plan · a to note it", "✎ — jeff", "✎ L22 — jeff"} {
 		if !strings.Contains(s, want) {
 			t.Fatalf("pumice lacks %q:\n%s", want, s)
 		}
 	}
-	// The request's whole-plan note is row 1; the entries follow.
+	// The whole-plan note is row 1; the entries follow.
 	press(t, m, "home", "j", "j", "j", "a")
-	if s := screenText(t, m); !strings.Contains(s, "Request to revisit, on · Decision: Selectors") || strings.Contains(s, "fixes the draft") {
-		t.Fatalf("request form:\n%s", s)
+	if s := screenText(t, m); !strings.Contains(s, "Note on · Decision: Selectors") || strings.Contains(s, "fixes the draft") {
+		t.Fatalf("note form:\n%s", s)
 	}
 	press(t, m, "S", "t", "i", "l", "l", "?", "ctrl+s")
 	got, err := os.ReadFile(filepath.Join(repo, "drafts", "2026-10-29-pumice.notes.md"))
@@ -285,7 +285,7 @@ func TestAskForARevisit(t *testing.T) {
 		"\n\n## L22 — jeff\n> ## Decision: Selectors use the library's prefix, `mock-panel`\n\nStill?\n",
 	} {
 		if !strings.Contains(string(got), want) {
-			t.Fatalf("request lacks %q:\n%s", want, got)
+			t.Fatalf("notes lack %q:\n%s", want, got)
 		}
 	}
 	if b, _ := os.ReadFile(plan); string(b) != string(src) {

@@ -20,17 +20,19 @@ fixed, because the quotes in the notes would come loose if it moved. Deleting th
 releases it. Converting the draft to a plan deletes both the draft and its notes; what
 mattered from the notes is in the plan's reasons by then.
 
-## Notes on a landed plan: a request to revisit
+## Notes on a landed plan
 
-A landed plan is never edited, but it can take notes: a person saying it may not hold
-anymore. For `plans/2026-10-31-ramie.md`, they go in `drafts/2026-10-31-ramie.notes.md`,
-not beside the plan, so that `plans/` holds only testimony. Their `annotates:` line
-names the plan's path. A note quotes an entry's heading line, or has no quote and is
-about the whole plan. A landed plan never changes, so the quotes can't come loose.
+A landed plan is never edited, but it can take notes: a person saying it matters to
+something now. For `plans/2026-10-31-ramie.md`, they go in
+`drafts/2026-10-31-ramie.notes.md`, not beside the plan, so that `plans/` holds only
+testimony. Their `annotates:` line names the plan's path. A note quotes an entry's
+heading line, or has no quote and is about the whole plan. A landed plan never changes,
+so the quotes can't come loose.
 
-The agent answers with a revisit, a draft whose `revisits:` names the plan. Converting
-that revisit deletes the request. If the agent thinks the plan still holds, it replies
-in the request, and the request stays until the person agrees. *(phoropter's tarlatan)*
+A note may say the plan's ground has moved, or "weigh this in what we're deciding", or
+just say something. The agent answers in kind: a revisit (a draft whose `revisits:`
+names the plan; converting it deletes the notes it answered), a citation in the
+current draft, or a note in reply. *(phoropter's tarlatan and organza)*
 
 ## The notes file
 

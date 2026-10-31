@@ -41,7 +41,7 @@ type PlanSummary struct {
 	URL, Title, Name, Date string
 	Added, Base            Ref
 	Entries                int
-	Requests               int // notes asking for a revisit, on the dev server
+	NoteCount              int // notes on it in drafts/, on the dev server
 	AsBuiltURL             string
 	RevisitsURL            string
 }
@@ -212,7 +212,7 @@ func (c *Client) Home() (*Home, error) {
 			Added:       refOf(it.Get("added")),
 			Base:        refOf(it.Get("base")),
 			AsBuiltURL:  it.Str("asBuilt"),
-			Requests:    atoi(it.Str("requestCount")),
+			NoteCount:   atoi(it.Str("noteCount")),
 			RevisitsURL: it.Str("revisits"),
 		}
 		s.Entries, _ = strconv.Atoi(it.Str("entryCount"))
@@ -271,7 +271,7 @@ func (c *Client) Doc(ref string) (*Doc, error) {
 		d.Draft, d.AnchorsAt, d.Name = p.Draft, p.AnchorsAt, "draft"
 	}
 	// A draft's prompts and notes, or on a landed plan the dev server serves,
-	// a request to revisit it (tarlatan).
+	// its notes (tarlatan, organza).
 	c.draftExtras(d, it, p)
 	return d, nil
 }

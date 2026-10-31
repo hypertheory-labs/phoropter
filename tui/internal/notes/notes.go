@@ -226,7 +226,7 @@ type Draft struct {
 	Source          *Source
 	Notes           *File
 	HasNotes        bool
-	Request         bool // notes on a landed plan, asking for a revisit
+	Landed          bool // notes on a landed plan, kept in drafts/
 }
 
 var ErrMoved = errors.New("the draft on disk isn't the one on the page: it changed since the page was read (r reads it again)")
@@ -252,9 +252,9 @@ func Open(dir, file, pageSHA256 string) (*Draft, error) {
 	return d, nil
 }
 
-// OpenRequest opens a landed plan's request to revisit, kept in drafts/
-// (tarlatan). A landed plan never changes, so there's no hash to check.
-func OpenRequest(dir, planFile string) (*Draft, error) {
+// OpenPlanNotes opens a landed plan's notes, kept in drafts/ (tarlatan). A
+// landed plan never changes, so there's no hash to check.
+func OpenPlanNotes(dir, planFile string) (*Draft, error) {
 	root, err := repoRoot(dir)
 	if err != nil {
 		return nil, err
@@ -264,7 +264,7 @@ func OpenRequest(dir, planFile string) (*Draft, error) {
 		return nil, fmt.Errorf("no %s here: this TUI isn't running beside the plan's repository", planFile)
 	}
 	notes := filepath.Join(root, "drafts", strings.TrimSuffix(filepath.Base(planFile), ".md")+".notes.md")
-	d := &Draft{Path: filepath.Join(root, planFile), NotesPath: notes, Name: planFile, Source: ParseSource(string(b)), Notes: &File{}, Request: true}
+	d := &Draft{Path: filepath.Join(root, planFile), NotesPath: notes, Name: planFile, Source: ParseSource(string(b)), Notes: &File{}, Landed: true}
 	d.readNotes()
 	return d, nil
 }

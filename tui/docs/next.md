@@ -36,9 +36,9 @@ the draft, and never the substrate.
   draft accent, theme colors. Plus `tab`/`shift+tab` through lists, with no plan.
 - **nankeen** (landed plans aren't edited from the TUI), a decline.
 - **dowlas** (the TUI moves in, as `tui/`): one repository, so plans on both sides link.
-- **tarlatan** (drafts/ holds work in progress, and requests to revisit): `a` on a
-  landed plan writes a request, which the dev server shows on the plan's page and a
-  revisit answers.
+- **tarlatan** (drafts/ holds work in progress) and **organza** (a note on a landed plan
+  says it matters now): `a` on a landed plan writes a note in `drafts/`, which the dev
+  server shows on the plan's page. A revisit, a citation, or a reply answers it.
 
 Guesses still waiting on use: batiste's (annotations.nvim and the TUI share one notes
 file, once nvim answers prompts), challis's (a plan is found faster by title), and

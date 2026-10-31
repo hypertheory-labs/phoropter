@@ -17,10 +17,11 @@ pace with the work, not coverage.
   plan for a session. Never an approval gate; silence means proceed. Most work just
   goes. Serve this repo (`node src/serve.ts . HEAD`) and it's at `draft/`; Jeff
   annotates in nvim. Convert when confident, and delete the draft and its notes.
-- **Requests to revisit: check `drafts/` at the start of a session.** Notes on a landed
-  plan (`drafts/<plan's file name>.notes.md`) are a person asking for a revisit. Raise
-  any you find before other work. Answer with a draft that revisits the plan, or a note
-  in reply if it still holds. Never edit a landed plan.
+- **Notes on landed plans: check `drafts/` at the start of a session.** A note on a
+  landed plan (`drafts/<plan's file name>.notes.md`) says the plan matters to something
+  now. Raise any you find before other work, and answer in kind: a revisit if its ground
+  moved, a citation in the current draft if it bears on it, or a note in reply. Never
+  edit a landed plan.
 - **Carts are thinking, not drafting.** `.loom/cart/` (gitignored) is where Jeff and
   Claude think something through; a cart's result is "let's draft a plan from this."
   Phoropter knows nothing about carts. A `shelf/` holds seeds for later (many from

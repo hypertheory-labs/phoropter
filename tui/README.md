@@ -23,15 +23,15 @@ go test ./...
 ```
 
 Reasons come only from the substrate's pages; the TUI reads no git history. It writes
-only notes, in `drafts/`: a draft's, and requests to revisit landed plans. Run it inside the repository the site is about, so it
+only notes, in `drafts/`: a draft's, and notes on landed plans. Run it inside the repository the site is about, so it
 can find the draft.
 
 - **Plan list:** the draft slot on top, then plans by title, newest first. `j`/`k` or
   `tab`/`shift+tab` move, `o` flips the order, `enter` opens.
 - **A plan:** `1` `2` `3` flip an anchor between before, as built, and now. `n` cycles
   anchors, `enter` follows the rels out of an entry.
-- **A landed plan:** `a` asks for it to be revisited, with a note on an entry or, on
-  About, on the whole plan. The note goes in `drafts/`; the plan is never edited.
+- **A landed plan:** `a` writes a note on an entry or, on About, on the whole plan, to
+  say it matters now. The note goes in `drafts/`; the plan is never edited.
 - **A draft:** `a` answers a prompt, notes an entry, or on About notes the whole draft.
   `s` skips a prompt on purpose. In a form, `ctrl+s` writes, `tab` moves between fields,
   `ctrl+e` opens `$EDITOR`, and `esc` cancels.

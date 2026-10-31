@@ -4,8 +4,9 @@
 // says so.
 //
 // Its notes are `drafts/plan.draft.notes.md`, in the annotating agreement's
-// format. A request to revisit a landed plan is that plan's notes, kept in
-// drafts/ too: `drafts/<plan's file name>.notes.md` (tarlatan).
+// format. A landed plan's notes are kept in drafts/ too, as
+// `drafts/<plan's file name>.notes.md` (tarlatan): a person saying the plan
+// matters to something now (organza).
 // A draft's open questions are the agreement's prompts (Question, Select,
 // Affirm) at any heading level, plus phoropter's `**If unanswered:**`.
 
@@ -19,15 +20,15 @@ export const DRAFTS = 'drafts';
 export const DRAFT = 'drafts/plan.draft.md';
 export const NOTES = 'drafts/plan.draft.notes.md';
 
-// A landed plan's request file, whether or not it exists.
-export function requestFile(plan: Plan): string {
+// A landed plan's notes file, whether or not it exists.
+export function planNotesFile(plan: Plan): string {
   return `${DRAFTS}/${basename(plan.file, '.md')}.notes.md`;
 }
 
-// A request to revisit a landed plan: its notes, each placed after the entry
-// whose source holds its quote. Undefined when there's no request.
-export function readRequest(dir: string, plan: Plan): Annotation[] | undefined {
-  const path = join(dir, requestFile(plan));
+// A landed plan's notes, each placed after the entry whose source holds its
+// quote. Undefined when there are none.
+export function readPlanNotes(dir: string, plan: Plan): Annotation[] | undefined {
+  const path = join(dir, planNotesFile(plan));
   if (!existsSync(path)) return undefined;
   const planPath = join(dir, plan.file);
   const source = existsSync(planPath) ? readFileSync(planPath, 'utf8') : '';

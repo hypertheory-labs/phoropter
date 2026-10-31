@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { DRAFT, NOTES, parseNotes, readDraft, readRequest, requestFile, splitPrompts } from '../src/draft.ts';
+import { DRAFT, NOTES, parseNotes, readDraft, readPlanNotes, planNotesFile, splitPrompts } from '../src/draft.ts';
 import { Repo } from '../src/git.ts';
 import { draftPage } from '../src/render.ts';
 import { buildSite } from '../src/site.ts';
@@ -131,20 +131,20 @@ test('a draft resolves against the site without joining it', () => {
   assert.ok(html.indexOf('Agreed.') > html.indexOf('Two drafts</span>'));
 });
 
-// tarlatan: a request to revisit a landed plan is its notes, kept in drafts/,
+// tarlatan: a landed plan's notes are kept in drafts/,
 // placed after the entries they quote. The plan's own file is never touched.
-test('a request to revisit a landed plan is read from drafts/', () => {
+test('a landed plan’s notes are read from drafts/', () => {
   const site = buildSite(new Repo(new URL('..', import.meta.url).pathname), 'f62365f');
   const gimlet = site.plans.find((p) => p.name === 'gimlet')!;
-  assert.equal(requestFile(gimlet), 'drafts/2026-10-30-gimlet.notes.md');
-  const dir = mkdtempSync(join(tmpdir(), 'phoropter-request-'));
-  assert.equal(readRequest(dir, gimlet), undefined);
+  assert.equal(planNotesFile(gimlet), 'drafts/2026-10-30-gimlet.notes.md');
+  const dir = mkdtempSync(join(tmpdir(), 'phoropter-plan-notes-'));
+  assert.equal(readPlanNotes(dir, gimlet), undefined);
   mkdirSync(join(dir, 'drafts'));
   mkdirSync(join(dir, 'plans'));
   const heading = '## Decline: A separate client app';
   writeFileSync(join(dir, gimlet.file), readFileSync(new URL(`../${gimlet.file}`, import.meta.url), 'utf8'));
-  writeFileSync(join(dir, requestFile(gimlet)), `# Notes on ${gimlet.file}\n\n## — jeff\n\nStill true?\n\n## L3 — jeff\n> ${heading}\n\nThe TUI moved in.\n`);
-  const notes = readRequest(dir, gimlet)!;
+  writeFileSync(join(dir, planNotesFile(gimlet)), `# Notes on ${gimlet.file}\n\n## — jeff\n\nStill true?\n\n## L3 — jeff\n> ${heading}\n\nThe TUI moved in.\n`);
+  const notes = readPlanNotes(dir, gimlet)!;
   assert.deepEqual(notes.map((a) => [a.heading, a.found, a.at]), [
     ['— jeff', true, undefined],
     ['L3 — jeff', true, gimlet.entries.find((e) => e.title === 'A separate client app')!.slug],
