@@ -242,3 +242,27 @@ func TestDraft(t *testing.T) {
 		t.Errorf("reading the draft noted:\n%s", l.Report())
 	}
 }
+
+// tarlatan: on a landed plan the dev server serves, a request to revisit is
+// annotation items, placed like a draft's notes, and the home list counts them.
+func TestRequest(t *testing.T) {
+	l := NewLedger()
+	c, err := NewClient("../../testdata/mock-control-draft", l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	h, err := c.Home()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if h.Plans[0].Name != "pumice" || h.Plans[0].Requests != 2 || h.Plans[1].Requests != 0 {
+		t.Errorf("requests on the home list: %+v %+v", h.Plans[0], h.Plans[1])
+	}
+	d, err := c.Doc("plans/pumice/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(d.Annotations) != 2 || d.Annotations[0].After != "" || d.Annotations[1].After != d.Entries[1].ID || len(d.Prompts) != 0 {
+		t.Errorf("request = %+v", d.Annotations)
+	}
+}

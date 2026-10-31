@@ -161,10 +161,11 @@ function profile(site: Site): Page {
     ['anchor', 'Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> (content <code>true</code>) for <code>where (new)</code>, in the same shape wherever it appears, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.'],
     ['view', 'An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, one <code>match</code> item per match with the <code>startLine</code> and <code>endLine</code> the quote covers, <code>note</code>, <code>code</code> (each one preceded by <code>codeStart</code>, the line number of its first line; the nth <code>codeStart</code> belongs to the nth <code>code</code>), and <code>sameAs</code> when a generated view matches the as-built head’s exactly and its code isn’t repeated. A plan’s anchors have up to three views: base, as-built head (where the plan’s own work landed), and generated.'],
     ['status', '<code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.'],
-    ['(draft header)', 'On the draft page, the header says it’s the working tree, not a commit: <code>file</code> (<code>plan.draft.md</code>), <code>repository</code>, <code>readAt</code>, the draft’s <code>sha256</code>, and the <code>commit</code> its anchors resolve at.'],
+    ['(draft header)', 'On the draft page, the header says it’s the working tree, not a commit: <code>file</code> (<code>drafts/plan.draft.md</code>), <code>repository</code>, <code>readAt</code>, the draft’s <code>sha256</code>, and the <code>commit</code> its anchors resolve at.'],
     ['draft', 'The draft page’s item: <code>title</code>, <code>base</code>, <code>revisits</code>, <code>notesSha256</code> and <code>annotates</code> (the draft version the notes were written against, when it isn’t this one), <code>intro</code>, <code>entry</code> items as on a plan (but never listed on places or other plans’ entries), <code>prompt</code> items, and <code>annotation</code> items.'],
     ['prompt', 'An open question in a draft, in the annotating agreement’s form: <code>kind</code> (Question, Select, Affirm), <code>text</code>, <code>option</code> for each of a Select’s choices, <code>fallback</code> (what happens if it goes unanswered), and <code>answer</code> when the notes restate it. It follows the entry (or intro) it belongs to.'],
-    ['annotation', 'A note from <code>plan.draft.notes.md</code>: <code>heading</code> as written, <code>quote</code> (the draft’s source text it quotes), and <code>comment</code>. It follows the entry whose source holds its quote; a note without a quote, or whose quote isn’t in the draft anymore, comes first.'],
+    ['annotation', 'A note from <code>drafts/plan.draft.notes.md</code>, or, on a landed plan’s page as the dev server serves it, from that plan’s request to revisit in <code>drafts/</code> (tarlatan): <code>heading</code> as written, <code>quote</code> (the source text it quotes), and <code>comment</code>. It follows the entry whose source holds its quote; a note without a quote, or whose quote isn’t there anymore, comes first. A built site never has a landed plan’s notes.'],
+    ['requestCount', 'On the home page as the dev server serves it, on a plan with a request to revisit: how many notes the request has (tarlatan).'],
     ['place', 'A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code> with its <code>codeStart</code>, <code>entryCount</code> on the home page, and <code>anchoredBy</code> items.'],
   ];
   return layout(site, here, 'Profile', `
@@ -252,8 +253,8 @@ ${answer}
 </div>`;
 }
 
-function annotationHtml(a: Annotation): string {
-  const missing = a.quote !== undefined && !a.found ? '<p class="note">quote not found in the draft: it moved under the note</p>' : '';
+export function annotationHtml(a: Annotation): string {
+  const missing = a.quote !== undefined && !a.found ? '<p class="note">quote not found: it moved under the note</p>' : '';
   return `<aside class="annotation" itemprop="annotation" itemscope>
 <p class="meta" itemprop="heading">${esc(a.heading)}</p>
 ${a.quote !== undefined ? `<blockquote itemprop="quote">${esc(a.quote)}</blockquote>` : ''}${missing}

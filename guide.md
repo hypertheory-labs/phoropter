@@ -172,14 +172,15 @@ it. Who decides that is the pair's to work out. It's never an approval gate: a d
 serves the agent's confidence and the person's understanding, not permission.
 *(phoropter's loden, which served the first draft)*
 
-A repository has at most one draft, `plan.draft.md` at its root. One fixed name means
-anyone can see whether a plan is being drafted, and drafts can't pile up into a
-backlog. Each branch or worktree has its own working tree, so parallel work isn't
+Work in progress lives in `drafts/`, at the repository's root, and `plans/` holds
+testimony and nothing else. A repository has at most one draft, `drafts/plan.draft.md`.
+One fixed name means anyone can see whether a plan is being drafted, and drafts can't
+pile up into a backlog. *(phoropter's tarlatan, which moved it from the root)* Each branch or worktree has its own working tree, so parallel work isn't
 blocked. A draft that wants to be two plans gets smaller; the rest waits for the next
-one. Ignoring the draft in git is a suggestion: on a branch, committing it lets a
-mentor or senior read it before the code exists.
+one. Ignoring `drafts/` in git is a suggestion: on a branch, committing it lets a
+mentor or senior read a draft before the code exists. On main, what lands is plans.
 
-Annotations go in `plan.draft.notes.md` beside it, in the
+Annotations go in `drafts/plan.draft.notes.md` beside it, in the
 [annotating agreement](https://github.com/JeffryGonzalez/annotations.nvim)'s format.
 An open question is one of that agreement's prompts, at any heading level below the
 entry it belongs to, with what happens if nobody answers:
@@ -204,6 +205,29 @@ Phoropter's dev server shows the draft at `draft/`, re-read on every request, wi
 anchors resolved, its prompts and their fallbacks and answers, and each annotation
 after the entry it quotes. It says it's the working tree, not a commit. A built site
 never contains a draft.
+
+### Asking for a landed plan to be revisited
+
+A landed plan is never edited. To say one may not hold anymore, write notes on it, in
+the same format as a draft's, in `drafts/`: for `plans/2026-10-31-ramie.md`, the notes
+are `drafts/2026-10-31-ramie.notes.md`, and their `annotates:` line names the plan. A
+note quotes an entry's heading line to be about that entry, or has no quote to be
+about the whole plan. The agreement puts notes beside their file. These live in
+`drafts/` instead, so that `plans/` holds only testimony. A landed plan never changes,
+so the quotes can't come loose.
+
+Notes on a landed plan are a request, and a revisit answers it: a draft whose
+`revisits:` names the plan, and whose opening says what moved, citing the notes.
+Converting the revisit deletes the request with the draft's own notes. If the agent
+thinks the plan still holds, it says so in a note of its own in the request, and the
+request stays until the person agrees, or a revisit lands anyway. A request isn't a
+veto either way: the person can always ask for the revisit.
+
+On a branch, a committed request is how a teammate says "look at my branch, here's what
+I'm thinking about this old plan." Some teams keep a long-lived branch for this kind of
+work. That's a way of working, not a rule. Phoropter's dev server shows a plan's
+request on the plan's page, after the entries the notes quote, and marks the plan on
+the home page. A built site never shows one. *(phoropter's tarlatan)*
 
 ## Older plans
 

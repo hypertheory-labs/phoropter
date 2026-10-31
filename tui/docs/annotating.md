@@ -11,14 +11,26 @@ editor plugin that does the same can share a notes file with it.
 **Whoever wrote a file doesn't annotate it. Whoever annotates a file doesn't edit it.**
 Neither party ever has to reconcile two versions of one document.
 
-For a draft, the agent usually writes `plan.draft.md` and the person annotates it.
-Annotations go in **`plan.draft.notes.md`**, beside it. The draft is never changed by
+For a draft, the agent usually writes `drafts/plan.draft.md` and the person annotates
+it. Annotations go in **`drafts/plan.draft.notes.md`**, beside it. The draft is never changed by
 annotating, and a notes file is never annotated.
 
 **A file stays editable until it has notes.** Once a notes file exists, the draft is
 fixed, because the quotes in the notes would come loose if it moved. Deleting the notes
 releases it. Converting the draft to a plan deletes both the draft and its notes; what
 mattered from the notes is in the plan's reasons by then.
+
+## Notes on a landed plan: a request to revisit
+
+A landed plan is never edited, but it can take notes: a person saying it may not hold
+anymore. For `plans/2026-10-31-ramie.md`, they go in `drafts/2026-10-31-ramie.notes.md`,
+not beside the plan, so that `plans/` holds only testimony. Their `annotates:` line
+names the plan's path. A note quotes an entry's heading line, or has no quote and is
+about the whole plan. A landed plan never changes, so the quotes can't come loose.
+
+The agent answers with a revisit, a draft whose `revisits:` names the plan. Converting
+that revisit deletes the request. If the agent thinks the plan still holds, it replies
+in the request, and the request stays until the person agrees. *(phoropter's tarlatan)*
 
 ## The notes file
 

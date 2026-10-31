@@ -34,6 +34,11 @@ the draft, and never the substrate.
 - **challis** (the plan list reads like the page) and **voile** (lines on any theme,
   plans in boxes): a draft slot at the top, titles over names, newest first with `o`, a
   draft accent, theme colors. Plus `tab`/`shift+tab` through lists, with no plan.
+- **nankeen** (landed plans aren't edited from the TUI), a decline.
+- **dowlas** (the TUI moves in, as `tui/`): one repository, so plans on both sides link.
+- **tarlatan** (drafts/ holds work in progress, and requests to revisit): `a` on a
+  landed plan writes a request, which the dev server shows on the plan's page and a
+  revisit answers.
 
 Guesses still waiting on use: batiste's (annotations.nvim and the TUI share one notes
 file, once nvim answers prompts), challis's (a plan is found faster by title), and
@@ -93,9 +98,11 @@ reasoning.
 
 ## 4. `init`, step 0
 
-From phoropter's shelf (`guide-shape.md`): create `plans/` and put up a first draft
-whose prompts are the defaults, each fallback being the default. Phoropter can't write
-files, but the TUI can. It waits until the guide's shape is decided.
+Create `plans/` and put up a first draft whose prompts are the defaults, each fallback
+being the default. Phoropter can't write files, but the TUI can. Among its questions,
+from Jeff: whether `drafts/` is ignored in git (yes for a pair on main, no for a team
+that shares drafts on branches), and maybe the folder's name, if a repository already
+has a `drafts/`. It waits until the guide's shape is decided.
 
 ## 5. `why`
 

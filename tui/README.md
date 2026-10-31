@@ -22,21 +22,23 @@ bin/phoropter-tui gaps [site]                    # crawl, and list where it read
 go test ./...
 ```
 
-Reasons come only from the substrate's pages; the TUI reads no git history. Its one
-write is a draft's notes file. Run it inside the repository the site is about, so it
+Reasons come only from the substrate's pages; the TUI reads no git history. It writes
+only notes, in `drafts/`: a draft's, and requests to revisit landed plans. Run it inside the repository the site is about, so it
 can find the draft.
 
 - **Plan list:** the draft slot on top, then plans by title, newest first. `j`/`k` or
   `tab`/`shift+tab` move, `o` flips the order, `enter` opens.
 - **A plan:** `1` `2` `3` flip an anchor between before, as built, and now. `n` cycles
   anchors, `enter` follows the rels out of an entry.
+- **A landed plan:** `a` asks for it to be revisited, with a note on an entry or, on
+  About, on the whole plan. The note goes in `drafts/`; the plan is never edited.
 - **A draft:** `a` answers a prompt, notes an entry, or on About notes the whole draft.
   `s` skips a prompt on purpose. In a form, `ctrl+s` writes, `tab` moves between fields,
   `ctrl+e` opens `$EDITOR`, and `esc` cancels.
 - **Anywhere:** `r` reads the page again, `g` shows the gaps hit so far, `?` is help.
 
-To try a draft: from the repository root, `cp tui/testdata/sample.draft.md
-plan.draft.md`, serve the repository (`node src/serve.ts . HEAD --port 4175`), and point
+To try a draft: from the repository root, `mkdir -p drafts && cp
+tui/testdata/sample.draft.md drafts/plan.draft.md`, serve the repository (`node src/serve.ts . HEAD --port 4175`), and point
 the TUI at `http://localhost:4175/`.
 
 The TUI lives in phoropter's repository as `tui/` since dowlas (the TUI moves in). Its

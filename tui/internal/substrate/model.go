@@ -41,6 +41,7 @@ type PlanSummary struct {
 	URL, Title, Name, Date string
 	Added, Base            Ref
 	Entries                int
+	Requests               int // notes asking for a revisit, on the dev server
 	AsBuiltURL             string
 	RevisitsURL            string
 }
@@ -211,6 +212,7 @@ func (c *Client) Home() (*Home, error) {
 			Added:       refOf(it.Get("added")),
 			Base:        refOf(it.Get("base")),
 			AsBuiltURL:  it.Str("asBuilt"),
+			Requests:    atoi(it.Str("requestCount")),
 			RevisitsURL: it.Str("revisits"),
 		}
 		s.Entries, _ = strconv.Atoi(it.Str("entryCount"))
@@ -267,8 +269,10 @@ func (c *Client) Doc(ref string) (*Doc, error) {
 	}
 	if p.Draft != nil {
 		d.Draft, d.AnchorsAt, d.Name = p.Draft, p.AnchorsAt, "draft"
-		c.draftExtras(d, it, p)
 	}
+	// A draft's prompts and notes, or on a landed plan the dev server serves,
+	// a request to revisit it (tarlatan).
+	c.draftExtras(d, it, p)
 	return d, nil
 }
 
@@ -479,6 +483,11 @@ func (c *Client) Place(ref string) (*Place, error) {
 		pl.AnchoredBy = append(pl.AnchoredBy, pr)
 	}
 	return pl, nil
+}
+
+func atoi(s string) int {
+	n, _ := strconv.Atoi(s)
+	return n
 }
 
 // refOf reads a commit: a <data> with the full sha when it names a commit

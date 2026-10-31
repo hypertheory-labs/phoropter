@@ -19,9 +19,10 @@ true.
   inferred reasoning the HTML lacks, the person would see more than the agent. Gimlet
   declined a separate client app for this reason; the TUI is the "projection of the same
   pages" it allowed. No git history in the TUI.
-- **Its one write is a draft's notes file,** by `docs/annotating.md` (`internal/notes`).
-  Never the draft, never a landed plan (nankeen declined editing plans), never the
-  substrate.
+- **It writes only notes, in `drafts/`,** by `docs/annotating.md` (`internal/notes`): a
+  draft's, and requests to revisit landed plans. Never the draft, never a landed plan
+  (nankeen declined editing plans), never the substrate. It reads notes back from the
+  dev server's pages, never from the files.
 - **The gaps ledger is half the point.** Whenever the code reads past the profile, it
   calls `Ledger.Note` with an id from the catalog in `internal/substrate/gaps.go`. Don't
   work around a gap silently. `go run . gaps <site>` crawls and reports. When phoropter
@@ -35,9 +36,10 @@ true.
   the repository root: `tui/internal/tui/screens.go`). Phoropter indexes only
   TypeScript, so a Go symbol anchor won't resolve yet. The TUI's plans from before the
   move anchor `internal/…` and show `no-file` at later commits; they're read as written.
-- **Drafts:** one, `plan.draft.md` at the repository root. Serve the repository with
+- **Drafts:** one, `drafts/plan.draft.md`, and requests to revisit landed plans beside it
+  in `drafts/` (tarlatan). Serve the repository with
   `node src/serve.ts . HEAD` from the root and point the TUI at it. To try the TUI on a
-  draft, `cp tui/testdata/sample.draft.md plan.draft.md`.
+  draft, `mkdir -p drafts && cp tui/testdata/sample.draft.md drafts/plan.draft.md`.
 - **Working with Jeff.** Jeff reads drafts before code, so propose the bigger or bolder
   version and let his notes trim it. An agent never gets a veto: a draft weighing an
   idea Claude thinks is bad says so up front, plans it properly anyway, and defaults its

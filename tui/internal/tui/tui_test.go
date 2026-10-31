@@ -126,12 +126,12 @@ func TestReadADraft(t *testing.T) {
 	m := New(c, c.Ledger)
 	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
 	drive(t, m, m.Init())
-	if s := screenText(t, m); !strings.Contains(s, "✎ Let the panel remember") || !strings.Contains(s, "draft, read at 16:49 UTC") {
+	if s := screenText(t, m); !strings.Contains(s, "✎ Let the panel remember") || !strings.Contains(s, "draft, read at 18:24 UTC") {
 		t.Fatalf("the slot should hold the draft:\n%s", s)
 	}
 	press(t, m, "enter")
 	s := screenText(t, m)
-	for _, want := range []string{"draft: Let the panel remember which corner it was in · not committed, read at 16:49 UTC", "About this draft · a to note it", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "✓ Select: Which corners count?"} {
+	for _, want := range []string{"draft: Let the panel remember which corner it was in · not committed, read at 18:24 UTC", "About this draft · a to note it", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "✓ Select: Which corners count?"} {
 		if !strings.Contains(s, want) {
 			t.Fatalf("draft screen lacks %q:\n%s", want, s)
 		}
@@ -147,7 +147,7 @@ func TestReadADraft(t *testing.T) {
 	}
 }
 
-// Answering writes plan.draft.notes.md beside the draft, by docs/annotating.md,
+// Answering writes drafts/plan.draft.notes.md beside the draft, by docs/annotating.md,
 // and never the draft. The draft source is the file the fixture's page was
 // served from, so its sha256 matches the page's header.
 func TestAnswerADraft(t *testing.T) {
@@ -157,7 +157,8 @@ func TestAnswerADraft(t *testing.T) {
 	}
 	repo := t.TempDir()
 	os.Mkdir(filepath.Join(repo, ".git"), 0o755)
-	os.WriteFile(filepath.Join(repo, "plan.draft.md"), src, 0o644)
+	os.Mkdir(filepath.Join(repo, "drafts"), 0o755)
+	os.WriteFile(filepath.Join(repo, "drafts", "plan.draft.md"), src, 0o644)
 
 	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
 	if err != nil {
@@ -189,7 +190,7 @@ func TestAnswerADraft(t *testing.T) {
 	// A note on the Decline, then on the whole draft.
 	press(t, m, "G", "k", "a", "W", "h", "y", "?", "ctrl+s")
 	press(t, m, "home", "a", "G", "o", ".", "ctrl+s")
-	notes, err := os.ReadFile(filepath.Join(repo, "plan.draft.notes.md"))
+	notes, err := os.ReadFile(filepath.Join(repo, "drafts", "plan.draft.notes.md"))
 	if err != nil {
 		t.Fatal(err, m.status)
 	}
@@ -208,7 +209,7 @@ func TestAnswerADraft(t *testing.T) {
 		}
 		last = i
 	}
-	if b, _ := os.ReadFile(filepath.Join(repo, "plan.draft.md")); string(b) != string(src) {
+	if b, _ := os.ReadFile(filepath.Join(repo, "drafts", "plan.draft.md")); string(b) != string(src) {
 		t.Error("the draft was changed")
 	}
 }
@@ -233,5 +234,61 @@ func TestTabCycles(t *testing.T) {
 	}
 	if got := move(3, 4, "j"); got != 3 {
 		t.Errorf("j at the end = %d, want 3", got)
+	}
+}
+
+// tarlatan: a landed plan takes notes, never edits. a on an entry writes a
+// request to revisit into drafts/, quoting the entry's heading; the plan's
+// file is never touched. The request already on pumice shows as rows.
+func TestAskForARevisit(t *testing.T) {
+	src, err := os.ReadFile("../../testdata/mock-control-pumice.plan.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	repo := t.TempDir()
+	os.Mkdir(filepath.Join(repo, ".git"), 0o755)
+	os.Mkdir(filepath.Join(repo, "plans"), 0o755)
+	plan := filepath.Join(repo, "plans", "2026-10-29-pumice.md")
+	os.WriteFile(plan, src, 0o644)
+
+	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := New(c, c.Ledger)
+	m.dir, m.authorName = repo, "jeff"
+	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
+	drive(t, m, m.Init())
+	if s := screenText(t, m); !strings.Contains(s, "✎ 2 notes") {
+		t.Fatalf("the list should mark pumice's request:\n%s", s)
+	}
+	m.c.Forget("plans/pumice/")
+	drive(t, m, m.open("plans/pumice/"))
+	s := screenText(t, m)
+	for _, want := range []string{"About this plan · a to ask for a revisit", "✎ — jeff", "✎ L22 — jeff"} {
+		if !strings.Contains(s, want) {
+			t.Fatalf("pumice lacks %q:\n%s", want, s)
+		}
+	}
+	// The request's whole-plan note is row 1; the entries follow.
+	press(t, m, "home", "j", "j", "j", "a")
+	if s := screenText(t, m); !strings.Contains(s, "Request to revisit, on · Decision: Selectors") || strings.Contains(s, "fixes the draft") {
+		t.Fatalf("request form:\n%s", s)
+	}
+	press(t, m, "S", "t", "i", "l", "l", "?", "ctrl+s")
+	got, err := os.ReadFile(filepath.Join(repo, "drafts", "2026-10-29-pumice.notes.md"))
+	if err != nil {
+		t.Fatal(err, m.status)
+	}
+	for _, want := range []string{
+		"# Notes on plans/2026-10-29-pumice.md\n<!-- annotates: plans/2026-10-29-pumice.md sha256:",
+		"\n\n## L22 — jeff\n> ## Decision: Selectors use the library's prefix, `mock-panel`\n\nStill?\n",
+	} {
+		if !strings.Contains(string(got), want) {
+			t.Fatalf("request lacks %q:\n%s", want, got)
+		}
+	}
+	if b, _ := os.ReadFile(plan); string(b) != string(src) {
+		t.Error("the landed plan was changed")
 	}
 }

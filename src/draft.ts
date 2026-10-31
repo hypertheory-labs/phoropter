@@ -1,19 +1,38 @@
-// The one draft plan, `plan.draft.md` at the repository's root, read from the
-// working tree on every request (loden). Everything else on the site is read
-// through git at a commit; a draft is uncommitted by nature, and says so.
+// The one draft plan, `drafts/plan.draft.md`, read from the working tree on
+// every request (loden; tarlatan moved it into drafts/). Everything else on the
+// site is read through git at a commit; a draft is uncommitted by nature, and
+// says so.
 //
-// Its notes are `plan.draft.notes.md`, in the annotating agreement's format.
+// Its notes are `drafts/plan.draft.notes.md`, in the annotating agreement's
+// format. A request to revisit a landed plan is that plan's notes, kept in
+// drafts/ too: `drafts/<plan's file name>.notes.md` (tarlatan).
 // A draft's open questions are the agreement's prompts (Question, Select,
 // Affirm) at any heading level, plus phoropter's `**If unanswered:**`.
 
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { parsePlan } from './plan.ts';
 import { commitOf, packagesOf, resolveEntries, type Commit, type Plan, type Site } from './site.ts';
 
-export const DRAFT = 'plan.draft.md';
-export const NOTES = 'plan.draft.notes.md';
+export const DRAFTS = 'drafts';
+export const DRAFT = 'drafts/plan.draft.md';
+export const NOTES = 'drafts/plan.draft.notes.md';
+
+// A landed plan's request file, whether or not it exists.
+export function requestFile(plan: Plan): string {
+  return `${DRAFTS}/${basename(plan.file, '.md')}.notes.md`;
+}
+
+// A request to revisit a landed plan: its notes, each placed after the entry
+// whose source holds its quote. Undefined when there's no request.
+export function readRequest(dir: string, plan: Plan): Annotation[] | undefined {
+  const path = join(dir, requestFile(plan));
+  if (!existsSync(path)) return undefined;
+  const planPath = join(dir, plan.file);
+  const source = existsSync(planPath) ? readFileSync(planPath, 'utf8') : '';
+  return parseNotes(readFileSync(path, 'utf8')).map((a) => placed(a, source, plan));
+}
 
 export type Prompt = {
   kind: string; // Question, Select, or Affirm

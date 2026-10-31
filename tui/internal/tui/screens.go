@@ -10,6 +10,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 
+	"phoropter-tui/internal/notes"
 	"phoropter-tui/internal/substrate"
 )
 
@@ -155,7 +156,12 @@ func (s *listScreen) slot(w int) string {
 
 // meta is a plan's dim line: what the page keeps in its metadata.
 func meta(p substrate.PlanSummary) string {
-	parts := []string{p.Name, p.Date, plural(p.Entries, "entry")}
+	// A request to revisit is something to act on, so it comes right after the name.
+	parts := []string{p.Name}
+	if p.Requests > 0 {
+		parts = append(parts, "✎ "+plural(p.Requests, "note"))
+	}
+	parts = append(parts, p.Date, plural(p.Entries, "entry"))
 	if p.AsBuiltURL != "" {
 		parts = append(parts, "✓ as-built")
 	}
@@ -279,12 +285,41 @@ func (s *docScreen) capture(m *Model, msg tea.KeyMsg) tea.Cmd {
 	return nil
 }
 
+// request opens a note on a landed plan: a request to revisit it, kept in
+// drafts/ (tarlatan). A plan takes notes, never edits.
+func (s *docScreen) request(m *Model, r row) {
+	if r.doc.IsAsBuilt {
+		m.status = "an as-built takes no notes; ask for a revisit on its plan"
+		return
+	}
+	if r.note != nil {
+		m.status = "a note can't be noted; notes go on entries or the whole plan"
+		return
+	}
+	if _, err := notes.OpenRequest(m.workDir(), r.doc.File); err != nil {
+		m.status = err.Error()
+		return
+	}
+	var f *form
+	if r.entry != nil {
+		for i := range r.doc.Entries {
+			if &r.doc.Entries[i] == r.entry {
+				f = newNoteForm(i, r.entry.Kind+": "+r.entry.Title, false)
+			}
+		}
+	} else {
+		f = newNoteForm(-1, "the whole plan", false)
+	}
+	f.request = true
+	s.form = f
+}
+
 // annotate opens a form for the current row: a prompt's answer, a note on an
 // entry, or on the About row a note on the whole draft.
 func (s *docScreen) annotate(m *Model) {
 	r := s.rows[s.cur]
 	if r.doc.Draft == nil {
-		m.status = "only a draft takes notes; a plan is testimony"
+		s.request(m, r)
 		return
 	}
 	d, err := m.openDraft(r.doc)
@@ -422,7 +457,7 @@ func (s *docScreen) help() string {
 	if s.plan.Draft != nil {
 		return "j/k or tab move · a answer or note · s skip · n anchor · 1 2 3 layer · enter links · r refresh · esc back"
 	}
-	return "j/k or tab entry · n anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
+	return "j/k or tab entry · a ask for a revisit · n anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
 }
 
 // refresh reads the plan and its as-built again, back at the same entry.
@@ -556,6 +591,8 @@ func (s *docScreen) view(m *Model, w, h int) string {
 			text = "── As built, head " + r.doc.Head.Label
 		case r.entry == nil && r.doc.Draft != nil:
 			text = "── About this draft · a to note it"
+		case r.entry == nil && !r.doc.IsAsBuilt:
+			text = "── About this plan · a to ask for a revisit"
 		case r.entry == nil:
 			text = "── About this plan"
 		default:
@@ -619,8 +656,11 @@ func (s *docScreen) detail(w int) string {
 		if len(d.Entries) == 0 {
 			b.WriteString("\n" + styles.dim.Render("No entries.") + "\n")
 		}
-		if d.Draft != nil {
+		switch {
+		case d.Draft != nil:
 			b.WriteString("\n" + styles.dim.Render(wrap("a here writes a note on the whole draft. On an entry, a notes that entry; on a prompt, it answers.", w)) + "\n")
+		case !d.IsAsBuilt:
+			b.WriteString("\n" + styles.dim.Render(wrap("A landed plan is never edited. a here asks for it to be revisited, with a note on the whole plan; on an entry, a note on that entry. Notes go in drafts/, and a revisit answers them.", w)) + "\n")
 		}
 		return b.String()
 	}

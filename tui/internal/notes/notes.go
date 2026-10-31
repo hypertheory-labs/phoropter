@@ -222,9 +222,11 @@ func (f *File) SetAnnotates(draftName, draftText string) {
 // A Draft is the draft on disk, checked against the page that showed it.
 type Draft struct {
 	Path, NotesPath string
+	Name            string // what the annotates: line names
 	Source          *Source
 	Notes           *File
 	HasNotes        bool
+	Request         bool // notes on a landed plan, asking for a revisit
 }
 
 var ErrMoved = errors.New("the draft on disk isn't the one on the page: it changed since the page was read (r reads it again)")
@@ -245,26 +247,50 @@ func Open(dir, file, pageSHA256 string) (*Draft, error) {
 	if hex.EncodeToString(sum[:]) != pageSHA256 {
 		return nil, ErrMoved
 	}
-	d := &Draft{Path: path, NotesPath: strings.TrimSuffix(path, ".md") + ".notes.md", Source: ParseSource(string(b)), Notes: &File{}}
+	d := &Draft{Path: path, NotesPath: strings.TrimSuffix(path, ".md") + ".notes.md", Name: filepath.Base(path), Source: ParseSource(string(b)), Notes: &File{}}
+	d.readNotes()
+	return d, nil
+}
+
+// OpenRequest opens a landed plan's request to revisit, kept in drafts/
+// (tarlatan). A landed plan never changes, so there's no hash to check.
+func OpenRequest(dir, planFile string) (*Draft, error) {
+	root, err := repoRoot(dir)
+	if err != nil {
+		return nil, err
+	}
+	b, err := os.ReadFile(filepath.Join(root, planFile))
+	if err != nil {
+		return nil, fmt.Errorf("no %s here: this TUI isn't running beside the plan's repository", planFile)
+	}
+	notes := filepath.Join(root, "drafts", strings.TrimSuffix(filepath.Base(planFile), ".md")+".notes.md")
+	d := &Draft{Path: filepath.Join(root, planFile), NotesPath: notes, Name: planFile, Source: ParseSource(string(b)), Notes: &File{}, Request: true}
+	d.readNotes()
+	return d, nil
+}
+
+func (d *Draft) readNotes() {
 	if nb, err := os.ReadFile(d.NotesPath); err == nil {
 		d.Notes, d.HasNotes = Parse(string(nb)), true
 	}
-	return d, nil
 }
 
 // Save writes the notes file. It never touches the draft.
 func (d *Draft) Save() error {
-	d.Notes.SetAnnotates(filepath.Base(d.Path), d.Source.Text)
+	d.Notes.SetAnnotates(d.Name, d.Source.Text)
+	if err := os.MkdirAll(filepath.Dir(d.NotesPath), 0o755); err != nil {
+		return err
+	}
 	return os.WriteFile(d.NotesPath, []byte(d.Notes.String()), 0o644)
 }
 
-// DraftOnDisk is whether the repository holding dir has a plan.draft.md.
+// DraftOnDisk is whether the repository holding dir has a draft, in drafts/.
 func DraftOnDisk(dir string) bool {
 	root, err := repoRoot(dir)
 	if err != nil {
 		return false
 	}
-	_, err = os.Stat(filepath.Join(root, "plan.draft.md"))
+	_, err = os.Stat(filepath.Join(root, "drafts", "plan.draft.md"))
 	return err == nil
 }
 
