@@ -13,3 +13,9 @@ per commit and package. Part of a larger idea: a `phoropter` CLI, `gh`- or
 
 The store this needs, where indexes live and how they're kept, is decided in batik (the
 `phoropter` command).
+
+**From organdy's as-built:** a `go install`ed phoropter finds no first-party indexers.
+They're programs in `indexers/`, found only from a clone (or `PHOROPTER_INDEXERS`), and
+`indexers/go/` can't be `go install`ed by name. The shipping plan needs one of:
+installable first-party indexers (`phoropter-index-go`, `phoropter-index-typescript` on
+`PATH`), or the Go indexer built into the binary as a fallback.
