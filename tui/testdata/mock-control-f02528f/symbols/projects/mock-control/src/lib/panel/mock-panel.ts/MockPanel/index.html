@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MockPanel# · mock-control at f02528f</title>
+<link rel="profile" href="../../../../../../../../profile/">
+<link rel="help" href="../../../../../../../../guide/">
+<link rel="stylesheet" href="../../../../../../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">mock-control</span>
+at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
+<span class="links"><a class="home-link" href="../../../../../../../../">home</a>
+<a rel="help" href="../../../../../../../../guide/">guide</a>
+<a class="profile-link" href="../../../../../../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../../../../../../../">mock-control at f02528f</a></nav>
+<article itemscope>
+<h1><code itemprop="name">MockPanel#</code></h1>
+<dl class="facts">
+<dt>Kind</dt><dd itemprop="kind">symbol</dd>
+<dt>Symbol</dt><dd><code itemprop="symbol">scip-typescript npm @hypertheory-labs/mock-control . src/lib/panel/`mock-panel.ts`/MockPanel#</code></dd>
+<dt>At f02528f</dt><dd><code itemprop="file">projects/mock-control/src/lib/panel/mock-panel.ts</code>, lines <span itemprop="startLine">9</span>–<span itemprop="endLine">152</span></dd>
+</dl>
+<div class="view"><meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code style="counter-reset: line 8"><span class="line">@Component({</span>
+<span class="line">  selector: 'mock-panel',</span>
+<span class="line">  imports: [EndpointSettings, RequestLog],</span>
+<span class="line">  template: `</span>
+<span class="line">    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</span>
+<span class="line">      @if (control.heldCount()) {</span>
+<span class="line">        &lt;button type=&quot;button&quot; class=&quot;btn btn-warning shadow-lg&quot; (click)=&quot;control.releaseAll()&quot;&gt;</span>
+<span class="line">          Release {{ control.heldCount() }} held</span>
+<span class="line">        &lt;/button&gt;</span>
+<span class="line">      }</span>
+<span class="line">      &lt;button</span>
+<span class="line">        type=&quot;button&quot;</span>
+<span class="line">        class=&quot;btn btn-primary shadow-lg&quot;</span>
+<span class="line">        aria-haspopup=&quot;dialog&quot;</span>
+<span class="line">        (click)=&quot;open()&quot;</span>
+<span class="line">      &gt;</span>
+<span class="line">        &lt;svg</span>
+<span class="line">          aria-hidden=&quot;true&quot;</span>
+<span class="line">          xmlns=&quot;http://www.w3.org/2000/svg&quot;</span>
+<span class="line">          viewBox=&quot;0 0 24 24&quot;</span>
+<span class="line">          fill=&quot;none&quot;</span>
+<span class="line">          stroke=&quot;currentColor&quot;</span>
+<span class="line">          stroke-width=&quot;2&quot;</span>
+<span class="line">          class=&quot;size-5&quot;</span>
+<span class="line">        &gt;</span>
+<span class="line">          &lt;path d=&quot;M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6&quot; /&gt;</span>
+<span class="line">        &lt;/svg&gt;</span>
+<span class="line">        Mocks</span>
+<span class="line">        @if (control.modifiedCount()) {</span>
+<span class="line">          &lt;span class=&quot;badge badge-sm badge-warning&quot;&gt;</span>
+<span class="line">            {{ control.modifiedCount() }}&lt;span class=&quot;sr-only&quot;&gt; endpoints modified&lt;/span&gt;</span>
+<span class="line">          &lt;/span&gt;</span>
+<span class="line">        }</span>
+<span class="line">      &lt;/button&gt;</span>
+<span class="line">    &lt;/div&gt;</span>
+<span class="line"></span>
+<span class="line">    &lt;dialog #dialog class=&quot;modal modal-end&quot; aria-labelledby=&quot;mock-panel-title&quot;&gt;</span>
+<span class="line">      &lt;div class=&quot;modal-box w-full sm:w-md flex flex-col gap-4&quot;&gt;</span>
+<span class="line">        &lt;header class=&quot;flex items-center justify-between&quot;&gt;</span>
+<span class="line">          &lt;h2 id=&quot;mock-panel-title&quot; class=&quot;text-lg font-bold&quot;&gt;Mock API settings&lt;/h2&gt;</span>
+<span class="line">          &lt;form method=&quot;dialog&quot;&gt;</span>
+<span class="line">            &lt;button class=&quot;btn btn-sm btn-circle btn-ghost&quot; aria-label=&quot;Close mock settings&quot;&gt;</span>
+<span class="line">              &lt;span aria-hidden=&quot;true&quot;&gt;✕&lt;/span&gt;</span>
+<span class="line">            &lt;/button&gt;</span>
+<span class="line">          &lt;/form&gt;</span>
+<span class="line">        &lt;/header&gt;</span>
+<span class="line"></span>
+<span class="line">        &lt;section aria-labelledby=&quot;mock-presets-heading&quot;&gt;</span>
+<span class="line">          &lt;h3 id=&quot;mock-presets-heading&quot; class=&quot;text-sm font-semibold mb-2&quot;&gt;Scenarios&lt;/h3&gt;</span>
+<span class="line">          &lt;div class=&quot;flex flex-wrap gap-2&quot;&gt;</span>
+<span class="line">            @for (p of control.presets; track p.name) {</span>
+<span class="line">              &lt;button</span>
+<span class="line">                type=&quot;button&quot;</span>
+<span class="line">                class=&quot;btn btn-sm&quot;</span>
+<span class="line">                [class.btn-active]=&quot;control.activePreset() === p.name&quot;</span>
+<span class="line">                [attr.aria-pressed]=&quot;control.activePreset() === p.name&quot;</span>
+<span class="line">                [title]=&quot;p.description&quot;</span>
+<span class="line">                (click)=&quot;control.applyPreset(p.name)&quot;</span>
+<span class="line">              &gt;</span>
+<span class="line">                {{ p.label }}</span>
+<span class="line">              &lt;/button&gt;</span>
+<span class="line">            }</span>
+<span class="line">          &lt;/div&gt;</span>
+<span class="line">          &lt;p class=&quot;text-xs opacity-80 mt-2&quot;&gt;</span>
+<span class="line">            Tip: add &lt;code&gt;?mock=flaky&lt;/code&gt; (or another scenario) to a URL to start with it.</span>
+<span class="line">          &lt;/p&gt;</span>
+<span class="line">        &lt;/section&gt;</span>
+<span class="line"></span>
+<span class="line">        &lt;div role=&quot;tablist&quot; class=&quot;tabs tabs-border&quot; aria-label=&quot;Mock settings sections&quot;&gt;</span>
+<span class="line">          @for (t of tabs; track t.id) {</span>
+<span class="line">            &lt;button</span>
+<span class="line">              type=&quot;button&quot;</span>
+<span class="line">              role=&quot;tab&quot;</span>
+<span class="line">              class=&quot;tab text-base-content&quot;</span>
+<span class="line">              [id]=&quot;'mock-tab-' + t.id&quot;</span>
+<span class="line">              [class.tab-active]=&quot;tab() === t.id&quot;</span>
+<span class="line">              [attr.aria-selected]=&quot;tab() === t.id&quot;</span>
+<span class="line">              [attr.aria-controls]=&quot;'mock-tabpanel-' + t.id&quot;</span>
+<span class="line">              [attr.tabindex]=&quot;tab() === t.id ? 0 : -1&quot;</span>
+<span class="line">              (click)=&quot;tab.set(t.id)&quot;</span>
+<span class="line">              (keydown.arrowRight)=&quot;switchTab()&quot;</span>
+<span class="line">              (keydown.arrowLeft)=&quot;switchTab()&quot;</span>
+<span class="line">            &gt;</span>
+<span class="line">              {{ t.label }}</span>
+<span class="line">              @if (t.id === 'log' &amp;&amp; control.heldCount()) {</span>
+<span class="line">                &lt;span class=&quot;badge badge-sm badge-warning ms-1&quot;</span>
+<span class="line">                  &gt;{{ control.heldCount() }} held&lt;/span</span>
+<span class="line">                &gt;</span>
+<span class="line">              }</span>
+<span class="line">            &lt;/button&gt;</span>
+<span class="line">          }</span>
+<span class="line">        &lt;/div&gt;</span>
+<span class="line"></span>
+<span class="line">        &lt;div</span>
+<span class="line">          role=&quot;tabpanel&quot;</span>
+<span class="line">          [id]=&quot;'mock-tabpanel-' + tab()&quot;</span>
+<span class="line">          [attr.aria-labelledby]=&quot;'mock-tab-' + tab()&quot;</span>
+<span class="line">          class=&quot;flex-1 overflow-y-auto&quot;</span>
+<span class="line">        &gt;</span>
+<span class="line">          @if (tab() === 'endpoints') {</span>
+<span class="line">            &lt;div class=&quot;flex flex-col gap-2&quot;&gt;</span>
+<span class="line">              @for (ep of control.endpoints(); track ep.id) {</span>
+<span class="line">                &lt;mock-endpoint-settings [endpoint]=&quot;ep&quot; [config]=&quot;control.configs()[ep.id]&quot; /&gt;</span>
+<span class="line">              }</span>
+<span class="line">            &lt;/div&gt;</span>
+<span class="line">          } @else {</span>
+<span class="line">            &lt;mock-request-log /&gt;</span>
+<span class="line">          }</span>
+<span class="line">        &lt;/div&gt;</span>
+<span class="line"></span>
+<span class="line">        &lt;footer class=&quot;flex justify-end&quot;&gt;</span>
+<span class="line">          &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-outline&quot; (click)=&quot;control.resetAll()&quot;&gt;</span>
+<span class="line">            Reset everything</span>
+<span class="line">          &lt;/button&gt;</span>
+<span class="line">        &lt;/footer&gt;</span>
+<span class="line">      &lt;/div&gt;</span>
+<span class="line">      &lt;form method=&quot;dialog&quot; class=&quot;modal-backdrop&quot;&gt;</span>
+<span class="line">        &lt;button tabindex=&quot;-1&quot;&gt;Close&lt;/button&gt;</span>
+<span class="line">      &lt;/form&gt;</span>
+<span class="line">    &lt;/dialog&gt;</span>
+<span class="line">  `,</span>
+<span class="line">})</span>
+<span class="line">export class MockPanel {</span>
+<span class="line">  protected readonly control = inject(MockControl);</span>
+<span class="line">  protected readonly tab = signal&lt;Tab&gt;('endpoints');</span>
+<span class="line">  protected readonly tabs: { id: Tab; label: string }[] = [</span>
+<span class="line">    { id: 'endpoints', label: 'Endpoints' },</span>
+<span class="line">    { id: 'log', label: 'Request log' },</span>
+<span class="line">  ];</span>
+<span class="line">  private readonly dialog = viewChild.required&lt;ElementRef&lt;HTMLDialogElement&gt;&gt;('dialog');</span>
+<span class="line">  private readonly host = inject&lt;ElementRef&lt;HTMLElement&gt;&gt;(ElementRef);</span>
+<span class="line"></span>
+<span class="line">  protected open() {</span>
+<span class="line">    this.dialog().nativeElement.showModal();</span>
+<span class="line">  }</span>
+<span class="line"></span>
+<span class="line">  protected switchTab() {</span>
+<span class="line">    const next: Tab = this.tab() === 'endpoints' ? 'log' : 'endpoints';</span>
+<span class="line">    this.tab.set(next);</span>
+<span class="line">    queueMicrotask(() =&gt;</span>
+<span class="line">      this.host.nativeElement.querySelector&lt;HTMLElement&gt;(`#mock-tab-${next}`)?.focus(),</span>
+<span class="line">    );</span>
+<span class="line">  }</span>
+<span class="line">}</span></code></pre></div>
+<h2>Plans anchored here</h2>
+<ul class="list"><li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../../../../../../plans/pumice/#selectors-use-the-library-s-prefix-mock-panel"><span itemprop="kind">Decision</span>: <span itemprop="title">Selectors use the library&#39;s prefix, <code>mock-panel</code></span></a>
+  <span class="meta">in <span itemprop="plan">pumice</span>, <time itemprop="date" datetime="2026-10-29">2026-10-29</time>, added in <data itemprop="added" value="90c65b9deedf682eb2e490597041b2117c8fd862"><code>90c65b9</code></data> <time datetime="2026-10-30T14:24:00.000Z">14:24 UTC</time></span>
+  <code class="where" itemprop="where">scip-typescript npm @hypertheory-labs/mock-control . src/lib/panel/`mock-panel.ts`/MockPanel#</code>
+</li></ul>
+</article>
+</main>
+</body>
+</html>

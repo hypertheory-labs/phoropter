@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: tallow · mock-control at f02528f</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">mock-control</span>
+at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/tallow/">Revisit pumice: MSW 3, before the first publish</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: tallow</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/tallow/">plans/2026-10-30-tallow.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="4d28b689db25a5ae844a6e54cd927c5d2370ca5f"><code>4d28b68</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-tallow.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Nothing departed from the plan. The revisit&#39;s outcome: pumice&#39;s ground holds with one
+correction. The package is still ready to publish as an Angular-only package, and its
+MSW range now includes the version npm actually installs.</p>
+</div>
+<section class="entry" id="plain-msw-in-the-install-step-undoing-vellum-s-pin" itemprop="entry" itemscope>
+<h2><a class="self" href="#plain-msw-in-the-install-step-undoing-vellum-s-pin"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Plain <code>msw</code> in the install step, undoing vellum&#39;s pin</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 1. Install</code> <a rel="anchored-at" itemprop="place" href="../../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">npm install -D @hypertheory-labs/mock-control msw daisyui@5</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4d28b689db25a5ae844a6e54cd927c5d2370ca5f"><code>4d28b68</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="25"><meta itemprop="endLine" content="25"></span>
+<span class="note" itemprop="note">quote at line 25</span>
+</figcaption>
+<meta itemprop="codeStart" content="22"><pre itemprop="code" data-start="22"><code style="counter-reset: line 21"><span class="line">### 1. Install</span>
+<span class="line"></span>
+<span class="line">```sh</span>
+<mark class="line">npm install -D @hypertheory-labs/mock-control msw daisyui@5</mark>
+<span class="line">npx msw init public --save</span>
+<span class="line">```</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="25"><meta itemprop="endLine" content="25"></span><meta itemprop="sameAs" content="4d28b68">
+<span class="note" itemprop="note">same as at <code>4d28b68</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">plans/2026-10-30-vellum.as-built.md › Pin MSW 2 in the install step, rather than support MSW 3</code></p>
+<p class="target"><span class="label">entry</span> <a rel="anchored-at" itemprop="target" href="../../../plans/vellum/as-built/#pin-msw-2-in-the-install-step-rather-than-support-msw-3">Chose: Pin MSW 2 in the install step, rather than support MSW 3</a> <span class="meta">in vellum's as-built</span></p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> with both versions in the peer range, plain <code>msw</code> installs 3,
+which works. Vellum&#39;s pin was the stopgap this revisit exists to replace; vellum stays as
+written, and this is where its pin ended.</p>
+</div>
+</section>
+<section class="entry" id="the-workspace-itself-stays-on-msw-2-15" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-workspace-itself-stays-on-msw-2-15"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The workspace itself stays on MSW 2.15</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">package.json › devDependencies › msw</code> <a rel="anchored-at" itemprop="place" href="../../../files/package.json/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&quot;msw&quot;: &quot;^2.15.0&quot;,</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4d28b689db25a5ae844a6e54cd927c5d2370ca5f"><code>4d28b68</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="21"><meta itemprop="endLine" content="21"></span>
+<span class="note" itemprop="note">quote at line 21</span>
+</figcaption>
+<meta itemprop="codeStart" content="18"><pre itemprop="code" data-start="18"><code style="counter-reset: line 17"><span class="line">    &quot;@angular/forms&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;@angular/platform-browser&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;jsdom&quot;: &quot;^30.0.0&quot;,</span>
+<mark class="line">    &quot;msw&quot;: &quot;^2.15.0&quot;,</mark>
+<span class="line">    &quot;ng-packagr&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;rxjs&quot;: &quot;~7.8.0&quot;,</span>
+<span class="line">    &quot;tslib&quot;: &quot;^2.3.0&quot;,</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="21"><meta itemprop="endLine" content="21"></span><meta itemprop="sameAs" content="4d28b68">
+<span class="note" itemprop="note">same as at <code>4d28b68</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the README&#39;s known limits were measured on 2.15 and its
+heading says so; the class apps are on 2. Moving the workspace is its own small round,
+and nothing here needs it.</p>
+</div>
+</section>
+<section class="entry" id="the-library-works-on-msw-3-unchanged" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-library-works-on-msw-3-unchanged"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">The library works on MSW 3 unchanged</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/tallow/#the-library-works-on-msw-3-unchanged">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> held. The library builds against 3.0.3 with no source changes.
+In fresh Angular 22 apps, one per version, following the README: both compile (3 only
+after the start option is renamed), and in headless Chrome, three runs each, the mocked
+endpoint answers with the mock, the pass-through reaches the real file, the log shows
+<code>passthrough</code> and <code>ok 200</code>, and the panel renders.</p>
+<p>I nearly wrote &quot;disproved.&quot; My first harness waited for the store to exist, which happens
+before <code>worker.start()</code> finishes, so requests raced the worker on both versions. MSW 2
+happened to pass the first time and MSW 3 didn&#39;t. Waiting for Angular to bootstrap (which
+the README&#39;s <code>main.ts</code> does only after the worker starts) fixed it for both. A failure
+that only one version shows is still worth checking against the other.</p>
+<p>Not measured on 3: the known limits (declined in the plan), failure and delay modes, and
+held requests. Those paths don&#39;t touch anything MSW changed that I know of, which is a
+reason, not a measurement.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

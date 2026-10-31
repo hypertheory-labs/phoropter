@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Say in markup what the pages already say in prose · phoropter at 1a83dbc</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="meta">1a83dbc6bce50d8051eecafbdcf86a9d21d89799</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 1a83dbc</a></nav>
+<article itemscope>
+<h1 itemprop="title">Say in markup what the pages already say in prose</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">selvage</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-selvage.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/selvage/as-built/">plans/2026-10-30-selvage.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Phoropter-tui is the first reader of these pages besides a browser, and it reads nothing
+else. Its brief to phoropter (<code>../phoropter-tui/docs/for-phoropter.md</code>) lists where it
+had to parse prose or lean on a class name to get something the page already shows. This
+plan closes the ones that need no decision about reasons, only markup and the profile.
+Everything it adds is additive: nothing a reader uses today is renamed or reshaped, since
+the rels and microdata are now a public API. The rest of the brief is on the shelf.</p>
+</div>
+<section class="entry" id="a-view-lists-each-match-as-an-item-with-its-lines" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-view-lists-each-match-as-an-item-with-its-lines"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A view lists each match as an item, with its lines</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;meta itemprop=&quot;matches&quot; content=&quot;${v.matches}&quot;&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="295"><meta itemprop="endLine" content="295"></span>
+<span class="note" itemprop="note">quote at line 295</span>
+</figcaption>
+<meta itemprop="codeStart" content="292"><pre itemprop="code" data-start="292"><code style="counter-reset: line 291"><span class="line">&lt;data itemprop=&quot;commit&quot; value=&quot;${v.sha}&quot;&gt;&lt;code&gt;${esc(v.short)}&lt;/code&gt;&lt;/data&gt;</span>
+<span class="line">&lt;span class=&quot;status&quot; itemprop=&quot;status&quot;&gt;${v.status}&lt;/span&gt;</span>
+<span class="line">${v.file ? `&lt;code class=&quot;file&quot; itemprop=&quot;file&quot;&gt;${esc(v.file)}&lt;/code&gt;` : ''}</span>
+<mark class="line">&lt;meta itemprop=&quot;matches&quot; content=&quot;${v.matches}&quot;&gt;${range}${v.sameAs ? `&lt;meta itemprop=&quot;sameAs&quot; content=&quot;${v.sameAs}&quot;&gt;` : ''}</mark>
+<span class="line">&lt;span class=&quot;note&quot; itemprop=&quot;note&quot;&gt;${inline(v.note)}&lt;/span&gt;</span>
+<span class="line">&lt;/figcaption&gt;</span>
+<span class="line">${code}</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="295"><meta itemprop="endLine" content="295"></span>
+<span class="note" itemprop="note">quote at line 295</span>
+</figcaption>
+<meta itemprop="codeStart" content="292"><pre itemprop="code" data-start="292"><code style="counter-reset: line 291"><span class="line">&lt;data itemprop=&quot;commit&quot; value=&quot;${v.sha}&quot;&gt;&lt;code&gt;${esc(v.short)}&lt;/code&gt;&lt;/data&gt;</span>
+<span class="line">&lt;span class=&quot;status&quot; itemprop=&quot;status&quot;&gt;${v.status}&lt;/span&gt;</span>
+<span class="line">${v.file ? `&lt;code class=&quot;file&quot; itemprop=&quot;file&quot;&gt;${esc(v.file)}&lt;/code&gt;` : ''}</span>
+<mark class="line">&lt;meta itemprop=&quot;matches&quot; content=&quot;${v.matches}&quot;&gt;${v.at.map(matchHtml).join('')}${range}${v.sameAs ? `&lt;meta itemprop=&quot;sameAs&quot; content=&quot;${v.sameAs}&quot;&gt;` : ''}</mark>
+<span class="line">&lt;span class=&quot;note&quot; itemprop=&quot;note&quot;&gt;${inline(v.note)}&lt;/span&gt;</span>
+<span class="line">&lt;/figcaption&gt;</span>
+<span class="line">${code}</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="368"><meta itemprop="endLine" content="368"></span>
+<span class="note" itemprop="note">quote at line 368</span>
+</figcaption>
+<meta itemprop="codeStart" content="365"><pre itemprop="code" data-start="365"><code style="counter-reset: line 364"><span class="line">&lt;data itemprop=&quot;commit&quot; value=&quot;${v.sha}&quot;&gt;&lt;code&gt;${esc(v.short)}&lt;/code&gt;&lt;/data&gt;</span>
+<span class="line">&lt;span class=&quot;status&quot; itemprop=&quot;status&quot;&gt;${v.status}&lt;/span&gt;</span>
+<span class="line">${v.file ? `&lt;code class=&quot;file&quot; itemprop=&quot;file&quot;&gt;${esc(v.file)}&lt;/code&gt;` : ''}</span>
+<mark class="line">&lt;meta itemprop=&quot;matches&quot; content=&quot;${v.matches}&quot;&gt;${v.at.map(matchHtml).join('')}${range}${v.sameAs ? `&lt;meta itemprop=&quot;sameAs&quot; content=&quot;${v.sameAs}&quot;&gt;` : ''}</mark>
+<span class="line">&lt;span class=&quot;note&quot; itemprop=&quot;note&quot;&gt;${inline(v.note)}&lt;/span&gt;</span>
+<span class="line">&lt;/figcaption&gt;</span>
+<span class="line">${code}</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> &quot;where in this excerpt is the quote?&quot; is answered
+today only by a <code>&lt;mark&gt;</code> and a note that says &quot;quote at line 94&quot; in prose: 28 views in
+mock-control, 74 in phoropter. Each match becomes a <code>match</code> item with <code>startLine</code> and
+<code>endLine</code>, one per match, since <code>matches</code> can be more than 1. The note stays, for people.</p>
+</div>
+</section>
+<section class="entry" id="each-excerpt-s-first-line-is-a-property-beside-it" itemprop="entry" itemscope>
+<h2><a class="self" href="#each-excerpt-s-first-line-is-a-property-beside-it"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Each excerpt&#39;s first line is a property beside it</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="309"><meta itemprop="endLine" content="309"></span>
+<span class="note" itemprop="note">quote at line 309</span>
+</figcaption>
+<meta itemprop="codeStart" content="306"><pre itemprop="code" data-start="306"><code style="counter-reset: line 305"><span class="line">    const text = `&lt;span class=&quot;ln&quot;&gt;${n}&lt;/span&gt;${esc(line) || ' '}`;</span>
+<span class="line">    return marked.has(n) ? `&lt;mark&gt;${text}&lt;/mark&gt;` : text;</span>
+<span class="line">  });</span>
+<mark class="line">  return `&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;&lt;code&gt;${lines.join('\n')}&lt;/code&gt;&lt;/pre&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function layout(site: Site, here: string, title: string, main: string): Page {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="316"><meta itemprop="endLine" content="316"></span>
+<span class="note" itemprop="note">quote at line 316</span>
+</figcaption>
+<meta itemprop="codeStart" content="313"><pre itemprop="code" data-start="313"><code style="counter-reset: line 312"><span class="line">    const text = `&lt;span class=&quot;ln&quot;&gt;${n}&lt;/span&gt;${esc(line) || ' '}`;</span>
+<span class="line">    return marked.has(n) ? `&lt;mark&gt;${text}&lt;/mark&gt;` : text;</span>
+<span class="line">  });</span>
+<mark class="line">  return `&lt;meta itemprop=&quot;codeStart&quot; content=&quot;${h.start}&quot;&gt;&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;&lt;code&gt;${lines.join('\n')}&lt;/code&gt;&lt;/pre&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function layout(site: Site, here: string, title: string, main: string): Page {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="389"><meta itemprop="endLine" content="389"></span>
+<span class="note" itemprop="note">quote at line 389</span>
+</figcaption>
+<meta itemprop="codeStart" content="386"><pre itemprop="code" data-start="386"><code style="counter-reset: line 385"><span class="line">    return marked.has(n) ? `&lt;mark class=&quot;line&quot;&gt;${esc(line)}&lt;/mark&gt;` : `&lt;span class=&quot;line&quot;&gt;${esc(line)}&lt;/span&gt;`;</span>
+<span class="line">  });</span>
+<span class="line">  // The numbers are a CSS counter from codeStart, so code's text is just the code.</span>
+<mark class="line">  return `&lt;meta itemprop=&quot;codeStart&quot; content=&quot;${h.start}&quot;&gt;&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;&lt;code style=&quot;counter-reset: line ${h.start - 1}&quot;&gt;${lines.join('\n')}&lt;/code&gt;&lt;/pre&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function layout(site: Site, here: string, title: string, main: string, header?: string): Page {</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief, then Claude, not asked</span>):</strong> a reader numbering an
+excerpt&#39;s lines needs where it starts, and <code>data-start</code> and <code>span.ln</code> aren&#39;t in the
+profile. A <code>codeStart</code> property, just before each <code>code</code> it describes. Microdata keeps
+properties in document order, so the nth <code>codeStart</code> belongs to the nth <code>code</code>, and the
+profile says so.</p>
+</div>
+</section>
+<section class="entry" id="making-each-excerpt-an-item-holding-its-own-start-and-code" itemprop="entry" itemscope>
+<h2><a class="self" href="#making-each-excerpt-an-item-holding-its-own-start-and-code"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Making each excerpt an item holding its own start and code</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it&#39;s the cleaner shape, but <code>code</code> would stop being a
+property of the view and of the place, and phoropter-tui reads it there. The paired
+property gets the same information out without moving anything a reader already uses.</p>
+</div>
+</section>
+<section class="entry" id="the-home-list-marks-up-its-as-built-and-revisits-links-and-counts-entries" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-home-list-marks-up-its-as-built-and-revisits-links-and-counts-entries"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The home list marks up its as-built and revisits links, and counts entries</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const asBuilt = p.asBuilt ? `, with &lt;a href=&quot;${rel(here, p.asBuilt.href)}&quot;&gt;an as-built&lt;/a&gt;` : '';</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="29"><meta itemprop="endLine" content="29"></span>
+<span class="note" itemprop="note">quote at line 29</span>
+</figcaption>
+<meta itemprop="codeStart" content="26"><pre itemprop="code" data-start="26"><code style="counter-reset: line 25"><span class="line">  const title = `${site.repoName} at ${site.generated.short}`;</span>
+<span class="line">  const plans = site.plans</span>
+<span class="line">    .map((p) =&gt; {</span>
+<mark class="line">      const asBuilt = p.asBuilt ? `, with &lt;a href=&quot;${rel(here, p.asBuilt.href)}&quot;&gt;an as-built&lt;/a&gt;` : '';</mark>
+<span class="line">      const revisits = p.revisits ? `, revisits &lt;a href=&quot;${rel(here, p.revisits.href)}&quot;&gt;${esc(p.revisits.name)}&lt;/a&gt;` : '';</span>
+<span class="line">      return `&lt;li itemprop=&quot;plan&quot; itemscope&gt;</span>
+<span class="line">  &lt;a rel=&quot;item&quot; itemprop=&quot;url&quot; href=&quot;${rel(here, p.href)}&quot;&gt;&lt;span itemprop=&quot;title&quot;&gt;${inline(p.doc.title)}&lt;/span&gt;&lt;/a&gt;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>42ed1b2</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="42ed1b2">
+<span class="note" itemprop="note">same as at <code>42ed1b2</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> &quot;which plans are done, and which revisit something?&quot;
+shouldn&#39;t need opening each plan. The plan page already has <code>rel=&quot;as-built&quot; itemprop=&quot;asBuilt&quot;</code> and <code>rel=&quot;revisits&quot; itemprop=&quot;revisits&quot;</code>; the home list gets the
+same. &quot;9 entries&quot; gets <code>entryCount</code>, on plans and places both.</p>
+</div>
+</section>
+<section class="entry" id="new-has-one-shape" itemprop="entry" itemscope>
+<h2><a class="self" href="#new-has-one-shape"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>new</code> has one shape</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">${anchor.isNew ? ', &lt;span itemprop=&quot;new&quot;&gt;new&lt;/span&gt;' : ''}</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="119"><meta itemprop="endLine" content="119"></span>
+<span class="note" itemprop="note">quote at line 119</span>
+</figcaption>
+<meta itemprop="codeStart" content="116"><pre itemprop="code" data-start="116"><code style="counter-reset: line 115"><span class="line">  const refs = place.refs</span>
+<span class="line">    .map(({ plan, doc, entry, anchor }) =&gt; `&lt;li itemprop=&quot;anchoredBy&quot; itemscope&gt;</span>
+<span class="line">  &lt;a rel=&quot;anchored-by&quot; itemprop=&quot;url&quot; href=&quot;${rel(here, doc.href)}#${entry.slug}&quot;&gt;${entry.kind ? `&lt;span itemprop=&quot;kind&quot;&gt;${esc(entry.kind)}&lt;/span&gt;: ` : ''}&lt;span itemprop=&quot;title&quot;&gt;${inline(entry.title)}&lt;/span&gt;&lt;/a&gt;</span>
+<mark class="line">  &lt;span class=&quot;meta&quot;&gt;in &lt;span itemprop=&quot;plan&quot;&gt;${esc(plan.name)}&lt;/span&gt;, ${whenHtml(plan)}${doc === plan ? '' : ' (as-built)'}${anchor.isNew ? ', &lt;span itemprop=&quot;new&quot;&gt;new&lt;/span&gt;' : ''}&lt;/span&gt;</mark>
+<span class="line">  &lt;code class=&quot;where&quot; itemprop=&quot;where&quot;&gt;${esc(anchor.where)}&lt;/code&gt;</span>
+<span class="line">&lt;/li&gt;`)</span>
+<span class="line">    .join('\n');</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>42ed1b2</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="42ed1b2">
+<span class="note" itemprop="note">same as at <code>42ed1b2</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> on an anchor it&#39;s <code>&lt;meta content=&quot;true&quot;&gt;</code>, on a
+place page&#39;s item it&#39;s the text &quot;new&quot;. Both become the meta, with &quot;new&quot; still shown on
+the place page.</p>
+</div>
+</section>
+<section class="entry" id="the-profile-says-base-and-head-can-be-text" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-profile-says-base-and-head-can-be-text"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The profile says <code>base</code> and <code>head</code> can be text</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">return `&lt;span itemprop=&quot;base&quot;&gt;${esc(plan.beforeText || 'not given')}&lt;/span&gt;`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e8107f3a5912c405809baca5e26279f2da60a474"><code>e8107f3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="353"><meta itemprop="endLine" content="353"></span>
+<span class="note" itemprop="note">quote at line 353</span>
+</figcaption>
+<meta itemprop="codeStart" content="350"><pre itemprop="code" data-start="350"><code style="counter-reset: line 349"><span class="line"></span>
+<span class="line">function baseHtml(plan: Plan): string {</span>
+<span class="line">  if (plan.before) return `&lt;data itemprop=&quot;base&quot; value=&quot;${plan.before.sha}&quot;&gt;&lt;code&gt;${esc(plan.before.short)}&lt;/code&gt;&lt;/data&gt;`;</span>
+<mark class="line">  return `&lt;span itemprop=&quot;base&quot;&gt;${esc(plan.beforeText || 'not given')}&lt;/span&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function frontmatterRest(fm: Record&lt;string, string&gt;, shown: string[]): string {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="42ed1b2f1f5de33a7048e39fc4f72c8bd1c6fbc6"><code>42ed1b2</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="360"><meta itemprop="endLine" content="360"></span>
+<span class="note" itemprop="note">quote at line 360</span>
+</figcaption>
+<meta itemprop="codeStart" content="357"><pre itemprop="code" data-start="357"><code style="counter-reset: line 356"><span class="line"></span>
+<span class="line">function baseHtml(plan: Plan): string {</span>
+<span class="line">  if (plan.before) return `&lt;data itemprop=&quot;base&quot; value=&quot;${plan.before.sha}&quot;&gt;&lt;code&gt;${esc(plan.before.short)}&lt;/code&gt;&lt;/data&gt;`;</span>
+<mark class="line">  return `&lt;span itemprop=&quot;base&quot;&gt;${esc(plan.beforeText || 'not given')}&lt;/span&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function frontmatterRest(fm: Record&lt;string, string&gt;, shown: string[]): string {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="435"><meta itemprop="endLine" content="435"></span>
+<span class="note" itemprop="note">quote at line 435</span>
+</figcaption>
+<meta itemprop="codeStart" content="432"><pre itemprop="code" data-start="432"><code style="counter-reset: line 431"><span class="line"></span>
+<span class="line">function baseHtml(plan: Plan): string {</span>
+<span class="line">  if (plan.before) return `&lt;data itemprop=&quot;base&quot; value=&quot;${plan.before.sha}&quot;&gt;&lt;code&gt;${esc(plan.before.short)}&lt;/code&gt;&lt;/data&gt;`;</span>
+<mark class="line">  return `&lt;span itemprop=&quot;base&quot;&gt;${esc(plan.beforeText || 'not given')}&lt;/span&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function frontmatterRest(fm: Record&lt;string, string&gt;, shown: string[]): string {</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief, then Claude, not asked</span>):</strong> gimlet&#39;s base is &quot;none, a
+new repo&quot;, and the guide now says a squashed <code>head:</code> can stop being a commit. Both are
+written as they are. The profile says a <code>base</code> or <code>head</code> is a <code>&lt;data&gt;</code> with the full sha
+when it&#39;s a commit here, and the text as written otherwise.</p>
+</div>
+</section>
+<section class="entry" id="once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names" itemprop="entry" itemscope>
+<h2><a class="self" href="#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Once phoropter-tui reads these, none of the closed gaps need prose or class names</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/selvage/as-built/#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names">the as-built</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/osier/#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names">osier, Guess: Once phoropter-tui reads these, none of the closed gaps need prose or class names</a>.</p>
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> after phoropter-tui switches to the new properties, any of
+<code>match-line-prose</code>, <code>line-numbers-unprofiled</code>, <code>home-as-built-unmarked</code>,
+<code>home-revisits-unmarked</code>, <code>home-entries-prose</code>, <code>new-two-shapes</code>, or <code>base-not-commit</code>
+still needs a workaround on fixtures rebuilt at this plan&#39;s head.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

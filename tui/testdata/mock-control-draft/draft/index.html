@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let the panel remember which corner it was in · mcdraft at f02528f</title>
+<link rel="profile" href="../profile/">
+<link rel="help" href="../guide/">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Draft, not committed: <code itemprop="file">plan.draft.md</code> in <span itemprop="repository">mcdraft</span>,
+read at <time itemprop="readAt" datetime="2026-10-31T16:49:09.561Z">16:49:09 UTC</time>
+<span class="meta">sha256 <data itemprop="sha256" value="42fa0d1b2e16ac68eaa5b52bf42338328f5393415f2643d6fb058921d9c0b451">42fa0d1b2e16</data>; anchors at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7">f02528f</data></span>
+<span class="links"><a class="home-link" href="../">home</a>
+<a rel="draft" href="../draft/">draft</a>
+<a rel="help" href="../guide/">guide</a>
+<a class="profile-link" href="../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a href="../">mcdraft at f02528f</a></nav>
+<article class="draft" itemscope>
+<p class="draft-label">Draft. Nothing here is testimony yet.</p>
+<h1 itemprop="title">Let the panel remember which corner it was in</h1>
+<dl class="facts">
+<dt>Base</dt><dd><data itemprop="base" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data></dd>
+
+<dt>Notes</dt><dd><code>plan.draft.notes.md</code>, sha256 <data itemprop="notesSha256" value="8249d8681ae950afb5cd6a4cfb945ee812dbe86867863f304847032af4a78598">8249d8681ae9</data></dd>
+</dl>
+<aside class="annotation" itemprop="annotation" itemscope>
+<p class="meta" itemprop="heading">General (Jeff)</p>
+
+<div itemprop="comment"><p>Small and good. Go when ready.</p>
+</div>
+</aside>
+<div class="intro" itemprop="intro"><p>A test draft, to see how a second reader sees a draft page.</p>
+</div>
+
+<section class="entry" id="the-panel-stores-its-corner-in-localstorage" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-panel-stores-its-corner-in-localstorage"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The panel stores its corner in localStorage</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/src/lib/panel/mock-panel.ts</code></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">selector: 'mock-panel',</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/src/lib/panel/mock-panel.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="10"><meta itemprop="endLine" content="10"></span>
+<span class="note" itemprop="note">quote at line 10</span>
+</figcaption>
+<meta itemprop="codeStart" content="7"><pre itemprop="code" data-start="7"><code style="counter-reset: line 6"><span class="line"></span>
+<span class="line">/** Dev-only drawer for changing how the MSW mocks behave at runtime. */</span>
+<span class="line">@Component({</span>
+<mark class="line">  selector: 'mock-panel',</mark>
+<span class="line">  imports: [EndpointSettings, RequestLog],</span>
+<span class="line">  template: `</span>
+<span class="line">    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> people move it out of the way and it comes back.</p>
+</div>
+</section><div class="prompt" itemprop="prompt" itemscope>
+<p class="prompt-heading"><span class="kind" itemprop="kind">Question</span>: <span itemprop="text">Should the corner be per app or global?</span></p>
+
+<p class="fallback"><strong>If unanswered:</strong> <span itemprop="fallback">per app, keyed by origin.</span></p>
+<div class="answer" itemprop="answer"><p>Per app. Two apps on one machine shouldn&#39;t fight over it.</p>
+</div>
+</div><aside class="annotation" itemprop="annotation" itemscope>
+<p class="meta" itemprop="heading">L14 (Jeff)</p>
+<blockquote itemprop="quote">**Because (Claude, not asked):** people move it out of the way and it comes back.</blockquote>
+<div itemprop="comment"><p>Is localStorage available in every place this runs?</p>
+</div>
+</aside>
+<section class="entry" id="a-drag-handle" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-drag-handle"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A drag handle</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> four corners are enough.</p>
+</div>
+</section><div class="prompt" itemprop="prompt" itemscope>
+<p class="prompt-heading"><span class="kind" itemprop="kind">Select</span>: <span itemprop="text">Which corners count?</span></p>
+<ul><li itemprop="option">all four</li><li itemprop="option">only the bottom two</li></ul>
+<p class="fallback"><strong>If unanswered:</strong> <span itemprop="fallback">all four.</span></p>
+<div class="answer" itemprop="answer"><ul>
+<li><input checked="" disabled="" type="checkbox"> all four</li>
+<li><input disabled="" type="checkbox"> only the bottom two</li>
+</ul>
+<p><strong>Note:</strong> the top two hold the browser&#39;s UI.</p>
+</div>
+</div>
+</article>
+</main>
+</body>
+</html>

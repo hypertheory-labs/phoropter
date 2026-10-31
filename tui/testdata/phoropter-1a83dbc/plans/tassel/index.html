@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A home link in every header · phoropter at 1a83dbc</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="meta">1a83dbc6bce50d8051eecafbdcf86a9d21d89799</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 1a83dbc</a></nav>
+<article itemscope>
+<h1 itemprop="title">A home link in every header</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">tassel</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="a252f7fc4e8792c2b96c2f4fa3f93d85d5708bb4"><code>a252f7f</code></data> <time datetime="2026-10-31T15:18:05.000Z">15:18 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="0e58ae33fe5a313a8f526a5229176fddab76cb6f"><code>0e58ae3</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-tassel.md</code></dd>
+
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>A human accommodation. Getting back to the home page means finding the nav line under
+the header, which differs by page, or editing the URL. The header&#39;s links are in the
+same place on every page.</p>
+</div>
+<section class="entry" id="every-header-s-links-start-with-home" itemprop="entry" itemscope>
+<h2><a class="self" href="#every-header-s-links-start-with-home"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Every header&#39;s links start with &quot;home&quot;</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;span class=&quot;links&quot;&gt;&lt;a rel=&quot;help&quot; href=&quot;${rel(here, 'guide/')}&quot;&gt;guide&lt;/a&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="0e58ae33fe5a313a8f526a5229176fddab76cb6f"><code>0e58ae3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="411"><meta itemprop="endLine" content="411"></span>
+<span class="note" itemprop="note">quote at line 411</span>
+</figcaption>
+<meta itemprop="codeStart" content="408"><pre itemprop="code" data-start="408"><code style="counter-reset: line 407"><span class="line">&lt;body&gt;</span>
+<span class="line">&lt;header class=&quot;provenance&quot; itemscope&gt;</span>
+<span class="line">${header}</span>
+<mark class="line">&lt;span class=&quot;links&quot;&gt;&lt;a rel=&quot;help&quot; href=&quot;${rel(here, 'guide/')}&quot;&gt;guide&lt;/a&gt;</mark>
+<span class="line">&lt;a class=&quot;profile-link&quot; href=&quot;${rel(here, 'profile/')}&quot;&gt;profile&lt;/a&gt;&lt;/span&gt;</span>
+<span class="line">&lt;/header&gt;</span>
+<span class="line">&lt;main&gt;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>1a83dbc</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> a person wants one place to go home from, wherever they are. It&#39;s
+first, so the links read home, guide, profile; the dev server&#39;s draft link comes after
+home, so it reads home, draft, guide, profile.</p>
+</div>
+</section>
+<section class="entry" id="the-draft-link-goes-after-home" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-draft-link-goes-after-home"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The draft link goes after home</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/serve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/serve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">html.replace('&lt;span class=&quot;links&quot;&gt;'</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="0e58ae33fe5a313a8f526a5229176fddab76cb6f"><code>0e58ae3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="84"><meta itemprop="endLine" content="84"></span>
+<span class="note" itemprop="note">quote at line 84</span>
+</figcaption>
+<meta itemprop="codeStart" content="81"><pre itemprop="code" data-start="81"><code style="counter-reset: line 80"><span class="line">function withDraftLink(html: string, here: string): string {</span>
+<span class="line">  if (!hasDraft(repoDir)) return html;</span>
+<span class="line">  const dir = here.endsWith('/') || here === '' ? here : here.slice(0, here.lastIndexOf('/') + 1);</span>
+<mark class="line">  return html.replace('&lt;span class=&quot;links&quot;&gt;', `&lt;span class=&quot;links&quot;&gt;&lt;a rel=&quot;draft&quot; href=&quot;${rel(dir, 'draft/')}&quot;&gt;draft&lt;/a&gt;\n`);</mark>
+<span class="line">}</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>1a83dbc</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the server inserts it at the start of the links today,
+which would put it before home.</p>
+</div>
+</section>
+<section class="entry" id="a-rel-on-the-home-link" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-rel-on-the-home-link"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A rel on the home link</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> there&#39;s no registered relation that means &quot;the site&#39;s
+root&quot; in current HTML (<code>start</code> and <code>index</code> were dropped), and an agent already gets
+there: plan and place pages link the home page with <code>rel=&quot;collection&quot;</code>, and the profile
+says so. The link is for people.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>
