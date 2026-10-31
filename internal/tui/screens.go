@@ -157,6 +157,51 @@ type docScreen struct {
 	menu          []menuItem
 	menuOpen      bool
 	menuCur       int
+	form          *form // an answer or note being written, on a draft
+}
+
+func (s *docScreen) capturing() bool { return s.form != nil }
+
+func (s *docScreen) capture(m *Model, msg tea.KeyMsg) tea.Cmd {
+	write, cancel, edit := s.form.key(msg)
+	switch {
+	case cancel:
+		s.form = nil
+	case write:
+		return m.write(s, s.form, false)
+	case edit != nil:
+		return editor(edit)
+	}
+	return nil
+}
+
+// annotate opens a form for the current row: a prompt's answer, a note on an
+// entry, or on the About row a note on the whole draft.
+func (s *docScreen) annotate(m *Model) {
+	r := s.rows[s.cur]
+	if r.doc.Draft == nil {
+		m.status = "only a draft takes notes; a plan is testimony"
+		return
+	}
+	d, err := m.openDraft(r.doc)
+	if err != nil {
+		m.status = err.Error()
+		return
+	}
+	switch {
+	case r.prompt != nil:
+		s.form = newPromptForm(r.prompt, !d.HasNotes)
+	case r.entry != nil:
+		for i := range r.doc.Entries {
+			if &r.doc.Entries[i] == r.entry {
+				s.form = newNoteForm(i, r.entry.Kind+": "+r.entry.Title, !d.HasNotes)
+			}
+		}
+	case r.isAbout():
+		s.form = newNoteForm(-1, "the whole draft", !d.HasNotes)
+	default:
+		m.status = "a note can't be noted; notes go on entries, prompts, or the whole draft"
+	}
 }
 
 type menuItem struct {
@@ -262,8 +307,14 @@ func (s *docScreen) title() string {
 }
 
 func (s *docScreen) help() string {
+	if s.form != nil {
+		return s.form.help()
+	}
 	if s.menuOpen {
 		return "j/k choose · enter follow · esc close"
+	}
+	if s.plan.Draft != nil {
+		return "j/k move · a answer or note · s skip · tab anchor · 1 2 3 layer · enter links · r refresh · esc back"
 	}
 	return "j/k entry · tab anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
 }
@@ -331,6 +382,12 @@ func (s *docScreen) key(m *Model, k string) tea.Cmd {
 			return nil
 		}
 		s.menuOpen, s.menuCur = true, 0
+	case "a":
+		s.annotate(m)
+	case "s":
+		if r := s.rows[s.cur]; r.prompt != nil && r.doc.Draft != nil {
+			return m.write(s, newPromptForm(r.prompt, false), true)
+		}
 	case "esc", "backspace", "h", "left":
 		m.back()
 	}
@@ -411,7 +468,10 @@ func (s *docScreen) view(m *Model, w, h int) string {
 	}
 	rw := detailWidth(w)
 	detail := s.detail(rw)
-	if s.menuOpen {
+	switch {
+	case s.form != nil:
+		detail = s.form.view(rw)
+	case s.menuOpen:
 		detail = s.menuView(rw)
 	}
 	lines := strings.Count(detail, "\n") + 1

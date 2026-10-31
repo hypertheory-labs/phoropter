@@ -2,6 +2,7 @@ package tui
 
 import (
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -34,6 +35,10 @@ func press(t *testing.T, m *Model, keys ...string) {
 			msg = tea.KeyMsg{Type: tea.KeyEsc}
 		case "tab":
 			msg = tea.KeyMsg{Type: tea.KeyTab}
+		case "ctrl+s":
+			msg = tea.KeyMsg{Type: tea.KeyCtrlS}
+		case " ":
+			msg = tea.KeyMsg{Type: tea.KeySpace, Runes: []rune{' '}}
 		default:
 			msg = tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(k)}
 		}
@@ -127,5 +132,62 @@ func TestReadADraft(t *testing.T) {
 	press(t, m, "r")
 	if s := screenText(t, m); !strings.Contains(s, "Decline: A drag handle") || len(m.stack) != 2 {
 		t.Fatalf("after refresh (%d screens):\n%s", len(m.stack), s)
+	}
+}
+
+// Answering writes plan.draft.notes.md beside the draft, by docs/annotating.md,
+// and never the draft. The draft source is the file the fixture's page was
+// served from, so its sha256 matches the page's header.
+func TestAnswerADraft(t *testing.T) {
+	src, err := os.ReadFile("../../testdata/mock-control-draft.source.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	repo := t.TempDir()
+	os.Mkdir(filepath.Join(repo, ".git"), 0o755)
+	os.WriteFile(filepath.Join(repo, "plan.draft.md"), src, 0o644)
+
+	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := New(c, c.Ledger)
+	m.dir, m.authorName = repo, "jeff"
+	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
+	drive(t, m, m.Init())
+	press(t, m, "enter", "G", "a")
+	s := screenText(t, m)
+	if !strings.Contains(s, "Answer · Select: Which corners count?") || !strings.Contains(s, "fixes the draft") {
+		t.Fatalf("select form:\n%s", s)
+	}
+	// q is typed into the form, not quit.
+	press(t, m, " ", "j", "tab", "q", "u", "i", "e", "t", "ctrl+s")
+	if len(m.stack) != 2 {
+		t.Fatalf("form didn't write: %s\n%s", m.status, screenText(t, m))
+	}
+	// A note on the Decline, then on the whole draft.
+	press(t, m, "G", "k", "a", "W", "h", "y", "?", "ctrl+s")
+	press(t, m, "home", "a", "G", "o", ".", "ctrl+s")
+	notes, err := os.ReadFile(filepath.Join(repo, "plan.draft.notes.md"))
+	if err != nil {
+		t.Fatal(err, m.status)
+	}
+	want := []string{
+		"# Notes on plan.draft.md\n<!-- annotates: plan.draft.md sha256:",
+		"\n\n## — jeff\n\nGo.\n",
+		"\n\n## L18 — jeff\n> ## Decline: A drag handle\n\nWhy?\n",
+		"\n\n## Select: Which corners count?\n- [x] all four\n- [ ] only the bottom two\n**Note:** quiet\n",
+	}
+	got := string(notes)
+	last := -1
+	for _, w := range want {
+		i := strings.Index(got, w)
+		if i < 0 || i < last {
+			t.Fatalf("notes lack %q in order:\n%s", w, got)
+		}
+		last = i
+	}
+	if b, _ := os.ReadFile(filepath.Join(repo, "plan.draft.md")); string(b) != string(src) {
+		t.Error("the draft was changed")
 	}
 }

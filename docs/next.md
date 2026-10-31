@@ -53,6 +53,9 @@ page it's only where the anchors resolve), and it would drop the prompts. So:
 - When the plan list's page has `rel="draft"`, put the draft at the top of the list.
 - Re-fetch on a key: the server re-reads the draft on every request.
 
+*Done in batiste* (answering from the TUI): `a` answers a prompt or notes an entry,
+`s` skips, by `docs/annotating.md`.
+
 **Answering prompts, without vim.** Phoropter's pages are read-only, and loden declined
 annotating in the browser (Chromium-only). The TUI is local and can write a file. It
 can answer a draft's `Question`, `Select` and `Affirm` into `plan.draft.notes.md`,

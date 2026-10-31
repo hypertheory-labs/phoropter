@@ -33,6 +33,15 @@ type Model struct {
 	showGaps bool
 	showHelp bool
 	scroll   int // for the overlays
+
+	dir        string // where to look for the draft's repository; "" is the working directory
+	authorName string
+}
+
+// A capturing screen has a form open, and takes every key but ctrl+c.
+type capturing interface {
+	capturing() bool
+	capture(m *Model, msg tea.KeyMsg) tea.Cmd
 }
 
 func New(c *substrate.Client, ledger *substrate.Ledger) *Model {
@@ -133,8 +142,17 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case errMsg:
 		m.loading = false
 		m.status = msg.err.Error()
+	case editedMsg:
+		if msg.err != nil {
+			m.status = "editor: " + msg.err.Error()
+		} else if msg.field != nil {
+			*msg.field = []rune(msg.text)
+		}
 	case tea.KeyMsg:
 		k := msg.String()
+		if c, ok := m.topCapturing(); ok && k != "ctrl+c" {
+			return m, c.capture(m, msg)
+		}
 		switch {
 		case k == "ctrl+c" || k == "q":
 			return m, tea.Quit
@@ -170,6 +188,14 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *Model) top() screen { return m.stack[len(m.stack)-1] }
+
+func (m *Model) topCapturing() (capturing, bool) {
+	if len(m.stack) == 0 {
+		return nil, false
+	}
+	c, ok := m.top().(capturing)
+	return c, ok && c.capturing()
+}
 
 // back pops a screen; it's the screen's job to close its own menus first.
 func (m *Model) back() {
@@ -240,6 +266,9 @@ const helpText = `Keys
   plan          j/k entry · tab next anchor · 1 2 3 or [ ] layer
                 J/K scroll the right pane · enter links from here · esc back
   place         j/k move · enter open that plan at its entry · esc back
+  draft         a answer the prompt, or note the entry (on About, the whole draft)
+                s skip a prompt on purpose · in a form: ctrl+s write, tab next
+                field, ctrl+e $EDITOR, esc cancel
   anywhere      r read this page again · g gaps ledger · ? this help · q quit
 
 Layers are the commits phoropter shows an anchor at:
@@ -252,7 +281,9 @@ an error.
 
 A draft is the working tree, not a commit: its title says when it was read.
 Its open questions (?) and notes (✎) follow the entry they belong to, and a
-question shows what happens if nobody answers it.`
+question shows what happens if nobody answers it. Answers and notes go in
+plan.draft.notes.md beside the draft, by docs/annotating.md; the draft itself
+is never written. The first note fixes the draft until it converts.`
 
 // clip lays text into a w×h box, starting at line offset.
 func clip(text string, w, h, offset int) string {
