@@ -3,6 +3,8 @@
 // phoropter build [path] [--at <commit>] [--out site]
 // phoropter index [path] [--at <commit>]
 // phoropter url [path]
+// phoropter symbols <file>
+// phoropter index --check <program> [path]
 //
 // One command, run inside a repository (batik). With no command it finds the
 // repository's root, indexes what's missing, builds the site at HEAD, and
@@ -11,20 +13,24 @@
 
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, extname, join, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { build } from './build.ts';
-import { Repo } from './git.ts';
+import { checkIndexer } from './check.ts';
+import { removeDir, Repo } from './git.ts';
+import { indexers, runIndexer } from './indexers.ts';
 import { serve } from './serve.ts';
 import { buildSite, type Site } from './site.ts';
 import { cacheDir, Store } from './store.ts';
 
-const COMMANDS = new Set(['build', 'index', 'url', 'help']);
+const COMMANDS = new Set(['build', 'index', 'url', 'symbols', 'help']);
 const USAGE = `usage:
   phoropter [path] [--at <commit>] [--port <n>]   serve the repository you're in
   phoropter build [path] [--at <commit>] [--out site]   write the static site
   phoropter index [path] [--at <commit>]   commit the indexes plans need into .phoropter/index/
-  phoropter url [path]   print the address phoropter is serving this repository at`;
+  phoropter url [path]   print the address phoropter is serving this repository at
+  phoropter symbols <file>   list the symbols defined in a file, ready for a plan's where:
+  phoropter index --check <program or indexer dir> [path]   check an indexer against indexers/README.md`;
 
 // The repository holding a path: its root, found by walking up to `.git`.
 export function repoRoot(start: string): string | undefined {
@@ -87,14 +93,15 @@ async function main(argv: string[]): Promise<void> {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
-    options: { at: { type: 'string' }, port: { type: 'string' }, out: { type: 'string' }, help: { type: 'boolean', short: 'h' } },
+    options: { at: { type: 'string' }, port: { type: 'string' }, out: { type: 'string' }, check: { type: 'string' }, help: { type: 'boolean', short: 'h' } },
   });
   const command = positionals[0] && COMMANDS.has(positionals[0]) ? positionals.shift()! : 'serve';
   if (command === 'help' || values.help) {
     console.log(USAGE);
     return;
   }
-  const start = positionals[0] ?? process.cwd();
+  const target = command === 'symbols' ? (positionals.shift() ?? fail('symbols needs a file')) : undefined;
+  const start = positionals[0] ?? (target ? dirname(resolve(target)) : process.cwd());
   const root = repoRoot(start) ?? fail(`it reads a git repository, and ${resolve(start)} isn't in one`);
   if (command === 'url') {
     const url = servingUrl(root);
@@ -107,6 +114,41 @@ async function main(argv: string[]): Promise<void> {
   if (!repo.resolve(at)) fail(at === 'HEAD' ? `${root} has no commits yet; phoropter reads a repository at a commit` : `${at} isn't a commit in ${root}`);
   const store = new Store(repo);
   const short = (path: string) => relative(process.cwd(), path) || '.';
+
+  if (command === 'symbols') {
+    const rel = relative(root, resolve(target!));
+    const ext = extname(rel);
+    const candidates = indexers().filter((i) => i.extensions.includes(ext));
+    if (!candidates.length) fail(`no indexer here handles ${ext} files (see indexers/README.md)`);
+    const sha = repo.resolve(at)!;
+    const tree = repo.checkout(sha);
+    const found: [number, number, string][] = [];
+    try {
+      for (const info of candidates) {
+        const out = runIndexer(info, tree);
+        for (const { definitions } of Object.values(out.packages)) {
+          for (const [symbol, [f, s, e]] of Object.entries(definitions)) if (f === rel) found.push([s, e, symbol]);
+        }
+      }
+    } finally {
+      removeDir(tree);
+    }
+    if (!found.length) fail(`nothing defined in ${rel} at ${repo.short(sha)} (uncommitted changes aren't indexed)`);
+    for (const [s, e, symbol] of found.sort((a, b) => a[0] - b[0] || a[2].localeCompare(b[2]))) console.log(`${`${s}–${e}`.padEnd(10)} ${symbol}`);
+    return;
+  }
+
+  if (command === 'index' && values.check) {
+    // A directory with an indexer.json (indexers/go, or the one you're
+    // writing), or a command.
+    const dir = resolve(values.check);
+    const manifest = join(dir, 'indexer.json');
+    const program = existsSync(manifest) ? { command: (JSON.parse(readFileSync(manifest, 'utf8')) as { command: string[] }).command, cwd: dir } : { command: values.check.split(/\s+/) };
+    const { ok, report } = checkIndexer(program, repo);
+    console.log(report.join('\n'));
+    if (!ok) process.exit(1);
+    return;
+  }
 
   if (command === 'index') {
     const site = buildSite(repo, at, store);

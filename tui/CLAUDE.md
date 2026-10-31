@@ -32,9 +32,10 @@ true.
   phoropter's declines. The old brief (`docs/for-phoropter.md`) is superseded by seeds
   in `shelf/`.
 - **Plans** are in the root `plans/`, by the guide, with phoropter's. A TUI plan can
-  anchor and revisit phoropter entries now. Use file anchors with a quote (paths from
-  the repository root: `tui/internal/tui/screens.go`). Phoropter indexes only
-  TypeScript, so a Go symbol anchor won't resolve yet. The TUI's plans from before the
+  anchor and revisit phoropter entries now. Symbol anchors work for Go now (seersucker):
+  `npx phoropter symbols tui/internal/tui/screens.go` lists them, ready to paste. File
+  anchors with a quote still work, with paths from the repository root
+  (`tui/internal/tui/screens.go`). The TUI's plans from before the
   move anchor `internal/…` and show `no-file` at later commits; they're read as written.
 - **Drafts:** one, `drafts/plan.draft.md`, and notes on landed plans beside it in
   `drafts/` (tarlatan, organza). Serve the repository with

@@ -53,6 +53,12 @@ pace with the work, not coverage.
   `.phoropter/index/`. That's the one write into a repository, and only when run on
   purpose. Other indexes are cached in `~/.cache/phoropter/`. `npm link` puts
   `phoropter` on your path.
+- **Indexers** (seersucker) are programs in `indexers/` (TypeScript, Go), or on `PATH` as
+  `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
+  the contract, written so an agent can build one from it alone. `phoropter symbols
+  <file>` lists symbols to anchor, and `phoropter index --check <dir>` tests an
+  indexer. The Go one needs scip-go v0.1.23 (`go install …@v0.1.23`; newer needs a newer
+  Go).
 - **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects
   `../mock-control`; pass a later commit to see the newer plans); the tests also read
   `../aide`, and skip what isn't there. `node src/build.ts <repo> [commit]` writes

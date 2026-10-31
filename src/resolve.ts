@@ -4,7 +4,7 @@
 
 import type { Repo } from './git.ts';
 import type { Anchor } from './plan.ts';
-import { isScipSymbol, packageName, withoutVersion } from './scip.ts';
+import { isScipSymbol, packageKey, withoutVersion } from './scip.ts';
 import type { Lookup } from './store.ts';
 
 export type Target =
@@ -75,7 +75,7 @@ export function resolveAt(
 
   if (t.kind === 'symbol') {
     const def = index?.definitions.get(t.symbol);
-    const failed = index?.failed.get(packageName(t.symbol) ?? '');
+    const failed = index?.failed.get(packageKey(t.symbol));
     if (!def && failed) {
       // A missing or failing indexer is a status, not a failed build (batik).
       view.status = 'no-index';

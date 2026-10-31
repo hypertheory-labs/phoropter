@@ -79,8 +79,11 @@ An entry can say what it's about, as a list under its heading:
 
 - `- where:` a file path, optionally narrowed with `›`: a heading path in markdown
   (`README.md › Setup › 1. Install`), or a key path in JSON (`package.json › version`).
-  Or a SCIP symbol, with the package version written as `.` so a release doesn't
-  change it. Or another plan's entry: `plans/<file>.md › <entry title>`.
+  Or a symbol, in SCIP's grammar, with the package version written as `.` so a
+  release doesn't change it: `phoropter symbols <file>` lists a file's symbols ready to
+  paste. A symbol's first word picks the indexer that finds it; `indexers/README.md` in
+  phoropter's repository says how indexers work and how to write one. Or another
+  plan's entry: `plans/<file>.md › <entry title>`.
 - `- quote:` exact text from the file at the base, so a reader can tell which lines you
   meant. It's searched for only in the anchor's own file.
 - `- where (new):` something the work will create. No quote, since it doesn't exist

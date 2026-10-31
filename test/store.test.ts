@@ -10,13 +10,12 @@ import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Repo } from '../src/git.ts';
-import { indexCommit } from '../src/scip.ts';
 import { buildSite } from '../src/site.ts';
-import { Store, type Indexer } from '../src/store.ts';
+import { defaultIndexer, Store, type Indexer } from '../src/store.ts';
 
 const source = new URL('../../mock-control', import.meta.url).pathname;
 const skip = !existsSync(source) && 'no ../mock-control';
-const PKG = '@hypertheory-labs/mock-control';
+const PKG = 'scip-typescript @hypertheory-labs/mock-control';
 
 function clone(): Repo {
   const dir = mkdtempSync(join(tmpdir(), 'phoropter-store-'));
@@ -26,7 +25,7 @@ function clone(): Repo {
 
 function counting(): { indexer: Indexer; calls: string[] } {
   const calls: string[] = [];
-  return { calls, indexer: (repo, sha, packages) => (calls.push(sha.slice(0, 7)), indexCommit(repo, sha, packages)) };
+  return { calls, indexer: (repo, sha, scheme, packages) => (calls.push(sha.slice(0, 7)), defaultIndexer(repo, sha, scheme, packages)) };
 }
 
 const symbolViews = (repo: Repo, store: Store) => {
@@ -58,7 +57,8 @@ test('phoropter index commits what plans need, and a build then needs no indexer
 
   // The file is only what phoropter reads, sorted, without its own commit.
   const stored = JSON.parse(readFileSync(path, 'utf8'));
-  assert.deepEqual(Object.keys(stored), ['indexer', 'version', 'package', 'definitions']);
+  assert.deepEqual(Object.keys(stored), ['indexer', 'version', 'scheme', 'package', 'definitions']);
+  assert.equal(stored.scheme, 'scip-typescript');
   const keys = Object.keys(stored.definitions);
   assert.deepEqual(keys, [...keys].sort());
   assert.ok(!readFileSync(path, 'utf8').includes(base));

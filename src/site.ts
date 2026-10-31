@@ -5,7 +5,7 @@
 import { basename } from 'node:path';
 import type { Repo } from './git.ts';
 import { parsePlan, slugify, type Anchor, type Entry, type PlanDoc } from './plan.ts';
-import { packageName, type Definition } from './scip.ts';
+import { packageKey, type Definition } from './scip.ts';
 import { Store, type Lookup } from './store.ts';
 import { collapse, resolveAt, resolveInEntry, target, type Hunk, type Target, type View } from './resolve.ts';
 
@@ -187,7 +187,7 @@ export function packagesOf(cx: Context, docs: Doc[]): Set<string> {
     for (const e of d.doc.entries) {
       for (const a of e.anchors) {
         const t = target(a, cx.repoName, cx.onSite);
-        if (t.kind === 'symbol' && !a.isNew) packages.add(packageName(t.symbol)!);
+        if (t.kind === 'symbol' && !a.isNew) packages.add(packageKey(t.symbol));
       }
     }
   }
