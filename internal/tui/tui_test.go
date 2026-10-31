@@ -100,3 +100,32 @@ func TestWalkAPlan(t *testing.T) {
 		t.Fatalf("gaps:\n%s", s)
 	}
 }
+
+func TestReadADraft(t *testing.T) {
+	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := New(c, c.Ledger)
+	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
+	drive(t, m, m.Init())
+	if s := screenText(t, m); !strings.Contains(s, "✎ draft") {
+		t.Fatalf("plan list should start with the draft:\n%s", s)
+	}
+	press(t, m, "enter")
+	s := screenText(t, m)
+	for _, want := range []string{"draft, not committed, read at 16:12 UTC · anchors at f02528f", "About this draft", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "? Select: Which corners count?"} {
+		if !strings.Contains(s, want) {
+			t.Fatalf("draft screen lacks %q:\n%s", want, s)
+		}
+	}
+	press(t, m, "G")
+	if s := screenText(t, m); !strings.Contains(s, "• only the bottom two") || !strings.Contains(s, "Not answered yet") {
+		t.Fatalf("select prompt:\n%s", s)
+	}
+	// r reads the draft again and lands on the entry the prompt follows.
+	press(t, m, "r")
+	if s := screenText(t, m); !strings.Contains(s, "Decline: A drag handle") || len(m.stack) != 2 {
+		t.Fatalf("after refresh (%d screens):\n%s", len(m.stack), s)
+	}
+}

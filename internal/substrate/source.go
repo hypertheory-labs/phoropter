@@ -86,6 +86,18 @@ func (c *Client) Fetch(raw string) (*microdata.Document, error) {
 	return d, nil
 }
 
+// Forget drops a page from the cache, so the next fetch reads it again.
+func (c *Client) Forget(raw string) {
+	u, err := url.Parse(c.Resolve(raw))
+	if err != nil {
+		return
+	}
+	u.Fragment = ""
+	c.mu.Lock()
+	delete(c.pages, u.String())
+	c.mu.Unlock()
+}
+
 func (c *Client) get(u *url.URL) (io.ReadCloser, *url.URL, error) {
 	if u.Scheme == "file" {
 		p := u.Path

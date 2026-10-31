@@ -187,3 +187,56 @@ func TestSelvageGapsStayClosed(t *testing.T) {
 		t.Errorf("new-two-shapes: no anchoredBy item is new")
 	}
 }
+
+// The draft fixture is phoropter's dev server serving a scratch draft of
+// mock-control, with notes: one restates a prompt (its answer), one quotes an
+// entry's reason, and one has no quote.
+func TestDraft(t *testing.T) {
+	l := NewLedger()
+	c, err := NewClient("../../testdata/mock-control-draft", l)
+	if err != nil {
+		t.Fatal(err)
+	}
+	h, err := c.Home()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.HasSuffix(h.DraftURL, "draft/") {
+		t.Fatalf("draft url = %q", h.DraftURL)
+	}
+	d, err := c.Doc(h.DraftURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if d.Draft == nil || d.Draft.ReadAt == "" || !strings.HasPrefix(d.Draft.SHA256, "42fa0d1b") || d.AnchorsAt.Label != "f02528f" || d.Name != "draft" || len(d.Entries) != 2 {
+		t.Fatalf("draft = %+v %+v", d, d.Draft)
+	}
+	if v := d.Entries[0].Anchors[0].Views[0]; v.Status != "found" || v.MatchLine != 10 {
+		t.Errorf("anchor = %+v", v)
+	}
+	first := d.Entries[0].ID
+	if len(d.Prompts) != 2 {
+		t.Fatalf("prompts = %+v", d.Prompts)
+	}
+	q, sel := d.Prompts[0], d.Prompts[1]
+	if q.Kind != "Question" || q.After != first || !strings.HasPrefix(q.Answer, "Per app.") || q.Fallback != "per app, keyed by origin." {
+		t.Errorf("question = %+v", q)
+	}
+	if sel.Kind != "Select" || sel.After != d.Entries[1].ID || len(sel.Options) != 2 || sel.Answer != "" {
+		t.Errorf("select = %+v", sel)
+	}
+	if len(d.Annotations) != 2 {
+		t.Fatalf("annotations = %+v", d.Annotations)
+	}
+	general, quoted := d.Annotations[0], d.Annotations[1]
+	if general.After != "" || general.Quote != "" || general.Heading != "General (Jeff)" {
+		t.Errorf("general note = %+v", general)
+	}
+	if quoted.After != first || !strings.Contains(quoted.Quote, "people move it out of the way") {
+		t.Errorf("quoted note = %+v", quoted)
+	}
+	// Ramie's guess: a draft page needs nothing beyond the profile.
+	if g := l.Gaps(); len(g) != 0 {
+		t.Errorf("reading the draft noted gaps:\n%s", l.Report())
+	}
+}

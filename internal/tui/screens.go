@@ -3,6 +3,7 @@ package tui
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -49,33 +50,54 @@ func move(cur, n int, k string) int {
 
 type listScreen struct {
 	home *substrate.Home
-	cur  int
+	cur  int // with a draft, 0 is the draft and the plans follow
+}
+
+func (s *listScreen) offset() int {
+	if s.home.DraftURL != "" {
+		return 1
+	}
+	return 0
 }
 
 func (s *listScreen) title() string {
 	return fmt.Sprintf("%s at %s", s.home.Repository, s.home.Commit)
 }
 
-func (s *listScreen) help() string { return "j/k move · enter open plan" }
+func (s *listScreen) help() string { return "j/k move · enter open plan · r refresh" }
+
+func (s *listScreen) refresh() ([]string, string) { return []string{s.home.URL}, s.home.URL }
 
 func (s *listScreen) key(m *Model, k string) tea.Cmd {
-	if len(s.home.Plans) == 0 {
+	n := s.offset() + len(s.home.Plans)
+	if n == 0 {
 		return nil
 	}
-	s.cur = move(s.cur, len(s.home.Plans), k)
+	s.cur = move(s.cur, n, k)
 	if k == "enter" || k == "l" || k == "right" {
-		return m.open(s.home.Plans[s.cur].URL)
+		if s.cur < s.offset() {
+			return m.open(s.home.DraftURL)
+		}
+		return m.open(s.home.Plans[s.cur-s.offset()].URL)
 	}
 	return nil
 }
 
 func (s *listScreen) view(m *Model, w, h int) string {
-	if len(s.home.Plans) == 0 {
+	if len(s.home.Plans) == 0 && s.offset() == 0 {
 		return clip("No plans on this site.", w, h, 0)
 	}
 	lw := min(max(w*2/5, 30), w/2)
 	var rows []string
+	if s.offset() > 0 {
+		row := ansi.Truncate("✎ draft     the plan being drafted, not committed", lw, "…")
+		if s.cur == 0 {
+			row = styles.cursor.Render(row)
+		}
+		rows = append(rows, row)
+	}
 	for i, p := range s.home.Plans {
+		i += s.offset()
 		mark := "  "
 		if p.AsBuiltURL != "" {
 			mark = styles.kind("Answered").Render("✓ ")
@@ -86,9 +108,13 @@ func (s *listScreen) view(m *Model, w, h int) string {
 		}
 		rows = append(rows, row)
 	}
-	p := s.home.Plans[s.cur]
-	var b strings.Builder
 	rw := detailWidth(w)
+	if s.cur < s.offset() {
+		text := styles.title.Render("The draft") + "\n\n" + wrap("The repository's one draft, plan.draft.md, read from the working tree on every request. Nothing in it is testimony yet. Open it to read its entries, its open questions and the notes on it; r there reads it again.", rw)
+		return split(listWindow(rows, s.cur, h), text, w, h, 0)
+	}
+	p := s.home.Plans[s.cur-s.offset()]
+	var b strings.Builder
 	b.WriteString(styles.title.Render(wrap(p.Title, rw)) + "\n\n")
 	fact := func(k, v string) {
 		if v != "" {
@@ -115,8 +141,10 @@ func (s *listScreen) view(m *Model, w, h int) string {
 // ---- a plan and its as-built
 
 type row struct {
-	doc   *substrate.Doc
-	entry *substrate.Entry // nil for the plan's own "about" row
+	doc    *substrate.Doc
+	entry  *substrate.Entry // nil for the plan's own "about" row
+	prompt *substrate.Prompt
+	note   *substrate.Annotation
 }
 
 type docScreen struct {
@@ -140,8 +168,10 @@ var layers = []string{"base", "as-built head", "generated"}
 func newDocScreen(plan, asBuilt *substrate.Doc) *docScreen {
 	s := &docScreen{plan: plan, asBuilt: asBuilt}
 	s.rows = append(s.rows, row{doc: plan})
+	s.rows = append(s.rows, draftRows(plan, "")...)
 	for i := range plan.Entries {
 		s.rows = append(s.rows, row{doc: plan, entry: &plan.Entries[i]})
+		s.rows = append(s.rows, draftRows(plan, plan.Entries[i].ID)...)
 	}
 	if asBuilt != nil {
 		s.rows = append(s.rows, row{doc: asBuilt})
@@ -152,6 +182,25 @@ func newDocScreen(plan, asBuilt *substrate.Doc) *docScreen {
 	return s
 }
 
+// draftRows are a draft's prompts, then its notes, that follow the entry with
+// this ID ("" for those before every entry).
+func draftRows(d *substrate.Doc, after string) []row {
+	var out []row
+	for i := range d.Prompts {
+		if d.Prompts[i].After == after {
+			out = append(out, row{doc: d, prompt: &d.Prompts[i]})
+		}
+	}
+	for i := range d.Annotations {
+		if d.Annotations[i].After == after {
+			out = append(out, row{doc: d, note: &d.Annotations[i]})
+		}
+	}
+	return out
+}
+
+func (r row) isAbout() bool { return r.entry == nil && r.prompt == nil && r.note == nil }
+
 // selectURL puts the cursor on the entry a URL's fragment names.
 func (s *docScreen) selectURL(u string) {
 	page, frag := substrate.Unfragment(u), substrate.Fragment(u)
@@ -159,7 +208,7 @@ func (s *docScreen) selectURL(u string) {
 		if r.doc.URL != page {
 			continue
 		}
-		if (frag == "" && r.entry == nil) || (r.entry != nil && r.entry.ID == frag) {
+		if (frag == "" && r.isAbout()) || (r.entry != nil && r.entry.ID == frag) {
 			s.cur = i
 			s.settle()
 			return
@@ -200,13 +249,42 @@ func viewAt(a *substrate.Anchor, role string) *substrate.View {
 	return nil
 }
 
-func (s *docScreen) title() string { return s.plan.Name }
+func (s *docScreen) title() string {
+	d := s.plan.Draft
+	if d == nil {
+		return s.plan.Name
+	}
+	at := d.ReadAt
+	if t, err := time.Parse(time.RFC3339, d.ReadAt); err == nil {
+		at = t.UTC().Format("15:04 UTC")
+	}
+	return fmt.Sprintf("draft, not committed, read at %s · anchors at %s", at, s.plan.AnchorsAt)
+}
 
 func (s *docScreen) help() string {
 	if s.menuOpen {
 		return "j/k choose · enter follow · esc close"
 	}
-	return "j/k entry · tab anchor · 1 2 3 [ ] layer · J/K scroll · enter links · esc back"
+	return "j/k entry · tab anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
+}
+
+// refresh reads the plan and its as-built again, back at the same entry.
+func (s *docScreen) refresh() ([]string, string) {
+	forget := []string{s.plan.URL}
+	if s.asBuilt != nil {
+		forget = append(forget, s.asBuilt.URL)
+	}
+	r := s.rows[s.cur]
+	at := r.doc.URL
+	switch {
+	case r.entry != nil:
+		at += "#" + r.entry.ID
+	case r.prompt != nil && r.prompt.After != "":
+		at += "#" + r.prompt.After
+	case r.note != nil && r.note.After != "":
+		at += "#" + r.note.After
+	}
+	return forget, at
 }
 
 func (s *docScreen) key(m *Model, k string) tea.Cmd {
@@ -264,6 +342,9 @@ func (s *docScreen) key(m *Model, k string) tea.Cmd {
 func (s *docScreen) links() []menuItem {
 	r := s.rows[s.cur]
 	var out []menuItem
+	if r.prompt != nil || r.note != nil {
+		return nil
+	}
 	if r.entry == nil {
 		d := r.doc
 		if d.Revisits != nil {
@@ -301,8 +382,17 @@ func (s *docScreen) view(m *Model, w, h int) string {
 	for i, r := range s.rows {
 		var text string
 		switch {
+		case r.prompt != nil:
+			text = "    ? " + r.prompt.Kind + ": " + r.prompt.Text
+			if r.prompt.Answer != "" {
+				text = "    ✓ " + r.prompt.Kind + ": " + r.prompt.Text
+			}
+		case r.note != nil:
+			text = "    ✎ " + r.note.Heading
 		case r.entry == nil && r.doc.IsAsBuilt:
 			text = "── As built, head " + r.doc.Head.Label
+		case r.entry == nil && r.doc.Draft != nil:
+			text = "── About this draft"
 		case r.entry == nil:
 			text = "── About this plan"
 		default:
@@ -314,7 +404,7 @@ func (s *docScreen) view(m *Model, w, h int) string {
 		text = ansi.Truncate(text, lw, "…")
 		if i == s.cur {
 			text = styles.cursor.Render(ansi.Strip(text))
-		} else if r.entry == nil {
+		} else if r.isAbout() {
 			text = styles.dim.Render(ansi.Strip(text))
 		}
 		rows = append(rows, text)
@@ -345,6 +435,12 @@ func (s *docScreen) menuView(w int) string {
 func (s *docScreen) detail(w int) string {
 	r := s.rows[s.cur]
 	var b strings.Builder
+	if r.prompt != nil {
+		return promptDetail(r.prompt, w)
+	}
+	if r.note != nil {
+		return noteDetail(r.note, w)
+	}
 	if r.entry == nil {
 		d := r.doc
 		b.WriteString(styles.title.Render(wrap(d.Title, w)) + "\n\n")
@@ -405,6 +501,34 @@ func (s *docScreen) detail(w int) string {
 	}
 	b.WriteString("\n" + s.lensBar(a) + "\n")
 	b.WriteString(viewBody(a, layers[s.layer], w))
+	return b.String()
+}
+
+func promptDetail(p *substrate.Prompt, w int) string {
+	var b strings.Builder
+	b.WriteString(styles.title.Render(p.Kind+":") + " " + wrap(p.Text, w-len(p.Kind)-2) + "\n\n")
+	for _, o := range p.Options {
+		b.WriteString("  • " + o + "\n")
+	}
+	if len(p.Options) > 0 {
+		b.WriteString("\n")
+	}
+	b.WriteString(field("fallback", p.Fallback, w))
+	if p.Answer != "" {
+		b.WriteString(field("answer", p.Answer, w))
+	} else {
+		b.WriteString("\n" + styles.dim.Render(wrap("Not answered yet. If it stays that way, the fallback is the decision.", w)) + "\n")
+	}
+	return b.String()
+}
+
+func noteDetail(n *substrate.Annotation, w int) string {
+	var b strings.Builder
+	b.WriteString(styles.title.Render("Note: "+n.Heading) + "\n\n")
+	if n.Quote != "" {
+		b.WriteString(field("quote", n.Quote, w))
+	}
+	b.WriteString("\n" + wrap(n.Comment, w) + "\n")
 	return b.String()
 }
 
@@ -511,7 +635,11 @@ type placeScreen struct {
 
 func (s *placeScreen) title() string { return s.place.Name }
 
-func (s *placeScreen) help() string { return "j/k move · enter open · J/K scroll · esc back" }
+func (s *placeScreen) help() string {
+	return "j/k move · enter open · J/K scroll · r refresh · esc back"
+}
+
+func (s *placeScreen) refresh() ([]string, string) { return []string{s.place.URL}, s.place.URL }
 
 func (s *placeScreen) targets() []menuItem {
 	var out []menuItem

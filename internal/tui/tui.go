@@ -19,6 +19,8 @@ type screen interface {
 	help() string
 	view(m *Model, w, h int) string
 	key(m *Model, k string) tea.Cmd
+	// refresh names the pages to read again, and where to land after.
+	refresh() (forget []string, at string)
 }
 
 type Model struct {
@@ -37,7 +39,10 @@ func New(c *substrate.Client, ledger *substrate.Ledger) *Model {
 	return &Model{c: c, ledger: ledger}
 }
 
-type loadedMsg struct{ s screen }
+type loadedMsg struct {
+	s       screen
+	replace bool // a refresh: the screen takes the top's place
+}
 type errMsg struct{ err error }
 
 func (m *Model) Init() tea.Cmd { return m.open("") }
@@ -51,7 +56,24 @@ func (m *Model) open(u string) tea.Cmd {
 		if err != nil {
 			return errMsg{err}
 		}
-		return loadedMsg{s}
+		return loadedMsg{s, false}
+	}
+}
+
+// reload reads the top screen's pages again and replaces it.
+func (m *Model) reload() tea.Cmd {
+	forget, at := m.top().refresh()
+	for _, u := range forget {
+		m.c.Forget(u)
+	}
+	m.loading = true
+	c := m.c
+	return func() tea.Msg {
+		s, err := load(c, at)
+		if err != nil {
+			return errMsg{err}
+		}
+		return loadedMsg{s, true}
 	}
 }
 
@@ -103,7 +125,11 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.w, m.h = msg.Width, msg.Height
 	case loadedMsg:
 		m.loading, m.status = false, ""
-		m.stack = append(m.stack, msg.s)
+		if msg.replace && len(m.stack) > 0 {
+			m.stack[len(m.stack)-1] = msg.s
+		} else {
+			m.stack = append(m.stack, msg.s)
+		}
 	case errMsg:
 		m.loading = false
 		m.status = msg.err.Error()
@@ -132,6 +158,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.status = ""
 		if len(m.stack) == 0 {
 			return m, nil
+		}
+		if k == "r" {
+			return m, m.reload()
 		}
 		if cmd := m.top().key(m, k); cmd != nil {
 			return m, cmd
@@ -207,11 +236,11 @@ func (m *Model) gapsView(w int) string {
 
 const helpText = `Keys
 
-  plan list     j/k move · enter open
+  plan list     j/k move · enter open (a draft, when there is one, is first)
   plan          j/k entry · tab next anchor · 1 2 3 or [ ] layer
                 J/K scroll the right pane · enter links from here · esc back
   place         j/k move · enter open that plan at its entry · esc back
-  anywhere      g gaps ledger · ? this help · q quit
+  anywhere      r read this page again · g gaps ledger · ? this help · q quit
 
 Layers are the commits phoropter shows an anchor at:
   1 base           what the plan was deciding against
@@ -219,7 +248,11 @@ Layers are the commits phoropter shows an anchor at:
   3 generated      the commit this site was built from: "now"
 
 A layer with nothing to show says why. That's the substrate's answer, not
-an error.`
+an error.
+
+A draft is the working tree, not a commit: its title says when it was read.
+Its open questions (?) and notes (✎) follow the entry they belong to, and a
+question shows what happens if nobody answers it.`
 
 // clip lays text into a w×h box, starting at line offset.
 func clip(text string, w, h, offset int) string {

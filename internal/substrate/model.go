@@ -5,6 +5,7 @@ package substrate
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -31,6 +32,7 @@ type Home struct {
 	URL        string
 	Repository string
 	Commit     Ref
+	DraftURL   string // the repository's one draft, when the dev server links it
 	Plans      []PlanSummary
 	Places     []PlaceSummary
 }
@@ -48,10 +50,12 @@ type PlaceSummary struct {
 	Entries         int
 }
 
-// Doc is a plan page or an as-built page; they share a shape.
+// Doc is a plan page, an as-built page, or the draft page; they share a shape.
 type Doc struct {
 	URL         string
 	IsAsBuilt   bool
+	Draft       *Draft // nil unless this is the draft
+	AnchorsAt   Ref    // a draft's: the commit its anchors resolve at
 	Title       string
 	Name        string
 	Cart        string
@@ -67,6 +71,26 @@ type Doc struct {
 	Intro       string
 	Facts       [][2]string // the facts list as shown, for display
 	Entries     []Entry
+	Prompts     []Prompt     // a draft's open questions
+	Annotations []Annotation // a draft's notes
+}
+
+// Draft is what a draft page's header says: it's the working tree, read at a
+// time, not a commit.
+type Draft struct {
+	File, ReadAt, SHA256 string
+}
+
+// A Prompt is a draft's open question. After is the ID of the entry it
+// follows, or "" when it comes before them all; so is an Annotation's.
+type Prompt struct {
+	After, Kind, Text string
+	Options           []string
+	Fallback, Answer  string
+}
+
+type Annotation struct {
+	After, Heading, Quote, Comment string
 }
 
 type Entry struct {
@@ -127,11 +151,16 @@ type PlaceRef struct {
 }
 
 // Page is any page, with its provenance and the top-level item in <main>.
+// Commit is the commit the page was generated from. A draft page wasn't
+// generated from one: it has Draft, and its header's commit is AnchorsAt.
 type Page struct {
 	URL        string
 	Doc        *microdata.Document
 	Repository string
 	Commit     Ref
+	Draft      *Draft
+	AnchorsAt  Ref
+	DraftURL   string // rel="draft"
 	Main       *microdata.Item
 }
 
@@ -146,9 +175,19 @@ func (c *Client) Page(ref string) (*Page, error) {
 		switch {
 		case it.Node.Data == "header" || microdata.Within(it.Node, "header"):
 			p.Repository = it.Str("repository")
-			p.Commit = refOf(it.Get("commit"))
+			if it.Get("readAt") != nil {
+				p.Draft = &Draft{File: it.Str("file"), ReadAt: it.Str("readAt"), SHA256: it.Str("sha256")}
+				p.AnchorsAt = refOf(it.Get("commit"))
+			} else {
+				p.Commit = refOf(it.Get("commit"))
+			}
 		case p.Main == nil && microdata.Within(it.Node, "main"):
 			p.Main = it
+		}
+	}
+	for _, l := range d.Links {
+		if slices.Contains(l.Rel, "draft") {
+			p.DraftURL = l.Href
 		}
 	}
 	if p.Main == nil {
@@ -162,7 +201,7 @@ func (c *Client) Home() (*Home, error) {
 	if err != nil {
 		return nil, err
 	}
-	h := &Home{URL: p.URL, Repository: p.Repository, Commit: p.Commit}
+	h := &Home{URL: p.URL, Repository: p.Repository, Commit: p.Commit, DraftURL: p.DraftURL}
 	for _, it := range p.Main.Items("plan") {
 		s := PlanSummary{
 			URL:         it.Str("url"),
@@ -226,7 +265,55 @@ func (c *Client) Doc(ref string) (*Doc, error) {
 	for _, e := range it.Items("entry") {
 		d.Entries = append(d.Entries, c.entry(e, p.URL))
 	}
+	if p.Draft != nil {
+		d.Draft, d.AnchorsAt, d.Name = p.Draft, p.AnchorsAt, "draft"
+		draftExtras(d, it, p.Doc.Root)
+	}
 	return d, nil
+}
+
+// draftExtras reads a draft's prompts and annotations. Each belongs to the
+// entry it follows in the page, so it's placed by tree order.
+func draftExtras(d *Doc, it *microdata.Item, root *html.Node) {
+	pos := map[*html.Node]int{}
+	var walk func(n *html.Node)
+	walk = func(n *html.Node) {
+		pos[n] = len(pos)
+		for ch := n.FirstChild; ch != nil; ch = ch.NextSibling {
+			walk(ch)
+		}
+	}
+	walk(root)
+	after := func(n *html.Node) string {
+		id := ""
+		for _, e := range it.Items("entry") {
+			if pos[e.Node] < pos[n] {
+				id = e.ID
+			}
+		}
+		return id
+	}
+	for _, v := range it.Items("prompt") {
+		pr := Prompt{
+			After:    after(v.Node),
+			Kind:     v.Str("kind"),
+			Text:     prose(v.Get("text")),
+			Fallback: prose(v.Get("fallback")),
+			Answer:   prose(v.Get("answer")),
+		}
+		for _, o := range v.Props["option"] {
+			pr.Options = append(pr.Options, prose(o))
+		}
+		d.Prompts = append(d.Prompts, pr)
+	}
+	for _, v := range it.Items("annotation") {
+		d.Annotations = append(d.Annotations, Annotation{
+			After:   after(v.Node),
+			Heading: v.Str("heading"),
+			Quote:   v.Str("quote"),
+			Comment: prose(v.Get("comment")),
+		})
+	}
 }
 
 func (c *Client) entry(it *microdata.Item, page string) Entry {

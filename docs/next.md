@@ -31,6 +31,11 @@ stays in the ledger as a cost by design (marl), like `answer-elsewhere`.
 
 ## 1½. The draft (loden's edge)
 
+*Done in ramie* (reading the draft): the draft is recognized by its header, titled as
+the working tree, and listed first; prompts and notes follow their entries; `r`
+re-reads. What's below the next paragraph is kept for the reasoning, and for answering
+prompts, which is still to come.
+
 Phoropter's dev server serves the repo's one draft, `plan.draft.md`, at `draft/`, and
 every page links it with `rel="draft"` while it exists. The profile defines it: a
 `draft` item with entries as on a plan, plus `prompt` items (Question, Select, Affirm,
