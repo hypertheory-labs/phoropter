@@ -11,5 +11,5 @@ failure; phoropter reads SCIP with its own bindings rather than scip-typescript'
 per commit and package. Part of a larger idea: a `phoropter` CLI, `gh`- or
 `kubectl`-style, with UIs and indexers as plugins.
 
-The store this needs, where indexes live and how they are kept, is worked out in
-`shelf/index-store.md`: a full plan, shelved until the command with no arguments lands.
+The store this needs, where indexes live and how they're kept, is decided in batik (the
+`phoropter` command).

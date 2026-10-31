@@ -15,6 +15,7 @@ the conversation about it, and Jeff's notes on the first plan's draft:
   running. The caution: an agent reading the pages loses them mid-task when the person
   quits the UI. So keep a way to run the server alone (`phoropter serve`), for the agent
   working while the UI is closed.
+- **The address in the TUI's footer** (Jeff), with a key that opens it in a browser.
 - **Indexers are plugins too, but a different contract:** a step in the build, chosen by
   the scheme each anchor names (`scip-go gomod …`), not by the person. See
   `shelf/indexing.md`. They may share one way of being found.
