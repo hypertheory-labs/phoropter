@@ -8,9 +8,11 @@ import { Repo } from './git.ts';
 import { readGuide } from './guide.ts';
 import { renderSite } from './render.ts';
 import { buildSite, type Site } from './site.ts';
+import { Store } from './store.ts';
 
-export function build(repoDir: string, ref: string, out: string): { pages: number; title: string; site: Site } {
-  const site = buildSite(new Repo(resolve(repoDir)), ref);
+export function build(repoDir: string, ref: string, out: string, store?: Store): { pages: number; title: string; site: Site } {
+  const repo = store?.repo ?? new Repo(resolve(repoDir));
+  const site = buildSite(repo, ref, store ?? new Store(repo));
   const pages = renderSite(site, readGuide());
   rmSync(out, { recursive: true, force: true });
   for (const page of pages) {

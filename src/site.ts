@@ -5,7 +5,8 @@
 import { basename } from 'node:path';
 import type { Repo } from './git.ts';
 import { parsePlan, slugify, type Anchor, type Entry, type PlanDoc } from './plan.ts';
-import { indexCommit, packageName, type Definition } from './scip.ts';
+import { packageName, type Definition } from './scip.ts';
+import { Store, type Lookup } from './store.ts';
 import { collapse, resolveAt, resolveInEntry, target, type Hunk, type Target, type View } from './resolve.ts';
 
 export type Commit = { sha: string; short: string; role: string };
@@ -76,10 +77,11 @@ export type Context = {
   planOf: Map<Doc, Plan>;
   onSite: Set<string>;
   places: Map<string, Place>;
-  indexFor: (c: Commit, packages: Set<string>) => Map<string, Definition> | undefined;
+  indexFor: (c: Commit, packages: Set<string>) => Lookup | undefined;
+  store: Store;
 };
 
-export function buildSite(repo: Repo, ref: string): Site {
+export function buildSite(repo: Repo, ref: string, store: Store = new Store(repo)): Site {
   const sha = repo.resolve(ref);
   if (!sha) throw new Error(`not a commit in ${repo.dir}: ${ref}`);
   const repoName = basename(repo.dir.replace(/\/+$/, ''));
@@ -125,15 +127,10 @@ export function buildSite(repo: Repo, ref: string): Site {
   const onSite = new Set(docs.map((d) => d.file));
   for (const d of docs) d.entries = d.doc.entries.map((entry) => ({ ...entry, resolved: [], answeredBy: [], anchoredBy: [] }));
 
-  // Index each commit that a SCIP anchor needs, once per set of packages.
-  const indexes = new Map<string, Map<string, Definition>>();
-  const indexFor = (c: Commit, packages: Set<string>) => {
-    if (packages.size === 0) return undefined;
-    const key = `${c.sha} ${[...packages].sort().join(' ')}`;
-    if (!indexes.has(key)) indexes.set(key, indexCommit(repo, c.sha, packages));
-    return indexes.get(key);
-  };
-  const cx: Context = { repo, repoName, generated, docs, planOf, onSite, places: new Map(), indexFor };
+  // Index each commit that a SCIP anchor needs, from the store (batik): what's
+  // committed or cached is read, and only what's missing is indexed.
+  const indexFor = (c: Commit, packages: Set<string>) => (packages.size === 0 ? undefined : store.lookup(c.sha, packages));
+  const cx: Context = { repo, repoName, generated, docs, planOf, onSite, places: new Map(), indexFor, store };
   const packages = packagesOf(cx, docs);
 
   for (const plan of plans) {
@@ -233,7 +230,7 @@ export function resolveEntries(cx: Context, plan: Plan, d: Doc, commits: Commit[
         return ra;
       }
       if (register) {
-        ra.place = placeFor(cx.places, t, cx.indexFor(generated, packages));
+        ra.place = placeFor(cx.places, t, cx.indexFor(generated, packages)?.definitions);
         ra.place.refs.push({ plan, doc: d, entry: re, anchor });
       } else {
         ra.place = cx.places.get(placeKey(t));

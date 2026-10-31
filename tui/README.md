@@ -38,8 +38,8 @@ can find the draft.
 - **Anywhere:** `r` reads the page again, `g` shows the gaps hit so far, `?` is help.
 
 To try a draft: from the repository root, `mkdir -p drafts && cp
-tui/testdata/sample.draft.md drafts/plan.draft.md`, serve the repository (`node src/serve.ts . HEAD --port 4175`), and point
-the TUI at `http://localhost:4175/`.
+tui/testdata/sample.draft.md drafts/plan.draft.md`, run `npx phoropter`, and point
+the TUI at the address it prints (`npx phoropter url` prints it again).
 
 The TUI lives in phoropter's repository as `tui/` since dowlas (the TUI moves in). Its
 plans are in the root `plans/` with phoropter's. Where it's going is in `docs/next.md`,

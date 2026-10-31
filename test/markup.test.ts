@@ -1,6 +1,7 @@
 // What a reader of the pages can get without prose or class names (selvage).
 // Built from phoropter's own plans at selvage's base, which is always here.
 
+import './cache.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Repo } from '../src/git.ts';

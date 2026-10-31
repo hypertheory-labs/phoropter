@@ -1,6 +1,7 @@
 // The guide is phoropter's, served on every site: built here from phoropter's
 // own plans at twill's base, which is always in this repo.
 
+import './cache.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readGuide } from '../src/guide.ts';

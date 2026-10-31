@@ -1,6 +1,7 @@
 // The one draft (loden): prompts with fallbacks, notes placed by their
 // quotes, anchors resolved at commits, and nothing registered on the site.
 
+import './cache.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';

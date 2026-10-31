@@ -1,6 +1,7 @@
 // The plan's own measurements, against mock-control at 90c65b9. Skipped when
 // mock-control isn't checked out beside this repo.
 
+import './cache.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';

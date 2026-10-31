@@ -38,7 +38,8 @@ true.
   move anchor `internal/…` and show `no-file` at later commits; they're read as written.
 - **Drafts:** one, `drafts/plan.draft.md`, and notes on landed plans beside it in
   `drafts/` (tarlatan, organza). Serve the repository with
-  `node src/serve.ts . HEAD` from the root and point the TUI at it. To try the TUI on a
+  `npx phoropter` from anywhere in it, and point the TUI at what `npx phoropter url`
+  prints (the port moves when 4173 is taken). To try the TUI on a
   draft, `mkdir -p drafts && cp tui/testdata/sample.draft.md drafts/plan.draft.md`.
 - **Working with Jeff.** Jeff reads drafts before code, so propose the bigger or bolder
   version and let his notes trim it. An agent never gets a veto: a draft weighing an

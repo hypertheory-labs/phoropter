@@ -1,4 +1,4 @@
-// node src/serve.ts <repo> [commit] [--out site] [--port 4173]
+// node src/serve.ts <repo> [commit] [--out site] [--port 4173], or `phoropter`.
 // Builds the site once, then serves it read-only. A commit's site never
 // changes, so there's nothing to watch. The exceptions are in the repo's
 // working tree, under drafts/: the draft, read on every request to draft/
@@ -10,6 +10,8 @@ import { readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
 import { build, cli } from './build.ts';
+import type { Site } from './site.ts';
+import type { Store } from './store.ts';
 import { DRAFT, hasDraft, readDraft, readPlanNotes } from './draft.ts';
 import { annotationHtml, draftPage, rel } from './render.ts';
 
@@ -18,12 +20,39 @@ const types: Record<string, string> = {
   '.css': 'text/css; charset=utf-8',
 };
 
-const args = cli(process.argv.slice(2));
-const { pages, title, site } = build(args.repo, args.ref, args.out);
-const root = resolve(args.out);
-const repoDir = resolve(args.repo);
+// One server per process, so what the handler reads is set once, by serve().
+let site: Site;
+let root: string;
+let repoDir: string;
 
-createServer((req, res) => {
+export type Served = { port: number; url: string; title: string; pages: number; site: Site; close: () => void };
+
+// Builds once, then serves. A taken port moves to the next free one, unless
+// it was asked for exactly (batik).
+export function serve(opts: { repo: string; ref: string; out: string; port: number; exactPort?: boolean; store?: Store }): Promise<Served> {
+  const built = build(opts.repo, opts.ref, opts.out, opts.store);
+  site = built.site;
+  root = resolve(opts.out);
+  repoDir = resolve(opts.repo);
+  const server = createServer(handle);
+  return new Promise((ok, fail) => {
+    let port = opts.port;
+    server.on('error', (err: NodeJS.ErrnoException) => {
+      if (err.code === 'EADDRINUSE' && !opts.exactPort && port < opts.port + 100) server.listen(++port, '127.0.0.1');
+      else fail(err);
+    });
+    server.on('listening', () => ok({ port, url: `http://localhost:${port}/`, title: built.title, pages: built.pages, site: built.site, close: () => server.close() }));
+    server.listen(port, '127.0.0.1');
+  });
+}
+
+if (import.meta.main) {
+  const args = cli(process.argv.slice(2));
+  const served = await serve({ ...args, exactPort: true });
+  console.log(`${served.title}: ${served.pages} pages, serving ${served.url}`);
+}
+
+function handle(req: import('node:http').IncomingMessage, res: import('node:http').ServerResponse): void {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, { allow: 'GET, HEAD' }).end();
     return;
@@ -70,9 +99,7 @@ createServer((req, res) => {
   const body = readFileSync(file);
   const here = path.slice(1).replace(/index\.html$/, '');
   send(res, req.method, type, type.startsWith('text/html') ? withDraftLink(withPlanNotes(body.toString('utf8'), here), path.slice(1)) : body);
-}).listen(args.port, '127.0.0.1', () => {
-  console.log(`${title}: ${pages} pages, serving http://localhost:${args.port}/`);
-});
+}
 
 function send(res: import('node:http').ServerResponse, method: string | undefined, type: string, body: string | Buffer): void {
   res.writeHead(200, { 'content-type': type, 'cache-control': 'no-store' });

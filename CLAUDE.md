@@ -18,7 +18,7 @@ pace with the work, not coverage.
 - **Drafts:** `drafts/plan.draft.md`, one at a time, as the guide says (`drafts/` is
   gitignored here; we work on main). Put one up when you're unsure or the understanding looks thin, or when Jeff asks to see every
   plan for a session. Never an approval gate; silence means proceed. Most work just
-  goes. Serve this repo (`node src/serve.ts . HEAD`) and it's at `draft/`; Jeff
+  goes. Run `phoropter` (`npx phoropter`, from anywhere in the repo) and it's at `draft/`; Jeff
   annotates in nvim. Convert when confident, and delete the draft and its notes.
 - **Notes on landed plans: check `drafts/` at the start of a session.** A note on a
   landed plan (`drafts/<plan's file name>.notes.md`) says the plan matters to something
@@ -47,6 +47,12 @@ pace with the work, not coverage.
   in `tui/` reads `tui/CLAUDE.md`. Its plans are in `plans/` with everyone's.
 - **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it
   short and true for the next session.
+- **The command** (batik): `npx phoropter` in any repository serves it (port 4173, or
+  the next free one; `npx phoropter url` prints where), `phoropter build` writes the
+  static site, and `phoropter index` commits the indexes plans need into
+  `.phoropter/index/`. That's the one write into a repository, and only when run on
+  purpose. Other indexes are cached in `~/.cache/phoropter/`. `npm link` puts
+  `phoropter` on your path.
 - **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects
   `../mock-control`; pass a later commit to see the newer plans); the tests also read
   `../aide`, and skip what isn't there. `node src/build.ts <repo> [commit]` writes

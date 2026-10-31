@@ -9,10 +9,19 @@ import type { Repo } from './git.ts';
 import { removeDir } from './git.ts';
 
 const require = createRequire(import.meta.url);
+
+// The indexer, named in every stored index (batik).
+export const INDEXER = { name: 'scip-typescript', version: '0.4.0' };
+
 // scip-typescript ships its generated protobuf bindings; it has no public API
-// for reading an index, so this reaches into dist. Pinned to 0.4.0.
-const { scip } = require('@sourcegraph/scip-typescript/dist/src/scip.js');
-const indexer = join(dirname(require.resolve('@sourcegraph/scip-typescript/package.json')), 'dist/src/main.js');
+// for reading an index, so this reaches into dist. Pinned to 0.4.0. Loaded
+// only when something has to be indexed, so a build whose indexes are all
+// stored doesn't need it installed.
+function scipTypescript(): { scip: any; main: string } {
+  const { scip } = require('@sourcegraph/scip-typescript/dist/src/scip.js');
+  const main = join(dirname(require.resolve('@sourcegraph/scip-typescript/package.json')), 'dist/src/main.js');
+  return { scip, main };
+}
 
 export type Definition = {
   symbol: string; // as the index has it, with the version
@@ -54,6 +63,7 @@ export function indexCommit(repo: Repo, sha: string, packages: Set<string>): Map
     .map((f) => dirname(f));
   if (packageDirs.length === 0) return definitions;
 
+  const { scip, main: indexer } = scipTypescript();
   const all = repo.files(sha);
   const tree = repo.checkout(sha);
   try {

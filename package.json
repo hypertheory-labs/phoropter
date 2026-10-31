@@ -4,6 +4,9 @@
   "private": true,
   "description": "Read code through the plans that shaped it: a static site from one repo at one commit.",
   "type": "module",
+  "bin": {
+    "phoropter": "src/cli.ts"
+  },
   "engines": {
     "node": ">=24"
   },

@@ -4,7 +4,8 @@
 
 import type { Repo } from './git.ts';
 import type { Anchor } from './plan.ts';
-import { isScipSymbol, withoutVersion, type Definition } from './scip.ts';
+import { isScipSymbol, packageName, withoutVersion } from './scip.ts';
+import type { Lookup } from './store.ts';
 
 export type Target =
   | { kind: 'symbol'; symbol: string } // version-less
@@ -37,7 +38,7 @@ export type View = {
   sha: string;
   short: string;
   role: string; // what this commit is to the entry: "base", "as-built head", "generated"
-  status: 'found' | 'not-found' | 'no-quote' | 'no-file' | 'no-symbol';
+  status: 'found' | 'not-found' | 'no-quote' | 'no-file' | 'no-symbol' | 'no-index';
   file?: string;
   startLine?: number; // the symbol's range, for SCIP anchors
   endLine?: number;
@@ -67,13 +68,20 @@ export function resolveAt(
   t: Target,
   quote: string | undefined,
   commit: { sha: string; short: string; role: string },
-  definitions: Map<string, Definition> | undefined,
+  index: Lookup | undefined,
 ): View {
   const view: View = { ...commit, status: 'no-quote', matches: 0, at: [], hunks: [], note: '' };
   const needle = quote?.trim();
 
   if (t.kind === 'symbol') {
-    const def = definitions?.get(t.symbol);
+    const def = index?.definitions.get(t.symbol);
+    const failed = index?.failed.get(packageName(t.symbol) ?? '');
+    if (!def && failed) {
+      // A missing or failing indexer is a status, not a failed build (batik).
+      view.status = 'no-index';
+      view.note = `not indexed at ${commit.short}: ${failed}`;
+      return view;
+    }
     if (!def) {
       view.status = 'no-symbol';
       view.note = `symbol not in the index at ${commit.short}`;
