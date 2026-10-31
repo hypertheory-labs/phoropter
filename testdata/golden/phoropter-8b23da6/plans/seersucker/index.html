@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indexers are programs in indexers/, with a guide for writing one · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">Indexers are programs in <code>indexers/</code>, with a guide for writing one</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">seersucker</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="9c0a5de5247632e7efc6dbb954fa5771aeaf9787"><code>9c0a5de</code></data> <time datetime="2026-10-31T19:39:36.000Z">19:39 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="5e923e86cf1b3ee7917f0506974f0e22b874fc5b"><code>5e923e8</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-seersucker.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/seersucker/as-built/">plans/2026-10-31-seersucker.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Phoropter indexes with scip-typescript and nothing else, so a symbol anchor in any other
+language doesn&#39;t resolve. The first repository that wants one is this one: the TUI is
+Go, and every plan written for it has used file anchors instead. Batik kept indexes per
+indexer, made a missing one a <code>no-index</code> view, and loads an indexer only when something
+needs indexing. This plan makes indexers pluggable.</p>
+<p>It&#39;s the plugin plan&#39;s first half. Indexers and UIs are different contracts: an indexer
+is a step in the build, chosen by the scheme an anchor names. A UI is a reader of the
+pages, chosen by the person. UIs come next.</p>
+<p>Jeff&#39;s test for it: he has code that indexes .NET with Roslyn, and he&#39;d like to hand it
+and this plan&#39;s guide to an agent and see what happens. So the contract can&#39;t assume
+SCIP, and the guide has to stand on its own. An agent writing an indexer should never
+need to open <code>src/</code>.</p>
+</div>
+<section class="entry" id="an-indexer-is-a-program-that-prints-definitions-as-json" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-indexer-is-a-program-that-prints-definitions-as-json"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An indexer is a program that prints definitions as JSON</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">indexers/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/indexers/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, then Claude</span>):</strong> &quot;having a directory here with the go, typescript,
+whatever.&quot; A program in any language can satisfy one plain contract:</p>
+<ul>
+<li><strong>In:</strong> a directory holding the repository checked out at one commit, and the names of
+the packages the anchors ask for.</li>
+<li><strong>Out, on stdout:</strong> one JSON object, in the store&#39;s shape. It names the indexer, its
+version, the scheme it serves, and for each package it found, every definition: the
+symbol (version written as <code>.</code>), file, first line, last line.</li>
+<li><strong>Packages it can&#39;t find</strong> are listed as missing. A failure is a non-zero exit with one
+line on stderr. Phoropter turns either into <code>no-index</code> views, never a failed build.</li>
+</ul>
+<p>SCIP indexers are adapters: they run the SCIP tool and turn its <code>.scip</code> into this JSON.
+Roslyn, or anything else that knows where definitions are, can print it directly.</p>
+</div>
+</section>
+<section class="entry" id="the-scheme-an-anchor-names-picks-its-indexer" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-scheme-an-anchor-names-picks-its-indexer"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The scheme an anchor names picks its indexer</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/scip.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/scip.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">export function isScipSymbol(where: string): boolean {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="5e923e86cf1b3ee7917f0506974f0e22b874fc5b"><code>5e923e8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="33"><meta itemprop="endLine" content="33"></span>
+<span class="note" itemprop="note">quote at line 33</span>
+</figcaption>
+<meta itemprop="codeStart" content="30"><pre itemprop="code" data-start="30"><code style="counter-reset: line 29"><span class="line">  endLine: number;</span>
+<span class="line">};</span>
+<span class="line"></span>
+<mark class="line">export function isScipSymbol(where: string): boolean {</mark>
+<span class="line">  return /^scip-[\w-]+ \S+ \S+ \S+ /.test(where);</span>
+<span class="line">}</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32f218915591f54e0acfd5dc0be6708625b01adc"><code>32f2189</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="18"><meta itemprop="endLine" content="18"></span>
+<span class="note" itemprop="note">quote at line 18</span>
+</figcaption>
+<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code style="counter-reset: line 14"><span class="line">// descriptors ending in one of SCIP's suffixes. Any scheme, not only scip-*</span>
+<span class="line">// (seersucker), so `roslyn nuget …` is a symbol too. A `›` path is a file</span>
+<span class="line">// anchor, never a symbol.</span>
+<mark class="line">export function isScipSymbol(where: string): boolean {</mark>
+<span class="line">  return !where.includes('›') &amp;&amp; /^[a-z][\w.-]* \S+ \S+ \S+ \S.*[#.):!/\]]$/.test(where);</span>
+<span class="line">}</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="18"><meta itemprop="endLine" content="18"></span><meta itemprop="sameAs" content="32f2189">
+<span class="note" itemprop="note">same as at <code>32f2189</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a symbol anchor already starts with its scheme
+(<code>scip-typescript npm …</code>, <code>scip-go gomod …</code>). Symbols keep SCIP&#39;s grammar, scheme,
+manager, package, version, descriptors, for every indexer, so anchors read alike in any
+language. A scheme needn&#39;t start with <code>scip-</code>, so a Roslyn indexer can name its own
+(<code>roslyn nuget …</code>). Phoropter groups the packages each document&#39;s anchors ask for by
+scheme and runs each scheme&#39;s indexer once per commit for its packages.</p>
+</div>
+</section>
+<section class="entry" id="first-party-indexers-live-in-indexers-others-are-found-on-path" itemprop="entry" itemscope>
+<h2><a class="self" href="#first-party-indexers-live-in-indexers-others-are-found-on-path"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">First-party indexers live in <code>indexers/</code>, others are found on <code>PATH</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">export function packagesOf(cx: Context, docs: Doc[]): Set&lt;string&gt; {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="5e923e86cf1b3ee7917f0506974f0e22b874fc5b"><code>5e923e8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="184"><meta itemprop="endLine" content="184"></span>
+<span class="note" itemprop="note">quote at line 184</span>
+</figcaption>
+<meta itemprop="codeStart" content="181"><pre itemprop="code" data-start="181"><code style="counter-reset: line 180"><span class="line">}</span>
+<span class="line"></span>
+<span class="line">// The packages a document's SCIP anchors need indexed.</span>
+<mark class="line">export function packagesOf(cx: Context, docs: Doc[]): Set&lt;string&gt; {</mark>
+<span class="line">  const packages = new Set&lt;string&gt;();</span>
+<span class="line">  for (const d of docs) {</span>
+<span class="line">    for (const e of d.doc.entries) {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32f218915591f54e0acfd5dc0be6708625b01adc"><code>32f2189</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="184"><meta itemprop="endLine" content="184"></span>
+<span class="note" itemprop="note">quote at line 184</span>
+</figcaption>
+<meta itemprop="codeStart" content="181"><pre itemprop="code" data-start="181"><code style="counter-reset: line 180"><span class="line">}</span>
+<span class="line"></span>
+<span class="line">// The packages a document's SCIP anchors need indexed.</span>
+<mark class="line">export function packagesOf(cx: Context, docs: Doc[]): Set&lt;string&gt; {</mark>
+<span class="line">  const packages = new Set&lt;string&gt;();</span>
+<span class="line">  for (const d of docs) {</span>
+<span class="line">    for (const e of d.doc.entries) {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="184"><meta itemprop="endLine" content="184"></span><meta itemprop="sameAs" content="32f2189">
+<span class="note" itemprop="note">same as at <code>32f2189</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, then Claude</span>):</strong> <code>indexers/&lt;name&gt;/</code> holds each first-party indexer, with an
+<code>indexer.json</code> naming its scheme and the command that runs it. Any other indexer is a
+program on <code>PATH</code> named <code>phoropter-index-&lt;scheme&gt;</code>, the way <code>gh</code> finds extensions, so
+there&#39;s nothing to configure. Phoropter looks in <code>indexers/</code> first, then on <code>PATH</code>. Your
+.NET indexer could live either way: in <code>indexers/dotnet/</code> if it joins this repository,
+or installed on its own. &quot;Good enough for gh and kubectl, good enough for us&quot; (Jeff),
+and <code>indexers/README.md</code> documents it. A config file in the repository was weighed.</p>
+</div>
+</section>
+<section class="entry" id="scip-typescript-moves-into-indexers-typescript" itemprop="entry" itemscope>
+<h2><a class="self" href="#scip-typescript-moves-into-indexers-typescript"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">scip-typescript moves into <code>indexers/typescript/</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/scip.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/scip.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">function scipTypescript(): { scip: any; main: string } {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="5e923e86cf1b3ee7917f0506974f0e22b874fc5b"><code>5e923e8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="20"><meta itemprop="endLine" content="20"></span>
+<span class="note" itemprop="note">quote at line 20</span>
+</figcaption>
+<meta itemprop="codeStart" content="17"><pre itemprop="code" data-start="17"><code style="counter-reset: line 16"><span class="line">// for reading an index, so this reaches into dist. Pinned to 0.4.0. Loaded</span>
+<span class="line">// only when something has to be indexed, so a build whose indexes are all</span>
+<span class="line">// stored doesn't need it installed.</span>
+<mark class="line">function scipTypescript(): { scip: any; main: string } {</mark>
+<span class="line">  const { scip } = require('@sourcegraph/scip-typescript/dist/src/scip.js');</span>
+<span class="line">  const main = join(dirname(require.resolve('@sourcegraph/scip-typescript/package.json')), 'dist/src/main.js');</span>
+<span class="line">  return { scip, main };</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32f218915591f54e0acfd5dc0be6708625b01adc"><code>32f2189</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>32f2189</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="32f2189">
+<span class="note" itemprop="note">same as at <code>32f2189</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the first indexer shows the contract, and it shouldn&#39;t be
+special. What <code>src/scip.ts</code> does today (find the package roots by <code>package.json</code> name,
+run scip-typescript, keep the definitions) becomes <code>indexers/typescript/</code>, a program
+that prints the JSON. <code>src/</code> keeps only what every indexer shares: running one, reading
+its output, and the symbol grammar. Mock-control&#39;s pages come out the same before and
+after, which the tests check.</p>
+</div>
+</section>
+<section class="entry" id="a-go-indexer-in-indexers-go-so-this-repository-s-plans-can-anchor-symbols" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-go-indexer-in-indexers-go-so-this-repository-s-plans-can-anchor-symbols"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A Go indexer in <code>indexers/go/</code>, so this repository&#39;s plans can anchor symbols</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">tui/go.mod</code> <a rel="anchored-at" itemprop="place" href="../../files/tui/go.mod/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">module phoropter-tui</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="5e923e86cf1b3ee7917f0506974f0e22b874fc5b"><code>5e923e8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">tui/go.mod</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line">module phoropter-tui</mark>
+<span class="line"></span>
+<span class="line">go 1.24.2</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32f218915591f54e0acfd5dc0be6708625b01adc"><code>32f2189</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">tui/go.mod</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line">module phoropter-tui</mark>
+<span class="line"></span>
+<span class="line">go 1.24.2</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">tui/go.mod</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span><meta itemprop="sameAs" content="32f2189">
+<span class="note" itemprop="note">same as at <code>32f2189</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a contract with one implementation isn&#39;t tested yet, and
+the TUI is the case that&#39;s been waiting. <code>indexers/go/</code> finds a package root by its
+<code>go.mod</code> module path (here, <code>phoropter-tui</code> in <code>tui/</code>) and prints its definitions. The
+TUI&#39;s next plan can anchor <code>scip-go gomod phoropter-tui . internal/tui/…</code> and phoropter
+shows it at the base, the as-built head, and now. It wraps scip-go: it runs it and turns
+the <code>.scip</code> into the JSON. Its symbols are the ones Go&#39;s SCIP users already know,
+Sourcegraph maintains it, and it&#39;s the fastest and cheapest way there (Jeff: &quot;whatever
+you think is fastest, cheapest&quot;). It takes one <code>go install</code> on a machine that indexes
+Go. Where it isn&#39;t installed, Go anchors show <code>no-index</code>. Its own program on
+<code>go/packages</code> was weighed.</p>
+</div>
+</section>
+<section class="entry" id="the-guide-for-writing-an-indexer-is-indexers-readme-md" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-for-writing-an-indexer-is-indexers-readme-md"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The guide for writing an indexer is <code>indexers/README.md</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">Or a SCIP symbol, with the package version written as `.` so a release doesn't</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="5e923e86cf1b3ee7917f0506974f0e22b874fc5b"><code>5e923e8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="82"><meta itemprop="endLine" content="82"></span>
+<span class="note" itemprop="note">quote at line 82</span>
+</figcaption>
+<meta itemprop="codeStart" content="79"><pre itemprop="code" data-start="79"><code style="counter-reset: line 78"><span class="line"></span>
+<span class="line">- `- where:` a file path, optionally narrowed with `›`: a heading path in markdown</span>
+<span class="line">  (`README.md › Setup › 1. Install`), or a key path in JSON (`package.json › version`).</span>
+<mark class="line">  Or a SCIP symbol, with the package version written as `.` so a release doesn't</mark>
+<span class="line">  change it. Or another plan's entry: `plans/&lt;file&gt;.md › &lt;entry title&gt;`.</span>
+<span class="line">- `- quote:` exact text from the file at the base, so a reader can tell which lines you</span>
+<span class="line">  meant. It's searched for only in the anchor's own file.</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32f218915591f54e0acfd5dc0be6708625b01adc"><code>32f2189</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>32f2189</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="32f2189">
+<span class="note" itemprop="note">same as at <code>32f2189</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;a &#39;how to create an indexer&#39; guide.&quot; It&#39;s written for an agent
+handed only the guide and an existing piece of code: the contract, the symbol grammar
+with examples in three languages, the JSON shape with a complete example, how package
+roots are usually found, what to do about versions, and how to check the result. The
+plan guide&#39;s section on symbol anchors links it, and says how to find a symbol&#39;s string.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-index-check-tests-an-indexer-against-the-contract" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-index-check-tests-an-indexer-against-the-contract"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter index --check</code> tests an indexer against the contract</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">src/check.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/check.ts/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> &quot;see how it goes&quot; needs a way to tell. <code>phoropter index --check &lt;program&gt; [path]</code> runs an indexer on a repository at <code>HEAD</code> and checks its
+output: the JSON&#39;s shape, that every file exists at that commit, that every range is
+inside its file, and that each definition&#39;s name appears in its range. It prints what
+failed and why. An agent writing an indexer runs it until it passes, and so can a
+reviewer.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-symbols-file-lists-the-symbols-defined-in-a-file" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-symbols-file-lists-the-symbols-defined-in-a-file"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter symbols &lt;file&gt;</code> lists the symbols defined in a file</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">src/cli.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/cli.ts/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> nobody types <code>scip-go gomod phoropter-tui . internal/tui/docScreen#annotate().</code> from memory, an agent included. <code>phoropter symbols tui/internal/tui/screens.go</code> prints each symbol defined there with its lines, from the
+store, indexing if it must, and ready to paste into a plan&#39;s <code>where:</code>. It&#39;s how anchors
+get written in a language the writer hasn&#39;t anchored in before.</p>
+</div>
+</section>
+<section class="entry" id="a-net-indexer-in-this-plan" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-net-indexer-in-this-plan"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A .NET indexer, in this plan</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> that&#39;s the test of the guide, not part of the work. An agent given
+Jeff&#39;s Roslyn code and <code>indexers/README.md</code> writes it, after this lands.</p>
+</div>
+</section>
+<section class="entry" id="changing-the-store-s-layout-for-schemes" itemprop="entry" itemscope>
+<h2><a class="self" href="#changing-the-store-s-layout-for-schemes"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Changing the store&#39;s layout for schemes</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> batik keys a stored index by commit and package. Two
+schemes could name the same package, but each stored file already names its indexer and
+scheme, so a mismatch reads as missing and is indexed again rather than misread. Adding
+the scheme to the path would revisit batik for a collision nobody has had.</p>
+</div>
+</section>
+<section class="entry" id="an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">An agent with only <code>indexers/README.md</code> and existing code writes an indexer that passes <code>--check</code></span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/seersucker/as-built/#an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check">the as-built</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> given Jeff&#39;s Roslyn code and the guide, the agent has to read <code>src/</code>,
+asks something the guide should have answered, or ends with an indexer that <code>phoropter index --check</code> fails on a .NET repository.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

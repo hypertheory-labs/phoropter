@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: ferrule · mock-control at f02528f</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">mock-control</span>
+at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/ferrule/">Ready to publish, without publishing</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: ferrule</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/ferrule/">plans/2026-10-30-ferrule.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="ed95eb72cdeb83d767ee53b3c0ddfa775b2c0fa1"><code>ed95eb7</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-ferrule.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Nothing departed from the plan.</p>
+</div>
+<section class="entry" id="the-description-keywords-and-repository-directory" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-description-keywords-and-repository-directory"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The description, keywords, and repository <code>directory</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/package.json</code> <a rel="anchored-at" itemprop="place" href="../../../files/projects/mock-control/package.json/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&quot;directory&quot;: &quot;projects/mock-control&quot;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="ed95eb72cdeb83d767ee53b3c0ddfa775b2c0fa1"><code>ed95eb7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="9"></span>
+<span class="note" itemprop="note">quote at line 9</span>
+</figcaption>
+<meta itemprop="codeStart" content="6"><pre itemprop="code" data-start="6"><code style="counter-reset: line 5"><span class="line">  &quot;repository&quot;: {</span>
+<span class="line">    &quot;type&quot;: &quot;git&quot;,</span>
+<span class="line">    &quot;url&quot;: &quot;git+https://github.com/hypertheory-labs/mock-control.git&quot;,</span>
+<mark class="line">    &quot;directory&quot;: &quot;projects/mock-control&quot;</mark>
+<span class="line">  },</span>
+<span class="line">  &quot;keywords&quot;: [</span>
+<span class="line">    &quot;angular&quot;,</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="9"></span><meta itemprop="sameAs" content="ed95eb7">
+<span class="note" itemprop="note">same as at <code>ed95eb7</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the description is the README&#39;s first sentence,
+shortened. <code>directory</code> tells npm the package lives below the repo root, so the page&#39;s
+links land in the right place. Keywords are guesses at what a class would search for.</p>
+</div>
+</section>
+<section class="entry" id="nothing-else-stands-between-this-and-npm-publish" itemprop="entry" itemscope>
+<h2><a class="self" href="#nothing-else-stands-between-this-and-npm-publish"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Nothing else stands between this and <code>npm publish</code></span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/ferrule/#nothing-else-stands-between-this-and-npm-publish">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> held, as far as a dry run can tell. <code>npm publish --dry-run</code> from
+<code>dist/mock-control</code> after a fresh build: no errors, six files including LICENSE and
+README, &quot;public access.&quot; A dry run doesn&#39;t log in, so it can&#39;t catch what the real one
+might: this machine isn&#39;t logged in to npm, and the account may need a second factor.
+Publishing is <code>npm run build</code>, then <code>npm publish</code> from <code>dist/mock-control</code>.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

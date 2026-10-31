@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The plan list reads like the page: the draft first, then titles, newest first · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">The plan list reads like the page: the draft first, then titles, newest first</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">challis</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="1d1a9305cf158b6ce799d1d336ea04a0e7710296"><code>1d1a930</code></data> <time datetime="2026-10-31T17:07:22.000Z">17:07 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-challis.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/challis/as-built/">plans/2026-10-31-challis.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>The first aesthetics pass, from Jeff. The plan list leads with names like &quot;ramie&quot; and
+&quot;batiste&quot;, which are meaningless on purpose: the guide picks them so they can&#39;t turn
+into categories. Phoropter&#39;s page leads with each plan&#39;s title and keeps the name in its
+metadata line, and a projection of the page should keep the page&#39;s emphasis. The draft
+is a row that&#39;s there only sometimes, and the list is oldest first. Ramie (reading the
+draft) left how a draft looks to this pass.</p>
+</div>
+<section class="entry" id="the-draft-has-a-slot-at-the-top-of-the-list-always" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-draft-has-a-slot-at-the-top-of-the-list-always"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The draft has a slot at the top of the list, always</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">row := ansi.Truncate(&quot;✎ draft     the plan being drafted, not committed&quot;, lw, &quot;…&quot;)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="93"><meta itemprop="endLine" content="93"></span>
+<span class="note" itemprop="note">quote at line 93</span>
+</figcaption>
+<meta itemprop="codeStart" content="90"><pre itemprop="code" data-start="90"><code style="counter-reset: line 89"><span class="line">	lw := min(max(w*2/5, 30), w/2)</span>
+<span class="line">	var rows []string</span>
+<span class="line">	if s.offset() &gt; 0 {</span>
+<mark class="line">		row := ansi.Truncate(&quot;✎ draft     the plan being drafted, not committed&quot;, lw, &quot;…&quot;)</mark>
+<span class="line">		if s.cur == 0 {</span>
+<span class="line">			row = styles.cursor.Render(row)</span>
+<span class="line">		}</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>a5bffc3</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;high five.&quot; The draft is the thing being worked on now, so it gets
+the top of the list, set apart in a bordered block rather than drawn as a row. With a draft it shows
+the draft&#39;s title, when it was read, and how many prompts are open, which takes one more
+fetch, of <code>draft/</code>. With none it says so: &quot;No draft. When <code>plan.draft.md</code> exists, the dev
+server shows it here.&quot; An empty slot also tells a newcomer drafts exist.</p>
+<p>A built site never links a draft, even when there is one. The TUI runs in the repo, so
+when there&#39;s no <code>rel=&quot;draft&quot;</code> but <code>plan.draft.md</code> exists on disk, the slot says this
+site doesn&#39;t serve drafts and the dev server does. That&#39;s a local fact, so it&#39;s the
+TUI&#39;s to check.</p>
+</div>
+</section>
+<section class="entry" id="plans-are-newest-first-and-o-flips-the-order" itemprop="entry" itemscope>
+<h2><a class="self" href="#plans-are-newest-first-and-o-flips-the-order"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Plans are newest first, and <code>o</code> flips the order</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">b.WriteString(&quot;\n&quot; + styles.dim.Render(&quot;Oldest first, by the commit that added each plan.&quot;))</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="137"><meta itemprop="endLine" content="137"></span>
+<span class="note" itemprop="note">quote at line 137</span>
+</figcaption>
+<meta itemprop="codeStart" content="134"><pre itemprop="code" data-start="134"><code style="counter-reset: line 133"><span class="line">	if p.RevisitsURL != &quot;&quot; {</span>
+<span class="line">		fact(&quot;revisits&quot;, strings.TrimSuffix(strings.TrimPrefix(p.RevisitsURL, m.c.Root.String()), &quot;/&quot;))</span>
+<span class="line">	}</span>
+<mark class="line">	b.WriteString(&quot;\n&quot; + styles.dim.Render(&quot;Oldest first, by the commit that added each plan.&quot;))</mark>
+<span class="line">	return split(listWindow(rows, s.cur, h), b.String(), w, h, 0)</span>
+<span class="line">}</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>a5bffc3</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> the newest plan is usually the one you&#39;re asking about. The profile
+orders plans by <code>added</code>, and the home page lists them oldest first, so newest first is
+that order reversed. The order in use is named above the list. It isn&#39;t remembered
+between runs: that would mean writing a settings file, and so far the TUI&#39;s only write
+is a draft&#39;s notes. Settings may get their own plan someday, and the longer that waits,
+the better the TUI has to be without them (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="a-plan-is-its-title-with-the-name-in-a-dim-line-under-it" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-plan-is-its-title-with-the-name-in-a-dim-line-under-it"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A plan is its title, with the name in a dim line under it</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">row := ansi.Truncate(fmt.Sprintf(&quot;%s%-9s %s&quot;, mark, p.Name, p.Title), lw, &quot;…&quot;)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="105"><meta itemprop="endLine" content="105"></span>
+<span class="note" itemprop="note">quote at line 105</span>
+</figcaption>
+<meta itemprop="codeStart" content="102"><pre itemprop="code" data-start="102"><code style="counter-reset: line 101"><span class="line">		if p.AsBuiltURL != &quot;&quot; {</span>
+<span class="line">			mark = styles.kind(&quot;Answered&quot;).Render(&quot;✓ &quot;)</span>
+<span class="line">		}</span>
+<mark class="line">		row := ansi.Truncate(fmt.Sprintf(&quot;%s%-9s %s&quot;, mark, p.Name, p.Title), lw, &quot;…&quot;)</mark>
+<span class="line">		if i == s.cur {</span>
+<span class="line">			row = styles.cursor.Render(ansi.Strip(row))</span>
+<span class="line">		}</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>a5bffc3</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, then Claude</span>):</strong> &quot;the names … are not very information bearing for
+humans.&quot; Each plan takes two lines: its title, cut off with &quot;…&quot; at the pane&#39;s edge, and
+under it, dim, <code>ramie · 2026-10-31 · 7 entries · ✓ as-built · revisits gimlet</code>. The
+name stays, because plans refer to each other by name. Two lines halve how many plans
+fit, about 15 in a usual terminal. Phoropter has 13 plans. When there are too many, the
+answer is filtering, not names. All five go in the dim line for now, and it gets cut
+back if it&#39;s cramped (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="breadcrumbs-name-a-plan-by-its-title" itemprop="entry" itemscope>
+<h2><a class="self" href="#breadcrumbs-name-a-plan-by-its-title"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Breadcrumbs name a plan by its title</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">func (s *docScreen) title() string {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="297"><meta itemprop="endLine" content="297"></span>
+<span class="note" itemprop="note">quote at line 297</span>
+</figcaption>
+<meta itemprop="codeStart" content="294"><pre itemprop="code" data-start="294"><code style="counter-reset: line 293"><span class="line">	return nil</span>
+<span class="line">}</span>
+<span class="line"></span>
+<mark class="line">func (s *docScreen) title() string {</mark>
+<span class="line">	d := s.plan.Draft</span>
+<span class="line">	if d == nil {</span>
+<span class="line">		return s.plan.Name</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="399"><meta itemprop="endLine" content="399"></span>
+<span class="note" itemprop="note">quote at line 399</span>
+</figcaption>
+<meta itemprop="codeStart" content="396"><pre itemprop="code" data-start="396"><code style="counter-reset: line 395"><span class="line">	return nil</span>
+<span class="line">}</span>
+<span class="line"></span>
+<mark class="line">func (s *docScreen) title() string {</mark>
+<span class="line">	d := s.plan.Draft</span>
+<span class="line">	if d == nil {</span>
+<span class="line">		return s.plan.Title</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the bar across the top is where a person sees where
+they are, so it says what the plan is about: &quot;phoropter-tui › Read the draft:
+phoropter&#39;s edge…&quot;. Each crumb is shortened so the last one stays readable.</p>
+</div>
+</section>
+<section class="entry" id="a-draft-has-an-accent-color-on-its-slot-and-its-screen" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-has-an-accent-color-on-its-slot-and-its-screen"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A draft has an accent color, on its slot and its screen</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/styles.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/styles.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">var styles = styleSet{</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/styles.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="9"></span>
+<span class="note" itemprop="note">quote at line 9</span>
+</figcaption>
+<meta itemprop="codeStart" content="6"><pre itemprop="code" data-start="6"><code style="counter-reset: line 5"><span class="line">	header, footer, title, dim, err, cursor, marked, gutter, active, missing, rule lipgloss.Style</span>
+<span class="line">}</span>
+<span class="line"></span>
+<mark class="line">var styles = styleSet{</mark>
+<span class="line">	header:  lipgloss.NewStyle().Bold(true).Padding(0, 1).Background(lipgloss.AdaptiveColor{Light: &quot;254&quot;, Dark: &quot;236&quot;}),</span>
+<span class="line">	footer:  lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: &quot;240&quot;, Dark: &quot;245&quot;}),</span>
+<span class="line">	title:   lipgloss.NewStyle().Bold(true),</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/styles.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="14"><meta itemprop="endLine" content="14"></span>
+<span class="note" itemprop="note">quote at line 14</span>
+</figcaption>
+<meta itemprop="codeStart" content="11"><pre itemprop="code" data-start="11"><code style="counter-reset: line 10"><span class="line">// follows the terminal's theme.</span>
+<span class="line">var accent = lipgloss.Color(&quot;13&quot;)</span>
+<span class="line"></span>
+<mark class="line">var styles = styleSet{</mark>
+<span class="line">	header:  lipgloss.NewStyle().Bold(true).Padding(0, 1).Background(lipgloss.AdaptiveColor{Light: &quot;254&quot;, Dark: &quot;236&quot;}),</span>
+<span class="line">	footer:  lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: &quot;240&quot;, Dark: &quot;245&quot;}),</span>
+<span class="line">	title:   lipgloss.NewStyle().Bold(true),</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/styles.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/styles.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> ramie kept a draft looking like a plan until this pass.
+One color, used nowhere else, on the slot&#39;s border and on a draft&#39;s title bar, says
+&quot;not committed yet&quot; before anything is read. The color is a terminal palette number, so
+it follows the terminal&#39;s theme. Both the slot and the screen have it, so they read as
+one thing (Claude, unanswered, so its fallback).</p>
+</div>
+</section>
+<section class="entry" id="the-draft-s-about-row-says-it-takes-a-note-on-the-whole-draft" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-draft-s-about-row-says-it-takes-a-note-on-the-whole-draft"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The draft&#39;s About row says it takes a note on the whole draft</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">text = &quot;── About this draft&quot;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="452"><meta itemprop="endLine" content="452"></span>
+<span class="note" itemprop="note">quote at line 452</span>
+</figcaption>
+<meta itemprop="codeStart" content="449"><pre itemprop="code" data-start="449"><code style="counter-reset: line 448"><span class="line">		case r.entry == nil &amp;&amp; r.doc.IsAsBuilt:</span>
+<span class="line">			text = &quot;── As built, head &quot; + r.doc.Head.Label</span>
+<span class="line">		case r.entry == nil &amp;&amp; r.doc.Draft != nil:</span>
+<mark class="line">			text = &quot;── About this draft&quot;</mark>
+<span class="line">		case r.entry == nil:</span>
+<span class="line">			text = &quot;── About this plan&quot;</span>
+<span class="line">		default:</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>a5bffc3</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;I wish I could add a note that applies to the entire plan,&quot; written
+as a note, while <code>a</code> on the About row already did exactly that. Nothing said so. The row
+reads &quot;About this draft · a to note it&quot;, and its pane ends with a line saying what <code>a</code>
+does there.</p>
+</div>
+</section>
+<section class="entry" id="text-boxes-wrap-what-s-typed" itemprop="entry" itemscope>
+<h2><a class="self" href="#text-boxes-wrap-what-s-typed"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Text boxes wrap what&#39;s typed</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/form.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/form.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">b.WriteString(&quot;  &quot; + ansi.Truncate(l, max(1, w-2), &quot;…&quot;) + &quot;\n&quot;)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/form.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="191"><meta itemprop="endLine" content="191"></span>
+<span class="note" itemprop="note">quote at line 191</span>
+</figcaption>
+<meta itemprop="codeStart" content="188"><pre itemprop="code" data-start="188"><code style="counter-reset: line 187"><span class="line">		}</span>
+<span class="line">		b.WriteString(head + &quot;\n&quot;)</span>
+<span class="line">		for _, l := range lines {</span>
+<mark class="line">			b.WriteString(&quot;  &quot; + ansi.Truncate(l, max(1, w-2), &quot;…&quot;) + &quot;\n&quot;)</mark>
+<span class="line">		}</span>
+<span class="line">		b.WriteString(&quot;\n&quot;)</span>
+<span class="line">	}</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/tui/form.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>a5bffc3</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/form.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/form.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;this needs the multiline treatment as well,&quot; and &quot;if there are a lot
+of typos, it&#39;s because this note doesn&#39;t allow multiline&quot;. <code>enter</code> already starts a new
+line, but a line longer than the pane was cut off with &quot;…&quot;, so what was typed past the
+edge couldn&#39;t be seen. The box wraps instead, and grows with what&#39;s in it.</p>
+</div>
+</section>
+<section class="entry" id="layers-have-human-names" itemprop="entry" itemscope>
+<h2><a class="self" href="#layers-have-human-names"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Layers have human names</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">var layers = []string{&quot;base&quot;, &quot;as-built head&quot;, &quot;generated&quot;}</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="24925c7c9230c009a0785aadf8ecc854a5d672be"><code>24925c7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="211"><meta itemprop="endLine" content="211"></span>
+<span class="note" itemprop="note">quote at line 211</span>
+</figcaption>
+<meta itemprop="codeStart" content="208"><pre itemprop="code" data-start="208"><code style="counter-reset: line 207"><span class="line">	rel, label, url string</span>
+<span class="line">}</span>
+<span class="line"></span>
+<mark class="line">var layers = []string{&quot;base&quot;, &quot;as-built head&quot;, &quot;generated&quot;}</mark>
+<span class="line"></span>
+<span class="line">func newDocScreen(plan, asBuilt *substrate.Doc) *docScreen {</span>
+<span class="line">	s := &amp;docScreen{plan: plan, asBuilt: asBuilt}</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="a5bffc3c8c70dcf8710c85f326325a3b1aae299b"><code>a5bffc3</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>a5bffc3</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;the &#39;generated&#39; tag is a little clunky, I know what it means&quot;. The
+profile&#39;s roles stay as they are in the data. The lens bar and help name the three
+layers for a person, each with its commit beside it: before, as built, now. &quot;Now&quot; is
+honest while the commit is beside it, and the help already explained &quot;generated&quot; as
+&quot;now&quot;. The other names weighed were then, landed, now, and at the plan, at the
+as-built, at the site&#39;s commit (Claude, unanswered, so its fallback).</p>
+</div>
+</section>
+<section class="entry" id="filtering-and-search-in-the-plan-list" itemprop="entry" itemscope>
+<h2><a class="self" href="#filtering-and-search-in-the-plan-list"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Filtering and search in the plan list</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> 13 plans fit. It&#39;s what comes when the list doesn&#39;t, and
+then what fits best can be seen (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="a-person-finds-a-plan-by-its-title-faster-than-by-its-name" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-person-finds-a-plan-by-its-title-faster-than-by-its-name"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">A person finds a plan by its title faster than by its name</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/challis/as-built/#a-person-finds-a-plan-by-its-title-faster-than-by-its-name">the as-built</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> Jeff finds himself scanning the dim lines for names, or finds the list
+harder to read than before.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

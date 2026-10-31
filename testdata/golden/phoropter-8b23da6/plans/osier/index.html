@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Line numbers out of the code's text · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">Line numbers out of the code&#39;s text</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">osier</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="4414768738d2531c3ffc6150b31f5b28fafb5446"><code>4414768</code></data> <time datetime="2026-10-31T13:53:55.000Z">13:53 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-osier.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/osier/as-built/">plans/2026-10-31-osier.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Phoropter-tui rebuilt its fixtures at selvage&#39;s head (selvage put in markup what the
+pages said in prose) and answered selvage&#39;s guess: six of seven gaps closed, and the
+seventh only half. <code>codeStart</code> numbers an excerpt, but each line&#39;s number is still a
+<code>span.ln</code> inside the <code>code</code> property, so a microdata reader gets the numbers run into
+the code. Selvage&#39;s as-built is pushed and frozen, so the answer lands here.</p>
+</div>
+<section class="entry" id="line-numbers-are-drawn-by-a-css-counter-not-written-into-the-code" itemprop="entry" itemscope>
+<h2><a class="self" href="#line-numbers-are-drawn-by-a-css-counter-not-written-into-the-code"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Line numbers are drawn by a CSS counter, not written into the code</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const text = `&lt;span class=&quot;ln&quot;&gt;${n}&lt;/span&gt;${esc(line) || ' '}`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="313"><meta itemprop="endLine" content="313"></span>
+<span class="note" itemprop="note">quote at line 313</span>
+</figcaption>
+<meta itemprop="codeStart" content="310"><pre itemprop="code" data-start="310"><code style="counter-reset: line 309"><span class="line">  const marked = new Set(h.marked);</span>
+<span class="line">  const lines = h.lines.map((line, i) =&gt; {</span>
+<span class="line">    const n = h.start + i;</span>
+<mark class="line">    const text = `&lt;span class=&quot;ln&quot;&gt;${n}&lt;/span&gt;${esc(line) || ' '}`;</mark>
+<span class="line">    return marked.has(n) ? `&lt;mark&gt;${text}&lt;/mark&gt;` : text;</span>
+<span class="line">  });</span>
+<span class="line">  return `&lt;meta itemprop=&quot;codeStart&quot; content=&quot;${h.start}&quot;&gt;&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;&lt;code&gt;${lines.join('\n')}&lt;/code&gt;&lt;/pre&gt;`;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="cd28935e0a2cf9a6aea55d478bdcea4219069d00"><code>cd28935</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>cd28935</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="cd28935">
+<span class="note" itemprop="note">same as at <code>cd28935</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> <code>code</code> should hold the code. Each line becomes its
+own element, and a counter started from the excerpt&#39;s first line draws its number in
+<code>::before</code>. A person sees what they see now; the <code>code</code> property&#39;s text is just the
+lines; copying an excerpt no longer copies its numbers. The brief&#39;s other options were
+a numbered attribute shown through CSS, or a profile line saying each line starts with
+its number; the counter keeps <code>code</code> true to its name, and the line number is already a
+property, <code>codeStart</code>.</p>
+</div>
+</section>
+<section class="entry" id="two-excerpts-in-one-view-are-ruled-apart-again" itemprop="entry" itemscope>
+<h2><a class="self" href="#two-excerpts-in-one-view-are-ruled-apart-again"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Two excerpts in one view are ruled apart again</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/style.css</code> <a rel="anchored-at" itemprop="place" href="../../files/src/style.css/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">.view pre + pre { border-top: 1px dashed var(--rule); }</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="4ffb7d89b04c42ef9b56d0a93dd9357f611f00b4"><code>4ffb7d8</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/style.css</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="115"><meta itemprop="endLine" content="115"></span>
+<span class="note" itemprop="note">quote at line 115</span>
+</figcaption>
+<meta itemprop="codeStart" content="112"><pre itemprop="code" data-start="112"><code style="counter-reset: line 111"><span class="line">.view.status-not-found .status, .view.status-no-file .status, .view.status-no-symbol .status { color: var(--missing); }</span>
+<span class="line">.view .note { flex-basis: 100%; color: var(--muted); }</span>
+<span class="line">.view pre { margin: 0; padding: 0.4rem 0; max-height: 24rem; overflow: auto; background: var(--code-bg); }</span>
+<mark class="line">.view pre + pre { border-top: 1px dashed var(--rule); }</mark>
+<span class="line">.view pre code { display: block; white-space: pre; }</span>
+<span class="line">.view mark { background: var(--mark); color: inherit; display: inline-block; min-width: 100%; }</span>
+<span class="line">.ln { display: inline-block; width: 3.5em; padding-right: 0.8em; text-align: right; color: var(--muted); user-select: none; }</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="cd28935e0a2cf9a6aea55d478bdcea4219069d00"><code>cd28935</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/style.css</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>cd28935</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/style.css</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="cd28935">
+<span class="note" itemprop="note">same as at <code>cd28935</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, measured</span>):</strong> selvage put a <code>codeStart</code> meta before each <code>pre</code>, so no
+<code>pre</code> directly follows another and the rule between excerpts stopped drawing. Nobody
+reported it; it showed up reading the stylesheet for this plan.</p>
+</div>
+</section>
+<section class="entry" id="once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names" itemprop="entry" itemscope>
+<h2><a class="self" href="#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Once phoropter-tui reads these, none of the closed gaps need prose or class names</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/osier/as-built/#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names">the as-built</a>: <strong class="verdict verdict-partly-disproved" itemprop="verdict">partly disproved</strong>.</p>
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">plans/2026-10-30-selvage.md › Once phoropter-tui reads these, none of the closed gaps need prose or class names</code></p>
+<p class="target"><span class="label">entry</span> <a rel="anchored-at" itemprop="target" href="../../plans/selvage/#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names">Guess: Once phoropter-tui reads these, none of the closed gaps need prose or class names</a> <span class="meta">in selvage</span></p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> selvage&#39;s own words: after phoropter-tui switches to the new
+properties, any of its seven gaps still needs a workaround. Restated here because
+selvage&#39;s as-built is frozen; phoropter-tui has measured it, and this plan&#39;s work is the
+part it found missing.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

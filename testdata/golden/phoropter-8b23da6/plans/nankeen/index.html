@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Landed plans aren't edited from the TUI · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">Landed plans aren&#39;t edited from the TUI</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">nankeen</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="9e6da666229a52eedcf7494b7d4319b67a3a126b"><code>9e6da66</code></data> <time datetime="2026-10-31T17:43:46.000Z">17:43 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="fb19946802e265a5544f858b8929712f6bb504de"><code>fb19946</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-nankeen.md</code></dd>
+
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Jeff asked for a way to amend old plans from the TUI, meaning edit them literally, as a
+test of the draft as a way to weigh an idea. The draft planned the feature properly,
+said Claude&#39;s view up front (the wrong tool), and marked each place the feature
+overturned earlier ground. Its one prompt defaulted to building it, because an agent
+doesn&#39;t get a veto. Jeff answered in his own words at the second entry, and this plan
+records that answer as a decline. What he wants instead, asking for a plan to be
+revisited, is its own draft.</p>
+</div>
+<section class="entry" id="editing-a-landed-plan-from-the-tui" itemprop="entry" itemscope>
+<h2><a class="self" href="#editing-a-landed-plan-from-the-tui"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Editing a landed plan from the TUI</span></a></h2>
+
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/tarlatan/#a-request-to-revisit-is-a-notes-file-on-a-landed-plan-kept-in-drafts">tarlatan, Decision: A request to revisit is a notes file on a landed plan, kept in <code>drafts/</code></a>.</p>
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">m.status = &quot;only a draft takes notes; a plan is testimony&quot;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="fb19946802e265a5544f858b8929712f6bb504de"><code>fb19946</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="287"><meta itemprop="endLine" content="287"></span>
+<span class="note" itemprop="note">quote at line 287</span>
+</figcaption>
+<meta itemprop="codeStart" content="284"><pre itemprop="code" data-start="284"><code style="counter-reset: line 283"><span class="line">func (s *docScreen) annotate(m *Model) {</span>
+<span class="line">	r := s.rows[s.cur]</span>
+<span class="line">	if r.doc.Draft == nil {</span>
+<mark class="line">		m.status = &quot;only a draft takes notes; a plan is testimony&quot;</mark>
+<span class="line">		return</span>
+<span class="line">	}</span>
+<span class="line">	d, err := m.openDraft(r.doc)</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;If <em>anything</em> can be considered immutable, it has to be the plans -
+so the tui should not allow you to edit them. It is a Ulysses mast move - I could always
+edit them <em>outside</em> of this tool, but damn... that would be a bad idea.&quot; And: what was
+wrong with &quot;edit&quot; was &quot;I want to do this behind your back, Claude&quot;, not &quot;let&#39;s have a
+conversation around this.&quot; The draft found five collisions, any one of which would have
+been a revisit:</p>
+<ul>
+<li>The TUI&#39;s own rule, which stays as it is: only a draft takes notes, and a plan is
+testimony.</li>
+<li><code>next.md</code>: the TUI&#39;s one write is a draft&#39;s notes file, and it never writes the
+substrate. A landed plan is what the substrate is generated from.</li>
+<li>An edit lands in whatever commit comes next, and phoropter shows the new words under
+the plan&#39;s original date and <code>added</code> commit.</li>
+<li>A plan page carries no hash of its file, so the TUI couldn&#39;t check it was editing the
+version just read.</li>
+<li>The annotating agreement: whoever annotates a file doesn&#39;t edit it. Most plans here
+were written by Claude from drafts Jeff annotated, and batiste declined even
+converting a draft from the TUI.</li>
+</ul>
+<p>Nothing on the site would show a plan had changed: phoropter reads plans as written,
+and the TUI reads no git history. A reader, and an agent reading the page, would take
+the edited words as what was decided. Changing a landed plan&#39;s ground stays what the
+guide says it is: a revisit, in a new plan that cites the old one.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

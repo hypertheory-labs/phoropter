@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: batik · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/batik/"><code>phoropter</code>: one command, run inside a repository, that indexes, builds and serves</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: batik</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/batik/">plans/2026-10-31-batik.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-batik.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Nothing departed from the plan, so there&#39;s no <code>Changed:</code>. Tried for real:</p>
+<ul>
+<li>Run from <code>tui/</code>, it walked up to this repository&#39;s root, took 4174 because 4173 and
+4175 were in use, and <code>phoropter url</code> found it from <code>src/</code>. Once it stopped, <code>url</code>
+said nothing was serving.</li>
+<li>A repository with no commits, and a directory outside git, each get one sentence and
+exit 1. A repository with a commit and no plans gets the welcome.</li>
+<li>On a clone of mock-control, <code>phoropter build</code> said two indexes that plans need were
+only in the cache. <code>phoropter index</code> wrote exactly those two, and run again it had
+nothing to write. The real mock-control was never written to.</li>
+</ul>
+</div>
+<section class="entry" id="a-served-site-is-built-into-the-cache-not-the-repository" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-served-site-is-built-into-the-cache-not-the-repository"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A served site is built into the cache, not the repository</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/cli.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/cli.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">// serve: the site goes in the cache, never into the repository.</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/cli.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="118"><meta itemprop="endLine" content="118"></span>
+<span class="note" itemprop="note">quote at line 118</span>
+</figcaption>
+<meta itemprop="codeStart" content="115"><pre itemprop="code" data-start="115"><code style="counter-reset: line 114"><span class="line">    return;</span>
+<span class="line">  }</span>
+<span class="line"></span>
+<mark class="line">  // serve: the site goes in the cache, never into the repository.</mark>
+<span class="line">  const out = values.out ?? join(cacheDir(), 'sites', createHash('sha256').update(root).digest('hex').slice(0, 16));</span>
+<span class="line">  const served = await serve({ repo: root, ref: at, out, port: Number(values.port ?? 4173), exactPort: values.port !== undefined, store });</span>
+<span class="line">  const file = servingFile(root);</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/cli.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="182"><meta itemprop="endLine" content="182"></span>
+<span class="note" itemprop="note">quote at line 182</span>
+</figcaption>
+<meta itemprop="codeStart" content="179"><pre itemprop="code" data-start="179"><code style="counter-reset: line 178"><span class="line">    return;</span>
+<span class="line">  }</span>
+<span class="line"></span>
+<mark class="line">  // serve: the site goes in the cache, never into the repository.</mark>
+<span class="line">  const out = values.out ?? join(cacheDir(), 'sites', createHash('sha256').update(root).digest('hex').slice(0, 16));</span>
+<span class="line">  const served = await serve({ repo: root, ref: at, out, port: Number(values.port ?? 4173), exactPort: values.port !== undefined, store });</span>
+<span class="line">  const file = servingFile(root);</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> <code>serve.ts</code> built into <code>site/</code> beside wherever it ran,
+which in this repository is gitignored. Run in any repository, that&#39;s a write into it.
+<code>phoropter build</code> still writes <code>site/</code> by default, because building a site is what you
+asked for.</p>
+</div>
+</section>
+<section class="entry" id="committed-indexes-are-read-from-the-working-tree" itemprop="entry" itemscope>
+<h2><a class="self" href="#committed-indexes-are-read-from-the-working-tree"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Committed indexes are read from the working tree</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/store.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/store.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">committedPath(sha: string, pkg: string): string {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/store.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="82"><meta itemprop="endLine" content="82"></span>
+<span class="note" itemprop="note">quote at line 82</span>
+</figcaption>
+<meta itemprop="codeStart" content="79"><pre itemprop="code" data-start="79"><code style="counter-reset: line 78"><span class="line">    this.indexer = opts.indexer ?? indexCommit;</span>
+<span class="line">  }</span>
+<span class="line"></span>
+<mark class="line">  committedPath(sha: string, pkg: string): string {</mark>
+<span class="line">    return join(this.repo.dir, STORE, sha, fileOf(pkg));</span>
+<span class="line">  }</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/store.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> an index is the same fact wherever it&#39;s read from, so
+the store doesn&#39;t care whether <code>.phoropter/index/</code> is committed yet. That&#39;s what lets a
+build use what <code>phoropter index</code> just wrote, before it&#39;s committed.</p>
+</div>
+</section>
+<section class="entry" id="tests-get-a-temporary-cache" itemprop="entry" itemscope>
+<h2><a class="self" href="#tests-get-a-temporary-cache"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Tests get a temporary cache</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">test/cache.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/test/cache.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">process.env.XDG_CACHE_HOME = mkdtempSync(join(tmpdir(), 'phoropter-cache-'));</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">test/cache.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="8"><meta itemprop="endLine" content="8"></span>
+<span class="note" itemprop="note">quote at line 8</span>
+</figcaption>
+<meta itemprop="codeStart" content="5"><pre itemprop="code" data-start="5"><code style="counter-reset: line 4"><span class="line">import { tmpdir } from 'node:os';</span>
+<span class="line">import { join } from 'node:path';</span>
+<span class="line"></span>
+<mark class="line">process.env.XDG_CACHE_HOME = mkdtempSync(join(tmpdir(), 'phoropter-cache-'));</mark>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">test/cache.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="8"><meta itemprop="endLine" content="8"></span><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> every build writes the cache now, and a test run
+shouldn&#39;t fill a real <code>~/.cache</code>. Each test file that builds imports this first.</p>
+</div>
+</section>
+<section class="entry" id="someone-new-to-a-repository-is-reading-its-plans-within-a-minute-of-phoropter" itemprop="entry" itemscope>
+<h2><a class="self" href="#someone-new-to-a-repository-is-reading-its-plans-within-a-minute-of-phoropter"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Someone new to a repository is reading its plans within a minute of <code>phoropter</code></span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/batik/#someone-new-to-a-repository-is-reading-its-plans-within-a-minute-of-phoropter">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude, measured</span>):</strong> held. On a fresh clone of mock-control, the address
+printed in about two seconds, and nothing it printed needed reading twice. The guess&#39;s
+other half, symbol anchors resolving with no indexer, held in <code>test/store.test.ts</code>: with
+the plans&#39; indexes committed and an indexer that fails in place of an uninstalled one,
+every symbol view came out as it did with a working indexer. scip-typescript now loads
+only when something has to be indexed, so a missing install can&#39;t stop the build before
+it starts.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

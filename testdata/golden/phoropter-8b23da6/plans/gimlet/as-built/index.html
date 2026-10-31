@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: gimlet · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/gimlet/">Phoropter v0: open one plan and walk it</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: gimlet</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/gimlet/">plans/2026-10-30-gimlet.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-gimlet.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Built in one session. Nothing needed asking; everything below is a call the plan left
+to the builder, or a gap it didn&#39;t cover. Run with <code>npm run dev</code> (mock-control at
+<code>90c65b9</code>, beside this repo) or <code>node src/build.ts &lt;repo&gt; [commit]</code>.</p>
+</div>
+<section class="entry" id="libraries-and-layout" itemprop="entry" itemscope>
+<h2><a class="self" href="#libraries-and-layout"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">Libraries and layout</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">package.json</code> <a rel="anchored-at" itemprop="place" href="../../../files/package.json/">file page</a></p>
+<p class="note" itemprop="note">no quote, so nothing to search for</p>
+</div>
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/scip.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/scip.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const { scip } = require('@sourcegraph/scip-typescript/dist/src/scip.js');</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="14"><meta itemprop="endLine" content="14"></span>
+<span class="note" itemprop="note">quote at line 14</span>
+</figcaption>
+<meta itemprop="codeStart" content="11"><pre itemprop="code" data-start="11"><code style="counter-reset: line 10"><span class="line">const require = createRequire(import.meta.url);</span>
+<span class="line">// scip-typescript ships its generated protobuf bindings; it has no public API</span>
+<span class="line">// for reading an index, so this reaches into dist. Pinned to 0.4.0.</span>
+<mark class="line">const { scip } = require('@sourcegraph/scip-typescript/dist/src/scip.js');</mark>
+<span class="line">const indexer = join(dirname(require.resolve('@sourcegraph/scip-typescript/package.json')), 'dist/src/main.js');</span>
+<span class="line"></span>
+<span class="line">export type Definition = {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan left these to the builder. Node 24+ runs the
+<code>.ts</code> files directly, so there is no build step; <code>tsc</code> only checks. <code>marked</code> parses
+plans and renders prose. The index is read with the protobuf bindings scip-typescript
+already ships, a deep import into its <code>dist</code>, pinned to 0.4.0. The spike went through
+the <code>scip</code> CLI and SQLite instead; that&#39;s a second binary to install for one lookup,
+so I didn&#39;t. Modules are one per step: <code>plan</code>, <code>git</code>, <code>scip</code>, <code>resolve</code>, <code>site</code>,
+<code>render</code>, <code>build</code>, <code>serve</code>. The site&#39;s URLs are <code>plans/&lt;cart&gt;/</code>,
+<code>plans/&lt;cart&gt;/as-built/</code>, <code>files/&lt;path&gt;/</code>, <code>symbols/&lt;file&gt;/&lt;descriptor&gt;/</code>, and
+<code>profile/</code>, with relative links so the output also opens from <code>file://</code>.</p>
+</div>
+</section>
+<section class="entry" id="as-built-anchors-are-shown-at-the-as-built-s-head-not-the-plan-s-base" itemprop="entry" itemscope>
+<h2><a class="self" href="#as-built-anchors-are-shown-at-the-as-built-s-head-not-the-plan-s-base"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">As-built anchors are shown at the as-built&#39;s <code>head</code>, not the plan&#39;s base</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const commits = d.before &amp;&amp; d.before.sha !== sha ? [d.before, generated] : [generated];</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="94"><meta itemprop="endLine" content="94"></span>
+<span class="note" itemprop="note">quote at line 94</span>
+</figcaption>
+<meta itemprop="codeStart" content="91"><pre itemprop="code" data-start="91"><code style="counter-reset: line 90"><span class="line">  const places = new Map&lt;string, Place&gt;();</span>
+<span class="line">  for (const plan of plans) {</span>
+<span class="line">    for (const d of plan.asBuilt ? [plan, plan.asBuilt] : [plan]) {</span>
+<mark class="line">      const commits = d.before &amp;&amp; d.before.sha !== sha ? [d.before, generated] : [generated];</mark>
+<span class="line">      d.entries = d.doc.entries.map((entry) =&gt; {</span>
+<span class="line">        const re: ResolvedEntry = { ...entry, resolved: [] };</span>
+<span class="line">        re.resolved = entry.anchors.map((anchor) =&gt; {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan says each anchor is shown at the plan&#39;s base,
+but pumice&#39;s as-built anchors were written after the work. Its <code>assets</code> quote doesn&#39;t
+exist at the base, so showing it there would make the as-built look wrong. Pumice&#39;s
+as-built has a <code>head:</code> field (not in lanyard), so its anchors are shown at that commit
+and at the generated one. Without a <code>head</code>, only the generated commit is shown. This
+file has a <code>head</code> for the same reason.</p>
+</div>
+</section>
+<section class="entry" id="a-scip-anchor-s-quote-is-also-looked-for-inside-the-symbol-s-range" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-scip-anchor-s-quote-is-also-looked-for-inside-the-symbol-s-range"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">A SCIP anchor&#39;s quote is also looked for inside the symbol&#39;s range</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">view.note = `lines ${def.startLine}–${def.endLine}; quote at ${describeLines(marked)}`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="74"><meta itemprop="endLine" content="74"></span>
+<span class="note" itemprop="note">quote at line 74</span>
+</figcaption>
+<meta itemprop="codeStart" content="71"><pre itemprop="code" data-start="71"><code style="counter-reset: line 70"><span class="line">      view.note = `lines ${def.startLine}–${def.endLine}`;</span>
+<span class="line">    } else if (view.matches) {</span>
+<span class="line">      view.status = 'found';</span>
+<mark class="line">      view.note = `lines ${def.startLine}–${def.endLine}; quote at ${describeLines(marked)}`;</mark>
+<span class="line">    } else {</span>
+<span class="line">      view.status = 'not-found';</span>
+<span class="line">      view.note = `lines ${def.startLine}–${def.endLine}; quote not found at \`${commit.short}\``;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> pumice&#39;s SCIP anchor has a quote, and <code>MockPanel#</code>&#39;s
+range is lines 9 to 152. Without the quote, a reader can&#39;t tell which of 144 lines the
+entry meant. The quote&#39;s lines are highlighted and the view says whether it was found,
+which is how &quot;matches at <code>da023f1</code> and not at <code>90c65b9</code>&quot; shows up on the page. It&#39;s
+still not a drift judgment: both sides are shown and neither is marked wrong.</p>
+</div>
+</section>
+<section class="entry" id="a-file-anchor-without-a-quote-is-shown-not-resolved" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-file-anchor-without-a-quote-is-shown-not-resolved"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">A file anchor without a quote is shown, not resolved</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">ra.note = 'no quote, so nothing to search for';</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="111"><meta itemprop="endLine" content="111"></span>
+<span class="note" itemprop="note">quote at line 111</span>
+</figcaption>
+<meta itemprop="codeStart" content="108"><pre itemprop="code" data-start="108"><code style="counter-reset: line 107"><span class="line">            return ra;</span>
+<span class="line">          }</span>
+<span class="line">          if (t.kind === 'file' &amp;&amp; anchor.quote === undefined) {</span>
+<mark class="line">            ra.note = 'no quote, so nothing to search for';</mark>
+<span class="line">            return ra;</span>
+<span class="line">          }</span>
+<span class="line">          ra.views = commits.map((c) =&gt; resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? indexFor(c) : undefined));</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="243"><meta itemprop="endLine" content="243"></span>
+<span class="note" itemprop="note">quote at line 243</span>
+</figcaption>
+<meta itemprop="codeStart" content="240"><pre itemprop="code" data-start="240"><code style="counter-reset: line 239"><span class="line">        return ra;</span>
+<span class="line">      }</span>
+<span class="line">      if (t.kind === 'file' &amp;&amp; anchor.quote === undefined) {</span>
+<mark class="line">        ra.note = 'no quote, so nothing to search for';</mark>
+<span class="line">        return ra;</span>
+<span class="line">      }</span>
+<span class="line">      ra.views = collapse(commits.map((c) =&gt; resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? cx.indexFor(c, packages) : undefined)));</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> pumice&#39;s first as-built entry anchors a README heading
+path with no quote. The plan&#39;s rule is the quote, so there&#39;s nothing to search for.
+Resolving the heading path itself (walking the markdown headings) was the obvious
+alternative; I declined it because the plan chose quotes, and it&#39;s a second resolver
+for one anchor.</p>
+</div>
+</section>
+<section class="entry" id="which-directories-get-indexed" itemprop="entry" itemscope>
+<h2><a class="self" href="#which-directories-get-indexed"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">Which directories get indexed</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/scip.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/scip.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">return packages.has(JSON.parse(repo.show(sha, f) ?? '{}').name);</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="49"><meta itemprop="endLine" content="49"></span>
+<span class="note" itemprop="note">quote at line 49</span>
+</figcaption>
+<meta itemprop="codeStart" content="46"><pre itemprop="code" data-start="46"><code style="counter-reset: line 45"><span class="line">    .filter((f) =&gt; f.endsWith('package.json') &amp;&amp; !f.includes('node_modules/'))</span>
+<span class="line">    .filter((f) =&gt; {</span>
+<span class="line">      try {</span>
+<mark class="line">        return packages.has(JSON.parse(repo.show(sha, f) ?? '{}').name);</mark>
+<span class="line">      } catch {</span>
+<span class="line">        return false;</span>
+<span class="line">      }</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan didn&#39;t say, and mock-control&#39;s root
+<code>tsconfig.json</code> has no files of its own. A SCIP symbol names its package, so each
+directory whose <code>package.json</code> has that name is indexed, using its <code>tsconfig.json</code>, or
+every <code>tsconfig*.json</code> beside it if there isn&#39;t one. Commits are indexed only when an
+anchor needs them, once each, into a temp checkout from <code>git archive</code>. No cache: about
+0.4 seconds a commit didn&#39;t earn one.</p>
+</div>
+</section>
+<section class="entry" id="microdata-items-have-no-itemtype" itemprop="entry" itemscope>
+<h2><a class="self" href="#microdata-items-have-no-itemtype"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">Microdata items have no <code>itemtype</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">items have no &lt;code&gt;itemtype&lt;/code&gt;; property names are defined here</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="152"><meta itemprop="endLine" content="152"></span>
+<span class="note" itemprop="note">quote at line 152</span>
+</figcaption>
+<meta itemprop="codeStart" content="149"><pre itemprop="code" data-start="149"><code style="counter-reset: line 148"><span class="line">  return layout(site, here, 'Profile', `</span>
+<span class="line">&lt;nav&gt;&lt;a href=&quot;${rel(here, '')}&quot;&gt;${esc(site.repoName)} at ${esc(site.generated.short)}&lt;/a&gt;&lt;/nav&gt;</span>
+<span class="line">&lt;h1&gt;Profile&lt;/h1&gt;</span>
+<mark class="line">&lt;p&gt;Phoropter’s pages are its API. A person and an agent read the same HTML; structure is in &lt;code&gt;rel&lt;/code&gt; links and microdata (items have no &lt;code&gt;itemtype&lt;/code&gt;; property names are defined here). The top-level item in each page’s &lt;code&gt;&amp;lt;main&amp;gt;&lt;/code&gt; is the plan, as-built, place, or home listing the page is about.&lt;/p&gt;</mark>
+<span class="line">&lt;h2&gt;Link relations&lt;/h2&gt;</span>
+<span class="line">&lt;dl class=&quot;defs&quot;&gt;</span>
+<span class="line">${rels.map(([name, source, q]) =&gt; `&lt;dt id=&quot;${name}&quot;&gt;&lt;code&gt;${name}&lt;/code&gt; &lt;span class=&quot;meta&quot;&gt;${source}&lt;/span&gt;&lt;/dt&gt;&lt;dd&gt;${q}&lt;/dd&gt;`).join('\n')}</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="176"><meta itemprop="endLine" content="176"></span>
+<span class="note" itemprop="note">quote at line 176</span>
+</figcaption>
+<meta itemprop="codeStart" content="173"><pre itemprop="code" data-start="173"><code style="counter-reset: line 172"><span class="line">  return layout(site, here, 'Profile', `</span>
+<span class="line">&lt;nav&gt;&lt;a href=&quot;${rel(here, '')}&quot;&gt;${esc(site.repoName)} at ${esc(site.generated.short)}&lt;/a&gt;&lt;/nav&gt;</span>
+<span class="line">&lt;h1&gt;Profile&lt;/h1&gt;</span>
+<mark class="line">&lt;p&gt;Phoropter’s pages are its API. A person and an agent read the same HTML; structure is in &lt;code&gt;rel&lt;/code&gt; links and microdata (items have no &lt;code&gt;itemtype&lt;/code&gt;; property names are defined here). The top-level item in each page’s &lt;code&gt;&amp;lt;main&amp;gt;&lt;/code&gt; is the plan, as-built, place, or home listing the page is about.&lt;/p&gt;</mark>
+<span class="line">&lt;h2&gt;Link relations&lt;/h2&gt;</span>
+<span class="line">&lt;dl class=&quot;defs&quot;&gt;</span>
+<span class="line">${rels.map(([name, source, q]) =&gt; `&lt;dt id=&quot;${name}&quot;&gt;&lt;code&gt;${name}&lt;/code&gt; &lt;span class=&quot;meta&quot;&gt;${source}&lt;/span&gt;&lt;/dt&gt;&lt;dd&gt;${q}&lt;/dd&gt;`).join('\n')}</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> microdata wants <code>itemtype</code> to be an absolute URL, and
+the site has no fixed host, nor a domain I should invent. Items are typed by where they
+sit and by their properties, and the profile defines the names. Worth a decision once
+there&#39;s somewhere real to point.</p>
+</div>
+</section>
+<section class="entry" id="reverse-pages-list-where-new-anchors-too" itemprop="entry" itemscope>
+<h2><a class="self" href="#reverse-pages-list-where-new-anchors-too"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">Reverse pages list <code>where (new)</code> anchors too</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">ra.place.refs.push({ plan, doc: d, entry: re, anchor });</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="105"><meta itemprop="endLine" content="105"></span>
+<span class="note" itemprop="note">quote at line 105</span>
+</figcaption>
+<meta itemprop="codeStart" content="102"><pre itemprop="code" data-start="102"><code style="counter-reset: line 101"><span class="line">            return ra;</span>
+<span class="line">          }</span>
+<span class="line">          ra.place = placeFor(places, t, indexFor(generated));</span>
+<mark class="line">          ra.place.refs.push({ plan, doc: d, entry: re, anchor });</mark>
+<span class="line">          if (anchor.isNew) {</span>
+<span class="line">            ra.note = 'made by the work, so there is nothing to resolve';</span>
+<span class="line">            return ra;</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="234"><meta itemprop="endLine" content="234"></span>
+<span class="note" itemprop="note">quote at line 234</span>
+</figcaption>
+<meta itemprop="codeStart" content="231"><pre itemprop="code" data-start="231"><code style="counter-reset: line 230"><span class="line">      }</span>
+<span class="line">      if (register) {</span>
+<span class="line">        ra.place = placeFor(cx.places, t, cx.indexFor(generated, packages)?.definitions);</span>
+<mark class="line">        ra.place.refs.push({ plan, doc: d, entry: re, anchor });</mark>
+<span class="line">      } else {</span>
+<span class="line">        ra.place = cx.places.get(placeKey(t));</span>
+<span class="line">      }</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a new anchor still names a file, and pumice&#39;s are
+mostly in the README. Leaving them off would hide most of what pumice did to that file.
+They&#39;re marked <code>new</code> and not resolved, as the plan says.</p>
+</div>
+</section>
+<section class="entry" id="a-cross-repo-prefix-that-names-this-repo-is-read-as-local" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-cross-repo-prefix-that-names-this-repo-is-read-as-local"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">A cross-repo prefix that names this repo is read as local</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/resolve.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/resolve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">if (cross &amp;&amp; cross[1] !== repoName) return { kind: 'cross-repo', repo: cross[1], rest: cross[2] };</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="470290823a79bfe7e8dd94a1c42e09fdec239503"><code>4702908</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="18"><meta itemprop="endLine" content="18"></span>
+<span class="note" itemprop="note">quote at line 18</span>
+</figcaption>
+<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code style="counter-reset: line 14"><span class="line"></span>
+<span class="line">export function target(anchor: Anchor, repoName: string): Target {</span>
+<span class="line">  const cross = /^([\w.-]+): (.+)$/.exec(anchor.where);</span>
+<mark class="line">  if (cross &amp;&amp; cross[1] !== repoName) return { kind: 'cross-repo', repo: cross[1], rest: cross[2] };</mark>
+<span class="line">  const where = cross ? cross[2] : anchor.where;</span>
+<span class="line">  if (isScipSymbol(where)) return { kind: 'symbol', symbol: withoutVersion(where) };</span>
+<span class="line">  const [file, ...path] = where.split(' › ');</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/resolve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="23"><meta itemprop="endLine" content="23"></span>
+<span class="note" itemprop="note">quote at line 23</span>
+</figcaption>
+<meta itemprop="codeStart" content="20"><pre itemprop="code" data-start="20"><code style="counter-reset: line 19"><span class="line">// them points at the plan, or at an entry by its title, not at a file.</span>
+<span class="line">export function target(anchor: Anchor, repoName: string, plans: Set&lt;string&gt; = new Set()): Target {</span>
+<span class="line">  const cross = /^([\w.-]+): (.+)$/.exec(anchor.where);</span>
+<mark class="line">  if (cross &amp;&amp; cross[1] !== repoName) return { kind: 'cross-repo', repo: cross[1], rest: cross[2] };</mark>
+<span class="line">  const where = cross ? cross[2] : anchor.where;</span>
+<span class="line">  if (isScipSymbol(where)) return { kind: 'symbol', symbol: withoutVersion(where) };</span>
+<span class="line">  const [file, ...path] = where.split(' › ');</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> gimlet&#39;s own anchor is <code>mock-control: plans/...</code>.
+Built against mock-control, that&#39;s not another repo. The repo&#39;s name is its directory&#39;s
+name, since mock-control has no remote.</p>
+</div>
+</section>
+<section class="entry" id="answering-the-guesses" itemprop="entry" itemscope>
+<h2><a class="self" href="#answering-the-guesses"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">Answering the guesses</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>The plan is enough of a brief:</strong> I didn&#39;t have to ask anything. But by its own
+&quot;Disproved if,&quot; it&#39;s partly disproved: the as-built <code>head</code> question is a gap a brief
+would have had to answer. The rest above are builder&#39;s calls the plan invited.</p>
+<p><strong>Quote search is enough for anchors that aren&#39;t SCIP symbols:</strong> not disproved, on a
+small sample. At their own commits, all three non-SCIP quotes match exactly once
+(README line 94 at <code>da023f1</code>, <code>package.json</code> line 3, the <code>assets</code> line 176 at <code>e92db76</code>),
+and the page highlights the line. Three quotes in one plan is thin evidence. When a
+quote does match more than once, the page shows every match and says how many.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>phoropter-tui moves in, as tui/, and still reads only what phoropter serves · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">phoropter-tui moves in, as <code>tui/</code>, and still reads only what phoropter serves</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">dowlas</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="e316b9d6c099aeb18e7d9cb4ae6abb9c3f26412f"><code>e316b9d</code></data> <time datetime="2026-10-31T18:04:20.000Z">18:04 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-dowlas.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/dowlas/as-built/">plans/2026-10-31-dowlas.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Phoropter-tui is a terminal reader of phoropter&#39;s pages, built over two days in its own
+repository. It&#39;s been a second reader of the profile, and it found the gaps selvage and
+osier closed. It plans its own work in this format. Six of its plans have landed, among
+them ramie (reading the draft), batiste (answering from the TUI), and nankeen (landed
+plans aren&#39;t edited from the TUI). Every time one of its plans needed a reason from
+phoropter, it could only cite it in prose: &quot;loden says&quot;, &quot;sorrel declined&quot;. Every time
+phoropter needed something from it, the request went through a brief,
+<code>for-phoropter.md</code>, carried between repositories by hand. Both are what two
+repositories cost. In one repository they&#39;re anchors and drafts.</p>
+<p>Other people&#39;s readers still build against the public API, the served pages, and send
+pull requests. This one is first-party, the way a CLI lives with the service it reads.</p>
+</div>
+<section class="entry" id="the-tui-comes-in-with-its-history-under-tui-and-its-plans-join-plans" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-tui-comes-in-with-its-history-under-tui-and-its-plans-join-plans"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The TUI comes in with its history, under <code>tui/</code>, and its plans join <code>plans/</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">CLAUDE.md</code> <a rel="anchored-at" itemprop="place" href="../../files/CLAUDE.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">Jeff may build a TUI on them, in another</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="29"><meta itemprop="endLine" content="29"></span>
+<span class="note" itemprop="note">quote at line 29</span>
+</figcaption>
+<meta itemprop="codeStart" content="26"><pre itemprop="code" data-start="26"><code style="counter-reset: line 25"><span class="line">- **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's</span>
+<span class="line">  `plans/`, which are mostly plan-to-plan anchors.</span>
+<span class="line">- **The rels and microdata are a public API.** The profile defines them, and readers</span>
+<mark class="line">  other than a browser may depend on them (Jeff may build a TUI on them, in another</mark>
+<span class="line">  repo). Renaming one breaks someone; it's a plan, not a tidy-up.</span>
+<span class="line">- **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it</span>
+<span class="line">  short and true for the next session.</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="dea8f0a96ab2394a4db3550382435e20d73ada39"><code>dea8f0a</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>dea8f0a</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="dea8f0a">
+<span class="note" itemprop="note">same as at <code>dea8f0a</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;declines, etc. here should point at things from that repo.&quot; In
+phoropter-tui, one commit moves everything under <code>tui/</code> except <code>plans/</code>. Then this
+repository merges it with <code>git merge --allow-unrelated-histories</code>. Commits keep their
+SHAs, so every <code>base:</code> and <code>head:</code> in the TUI&#39;s plans still names a commit here. The
+plan names don&#39;t collide with phoropter&#39;s. CLAUDE.md&#39;s &quot;in another repo&quot; changes to
+<code>tui/</code>.</p>
+</div>
+</section>
+<section class="entry" id="plans-from-both-sides-can-point-at-each-other" itemprop="entry" itemscope>
+<h2><a class="self" href="#plans-from-both-sides-can-point-at-each-other"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Plans from both sides can point at each other</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">plans/2026-10-30-gimlet.md › Cross-repo anchors are shown as text</code></p>
+<p class="target"><span class="label">entry</span> <a rel="anchored-at" itemprop="target" href="../../plans/gimlet/#cross-repo-anchors-are-shown-as-text">Decision: Cross-repo anchors are shown as text</a> <span class="meta">in gimlet</span></p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> gimlet showed cross-repo anchors as text, since v0 reads
+one repository. That stays true. The TUI coming in is what makes its references
+resolve. A TUI plan can anchor a phoropter entry and <code>revisits:</code> one, and phoropter&#39;s
+pages list TUI entries under &quot;anchored by&quot;. The next TUI draft is the first case: it
+revisits loden (the one draft, at the root). Jeff found more evidence while this was a
+draft: the TUI, run from phoropter-tui, couldn&#39;t answer it, because it looked for the
+draft in its own repository.</p>
+</div>
+</section>
+<section class="entry" id="the-brief-becomes-drafts-and-shelf-seeds" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-brief-becomes-drafts-and-shelf-seeds"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The brief becomes drafts and shelf seeds</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">plans/2026-10-30-gimlet.md › A separate brief beside the plan</code></p>
+<p class="target"><span class="label">entry</span> <a rel="anchored-at" itemprop="target" href="../../plans/gimlet/#a-separate-brief-beside-the-plan">Decline: A separate brief beside the plan</a> <span class="meta">in gimlet</span></p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, then Claude</span>):</strong> gimlet declined a separate brief because &quot;two copies of
+what to build can disagree.&quot; <code>for-phoropter.md</code> is one. Its open items become seeds in
+<code>shelf/</code>, each restated into a draft when it&#39;s picked up:</p>
+<ul>
+<li><code>›</code> paths resolving (<code>new-never-resolved</code>, <code>where-path-unresolved</code>, <code>view-no-code</code>)</li>
+<li>file pages (ranges, symbol anchors on their file, a place lookup, the blob id)</li>
+<li>what&#39;s already at a draft&#39;s places, whose condition is met</li>
+<li>reasons to re-check, and <code>Holds while:</code></li>
+<li>a Select&#39;s chosen options as properties</li>
+<li>where indexing lives, with a plugin for each language</li>
+</ul>
+<p>The brief stays in <code>tui/docs/</code> as the record of what the second reader found, marked as
+superseded by <code>shelf/</code>.</p>
+</div>
+</section>
+<section class="entry" id="the-tui-reads-only-what-phoropter-serves-and-the-rule-says-why" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-tui-reads-only-what-phoropter-serves-and-the-rule-says-why"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The TUI reads only what phoropter serves, and the rule says why</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">CLAUDE.md</code> <a rel="anchored-at" itemprop="place" href="../../files/CLAUDE.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">**The rels and microdata are a public API.**</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="28"><meta itemprop="endLine" content="28"></span>
+<span class="note" itemprop="note">quote at line 28</span>
+</figcaption>
+<meta itemprop="codeStart" content="25"><pre itemprop="code" data-start="25"><code style="counter-reset: line 24"><span class="line">  sentence made of plan names reads as Dr. Seuss.</span>
+<span class="line">- **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's</span>
+<span class="line">  `plans/`, which are mostly plan-to-plan anchors.</span>
+<mark class="line">- **The rels and microdata are a public API.** The profile defines them, and readers</mark>
+<span class="line">  other than a browser may depend on them (Jeff may build a TUI on them, in another</span>
+<span class="line">  repo). Renaming one breaks someone; it's a plan, not a tidy-up.</span>
+<span class="line">- **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="dea8f0a96ab2394a4db3550382435e20d73ada39"><code>dea8f0a</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="33"><meta itemprop="endLine" content="33"></span>
+<span class="note" itemprop="note">quote at line 33</span>
+</figcaption>
+<meta itemprop="codeStart" content="30"><pre itemprop="code" data-start="30"><code style="counter-reset: line 29"><span class="line">  sentence made of plan names reads as Dr. Seuss.</span>
+<span class="line">- **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's</span>
+<span class="line">  `plans/`, which are mostly plan-to-plan anchors.</span>
+<mark class="line">- **The rels and microdata are a public API.** The profile defines them, and readers</mark>
+<span class="line">  other than a browser depend on them. Renaming one breaks someone; it's a plan, not a</span>
+<span class="line">  tidy-up.</span>
+<span class="line">- **`tui/` is a reader of that API, first-party** (dowlas). It's a Go terminal reader that</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="41"><meta itemprop="endLine" content="41"></span>
+<span class="note" itemprop="note">quote at line 41</span>
+</figcaption>
+<meta itemprop="codeStart" content="38"><pre itemprop="code" data-start="38"><code style="counter-reset: line 37"><span class="line">  sentence made of plan names reads as Dr. Seuss.</span>
+<span class="line">- **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's</span>
+<span class="line">  `plans/`, which are mostly plan-to-plan anchors.</span>
+<mark class="line">- **The rels and microdata are a public API.** The profile defines them, and readers</mark>
+<span class="line">  other than a browser depend on them. Renaming one breaks someone; it's a plan, not a</span>
+<span class="line">  tidy-up.</span>
+<span class="line">- **`tui/` is a reader of that API, first-party** (dowlas). It's a Go terminal reader that</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> the TUI found the profile&#39;s gaps because it could read
+nothing else, and its gaps ledger only works while that&#39;s true. <code>tui/CLAUDE.md</code> says
+the TUI is tested only against served or built pages. It never reads <code>src/</code>, and never
+imports or shells out to phoropter&#39;s code beyond running its dev server. Go and
+TypeScript can&#39;t import each other by accident, which helps. When the ledger goes quiet,
+it should be because phoropter closed a gap, never because the TUI started reading past
+the pages.</p>
+</div>
+</section>
+<section class="entry" id="two-claude-md-files-the-root-one-pointing-at-the-tui-s" itemprop="entry" itemscope>
+<h2><a class="self" href="#two-claude-md-files-the-root-one-pointing-at-the-tui-s"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Two CLAUDE.md files, the root one pointing at the TUI&#39;s</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">CLAUDE.md</code> <a rel="anchored-at" itemprop="place" href="../../files/CLAUDE.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">**Claude commits; Jeff pushes.**</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="31"><meta itemprop="endLine" content="31"></span>
+<span class="note" itemprop="note">quote at line 31</span>
+</figcaption>
+<meta itemprop="codeStart" content="28"><pre itemprop="code" data-start="28"><code style="counter-reset: line 27"><span class="line">- **The rels and microdata are a public API.** The profile defines them, and readers</span>
+<span class="line">  other than a browser may depend on them (Jeff may build a TUI on them, in another</span>
+<span class="line">  repo). Renaming one breaks someone; it's a plan, not a tidy-up.</span>
+<mark class="line">- **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it</mark>
+<span class="line">  short and true for the next session.</span>
+<span class="line">- **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects</span>
+<span class="line">  `../mock-control`; pass a later commit to see the newer plans); the tests also read</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="dea8f0a96ab2394a4db3550382435e20d73ada39"><code>dea8f0a</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="40"><meta itemprop="endLine" content="40"></span>
+<span class="note" itemprop="note">quote at line 40</span>
+</figcaption>
+<meta itemprop="codeStart" content="37"><pre itemprop="code" data-start="37"><code style="counter-reset: line 36"><span class="line">  reads only served or built pages, never `src/`, and keeps a ledger of every place it</span>
+<span class="line">  had to read past the profile. Its gaps are phoropter's to close. A session working</span>
+<span class="line">  in `tui/` reads `tui/CLAUDE.md`. Its plans are in `plans/` with everyone's.</span>
+<mark class="line">- **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it</mark>
+<span class="line">  short and true for the next session.</span>
+<span class="line">- **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects</span>
+<span class="line">  `../mock-control`; pass a later commit to see the newer plans); the tests also read</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="48"><meta itemprop="endLine" content="48"></span>
+<span class="note" itemprop="note">quote at line 48</span>
+</figcaption>
+<meta itemprop="codeStart" content="45"><pre itemprop="code" data-start="45"><code style="counter-reset: line 44"><span class="line">  reads only served or built pages, never `src/`, and keeps a ledger of every place it</span>
+<span class="line">  had to read past the profile. Its gaps are phoropter's to close. A session working</span>
+<span class="line">  in `tui/` reads `tui/CLAUDE.md`. Its plans are in `plans/` with everyone's.</span>
+<mark class="line">- **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it</mark>
+<span class="line">  short and true for the next session.</span>
+<span class="line">- **The command** (batik): `npx phoropter` in any repository serves it (port 4173, or</span>
+<span class="line">  the next free one; `npx phoropter url` prints where), `phoropter build` writes the</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a session in <code>tui/</code> needs the TUI&#39;s rules (the boundary,
+the ledger, the Go dependency pins). A session at the root needs to know the TUI is a
+reader whose gaps are phoropter&#39;s to close. The root file gets one line saying so and
+pointing at <code>tui/CLAUDE.md</code>. The TUI&#39;s file drops its &quot;never edit <code>../phoropter</code>&quot; rule,
+since it&#39;s here now. Its boundary is the public API, not the directory.</p>
+</div>
+</section>
+<section class="entry" id="each-side-keeps-its-own-tests" itemprop="entry" itemscope>
+<h2><a class="self" href="#each-side-keeps-its-own-tests"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Each side keeps its own tests</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">package.json</code> <a rel="anchored-at" itemprop="place" href="../../files/package.json/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&quot;test&quot;: &quot;node --test test/&quot;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="15"><meta itemprop="endLine" content="15"></span>
+<span class="note" itemprop="note">quote at line 15</span>
+</figcaption>
+<meta itemprop="codeStart" content="12"><pre itemprop="code" data-start="12"><code style="counter-reset: line 11"><span class="line">    &quot;serve&quot;: &quot;node src/serve.ts&quot;,</span>
+<span class="line">    &quot;dev&quot;: &quot;node src/serve.ts ../mock-control 90c65b9&quot;,</span>
+<span class="line">    &quot;check&quot;: &quot;tsc --noEmit&quot;,</span>
+<mark class="line">    &quot;test&quot;: &quot;node --test test/&quot;</mark>
+<span class="line">  },</span>
+<span class="line">  &quot;dependencies&quot;: {</span>
+<span class="line">    &quot;@sourcegraph/scip-typescript&quot;: &quot;0.4.0&quot;,</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="dea8f0a96ab2394a4db3550382435e20d73ada39"><code>dea8f0a</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="15"><meta itemprop="endLine" content="15"></span>
+<span class="note" itemprop="note">quote at line 15</span>
+</figcaption>
+<meta itemprop="codeStart" content="12"><pre itemprop="code" data-start="12"><code style="counter-reset: line 11"><span class="line">    &quot;serve&quot;: &quot;node src/serve.ts&quot;,</span>
+<span class="line">    &quot;dev&quot;: &quot;node src/serve.ts ../mock-control 90c65b9&quot;,</span>
+<span class="line">    &quot;check&quot;: &quot;tsc --noEmit&quot;,</span>
+<mark class="line">    &quot;test&quot;: &quot;node --test test/&quot;</mark>
+<span class="line">  },</span>
+<span class="line">  &quot;dependencies&quot;: {</span>
+<span class="line">    &quot;@sourcegraph/scip-typescript&quot;: &quot;0.4.0&quot;,</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="18"><meta itemprop="endLine" content="18"></span>
+<span class="note" itemprop="note">quote at line 18</span>
+</figcaption>
+<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code style="counter-reset: line 14"><span class="line">    &quot;serve&quot;: &quot;node src/serve.ts&quot;,</span>
+<span class="line">    &quot;dev&quot;: &quot;node src/serve.ts ../mock-control 90c65b9&quot;,</span>
+<span class="line">    &quot;check&quot;: &quot;tsc --noEmit&quot;,</span>
+<mark class="line">    &quot;test&quot;: &quot;node --test test/&quot;</mark>
+<span class="line">  },</span>
+<span class="line">  &quot;dependencies&quot;: {</span>
+<span class="line">    &quot;@sourcegraph/scip-typescript&quot;: &quot;0.4.0&quot;,</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> someone sending phoropter a pull request shouldn&#39;t need
+Go installed. <code>npm test</code> stays phoropter&#39;s, and <code>go test ./...</code> in <code>tui/</code> stays the
+TUI&#39;s. The TUI&#39;s fixtures are sites built by phoropter, and when the profile changes
+they&#39;re rebuilt in the same work, which is what being one repository is for. <code>npm test</code>
+doesn&#39;t run the TUI&#39;s tests even when Go is installed: two commands, each side&#39;s own, and
+a change to the profile names both in its plan (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="the-lineage-copies-come-to-the-root" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-lineage-copies-come-to-the-root"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The lineage copies come to the root</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">.gitignore</code> <a rel="anchored-at" itemprop="place" href="../../files/.gitignore/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">.loom/cart/</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">.gitignore</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="4"><meta itemprop="endLine" content="4"></span>
+<span class="note" itemprop="note">quote at line 4</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">.DS_Store</span>
+<span class="line">node_modules/</span>
+<span class="line">site/</span>
+<mark class="line">.loom/cart/</mark>
+<span class="line">plan.draft.md</span>
+<span class="line">plan.draft.notes.md</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="dea8f0a96ab2394a4db3550382435e20d73ada39"><code>dea8f0a</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">.gitignore</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="4"><meta itemprop="endLine" content="4"></span>
+<span class="note" itemprop="note">quote at line 4</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">.DS_Store</span>
+<span class="line">node_modules/</span>
+<span class="line">site/</span>
+<mark class="line">.loom/cart/</mark>
+<span class="line">plan.draft.md</span>
+<span class="line">plan.draft.notes.md</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">.gitignore</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="4"><meta itemprop="endLine" content="4"></span>
+<span class="note" itemprop="note">quote at line 4</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">.DS_Store</span>
+<span class="line">node_modules/</span>
+<span class="line">site/</span>
+<mark class="line">.loom/cart/</mark>
+<span class="line">drafts/</span>
+<span class="line">bin/</span>
+<span class="line"></span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> phoropter-tui keeps <code>.loom/</code> committed (copies of the annotating and
+cart agreements this work descends from), with <code>.loom/cart/</code> ignored. Phoropter already
+ignores <code>.loom/cart/</code> and restates the same annotating agreement. The copies describe
+the whole repository&#39;s lineage, not the TUI&#39;s alone, so <code>.loom/</code> moves to the root
+rather than under <code>tui/</code>. Nothing in either side references <code>.loom</code> paths, as both
+CLAUDE.md files say. The other choice was <code>tui/.loom/</code> (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="phoropter-tui-s-own-repository-is-archived-pointing-here" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-tui-s-own-repository-is-archived-pointing-here"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">phoropter-tui&#39;s own repository is archived, pointing here</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">tui/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/tui/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> two live copies can disagree, for the same reason as the
+brief. After the merge, the old repository&#39;s README says where the TUI lives now, and
+Jeff archives it on GitHub. Jeff pushes. Nothing here changes a remote.</p>
+</div>
+</section>
+<section class="entry" id="rewriting-the-tui-s-plans-for-their-new-paths" itemprop="entry" itemscope>
+<h2><a class="self" href="#rewriting-the-tui-s-plans-for-their-new-paths"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Rewriting the TUI&#39;s plans for their new paths</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the guide</span>):</strong> plans are read as written. The TUI&#39;s plans anchor
+<code>internal/tui/screens.go</code> and the like. At their base commits those paths are right, and
+they resolve. At the generated commit they&#39;ve moved to <code>tui/internal/…</code> and show as
+<code>no-file</code>. That&#39;s true: the files moved. A later TUI plan anchors the new paths.</p>
+</div>
+</section>
+<section class="entry" id="one-language-for-both" itemprop="entry" itemscope>
+<h2><a class="self" href="#one-language-for-both"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">One language for both</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the TUI is a reader of the public API, and a reader in
+a different language than the server is the strongest proof the API is public. It&#39;s
+Go, with Bubble Tea, because that&#39;s what a terminal reader is good in. Rewriting it to
+share code would undo the reason it&#39;s worth having here.</p>
+</div>
+</section>
+<section class="entry" id="the-tui-stays-an-outside-reader-inside-this-repository" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-tui-stays-an-outside-reader-inside-this-repository"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">The TUI stays an outside reader inside this repository</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/dowlas/as-built/#the-tui-stays-an-outside-reader-inside-this-repository">the as-built</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> a change to the TUI reads <code>src/</code>, imports phoropter&#39;s modules, or
+closes a gap in the TUI&#39;s ledger without phoropter&#39;s pages changing.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

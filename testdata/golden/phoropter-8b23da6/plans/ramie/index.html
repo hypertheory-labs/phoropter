@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read the draft: phoropter's edge, in the TUI · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">Read the draft: phoropter&#39;s edge, in the TUI</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">ramie</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="c2b841c7207d3c6834a6b46a8f7cdec176f40848"><code>c2b841c</code></data> <time datetime="2026-10-31T16:11:44.000Z">16:11 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="e340414fc4e72f372e69ccd4cb1f1b7eb22e4eb5"><code>e340414</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-ramie.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/ramie/as-built/">plans/2026-10-31-ramie.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Loden (phoropter&#39;s edge: one draft plan, served live) put a repository&#39;s one draft at
+<code>draft/</code> on the dev server, linked from every page with <code>rel=&quot;draft&quot;</code>. Today the TUI
+reads that page as an ordinary plan. It would show the header&#39;s commit as if the draft
+were committed, and drop its prompts. Both are wrong in a way a person would believe.
+This is also this repository&#39;s first plan, and it&#39;s a draft on purpose: the TUI should
+be able to read the plan that describes teaching it to read drafts.</p>
+<p>Reading only. Answering prompts is the next plan.</p>
+</div>
+<section class="entry" id="a-draft-is-recognized-by-its-header-s-readat-not-its-url" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-is-recognized-by-its-header-s-readat-not-its-url"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A draft is recognized by its header&#39;s <code>readAt</code>, not its URL</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/substrate/model.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/substrate/model.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">p.Commit = refOf(it.Get(&quot;commit&quot;))</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e340414fc4e72f372e69ccd4cb1f1b7eb22e4eb5"><code>e340414</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/substrate/model.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="149"><meta itemprop="endLine" content="149"></span>
+<span class="note" itemprop="note">quote at line 149</span>
+</figcaption>
+<meta itemprop="codeStart" content="146"><pre itemprop="code" data-start="146"><code style="counter-reset: line 145"><span class="line">		switch {</span>
+<span class="line">		case it.Node.Data == &quot;header&quot; || microdata.Within(it.Node, &quot;header&quot;):</span>
+<span class="line">			p.Repository = it.Str(&quot;repository&quot;)</span>
+<mark class="line">			p.Commit = refOf(it.Get(&quot;commit&quot;))</mark>
+<span class="line">		case p.Main == nil &amp;&amp; microdata.Within(it.Node, &quot;main&quot;):</span>
+<span class="line">			p.Main = it</span>
+<span class="line">		}</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/substrate/model.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="182"><meta itemprop="endLine" content="182"></span>
+<span class="note" itemprop="note">quote at line 182</span>
+</figcaption>
+<meta itemprop="codeStart" content="179"><pre itemprop="code" data-start="179"><code style="counter-reset: line 178"><span class="line">				p.Draft = &amp;Draft{File: it.Str(&quot;file&quot;), ReadAt: it.Str(&quot;readAt&quot;), SHA256: it.Str(&quot;sha256&quot;)}</span>
+<span class="line">				p.AnchorsAt = refOf(it.Get(&quot;commit&quot;))</span>
+<span class="line">			} else {</span>
+<mark class="line">				p.Commit = refOf(it.Get(&quot;commit&quot;))</mark>
+<span class="line">			}</span>
+<span class="line">		case p.Main == nil &amp;&amp; microdata.Within(it.Node, &quot;main&quot;):</span>
+<span class="line">			p.Main = it</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/substrate/model.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/substrate/model.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, measured</span>):</strong> a draft&#39;s main item has <code>entry</code> and <code>title</code> like a plan,
+and may have no prompts, so the main item alone can&#39;t tell them apart. The profile&#39;s
+draft header always has <code>readAt</code> and the draft&#39;s <code>sha256</code>. On that header <code>commit</code> is
+where the anchors resolve, not what the page was generated from, so a <code>Page</code> keeps the
+two apart rather than calling both &quot;commit&quot;. Deciding by properties, not the URL, is
+how the TUI already tells plans from places.</p>
+</div>
+</section>
+<section class="entry" id="the-draft-opens-in-plan-mode-labeled-as-a-draft" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-draft-opens-in-plan-mode-labeled-as-a-draft"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The draft opens in plan mode, labeled as a draft</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/tui.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/tui.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">s := newDocScreen(plan, ab)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e340414fc4e72f372e69ccd4cb1f1b7eb22e4eb5"><code>e340414</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/tui.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="82"><meta itemprop="endLine" content="82"></span>
+<span class="note" itemprop="note">quote at line 82</span>
+</figcaption>
+<meta itemprop="codeStart" content="79"><pre itemprop="code" data-start="79"><code style="counter-reset: line 78"><span class="line">				return nil, err</span>
+<span class="line">			}</span>
+<span class="line">		}</span>
+<mark class="line">		s := newDocScreen(plan, ab)</mark>
+<span class="line">		s.selectURL(c.Resolve(u))</span>
+<span class="line">		return s, nil</span>
+<span class="line">	case main.Get(&quot;kind&quot;) != nil:</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/tui.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="104"><meta itemprop="endLine" content="104"></span>
+<span class="note" itemprop="note">quote at line 104</span>
+</figcaption>
+<meta itemprop="codeStart" content="101"><pre itemprop="code" data-start="101"><code style="counter-reset: line 100"><span class="line">				return nil, err</span>
+<span class="line">			}</span>
+<span class="line">		}</span>
+<mark class="line">		s := newDocScreen(plan, ab)</mark>
+<span class="line">		s.selectURL(c.Resolve(u))</span>
+<span class="line">		return s, nil</span>
+<span class="line">	case main.Get(&quot;kind&quot;) != nil:</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/tui.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/tui.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, then Jeff</span>):</strong> the profile says a draft&#39;s entries are &quot;as on a plan,&quot;
+so one screen reads both, and the keys stay the same. Where a plan&#39;s title bar says
+<code>pumice at f02528f</code>, a draft&#39;s says <code>draft, not committed, read at 15:39 UTC</code>, with the
+anchors&#39; commit after it. A draft has no as-built, so that half of the screen is
+empty. Otherwise a draft looks like a plan for now. How it should look is part of an
+aesthetics pass later (Jeff).</p>
+</div>
+</section>
+<section class="entry" id="prompts-and-annotations-are-rows-after-the-entry-they-follow" itemprop="entry" itemscope>
+<h2><a class="self" href="#prompts-and-annotations-are-rows-after-the-entry-they-follow"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Prompts and annotations are rows after the entry they follow</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/substrate/model.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/substrate/model.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">d.Entries = append(d.Entries, c.entry(e, p.URL))</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e340414fc4e72f372e69ccd4cb1f1b7eb22e4eb5"><code>e340414</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/substrate/model.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="227"><meta itemprop="endLine" content="227"></span>
+<span class="note" itemprop="note">quote at line 227</span>
+</figcaption>
+<meta itemprop="codeStart" content="224"><pre itemprop="code" data-start="224"><code style="counter-reset: line 223"><span class="line">		d.RevisitedBy = append(d.RevisitedBy, Link{URL: v.Text, Label: prose(v)})</span>
+<span class="line">	}</span>
+<span class="line">	for _, e := range it.Items(&quot;entry&quot;) {</span>
+<mark class="line">		d.Entries = append(d.Entries, c.entry(e, p.URL))</mark>
+<span class="line">	}</span>
+<span class="line">	return d, nil</span>
+<span class="line">}</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/substrate/model.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="266"><meta itemprop="endLine" content="266"></span>
+<span class="note" itemprop="note">quote at line 266</span>
+</figcaption>
+<meta itemprop="codeStart" content="263"><pre itemprop="code" data-start="263"><code style="counter-reset: line 262"><span class="line">		d.RevisitedBy = append(d.RevisitedBy, Link{URL: v.Text, Label: prose(v)})</span>
+<span class="line">	}</span>
+<span class="line">	for _, e := range it.Items(&quot;entry&quot;) {</span>
+<mark class="line">		d.Entries = append(d.Entries, c.entry(e, p.URL))</mark>
+<span class="line">	}</span>
+<span class="line">	if p.Draft != nil {</span>
+<span class="line">		d.Draft, d.AnchorsAt, d.Name = p.Draft, p.AnchorsAt, &quot;draft&quot;</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/substrate/model.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/substrate/model.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the profile</span>):</strong> a prompt &quot;follows the entry (or intro) it belongs to,&quot; and so
+does an annotation. The microdata parser groups properties by name, so the TUI recovers
+which entry comes before by each item&#39;s position in the tree. A prompt row shows its
+kind and text, a Select&#39;s options, its <code>fallback</code>, and its <code>answer</code> when the notes have
+one. An annotation row shows its heading, its quote, and its comment. A row moves with
+<code>j</code>/<code>k</code> like an entry.</p>
+</div>
+</section>
+<section class="entry" id="the-plan-list-puts-the-draft-first-when-the-home-page-links-one" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-plan-list-puts-the-draft-first-when-the-home-page-links-one"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The plan list puts the draft first, when the home page links one</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">for i, p := range s.home.Plans {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e340414fc4e72f372e69ccd4cb1f1b7eb22e4eb5"><code>e340414</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="78"><meta itemprop="endLine" content="78"></span>
+<span class="note" itemprop="note">quote at line 78</span>
+</figcaption>
+<meta itemprop="codeStart" content="75"><pre itemprop="code" data-start="75"><code style="counter-reset: line 74"><span class="line">	}</span>
+<span class="line">	lw := min(max(w*2/5, 30), w/2)</span>
+<span class="line">	var rows []string</span>
+<mark class="line">	for i, p := range s.home.Plans {</mark>
+<span class="line">		mark := &quot;  &quot;</span>
+<span class="line">		if p.AsBuiltURL != &quot;&quot; {</span>
+<span class="line">			mark = styles.kind(&quot;Answered&quot;).Render(&quot;✓ &quot;)</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="99"><meta itemprop="endLine" content="99"></span>
+<span class="note" itemprop="note">quote at line 99</span>
+</figcaption>
+<meta itemprop="codeStart" content="96"><pre itemprop="code" data-start="96"><code style="counter-reset: line 95"><span class="line">		}</span>
+<span class="line">		rows = append(rows, row)</span>
+<span class="line">	}</span>
+<mark class="line">	for i, p := range s.home.Plans {</mark>
+<span class="line">		i += s.offset()</span>
+<span class="line">		mark := &quot;  &quot;</span>
+<span class="line">		if p.AsBuiltURL != &quot;&quot; {</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">loden</span>):</strong> every page links <code>draft/</code> with <code>rel=&quot;draft&quot;</code> while the draft exists,
+and there&#39;s at most one. A row above the plans, marked as a draft, is where a person
+looks first. On a built site there&#39;s no such link, so there&#39;s no row.</p>
+</div>
+</section>
+<section class="entry" id="a-key-re-fetches-the-page" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-key-re-fetches-the-page"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A key re-fetches the page</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/tui.go</code> <a rel="anchored-at" itemprop="place" href="../../files/internal/tui/tui.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">case &quot;esc&quot;, &quot;backspace&quot;:</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="e340414fc4e72f372e69ccd4cb1f1b7eb22e4eb5"><code>e340414</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/tui.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="123"><meta itemprop="endLine" content="123"></span>
+<span class="note" itemprop="note">quote at line 123</span>
+</figcaption>
+<meta itemprop="codeStart" content="120"><pre itemprop="code" data-start="120"><code style="counter-reset: line 119"><span class="line">			return m, nil</span>
+<span class="line">		case m.showGaps || m.showHelp:</span>
+<span class="line">			switch k {</span>
+<mark class="line">			case &quot;esc&quot;, &quot;backspace&quot;:</mark>
+<span class="line">				m.showGaps, m.showHelp = false, false</span>
+<span class="line">			case &quot;j&quot;, &quot;down&quot;:</span>
+<span class="line">				m.scroll++</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/tui.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="149"><meta itemprop="endLine" content="149"></span>
+<span class="note" itemprop="note">quote at line 149</span>
+</figcaption>
+<meta itemprop="codeStart" content="146"><pre itemprop="code" data-start="146"><code style="counter-reset: line 145"><span class="line">			return m, nil</span>
+<span class="line">		case m.showGaps || m.showHelp:</span>
+<span class="line">			switch k {</span>
+<mark class="line">			case &quot;esc&quot;, &quot;backspace&quot;:</mark>
+<span class="line">				m.showGaps, m.showHelp = false, false</span>
+<span class="line">			case &quot;j&quot;, &quot;down&quot;:</span>
+<span class="line">				m.scroll++</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/tui.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/tui.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">loden, then Jeff</span>):</strong> the dev server re-reads the draft on every request, so
+refreshing is the update. The client caches pages, so <code>r</code> drops the cache for the
+current page and loads it again, keeping the cursor on the same entry when it still
+exists. Only <code>r</code>, for now (Jeff). Polling and watching the disk were the alternatives.
+Watching is a local fact, so it would be the TUI&#39;s to do, but the TUI can be pointed at
+a site it doesn&#39;t sit beside.</p>
+</div>
+</section>
+<section class="entry" id="answering-prompts-from-the-tui" itemprop="entry" itemscope>
+<h2><a class="self" href="#answering-prompts-from-the-tui"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Answering prompts from the TUI</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff&#39;s shelf, then Claude</span>):</strong> writing <code>plan.draft.notes.md</code> is the TUI&#39;s first
+write, and the annotating agreement has to be restated for this repo first, along with
+phoropter&#39;s <code>**If unanswered:**</code>. That&#39;s its own plan, once phoropter&#39;s brief with the
+conventions arrives. This plan never writes a file.</p>
+</div>
+</section>
+<section class="entry" id="a-draft-page-needs-nothing-beyond-the-profile" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-page-needs-nothing-beyond-the-profile"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">A draft page needs nothing beyond the profile</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/ramie/as-built/#a-draft-page-needs-nothing-beyond-the-profile">the as-built</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> while building this, the TUI has to note a new gap on a draft page:
+parse prose, lean on a class name, or go without something it wanted.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

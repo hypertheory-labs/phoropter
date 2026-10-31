@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: osier · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/osier/">Line numbers out of the code&#39;s text</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: osier</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/osier/">plans/2026-10-31-osier.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="cd28935e0a2cf9a6aea55d478bdcea4219069d00"><code>cd28935</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-osier.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Nothing departed from the plan, so there&#39;s no <code>Changed:</code>. Pumice&#39;s README view looks
+as it did: lines 91 to 97, with 94 marked. The <code>code</code> property&#39;s text is now only the
+lines, and no page has a <code>span.ln</code>.</p>
+</div>
+<section class="entry" id="the-counter-starts-on-the-code-element-in-an-inline-style" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-counter-starts-on-the-code-element-in-an-inline-style"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The counter starts on the <code>code</code> element, in an inline style</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">counter-reset: line ${h.start - 1}</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="cd28935e0a2cf9a6aea55d478bdcea4219069d00"><code>cd28935</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="316"><meta itemprop="endLine" content="316"></span>
+<span class="note" itemprop="note">quote at line 316</span>
+</figcaption>
+<meta itemprop="codeStart" content="313"><pre itemprop="code" data-start="313"><code style="counter-reset: line 312"><span class="line">    return marked.has(n) ? `&lt;mark class=&quot;line&quot;&gt;${esc(line)}&lt;/mark&gt;` : `&lt;span class=&quot;line&quot;&gt;${esc(line)}&lt;/span&gt;`;</span>
+<span class="line">  });</span>
+<span class="line">  // The numbers are a CSS counter from codeStart, so code's text is just the code.</span>
+<mark class="line">  return `&lt;meta itemprop=&quot;codeStart&quot; content=&quot;${h.start}&quot;&gt;&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;&lt;code style=&quot;counter-reset: line ${h.start - 1}&quot;&gt;${lines.join('\n')}&lt;/code&gt;&lt;/pre&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function layout(site: Site, here: string, title: string, main: string): Page {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="392"><meta itemprop="endLine" content="392"></span>
+<span class="note" itemprop="note">quote at line 392</span>
+</figcaption>
+<meta itemprop="codeStart" content="389"><pre itemprop="code" data-start="389"><code style="counter-reset: line 388"><span class="line">    return marked.has(n) ? `&lt;mark class=&quot;line&quot;&gt;${esc(line)}&lt;/mark&gt;` : `&lt;span class=&quot;line&quot;&gt;${esc(line)}&lt;/span&gt;`;</span>
+<span class="line">  });</span>
+<span class="line">  // The numbers are a CSS counter from codeStart, so code's text is just the code.</span>
+<mark class="line">  return `&lt;meta itemprop=&quot;codeStart&quot; content=&quot;${h.start}&quot;&gt;&lt;pre itemprop=&quot;code&quot; data-start=&quot;${h.start}&quot;&gt;&lt;code style=&quot;counter-reset: line ${h.start - 1}&quot;&gt;${lines.join('\n')}&lt;/code&gt;&lt;/pre&gt;`;</mark>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line">function layout(site: Site, here: string, title: string, main: string, header?: string): Page {</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> CSS can&#39;t yet read a number out of an attribute
+everywhere, so the start can&#39;t come from <code>codeStart</code> or <code>data-start</code> through the
+stylesheet. An inline <code>counter-reset</code> is the one place the page states it for CSS.</p>
+</div>
+</section>
+<section class="entry" id="once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names" itemprop="entry" itemscope>
+<h2><a class="self" href="#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Once phoropter-tui reads these, none of the closed gaps need prose or class names</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/osier/#once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names">the plan’s guess</a>: <strong class="verdict verdict-partly-disproved" itemprop="verdict">partly disproved</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">phoropter-tui, measured, then Claude</span>):</strong> partly disproved, on seven gaps. Six
+closed outright on fixtures rebuilt at selvage&#39;s head <code>4ffb7d8</code>. The seventh,
+<code>line-numbers-unprofiled</code>, needed a class name to drop the numbers from <code>code</code>&#39;s text
+(30 code values in mock-control, 87 in phoropter); this plan&#39;s work removes them.
+Whether that closes it is phoropter-tui&#39;s to measure, on fixtures rebuilt at this head.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

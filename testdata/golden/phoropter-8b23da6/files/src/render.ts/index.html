@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>src/render.ts · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1><code itemprop="name">src/render.ts</code></h1>
+<dl class="facts">
+<dt>Kind</dt><dd itemprop="kind">file</dd>
+<dt>Path</dt><dd><code itemprop="file">src/render.ts</code></dd>
+
+</dl>
+
+<h2>Plans anchored here</h2>
+<ul class="list"><li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/batik/#a-repository-with-no-plans-gets-a-welcome-not-an-error"><span itemprop="kind">Decision</span>: <span itemprop="title">A repository with no plans gets a welcome, not an error</span></a>
+  <span class="meta">in <span itemprop="plan">batik</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="e5618341744f6a99cea3595876be2c04ab14dfdd"><code>e561834</code></data> <time datetime="2026-10-31T19:13:53.000Z">19:13 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/organza/#requestcount-becomes-notecount"><span itemprop="kind">Decision</span>: <span itemprop="title"><code>requestCount</code> becomes <code>noteCount</code></span></a>
+  <span class="meta">in <span itemprop="plan">organza</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="30db70d38404d3671eee554cb386bf7d02bf035f"><code>30db70d</code></data> <time datetime="2026-10-31T18:32:27.000Z">18:32 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/tassel/#every-header-s-links-start-with-home"><span itemprop="kind">Decision</span>: <span itemprop="title">Every header&#39;s links start with &quot;home&quot;</span></a>
+  <span class="meta">in <span itemprop="plan">tassel</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="a252f7fc4e8792c2b96c2f4fa3f93d85d5708bb4"><code>a252f7f</code></data> <time datetime="2026-10-31T15:18:05.000Z">15:18 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/loden/#the-draft-page-says-it-s-the-working-tree-not-a-commit"><span itemprop="kind">Decision</span>: <span itemprop="title">The draft page says it&#39;s the working tree, not a commit</span></a>
+  <span class="meta">in <span itemprop="plan">loden</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="7edec13db4a9343b5a753a1da07a4a9d8dadfee6"><code>7edec13</code></data> <time datetime="2026-10-31T15:09:14.000Z">15:09 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/loden/as-built/#prompts-and-annotations-follow-their-entry-not-their-exact-place-in-it"><span itemprop="kind">Chose</span>: <span itemprop="title">Prompts and annotations follow their entry, not their exact place in it</span></a>
+  <span class="meta">in <span itemprop="plan">loden</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="7edec13db4a9343b5a753a1da07a4a9d8dadfee6"><code>7edec13</code></data> <time datetime="2026-10-31T15:09:14.000Z">15:09 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/osier/#line-numbers-are-drawn-by-a-css-counter-not-written-into-the-code"><span itemprop="kind">Decision</span>: <span itemprop="title">Line numbers are drawn by a CSS counter, not written into the code</span></a>
+  <span class="meta">in <span itemprop="plan">osier</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="4414768738d2531c3ffc6150b31f5b28fafb5446"><code>4414768</code></data> <time datetime="2026-10-31T13:53:55.000Z">13:53 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/osier/as-built/#the-counter-starts-on-the-code-element-in-an-inline-style"><span itemprop="kind">Chose</span>: <span itemprop="title">The counter starts on the <code>code</code> element, in an inline style</span></a>
+  <span class="meta">in <span itemprop="plan">osier</span>, <time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="4414768738d2531c3ffc6150b31f5b28fafb5446"><code>4414768</code></data> <time datetime="2026-10-31T13:53:55.000Z">13:53 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/selvage/#a-view-lists-each-match-as-an-item-with-its-lines"><span itemprop="kind">Decision</span>: <span itemprop="title">A view lists each match as an item, with its lines</span></a>
+  <span class="meta">in <span itemprop="plan">selvage</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/selvage/#each-excerpt-s-first-line-is-a-property-beside-it"><span itemprop="kind">Decision</span>: <span itemprop="title">Each excerpt&#39;s first line is a property beside it</span></a>
+  <span class="meta">in <span itemprop="plan">selvage</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/selvage/#the-home-list-marks-up-its-as-built-and-revisits-links-and-counts-entries"><span itemprop="kind">Decision</span>: <span itemprop="title">The home list marks up its as-built and revisits links, and counts entries</span></a>
+  <span class="meta">in <span itemprop="plan">selvage</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/selvage/#new-has-one-shape"><span itemprop="kind">Decision</span>: <span itemprop="title"><code>new</code> has one shape</span></a>
+  <span class="meta">in <span itemprop="plan">selvage</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/selvage/#the-profile-says-base-and-head-can-be-text"><span itemprop="kind">Decision</span>: <span itemprop="title">The profile says <code>base</code> and <code>head</code> can be text</span></a>
+  <span class="meta">in <span itemprop="plan">selvage</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/selvage/as-built/#a-match-is-a-hidden-item-so-the-page-looks-the-same"><span itemprop="kind">Chose</span>: <span itemprop="title">A match is a hidden item, so the page looks the same</span></a>
+  <span class="meta">in <span itemprop="plan">selvage</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="458faa5d4b52d1312f7f946d6028ef10a9fd9562"><code>458faa5</code></data> <time datetime="2026-10-30T23:17:31.000Z">23:17 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/twill/#the-home-page-s-orientation-and-every-header-link-the-guide"><span itemprop="kind">Decision</span>: <span itemprop="title">The home page&#39;s orientation and every header link the guide</span></a>
+  <span class="meta">in <span itemprop="plan">twill</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="8793ef997a166173e1c223877a54825df56abc75"><code>8793ef9</code></data> <time datetime="2026-10-30T20:13:37.000Z">20:13 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/twill/as-built/#the-guide-is-linked-with-rel-help"><span itemprop="kind">Chose</span>: <span itemprop="title">The guide is linked with <code>rel=&quot;help&quot;</code></span></a>
+  <span class="meta">in <span itemprop="plan">twill</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="8793ef997a166173e1c223877a54825df56abc75"><code>8793ef9</code></data> <time datetime="2026-10-30T20:13:37.000Z">20:13 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/burlap/#the-verdict-shows-on-the-answer-and-on-its-guess"><span itemprop="kind">Decision</span>: <span itemprop="title">The verdict shows on the answer and on its guess</span></a>
+  <span class="meta">in <span itemprop="plan">burlap</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7d740348899bf78b239fd308031f317f3cd2e42e"><code>7d74034</code></data> <time datetime="2026-10-30T19:30:12.000Z">19:30 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/burlap/as-built/#on-a-guess-the-verdict-sits-in-the-sentence-that-links-its-answer"><span itemprop="kind">Chose</span>: <span itemprop="title">On a guess, the verdict sits in the sentence that links its answer</span></a>
+  <span class="meta">in <span itemprop="plan">burlap</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7d740348899bf78b239fd308031f317f3cd2e42e"><code>7d74034</code></data> <time datetime="2026-10-30T19:30:12.000Z">19:30 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/burlap/as-built/#an-answer-with-no-verdict-still-shows-its-link-with-a-note"><span itemprop="kind">Chose</span>: <span itemprop="title">An answer with no verdict still shows its link, with a note</span></a>
+  <span class="meta">in <span itemprop="plan">burlap</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7d740348899bf78b239fd308031f317f3cd2e42e"><code>7d74034</code></data> <time datetime="2026-10-30T19:30:12.000Z">19:30 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/marl/#a-reason-s-source-is-itemprop-source-exactly-as-written"><span itemprop="kind">Decision</span>: <span itemprop="title">A reason&#39;s source is <code>itemprop=&quot;source&quot;</code>, exactly as written</span></a>
+  <span class="meta">in <span itemprop="plan">marl</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7cc899c45d78d337910bd32ab62936e817e933f6"><code>7cc899c</code></data> <time datetime="2026-10-30T19:20:45.000Z">19:20 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/marl/#the-home-page-orients-a-cold-arrival-and-every-page-links-the-profile-visibly"><span itemprop="kind">Decision</span>: <span itemprop="title">The home page orients a cold arrival, and every page links the profile visibly</span></a>
+  <span class="meta">in <span itemprop="plan">marl</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7cc899c45d78d337910bd32ab62936e817e933f6"><code>7cc899c</code></data> <time datetime="2026-10-30T19:20:45.000Z">19:20 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/marl/as-built/#the-source-is-wrapped-in-place-inside-the-bold-lead"><span itemprop="kind">Chose</span>: <span itemprop="title">The source is wrapped in place, inside the bold lead</span></a>
+  <span class="meta">in <span itemprop="plan">marl</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7cc899c45d78d337910bd32ab62936e817e933f6"><code>7cc899c</code></data> <time datetime="2026-10-30T19:20:45.000Z">19:20 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/marl/as-built/#times-are-shown-in-utc-and-say-so"><span itemprop="kind">Chose</span>: <span itemprop="title">Times are shown in UTC, and say so</span></a>
+  <span class="meta">in <span itemprop="plan">marl</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7cc899c45d78d337910bd32ab62936e817e933f6"><code>7cc899c</code></data> <time datetime="2026-10-30T19:20:45.000Z">19:20 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/sorrel/#revisits-is-a-revisits-link-and-the-revisited-plan-shows-revisited-by"><span itemprop="kind">Decision</span>: <span itemprop="title"><code>revisits:</code> is a <code>revisits</code> link, and the revisited plan shows <code>revisited-by</code></span></a>
+  <span class="meta">in <span itemprop="plan">sorrel</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="ba011a277e3da773478697eff45acae384d9ba21"><code>ba011a2</code></data> <time datetime="2026-10-30T18:43:02.000Z">18:43 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/sorrel/#these-anchors-reuse-anchored-at-and-anchored-by"><span itemprop="kind">Decision</span>: <span itemprop="title">These anchors reuse <code>anchored-at</code> and <code>anchored-by</code></span></a>
+  <span class="meta">in <span itemprop="plan">sorrel</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="ba011a277e3da773478697eff45acae384d9ba21"><code>ba011a2</code></data> <time datetime="2026-10-30T18:43:02.000Z">18:43 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/sorrel/as-built/#an-entry-anchor-s-link-is-the-target-property-apart-from-place"><span itemprop="kind">Chose</span>: <span itemprop="title">An entry anchor&#39;s link is the <code>target</code> property, apart from <code>place</code></span></a>
+  <span class="meta">in <span itemprop="plan">sorrel</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="ba011a277e3da773478697eff45acae384d9ba21"><code>ba011a2</code></data> <time datetime="2026-10-30T18:43:02.000Z">18:43 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/quince/#an-answered-links-to-the-plan-s-guess-with-the-same-title-and-back"><span itemprop="kind">Decision</span>: <span itemprop="title">An <code>Answered:</code> links to the plan&#39;s <code>Guess:</code> with the same title, and back</span></a>
+  <span class="meta">in <span itemprop="plan">quince</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="fc22ea57d4deb219ec726fdaaac4d6edce9a234b"><code>fc22ea5</code></data> <time datetime="2026-10-30T18:04:30.000Z">18:04 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/quince/as-built/#a-plan-page-shows-its-name-and-its-cart-as-two-facts"><span itemprop="kind">Chose</span>: <span itemprop="title">A plan page shows its name and its cart as two facts</span></a>
+  <span class="meta">in <span itemprop="plan">quince</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="fc22ea57d4deb219ec726fdaaac4d6edce9a234b"><code>fc22ea5</code></data> <time datetime="2026-10-30T18:04:30.000Z">18:04 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/quince/as-built/#how-a-pair-reads"><span itemprop="kind">Chose</span>: <span itemprop="title">How a pair reads</span></a>
+  <span class="meta">in <span itemprop="plan">quince</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="fc22ea57d4deb219ec726fdaaac4d6edce9a234b"><code>fc22ea5</code></data> <time datetime="2026-10-30T18:04:30.000Z">18:04 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/tamarind/#the-symbol-page-shows-the-whole-range-at-the-generated-commit"><span itemprop="kind">Decision</span>: <span itemprop="title">The symbol page shows the whole range at the generated commit</span></a>
+  <span class="meta">in <span itemprop="plan">tamarind</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="98b66353c80fe42f5a62c97aa768112208dce588"><code>98b6635</code></data> <time datetime="2026-10-30T17:06:14.000Z">17:06 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/tamarind/#the-home-page-s-title-is-said-once"><span itemprop="kind">Decision</span>: <span itemprop="title">The home page&#39;s title is said once</span></a>
+  <span class="meta">in <span itemprop="plan">tamarind</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="98b66353c80fe42f5a62c97aa768112208dce588"><code>98b6635</code></data> <time datetime="2026-10-30T17:06:14.000Z">17:06 UTC</time></span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li>
+<li itemprop="anchoredBy" itemscope>
+  <a rel="anchored-by" itemprop="url" href="../../../plans/gimlet/as-built/#microdata-items-have-no-itemtype"><span itemprop="kind">Changed</span>: <span itemprop="title">Microdata items have no <code>itemtype</code></span></a>
+  <span class="meta">in <span itemprop="plan">gimlet</span>, <time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="d2484b674e3fb8f915a9f46909287fdde7b35928"><code>d2484b6</code></data> <time datetime="2026-10-30T16:16:25.000Z">16:16 UTC</time> (as-built)</span>
+  <code class="where" itemprop="where">src/render.ts</code>
+</li></ul>
+</article>
+</main>
+</body>
+</html>

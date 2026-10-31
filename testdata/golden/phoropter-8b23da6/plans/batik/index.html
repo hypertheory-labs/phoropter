@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>phoropter: one command, run inside a repository, that indexes, builds and serves · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title"><code>phoropter</code>: one command, run inside a repository, that indexes, builds and serves</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">batik</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="e5618341744f6a99cea3595876be2c04ab14dfdd"><code>e561834</code></data> <time datetime="2026-10-31T19:13:53.000Z">19:13 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-batik.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/batik/as-built/">plans/2026-10-31-batik.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Today phoropter is three invocations you have to know: <code>node src/build.ts &lt;repo&gt; [commit]</code>, <code>node src/serve.ts &lt;repo&gt; [commit] --port …</code>, and nothing at all for keeping
+indexes, which are rebuilt from scratch every time. This plan makes it one command,
+<code>phoropter</code>, that you run inside a repository. It&#39;s the first of the plans toward a
+<code>phoropter</code> CLI. Plugins for indexers and UIs, and how phoropter is installed, come
+after.</p>
+<p>It takes in the index store worked out with Jeff and shelved as <code>shelf/index-store.md</code>.
+That plan couldn&#39;t land alone: its writing half was <code>phoropter index</code>, a command this
+plan makes. Two plans that only work together are a distributed transaction, so they&#39;re
+one plan now. Its decisions are restated here as Jeff answered them, and the seed is
+deleted when this converts.</p>
+</div>
+<section class="entry" id="phoropter-with-no-arguments-serves-the-repository-you-re-in" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-with-no-arguments-serves-the-repository-you-re-in"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter</code> with no arguments serves the repository you&#39;re in</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/serve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/serve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">// node src/serve.ts &lt;repo&gt; [commit] [--out site] [--port 4173]</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line">// node src/serve.ts &lt;repo&gt; [commit] [--out site] [--port 4173]</mark>
+<span class="line">// Builds the site once, then serves it read-only. A commit's site never</span>
+<span class="line">// changes, so there's nothing to watch. The exceptions are in the repo's</span>
+<span class="line">// working tree, under drafts/: the draft, read on every request to draft/</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line">// node src/serve.ts &lt;repo&gt; [commit] [--out site] [--port 4173], or `phoropter`.</mark>
+<span class="line">// Builds the site once, then serves it read-only. A commit's site never</span>
+<span class="line">// changes, so there's nothing to watch. The exceptions are in the repo's</span>
+<span class="line">// working tree, under drafts/: the draft, read on every request to draft/</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the person reading plans is standing in the repository.
+<code>phoropter</code> finds its root by walking up to <code>.git</code>, indexes what&#39;s missing into the
+local cache, builds the site at <code>HEAD</code>, and serves it with the draft and notes in
+<code>drafts/</code>, as the dev server does now. It prints the address. <code>phoropter &lt;path&gt;</code> does
+the same for another repository, and <code>--at &lt;commit&gt;</code> serves another commit. Outside a
+git repository, it says it reads one and stops. This is the experience the whole CLI is
+for: &quot;you run <code>ph</code> in the repo&quot; (Jeff). Every other command is secondary to it.</p>
+<p>For now it opens nothing; it prints the address. Jeff thinks a UI is the right default,
+with the address shown so it can be handed to the agent, and that closing the UI could
+stop the server. Both depend on what &quot;a UI&quot; is, so they&#39;re the plugin plan&#39;s to decide,
+and they&#39;re written into its seed (<code>shelf/ui-plugins.md</code>). This plan is whole without
+them: a server and its address are a complete thing. A later plan that opens a UI adds
+to it and leaves nothing broken here.</p>
+</div>
+</section>
+<section class="entry" id="the-port-is-4173-or-the-next-free-one" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-port-is-4173-or-the-next-free-one"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The port is 4173, or the next free one</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/build.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/build.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">options: { out: { type: 'string', default: 'site' }, port: { type: 'string', default: '4173' } },</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/build.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="29"><meta itemprop="endLine" content="29"></span>
+<span class="note" itemprop="note">quote at line 29</span>
+</figcaption>
+<meta itemprop="codeStart" content="26"><pre itemprop="code" data-start="26"><code style="counter-reset: line 25"><span class="line">  const { values, positionals } = parseArgs({</span>
+<span class="line">    args: argv,</span>
+<span class="line">    allowPositionals: true,</span>
+<mark class="line">    options: { out: { type: 'string', default: 'site' }, port: { type: 'string', default: '4173' } },</mark>
+<span class="line">  });</span>
+<span class="line">  if (positionals.length &lt; 1) {</span>
+<span class="line">    console.error('usage: &lt;repo&gt; [commit] [--out site] [--port 4173]');</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/build.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="31"><meta itemprop="endLine" content="31"></span>
+<span class="note" itemprop="note">quote at line 31</span>
+</figcaption>
+<meta itemprop="codeStart" content="28"><pre itemprop="code" data-start="28"><code style="counter-reset: line 27"><span class="line">  const { values, positionals } = parseArgs({</span>
+<span class="line">    args: argv,</span>
+<span class="line">    allowPositionals: true,</span>
+<mark class="line">    options: { out: { type: 'string', default: 'site' }, port: { type: 'string', default: '4173' } },</mark>
+<span class="line">  });</span>
+<span class="line">  if (positionals.length &lt; 1) {</span>
+<span class="line">    console.error('usage: &lt;repo&gt; [commit] [--out site] [--port 4173]');</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/build.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="31"><meta itemprop="endLine" content="31"></span><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, measured</span>):</strong> this pair already serves two repositories at once
+(mock-control on 4173, phoropter on 4175), and choosing a port by hand each time is
+friction. If 4173 is taken, <code>phoropter</code> takes the next free port and prints it. <code>--port</code>
+still pins one.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-url-says-where-the-server-is-for-the-agent-and-the-ui" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-url-says-where-the-server-is-for-the-agent-and-the-ui"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter url</code> says where the server is, for the agent and the UI</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">src/cli.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/cli.ts/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, then Claude</span>):</strong> &quot;the address displayed somewhere so it can be handed to
+the agent. Is there a better way to do that?&quot; Taking the next free port means nobody can
+guess the address anymore, and that gap would be this plan&#39;s own. So while it serves,
+<code>phoropter</code> records the address, the repository&#39;s root, the commit and its process in a
+small file outside the repository, under the cache directory, keyed by the root. It
+removes the file when it stops. <code>phoropter url</code>, run anywhere in the repository, prints
+the address of the server for it, or says none is running. CLAUDE.md can tell an agent
+to run it, and a UI can show it. Writing outside the repository keeps phoropter a reader
+of it.</p>
+</div>
+</section>
+<section class="entry" id="a-repository-with-no-plans-gets-a-welcome-not-an-error" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-repository-with-no-plans-gets-a-welcome-not-an-error"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A repository with no plans gets a welcome, not an error</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;p&gt;No plans in &lt;code&gt;plans/&lt;/code&gt; at this commit.&lt;/p&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="53"><meta itemprop="endLine" content="53"></span>
+<span class="note" itemprop="note">quote at line 53</span>
+</figcaption>
+<meta itemprop="codeStart" content="50"><pre itemprop="code" data-start="50"><code style="counter-reset: line 49"><span class="line">&lt;div itemscope&gt;</span>
+<span class="line">&lt;section&gt;</span>
+<span class="line">&lt;h2&gt;Plans&lt;/h2&gt;</span>
+<mark class="line">${plans ? `&lt;ul class=&quot;list&quot;&gt;${plans}&lt;/ul&gt;` : '&lt;p&gt;No plans in &lt;code&gt;plans/&lt;/code&gt; at this commit.&lt;/p&gt;'}</mark>
+<span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;section&gt;</span>
+<span class="line">&lt;h2&gt;Anchored places&lt;/h2&gt;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>47181c4</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;what if there are no plans?&quot; It&#39;s how every repository starts. The
+site still builds: the home page says there are no plans yet, links the guide&#39;s first
+section (&quot;Write the plan&quot;), and says where a draft would go. The guide is served on
+every site already (twill). Phoropter doesn&#39;t create <code>plans/</code> or a first draft: that&#39;s
+<code>init</code>, and phoropter only reads. Jeff&#39;s idea for <code>init</code> is that the first draft is about
+how the pair works together, with the defaults as its prompts&#39; fallbacks (&quot;the agent
+always asks before converting a plan to code&quot;, defaulting to no). It&#39;s in <code>init</code>&#39;s seed.
+<code>init</code> is a write, so it belongs to the UI side. When it exists, the welcome page points
+to it. Until then the welcome is whole on its own.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-build-writes-the-static-site-as-build-ts-does" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-build-writes-the-static-site-as-build-ts-does"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter build</code> writes the static site, as <code>build.ts</code> does</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/build.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/build.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">// node src/build.ts &lt;repo&gt; [commit] [--out site]</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/build.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line">// node src/build.ts &lt;repo&gt; [commit] [--out site]</mark>
+<span class="line">// Writes the site for one repo at one commit. The commit defaults to HEAD.</span>
+<span class="line"></span>
+<span class="line">import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/build.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line">// node src/build.ts &lt;repo&gt; [commit] [--out site]</mark>
+<span class="line">// Writes the site for one repo at one commit. The commit defaults to HEAD.</span>
+<span class="line"></span>
+<span class="line">import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/build.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">gimlet</span>):</strong> a static site generator plus a dev server, not a running API. The
+built site stays a function of one commit, for publishing or reading from <code>file://</code>, and
+never holds a draft or notes. <code>phoropter build</code> takes the same <code>&lt;path&gt;</code>, <code>--at</code> and
+<code>--out</code>, and uses the same index store, so a second build of the same commit doesn&#39;t
+re-index.</p>
+</div>
+</section>
+<section class="entry" id="indexes-are-facts-about-commits-stored-apart-from-pages" itemprop="entry" itemscope>
+<h2><a class="self" href="#indexes-are-facts-about-commits-stored-apart-from-pages"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Indexes are facts about commits, stored apart from pages</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">shelf/index-store.md</code> <a rel="anchored-at" itemprop="place" href="../../files/shelf/index-store.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote"># Seed: indexes are facts about commits, kept apart from pages</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">shelf/index-store.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="1"><meta itemprop="endLine" content="1"></span>
+<span class="note" itemprop="note">quote at line 1</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><mark class="line"># Seed: indexes are facts about commits, kept apart from pages</mark>
+<span class="line"></span>
+<span class="line">A full plan, drafted with Jeff and answered, then shelved before any work: it waits</span>
+<span class="line">on the plan for the `phoropter` command with no arguments, since `phoropter index` is</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">shelf/index-store.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>shelf/index-store.md</code> doesn&#39;t exist at <code>47181c4</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">shelf/index-store.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude, from the index store</span>):</strong> three layers. Plans are testimony,
+committed and never edited. Indexes are facts about commits that never change. Pages
+are a cheap projection of the two, never committed. Gimlet&#39;s reasons not to commit the
+site hold, and two more came up: a committed site is always one commit behind, and the
+&quot;now&quot; column changes nearly every page on every commit. The expensive, fragile part was
+never the pages. It&#39;s indexing old commits, whose toolchains may be gone.</p>
+<ul>
+<li><strong>Each index is stored per commit, package, and indexer with its version,</strong> and never
+changes. Phoropter keeps only what it reads (each definition&#39;s symbol, file and line
+range), as JSON, not the raw <code>.scip</code>. Measured on mock-control at <code>f02528f</code>: 185
+definitions from about 970 lines of TypeScript make 29.7 KB of JSON, 2.5 KB compressed
+as git stores it, indexed in under half a second. That&#39;s about 30 bytes of JSON per
+line of source. The file leaves out its commit (the path has it) and sorts its keys,
+so a package that didn&#39;t change between two plan commits gives byte-identical files,
+which git stores once.</li>
+<li><strong>The indexes plans need are committed,</strong> in <code>.phoropter/index/&lt;sha&gt;/&lt;package&gt;.json</code>,
+like a lockfile. That way a plan&#39;s symbol anchors outlive their toolchain. Per branch
+is safe: keyed by sha, merges only add directories, and an index survives a squash
+merge that loses its commit. A cache outside the repository and git notes were weighed
+and set aside (Jeff).</li>
+<li><strong>The index for now lives in a local cache,</strong> <code>$XDG_CACHE_HOME/phoropter/</code> or
+<code>~/.cache/phoropter/</code>, under the same key. It moves with every commit, so committing it
+would be the churn gimlet avoided.</li>
+<li><strong>A build indexes only what&#39;s missing,</strong> from the store and then the cache (Jeff: &quot;index
+the missing pieces&quot;). The draft, re-read on every request, reads the same store, so a
+refresh doesn&#39;t wait on an indexer.</li>
+<li><strong>A missing indexer is a view status, <code>no-index</code>,</strong> naming the indexer it needed, and
+never a failed build. The profile defines it.</li>
+</ul>
+</div>
+</section>
+<section class="entry" id="phoropter-index-is-the-one-command-that-writes-into-the-repository" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-index-is-the-one-command-that-writes-into-the-repository"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter index</code> is the one command that writes into the repository</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/scip.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/scip.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">export function indexCommit(repo: Repo, sha: string, packages: Set&lt;string&gt;): Map&lt;string, Definition&gt; {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="42"><meta itemprop="endLine" content="42"></span>
+<span class="note" itemprop="note">quote at line 42</span>
+</figcaption>
+<meta itemprop="codeStart" content="39"><pre itemprop="code" data-start="39"><code style="counter-reset: line 38"><span class="line">// The definitions in one commit, keyed by version-less symbol. Indexes each</span>
+<span class="line">// directory whose package.json names a package the anchors ask for, using the</span>
+<span class="line">// tsconfig files beside it.</span>
+<mark class="line">export function indexCommit(repo: Repo, sha: string, packages: Set&lt;string&gt;): Map&lt;string, Definition&gt; {</mark>
+<span class="line">  const definitions = new Map&lt;string, Definition&gt;();</span>
+<span class="line">  const packageDirs = repo</span>
+<span class="line">    .files(sha)</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="51"><meta itemprop="endLine" content="51"></span>
+<span class="note" itemprop="note">quote at line 51</span>
+</figcaption>
+<meta itemprop="codeStart" content="48"><pre itemprop="code" data-start="48"><code style="counter-reset: line 47"><span class="line">// The definitions in one commit, keyed by version-less symbol. Indexes each</span>
+<span class="line">// directory whose package.json names a package the anchors ask for, using the</span>
+<span class="line">// tsconfig files beside it.</span>
+<mark class="line">export function indexCommit(repo: Repo, sha: string, packages: Set&lt;string&gt;): Map&lt;string, Definition&gt; {</mark>
+<span class="line">  const definitions = new Map&lt;string, Definition&gt;();</span>
+<span class="line">  const packageDirs = repo</span>
+<span class="line">    .files(sha)</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/scip.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> a build never writes into the repository it reads. Loden says
+&quot;Phoropter only reads&quot;, and gimlet made the site &quot;never a place to write.&quot; <code>phoropter index</code> writes the indexes plan commits need into <code>.phoropter/index/</code>, from the cache or
+by indexing, because a person ran it to do exactly that. It writes nothing else, and
+git shows the new files to commit. A build that found plan commits only in the cache
+says so, and names the command (&quot;safest for now&quot;, Jeff).</p>
+</div>
+</section>
+<section class="entry" id="package-json-names-the-command-and-the-npm-scripts-stay" itemprop="entry" itemscope>
+<h2><a class="self" href="#package-json-names-the-command-and-the-npm-scripts-stay"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>package.json</code> names the command, and the npm scripts stay</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">package.json</code> <a rel="anchored-at" itemprop="place" href="../../files/package.json/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&quot;dev&quot;: &quot;node src/serve.ts ../mock-control 90c65b9&quot;,</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="ebd9288d81c05d24ab5275d1f4f59dbf24c07110"><code>ebd9288</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="13"><meta itemprop="endLine" content="13"></span>
+<span class="note" itemprop="note">quote at line 13</span>
+</figcaption>
+<meta itemprop="codeStart" content="10"><pre itemprop="code" data-start="10"><code style="counter-reset: line 9"><span class="line">  &quot;scripts&quot;: {</span>
+<span class="line">    &quot;build&quot;: &quot;node src/build.ts&quot;,</span>
+<span class="line">    &quot;serve&quot;: &quot;node src/serve.ts&quot;,</span>
+<mark class="line">    &quot;dev&quot;: &quot;node src/serve.ts ../mock-control 90c65b9&quot;,</mark>
+<span class="line">    &quot;check&quot;: &quot;tsc --noEmit&quot;,</span>
+<span class="line">    &quot;test&quot;: &quot;node --test test/&quot;</span>
+<span class="line">  },</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="47181c4e45366387c8484c813fe4d05482e12ff7"><code>47181c4</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="16"><meta itemprop="endLine" content="16"></span>
+<span class="note" itemprop="note">quote at line 16</span>
+</figcaption>
+<meta itemprop="codeStart" content="13"><pre itemprop="code" data-start="13"><code style="counter-reset: line 12"><span class="line">  &quot;scripts&quot;: {</span>
+<span class="line">    &quot;build&quot;: &quot;node src/build.ts&quot;,</span>
+<span class="line">    &quot;serve&quot;: &quot;node src/serve.ts&quot;,</span>
+<mark class="line">    &quot;dev&quot;: &quot;node src/serve.ts ../mock-control 90c65b9&quot;,</mark>
+<span class="line">    &quot;check&quot;: &quot;tsc --noEmit&quot;,</span>
+<span class="line">    &quot;test&quot;: &quot;node --test test/&quot;</span>
+<span class="line">  },</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="16"><meta itemprop="endLine" content="16"></span><meta itemprop="sameAs" content="47181c4">
+<span class="note" itemprop="note">same as at <code>47181c4</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a <code>bin</code> entry makes <code>phoropter</code> a command in this
+repository (<code>npx phoropter</code>) and anywhere after <code>npm link</code>, since Node 24 runs the <code>.ts</code>
+sources directly. How phoropter is installed for other people is the shipping plan&#39;s
+question. <code>npm run dev</code> stays as it is, serving mock-control at an old commit for the
+tests and for Jeff&#39;s habit.</p>
+</div>
+</section>
+<section class="entry" id="opening-a-ui-or-a-browser-in-this-plan" itemprop="entry" itemscope>
+<h2><a class="self" href="#opening-a-ui-or-a-browser-in-this-plan"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Opening a UI or a browser, in this plan</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> what to open is a choice between UIs, and UIs as
+plugins is the next plan, with Jeff&#39;s ideas for it in its seed. Until then, the address
+is printed, and <code>phoropter url</code> finds it again.</p>
+</div>
+</section>
+<section class="entry" id="watching-the-repository-and-rebuilding-as-commits-land" itemprop="entry" itemscope>
+<h2><a class="self" href="#watching-the-repository-and-rebuilding-as-commits-land"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Watching the repository and rebuilding as commits land</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the site is a function of one commit (gimlet), and the
+working tree&#39;s draft and notes are already re-read on every request. A new commit is a
+new <code>phoropter</code>. A watcher may earn a plan once there&#39;s a reason, not before.</p>
+</div>
+</section>
+<section class="entry" id="someone-new-to-a-repository-is-reading-its-plans-within-a-minute-of-phoropter" itemprop="entry" itemscope>
+<h2><a class="self" href="#someone-new-to-a-repository-is-reading-its-plans-within-a-minute-of-phoropter"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Someone new to a repository is reading its plans within a minute of <code>phoropter</code></span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/batik/as-built/#someone-new-to-a-repository-is-reading-its-plans-within-a-minute-of-phoropter">the as-built</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> on a fresh clone of mock-control or this repository, with the committed
+index store in place, <code>phoropter</code> takes more than a minute to print its address, or
+prints anything that has to be read twice.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

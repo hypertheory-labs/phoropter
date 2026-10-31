@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The indexer guide, revised from what two .NET indexers found · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">The indexer guide, revised from what two .NET indexers found</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">dimity</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="51ecf0f6503e2fa428d317f243f09983729555cb"><code>51ecf0f</code></data> <time datetime="2026-10-31T20:58:29.000Z">20:58 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-dimity.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/dimity/as-built/">plans/2026-10-31-dimity.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Seersucker (indexers are programs in <code>indexers/</code>) guessed that an agent with only
+<code>indexers/README.md</code> and some existing code could write an indexer that passes
+<code>phoropter index --check</code>. Jeff tested it. A fresh agent, given his Roslyn code from
+glass-blower and the guide, and told never to read phoropter&#39;s source, built
+<code>phoropter-index-roslyn</code>, a syntax-only indexer that passes on a real solution (397
+definitions in 0.15s). Then, at Jeff&#39;s suggestion, it wrapped scip-dotnet for comparison.
+It logged every question the guide didn&#39;t answer, thirty of them, in its own
+<code>QUESTIONS.md</code>. That file is the evidence for this plan.</p>
+<p>The comparison was decisive. The syntax-only indexer found 338 definitions in 0.2s, on any
+commit, offline, with nothing restored. scip-dotnet found 251 in 12s with a warm cache,
+had no definitions for records&#39; positional properties, primary constructors or extension
+members, collided on namespaces, and failed offline with an empty cache after two minutes
+of NuGet retries. The roslyn indexer stays where it is, third-party, on <code>PATH</code>. It&#39;s the
+first living proof of that half of the contract.</p>
+</div>
+<section class="entry" id="the-guide-says-what-condition-the-checkout-is-in" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-says-what-condition-the-checkout-is-in"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The guide says what condition the checkout is in</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">indexers/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/indexers/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">`&lt;dir&gt;` is the repository checked out at one commit, at a temporary path. Each</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="40"><meta itemprop="endLine" content="40"></span>
+<span class="note" itemprop="note">quote at line 40</span>
+</figcaption>
+<meta itemprop="codeStart" content="37"><pre itemprop="code" data-start="37"><code style="counter-reset: line 36"><span class="line"></span>
+<span class="line">### `&lt;program&gt; &lt;dir&gt; [package...]`</span>
+<span class="line"></span>
+<mark class="line">`&lt;dir&gt;` is the repository checked out at one commit, at a temporary path. Each</mark>
+<span class="line">`package` is a package name, as it appears in symbols. With no packages named, index</span>
+<span class="line">every package you find. Print one JSON object on stdout and exit 0:</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="40"><meta itemprop="endLine" content="40"></span>
+<span class="note" itemprop="note">quote at line 40</span>
+</figcaption>
+<meta itemprop="codeStart" content="37"><pre itemprop="code" data-start="37"><code style="counter-reset: line 36"><span class="line"></span>
+<span class="line">### `&lt;program&gt; &lt;dir&gt; [package...]`</span>
+<span class="line"></span>
+<mark class="line">`&lt;dir&gt;` is the repository checked out at one commit, at a temporary path. Each</mark>
+<span class="line">`package` is a package name, as it appears in symbols. With no packages named, index</span>
+<span class="line">every package you find, anywhere in `&lt;dir&gt;`: a repository may hold several solutions,</span>
+<span class="line">workspaces or modules. Print one JSON object on stdout and exit 0.</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="40"><meta itemprop="endLine" content="40"></span><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the experiment, #1 and #25</span>):</strong> the agent&#39;s first question was whether the
+checkout is restored or built. It isn&#39;t, and it may be offline: phoropter checks out a
+commit, perhaps years old, and runs the indexer on it. The guide says so, and says an
+indexer that works from source alone is the one that keeps working on old commits. The
+comparison measured why: the build-based indexer needed the network and gigabytes, and
+failed without them.</p>
+</div>
+</section>
+<section class="entry" id="a-package-is-named-by-the-compiler-s-name-for-it-and-may-not-be-unique" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-package-is-named-by-the-compiler-s-name-for-it-and-may-not-be-unique"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A package is named by the compiler&#39;s name for it, and may not be unique</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">indexers/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/indexers/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">`package.json`. For Go, the module path in `go.mod`. For .NET, the project's</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="95"><meta itemprop="endLine" content="95"></span>
+<span class="note" itemprop="note">quote at line 95</span>
+</figcaption>
+<meta itemprop="codeStart" content="92"><pre itemprop="code" data-start="92"><code style="counter-reset: line 91"><span class="line">  change it later.</span>
+<span class="line">- **`manager`:** the package manager: `npm`, `gomod`, `nuget`, `maven`, `cargo`.</span>
+<span class="line">- **`package`:** the name a package is known by. For npm, the `name` in its</span>
+<mark class="line">  `package.json`. For Go, the module path in `go.mod`. For .NET, the project's</mark>
+<span class="line">  `PackageId` or `AssemblyName`. Phoropter asks for packages by this name.</span>
+<span class="line">- **`version`:** always `.`. Plans store symbols without versions, so a release doesn't</span>
+<span class="line">  break an anchor. Replace whatever version your tool produces with `.`.</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="108"><meta itemprop="endLine" content="108"></span>
+<span class="note" itemprop="note">quote at line 108</span>
+</figcaption>
+<meta itemprop="codeStart" content="105"><pre itemprop="code" data-start="105"><code style="counter-reset: line 104"><span class="line">  change it later.</span>
+<span class="line">- **`manager`:** the package manager: `npm`, `gomod`, `nuget`, `maven`, `cargo`.</span>
+<span class="line">- **`package`:** the name a package is known by. For npm, the `name` in its</span>
+<mark class="line">  `package.json`. For Go, the module path in `go.mod`. For .NET, the project's</mark>
+<span class="line">  `AssemblyName`, or the project file's name when it isn't set: the compiler's name for</span>
+<span class="line">  it, readable without loading anything. Phoropter asks for packages by this name.</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="108"><meta itemprop="endLine" content="108"></span><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the experiment, #22 and #27</span>):</strong> &quot;PackageId or AssemblyName&quot; let the two indexers
+name one package differently, and phoropter asks for a package by name. The guide says
+<code>AssemblyName</code> for .NET, which is the compiler&#39;s name and scip-dotnet&#39;s, and readable
+without loading anything. It also says a package name may name several projects in one
+repository (copies of <code>ServiceDefaults</code> in four solutions). Then the first in path order
+answers, and no symbol is ever invented across copies. Inventing them was the real bug the
+comparison caught.</p>
+</div>
+</section>
+<section class="entry" id="name-things-as-your-language-s-scip-indexer-does-except-where-it-loses-information" itemprop="entry" itemscope>
+<h2><a class="self" href="#name-things-as-your-language-s-scip-indexer-does-except-where-it-loses-information"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Name things as your language&#39;s SCIP indexer does, except where it loses information</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">indexers/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/indexers/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">Leave out local variables. A plan anchors what a reader can find by name. Every type,</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="115"><meta itemprop="endLine" content="115"></span>
+<span class="note" itemprop="note">quote at line 115</span>
+</figcaption>
+<meta itemprop="codeStart" content="112"><pre itemprop="code" data-start="112"><code style="counter-reset: line 111"><span class="line">  A name with characters other than letters, digits, `_`, `+`, `-` and `$` goes in</span>
+<span class="line">  backticks: ``src/`mock-panel.ts`/``.</span>
+<span class="line"></span>
+<mark class="line">Leave out local variables. A plan anchors what a reader can find by name. Every type,</mark>
+<span class="line">member, function, field and constant is a definition.</span>
+<span class="line"></span>
+<span class="line">## Installing an indexer</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="134"><meta itemprop="endLine" content="134"></span>
+<span class="note" itemprop="note">quote at line 134</span>
+</figcaption>
+<meta itemprop="codeStart" content="131"><pre itemprop="code" data-start="131"><code style="counter-reset: line 130"><span class="line">  A name with characters other than letters, digits, `_`, `+`, `-` and `$` goes in</span>
+<span class="line">  backticks: ``src/`mock-panel.ts`/``.</span>
+<span class="line"></span>
+<mark class="line">Leave out local variables. A plan anchors what a reader can find by name. Every type,</mark>
+<span class="line">member, function, field and constant is a definition. Parameters and type parameters</span>
+<span class="line">are optional, and better left out.</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="134"><meta itemprop="endLine" content="134"></span><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the experiment, #3, #4, #12, #24</span>):</strong> following an established indexer&#39;s naming
+answered constructors, indexers, operators and events. Following it blindly would have
+copied its losses: scip-dotnet keeps only the innermost namespace segment, so same-named
+types collide, and it doesn&#39;t encode generic arity, so <code>Foo</code> and <code>Foo&lt;T&gt;</code> collide. The
+guide says to follow the established naming, except that full namespace paths are kept and
+arity is written when a name is reused (<code>Foo#</code>, then the CLR&#39;s <code>`Foo`1`#</code>). It also
+covers partial types (one definition, the first part in path order) and what&#39;s optional:
+parameters and type parameters, better left out.</p>
+</div>
+</section>
+<section class="entry" id="the-output-s-edges-are-said-plainly" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-output-s-edges-are-said-plainly"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The output&#39;s edges are said plainly</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">indexers/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/indexers/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">- **`missing`:** packages named on the command line that you couldn't find. Phoropter</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="69"><meta itemprop="endLine" content="69"></span>
+<span class="note" itemprop="note">quote at line 69</span>
+</figcaption>
+<meta itemprop="codeStart" content="66"><pre itemprop="code" data-start="66"><code style="counter-reset: line 65"><span class="line">  - The range is the **whole declaration**, from its first line through the end of its</span>
+<span class="line">    body, not just the line its name is on. Phoropter searches for a plan's quote within</span>
+<span class="line">    this range. A one-line range means a quote inside a method is never found.</span>
+<mark class="line">- **`missing`:** packages named on the command line that you couldn't find. Phoropter</mark>
+<span class="line">  shows their anchors as `no-index`.</span>
+<span class="line">- **Failure:** exit non-zero and write one line to stderr saying why, for example</span>
+<span class="line">  `scip-go isn't installed: go install …`. Phoropter puts that line on the anchor's</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>167ebba</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the experiment, #10, #26, #29</span>):</strong> <code>missing</code> means any package the indexer knows
+of but couldn&#39;t index, whether or not it was named, so a project that failed to load
+never looks absent. It may be omitted when empty. Definitions come only from files in the
+checkout: generated files in <code>obj/</code> and source-generator output aren&#39;t definitions, since
+no plan can quote them.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-stops-an-indexer-that-runs-too-long" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-stops-an-indexer-that-runs-too-long"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Phoropter stops an indexer that runs too long</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/indexers.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/indexers.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const r = spawnSync(info.command[0], [...info.command.slice(1), dir, ...packages], { cwd: info.cwd, encoding: 'utf8', maxBuffer: 1 &lt;&lt; 30 });</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/indexers.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="81"><meta itemprop="endLine" content="81"></span>
+<span class="note" itemprop="note">quote at line 81</span>
+</figcaption>
+<meta itemprop="codeStart" content="78"><pre itemprop="code" data-start="78"><code style="counter-reset: line 77"><span class="line">// Runs an indexer on a checked-out directory, for some packages (all of them</span>
+<span class="line">// when none are named). Throws with the indexer's own one line on failure.</span>
+<span class="line">export function runIndexer(info: Pick&lt;IndexerInfo, 'command' | 'cwd'&gt;, dir: string, packages: string[] = []): IndexerOutput {</span>
+<mark class="line">  const r = spawnSync(info.command[0], [...info.command.slice(1), dir, ...packages], { cwd: info.cwd, encoding: 'utf8', maxBuffer: 1 &lt;&lt; 30 });</mark>
+<span class="line">  if (r.error) throw new Error(`couldn't run ${info.command.join(' ')}: ${r.error.message}`);</span>
+<span class="line">  if (r.status !== 0) throw new Error((r.stderr || `exited ${r.status}`).trim().split('\n').at(-1)!);</span>
+<span class="line">  return JSON.parse(r.stdout) as IndexerOutput;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/indexers.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>167ebba</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/indexers.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the experiment, #30</span>):</strong> phoropter runs an indexer with no time limit, so a NuGet
+retry loop would stall a whole build. After a limit, phoropter stops it, and its anchors
+show <code>no-index</code>, saying it timed out. The guide says what an indexer can expect: a time
+limit, and no promise of the network. The limit is 5 minutes (Jeff), with
+<code>PHOROPTER_INDEX_TIMEOUT</code> (in seconds) to change it. The syntax-only indexer takes a
+fraction of a second, a build-based one around a minute on a fresh machine, and anything
+past five minutes is more likely stuck than slow. Two and ten minutes were weighed.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-symbols-groups-its-output-by-scheme" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-symbols-groups-its-output-by-scheme"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter symbols</code> groups its output by scheme</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/cli.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/cli.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const candidates = indexers().filter((i) =&gt; i.extensions.includes(ext));</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f8801e7077709e0a846c2491ac0f616d6a275f0d"><code>f8801e7</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/cli.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="121"><meta itemprop="endLine" content="121"></span>
+<span class="note" itemprop="note">quote at line 121</span>
+</figcaption>
+<meta itemprop="codeStart" content="118"><pre itemprop="code" data-start="118"><code style="counter-reset: line 117"><span class="line">  if (command === 'symbols') {</span>
+<span class="line">    const rel = relative(root, resolve(target!));</span>
+<span class="line">    const ext = extname(rel);</span>
+<mark class="line">    const candidates = indexers().filter((i) =&gt; i.extensions.includes(ext));</mark>
+<span class="line">    if (!candidates.length) fail(`no indexer here handles ${ext} files (see indexers/README.md)`);</span>
+<span class="line">    const sha = repo.resolve(at)!;</span>
+<span class="line">    const tree = repo.checkout(sha);</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/cli.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>167ebba</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/cli.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the experiment, #23</span>):</strong> with two indexers claiming <code>.cs</code>, their symbols came out
+interleaved. Anchors were never ambiguous, since a symbol&#39;s scheme picks its indexer, but a
+plan author reading the list couldn&#39;t tell them apart at a glance. Output is grouped
+under a heading per scheme, and <code>--scheme</code> picks one. A per-repository preference would be
+configuration, which waits for a need.</p>
+</div>
+</section>
+<section class="entry" id="bringing-the-roslyn-indexer-into-indexers-dotnet" itemprop="entry" itemscope>
+<h2><a class="self" href="#bringing-the-roslyn-indexer-into-indexers-dotnet"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Bringing the roslyn indexer into <code>indexers/dotnet/</code></span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it&#39;s the only indexer found on <code>PATH</code>, written outside this
+repository from the guide alone. Moving it in would leave that half of the contract with
+no living example. It can move in later, if keeping it outside stops being worth that.</p>
+</div>
+</section>
+<section class="entry" id="an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">An agent with only <code>indexers/README.md</code> and existing code writes an indexer that passes <code>--check</code></span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/dimity/as-built/#an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check">the as-built</a>: <strong class="verdict verdict-partly-disproved" itemprop="verdict">partly disproved</strong>.</p>
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">plans/2026-10-31-seersucker.md</code></p>
+<p class="target"><span class="label">plan</span> <a rel="anchored-at" itemprop="target" href="../../plans/seersucker/">Indexers are programs in <code>indexers/</code>, with a guide for writing one</a> <span class="meta">seersucker</span></p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> seersucker&#39;s own words: given the guide and existing code, the agent has
+to read <code>src/</code>, asks something the guide should have answered, or ends with an indexer that
+fails. Restated here because seersucker&#39;s as-built is landed, and this plan holds the
+evidence: the experiment&#39;s <code>QUESTIONS.md</code>.</p>
+</div>
+</section>
+<section class="entry" id="with-the-revised-guide-the-next-indexer-s-agent-asks-a-handful-of-questions-not-thirty" itemprop="entry" itemscope>
+<h2><a class="self" href="#with-the-revised-guide-the-next-indexer-s-agent-asks-a-handful-of-questions-not-thirty"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">With the revised guide, the next indexer&#39;s agent asks a handful of questions, not thirty</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/dimity/as-built/#with-the-revised-guide-the-next-indexer-s-agent-asks-a-handful-of-questions-not-thirty">the as-built</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> the next agent to write an indexer from the revised guide (another
+language, or another model) logs more than five questions the guide should have answered.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

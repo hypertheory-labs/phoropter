@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: ramie · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/ramie/">Read the draft: phoropter&#39;s edge, in the TUI</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: ramie</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/ramie/">plans/2026-10-31-ramie.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-ramie.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>This repo&#39;s first plan, drafted as <code>plan.draft.md</code>, read on phoropter&#39;s draft page, and
+annotated by Jeff in nvim. Nothing departed from the plan, so there&#39;s no <code>Changed:</code>.
+Jeff&#39;s notes answered both prompts, but as ordinary annotations, which the draft page
+showed as &quot;Not answered yet&quot;. That&#39;s in the brief for phoropter, since the TUI&#39;s
+answering will write whichever shape is decided.</p>
+</div>
+<section class="entry" id="the-test-fixture-is-a-scratch-draft-served-by-phoropter-s-dev-server" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-test-fixture-is-a-scratch-draft-served-by-phoropter-s-dev-server"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The test fixture is a scratch draft served by phoropter&#39;s dev server</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/substrate/substrate_test.go</code> <a rel="anchored-at" itemprop="place" href="../../../files/internal/substrate/substrate_test.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">func TestDraft(t *testing.T) {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/substrate/substrate_test.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="194"><meta itemprop="endLine" content="194"></span>
+<span class="note" itemprop="note">quote at line 194</span>
+</figcaption>
+<meta itemprop="codeStart" content="191"><pre itemprop="code" data-start="191"><code style="counter-reset: line 190"><span class="line">// The draft fixture is phoropter's dev server serving a scratch draft of</span>
+<span class="line">// mock-control, with notes: one restates a prompt (its answer), one quotes an</span>
+<span class="line">// entry's reason, and one has no quote.</span>
+<mark class="line">func TestDraft(t *testing.T) {</mark>
+<span class="line">	l := NewLedger()</span>
+<span class="line">	c, err := NewClient(&quot;../../testdata/mock-control-draft&quot;, l)</span>
+<span class="line">	if err != nil {</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/substrate/substrate_test.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/substrate/substrate_test.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a built site never contains a draft, and neither repo
+had one. A clone of mock-control in the scratchpad got a draft with a Question, a
+Select, and notes: one restating the Question (its answer), one quoting a reason, and
+one with no quote. The served home and draft pages are <code>testdata/mock-control-draft/</code>.
+Neither repo was changed.</p>
+</div>
+</section>
+<section class="entry" id="refreshing-on-a-prompt-or-note-lands-on-the-entry-it-follows" itemprop="entry" itemscope>
+<h2><a class="self" href="#refreshing-on-a-prompt-or-note-lands-on-the-entry-it-follows"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Refreshing on a prompt or note lands on the entry it follows</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">case r.prompt != nil &amp;&amp; r.prompt.After != &quot;&quot;:</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="282"><meta itemprop="endLine" content="282"></span>
+<span class="note" itemprop="note">quote at line 282</span>
+</figcaption>
+<meta itemprop="codeStart" content="279"><pre itemprop="code" data-start="279"><code style="counter-reset: line 278"><span class="line">	switch {</span>
+<span class="line">	case r.entry != nil:</span>
+<span class="line">		at += &quot;#&quot; + r.entry.ID</span>
+<mark class="line">	case r.prompt != nil &amp;&amp; r.prompt.After != &quot;&quot;:</mark>
+<span class="line">		at += &quot;#&quot; + r.prompt.After</span>
+<span class="line">	case r.note != nil &amp;&amp; r.note.After != &quot;&quot;:</span>
+<span class="line">		at += &quot;#&quot; + r.note.After</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan kept the cursor on the same entry. Prompts and
+notes aren&#39;t entries, and after a refresh they may have changed or moved, but the entry
+they follow is the nearest thing that has a URL.</p>
+</div>
+</section>
+<section class="entry" id="within-an-entry-prompts-come-before-notes" itemprop="entry" itemscope>
+<h2><a class="self" href="#within-an-entry-prompts-come-before-notes"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Within an entry, prompts come before notes</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">internal/tui/screens.go</code> <a rel="anchored-at" itemprop="place" href="../../../files/internal/tui/screens.go/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">func draftRows(d *substrate.Doc, after string) []row {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="4088ba31ea68780d0b62eea681af293fd4659b58"><code>4088ba3</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="187"><meta itemprop="endLine" content="187"></span>
+<span class="note" itemprop="note">quote at line 187</span>
+</figcaption>
+<meta itemprop="codeStart" content="184"><pre itemprop="code" data-start="184"><code style="counter-reset: line 183"><span class="line"></span>
+<span class="line">// draftRows are a draft's prompts, then its notes, that follow the entry with</span>
+<span class="line">// this ID (&quot;&quot; for those before every entry).</span>
+<mark class="line">func draftRows(d *substrate.Doc, after string) []row {</mark>
+<span class="line">	var out []row</span>
+<span class="line">	for i := range d.Prompts {</span>
+<span class="line">		if d.Prompts[i].After == after {</span></code></pre>
+</figure>
+<figure class="view status-no-file" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">no-file</span>
+<code class="file" itemprop="file">internal/tui/screens.go</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note"><code>internal/tui/screens.go</code> doesn&#39;t exist at <code>8b23da6</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the profile places both after their entry but doesn&#39;t
+order them against each other. Phoropter&#39;s page shows prompts first, and the TUI does
+the same.</p>
+</div>
+</section>
+<section class="entry" id="a-draft-page-needs-nothing-beyond-the-profile" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-page-needs-nothing-beyond-the-profile"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">A draft page needs nothing beyond the profile</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/ramie/#a-draft-page-needs-nothing-beyond-the-profile">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude, measured</span>):</strong> held. Reading the draft fixture notes no gaps:
+<code>TestDraft</code> fails if the ledger has any. The header, prompts, options, fallbacks,
+answers and annotations are all properties, and placing them by tree order is what the
+profile says.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

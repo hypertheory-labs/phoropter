@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get mock-control ready to publish as an Angular-only package · golden-clone at f02528f</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">golden-clone</span>
+at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="draft" href="../../draft/">draft</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">golden-clone at f02528f</a></nav>
+<article itemscope>
+<h1 itemprop="title">Get mock-control ready to publish as an Angular-only package</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">pumice</dd>
+<dt>Cart</dt><dd itemprop="cart">pumice</dd>
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-29">2026-10-29</time>, added in <data itemprop="added" value="90c65b9deedf682eb2e490597041b2117c8fd862"><code>90c65b9</code></data> <time datetime="2026-10-30T14:24:00.000Z">14:24 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="da023f1b1259951c0b4444fd5b4901d0a7e062ff"><code>da023f1</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-29-pumice.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/pumice/as-built/">plans/2026-10-29-pumice.as-built.md</a></dd>
+<dt>Revisited by</dt><dd><a rel="revisited-by" itemprop="revisitedBy" href="../../plans/tallow/">Revisit pumice: MSW 3, before the first publish</a> <span class="meta">tallow</span></dd>
+<dt>Backfilled</dt><dd>2026-10-30, by Claude, from aide's .loom/event-log.md</dd>
+</dl>
+<div class="intro" itemprop="intro"><p>The class apps used mock-control from source, so installing it from npm had never been
+tried. We set out to make the README a setup guide for an Angular app, settle the
+package&#39;s public surface before the first publish, and find out whether it can stay out
+of production builds.</p>
+</div>
+<p class="note">Notes on this plan, from <code>drafts/</code> in the working tree. The plan itself stays as written.</p>
+<aside class="annotation" itemprop="annotation" itemscope>
+<p class="meta" itemprop="heading">— jeff</p>
+
+<div itemprop="comment"><p>MSW 3 is out. Does the peer range still hold?</p>
+</div>
+</aside>
+<section class="entry" id="the-readme-is-a-setup-guide-for-an-angular-app" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-readme-is-a-setup-guide-for-an-angular-app"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The README is a setup guide for an Angular app</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Using it › Wiring it into an app</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">### Wiring it into an app</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="da023f1b1259951c0b4444fd5b4901d0a7e062ff"><code>da023f1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="94"><meta itemprop="endLine" content="94"></span>
+<span class="note" itemprop="note">quote at line 94</span>
+</figcaption>
+<meta itemprop="codeStart" content="91"><pre itemprop="code" data-start="91"><code style="counter-reset: line 90"><span class="line">**Mocks are for things you only read; things that remember are a real API.** An</span>
+<span class="line">endpoint whose data the app changes gets a pass-through entry, not a mock.</span>
+<span class="line"></span>
+<mark class="line">### Wiring it into an app</mark>
+<span class="line"></span>
+<span class="line">```ts</span>
+<span class="line">// mocks/browser.ts</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="e92db76eb7e4210d0f900bebfa928951e7a1bc5a"><code>e92db76</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>e92db76</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">projects/mock-control/README.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="e92db76">
+<span class="note" itemprop="note">same as at <code>e92db76</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> class is all Angular, and someone installing from npm needs steps, not
+a tour of the internals. &quot;Core never imports Angular&quot; stays as a rule for contributors,
+not a promise to users.</p>
+</div>
+</section>
+<section class="entry" id="selectors-use-the-library-s-prefix-mock-panel" itemprop="entry" itemscope>
+<h2><a class="self" href="#selectors-use-the-library-s-prefix-mock-panel"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Selectors use the library&#39;s prefix, <code>mock-panel</code></span></a></h2>
+
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/tallow/#ask-it-in-pumice-s-frame-what-s-cheapest-before-the-first-publish">tallow, Decision: Ask it in pumice&#39;s frame: what&#39;s cheapest before the first publish</a>.</p>
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-typescript npm @hypertheory-labs/mock-control . src/lib/panel/`mock-panel.ts`/MockPanel#</code> <a rel="anchored-at" itemprop="place" href="../../symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">selector: 'app-mock-panel',</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="da023f1b1259951c0b4444fd5b4901d0a7e062ff"><code>da023f1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/src/lib/panel/mock-panel.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="10"><meta itemprop="endLine" content="10"></span><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="152">
+<span class="note" itemprop="note">lines 9–152; quote at line 10</span>
+</figcaption>
+<meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code style="counter-reset: line 8"><span class="line">@Component({</span>
+<mark class="line">  selector: 'app-mock-panel',</mark>
+<span class="line">  imports: [EndpointSettings, RequestLog],</span>
+<span class="line">  template: `</span>
+<span class="line">    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="e92db76eb7e4210d0f900bebfa928951e7a1bc5a"><code>e92db76</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">projects/mock-control/src/lib/panel/mock-panel.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="152">
+<span class="note" itemprop="note">lines 9–152; quote not found at <code>e92db76</code>, so this is the declaration</span>
+</figcaption>
+<meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code style="counter-reset: line 8"><span class="line">@Component({</span>
+<span class="line">  selector: 'mock-panel',</span>
+<span class="line">  imports: [EndpointSettings, RequestLog],</span>
+<span class="line">  template: `</span>
+<span class="line">    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</span>
+<span class="line">      @if (control.heldCount()) {</span>
+<span class="line">        &lt;button type=&quot;button&quot; class=&quot;btn btn-warning shadow-lg&quot; (click)=&quot;control.releaseAll()&quot;&gt;</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">projects/mock-control/src/lib/panel/mock-panel.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="152"><meta itemprop="sameAs" content="e92db76">
+<span class="note" itemprop="note">same as at <code>e92db76</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> a rename is cheapest before the first publish. Breaking the class apps
+is fine.</p>
+</div>
+</section>
+<aside class="annotation" itemprop="annotation" itemscope>
+<p class="meta" itemprop="heading">L22 — jeff</p>
+<blockquote itemprop="quote">## Decision: Selectors use the library's prefix, `mock-panel`</blockquote>
+<div itemprop="comment"><p>Still right after the rename?</p>
+</div>
+</aside>
+<section class="entry" id="install-as-a-devdependency" itemprop="entry" itemscope>
+<h2><a class="self" href="#install-as-a-devdependency"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Install as a devDependency</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 1. Install</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the app bundles it at build time, so nothing needs it from
+<code>node_modules</code> at runtime.</p>
+</div>
+</section>
+<section class="entry" id="defer-stays-the-default-and-file-replacement-is-documented-as-an-option" itemprop="entry" itemscope>
+<h2><a class="self" href="#defer-stays-the-default-and-file-replacement-is-documented-as-an-option"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>@defer</code> stays the default, and file replacement is documented as an option</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › Keeping it out of production</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> in a production build of the class app, the panel, store, handlers,
+and MSW land only in lazy chunks behind <code>isDevMode()</code>. They&#39;re emitted but never loaded.
+File replacement removes them entirely, but it costs a stub file and <code>angular.json</code>
+changes, which is a lot to ask of a class app.</p>
+</div>
+</section>
+<section class="entry" id="analog-s-vite-plugin-to-keep-mocks-out-of-the-build" itemprop="entry" itemscope>
+<h2><a class="self" href="#analog-s-vite-plugin-to-keep-mocks-out-of-the-build"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Analog&#39;s Vite plugin to keep mocks out of the build</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › Leaving it out of the build entirely</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> the CLI&#39;s <code>fileReplacements</code> already does it.</p>
+</div>
+</section>
+<section class="entry" id="keep-daisyui-for-now-and-say-it-s-a-stopgap" itemprop="entry" itemscope>
+<h2><a class="self" href="#keep-daisyui-for-now-and-say-it-s-a-stopgap"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Keep daisyUI for now, and say it&#39;s a stopgap</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Requirements</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> the panel should get its own CSS, shared with stellar-ng-devtools, so
+both tools look the same and the contrast problems get fixed once. That&#39;s its own round.</p>
+</div>
+</section>
+<section class="entry" id="a-spike-compiling-the-panel-s-css-into-the-package" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-spike-compiling-the-panel-s-css-into-the-package"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A spike compiling the panel&#39;s CSS into the package</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Requirements</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> with our own CSS coming, the spike would measure something
+we&#39;re about to throw away.</p>
+</div>
+</section>
+<section class="entry" id="tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules" itemprop="entry" itemscope>
+<h2><a class="self" href="#tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Tailwind finds the panel&#39;s classes through an <code>@source</code> line into node_modules</span></a></h2>
+
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/vellum/#tailwind-finds-the-panel-s-classes-through-the-source-line">vellum, Guess: Tailwind finds the panel&#39;s classes through the <code>@source</code> line</a>.</p>
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 5. Add the panel, deferred</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> in a fresh app that installs the package from npm, the panel renders
+unstyled.</p>
+</div>
+</section>
+<section class="entry" id="publish-to-npm-later-and-stay-at-0-0-1" itemprop="entry" itemscope>
+<h2><a class="self" href="#publish-to-npm-later-and-stay-at-0-0-1"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Publish to npm later, and stay at 0.0.1</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/package.json › version</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/package.json/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&quot;version&quot;: &quot;0.0.1&quot;,</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="da023f1b1259951c0b4444fd5b4901d0a7e062ff"><code>da023f1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="3"><meta itemprop="endLine" content="3"></span>
+<span class="note" itemprop="note">quote at line 3</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">{</span>
+<span class="line">  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,</span>
+<mark class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
+<span class="line">  &quot;peerDependencies&quot;: {</span>
+<span class="line">    &quot;@angular/common&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;@angular/core&quot;: &quot;^22.2.0&quot;,</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="e92db76eb7e4210d0f900bebfa928951e7a1bc5a"><code>e92db76</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="3"><meta itemprop="endLine" content="3"></span>
+<span class="note" itemprop="note">quote at line 3</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">{</span>
+<span class="line">  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,</span>
+<mark class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
+<span class="line">  &quot;peerDependencies&quot;: {</span>
+<span class="line">    &quot;@angular/common&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;@angular/core&quot;: &quot;^22.2.0&quot;,</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">projects/mock-control/package.json</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="3"><meta itemprop="endLine" content="3"></span>
+<span class="note" itemprop="note">quote at line 3</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">{</span>
+<span class="line">  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,</span>
+<mark class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
+<span class="line">  &quot;description&quot;: &quot;Runtime-configurable MSW mocks for Angular apps, and a panel to slow, fail, empty, or hold requests while the app runs.&quot;,</span>
+<span class="line">  &quot;license&quot;: &quot;MIT&quot;,</span>
+<span class="line">  &quot;repository&quot;: {</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> this round is the work Jeff is into; publishing waits until the <code>@source</code>
+guess is tested.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

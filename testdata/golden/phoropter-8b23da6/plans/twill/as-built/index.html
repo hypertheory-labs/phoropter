@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: twill · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/twill/">Phoropter owns the plan format, and every site serves its guide</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: twill</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/twill/">plans/2026-10-30-twill.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="af47a62a9f2ecdc0e4446cce07a7d3e6af219561"><code>af47a62</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-twill.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Put up as a draft in its cart, with the guide beside it. Jeff answered the one open
+question (freezing), and aide&#39;s Claude annotated the guide on his behalf; both were
+folded in before the plan was committed, so the plan already says &quot;once someone else
+could have read it&quot; and already has the squash-merge decision. Nothing departed from the
+plan, so there&#39;s no <code>Changed:</code>.</p>
+<p>The guide is committed on its own, before any code, so its text reads as one diff.</p>
+</div>
+<section class="entry" id="the-guide-is-linked-with-rel-help" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-is-linked-with-rel-help"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The guide is linked with <code>rel=&quot;help&quot;</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;link rel=&quot;help&quot; href=&quot;${rel(here, 'guide/')}&quot;&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="af47a62a9f2ecdc0e4446cce07a7d3e6af219561"><code>af47a62</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="322"><meta itemprop="endLine" content="322"></span>
+<span class="note" itemprop="note">quote at line 322</span>
+</figcaption>
+<meta itemprop="codeStart" content="319"><pre itemprop="code" data-start="319"><code style="counter-reset: line 318"><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</span>
+<span class="line">&lt;title&gt;${esc(here ? `${stripMarkdown(title)} · ${provenance}` : provenance)}&lt;/title&gt;</span>
+<span class="line">&lt;link rel=&quot;profile&quot; href=&quot;${rel(here, 'profile/')}&quot;&gt;</span>
+<mark class="line">&lt;link rel=&quot;help&quot; href=&quot;${rel(here, 'guide/')}&quot;&gt;</mark>
+<span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;${rel(here, 'style.css')}&quot;&gt;</span>
+<span class="line">&lt;/head&gt;</span>
+<span class="line">&lt;body&gt;</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="408"><meta itemprop="endLine" content="408"></span>
+<span class="note" itemprop="note">quote at line 408</span>
+</figcaption>
+<meta itemprop="codeStart" content="405"><pre itemprop="code" data-start="405"><code style="counter-reset: line 404"><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</span>
+<span class="line">&lt;title&gt;${esc(here ? `${stripMarkdown(title)} · ${provenance}` : provenance)}&lt;/title&gt;</span>
+<span class="line">&lt;link rel=&quot;profile&quot; href=&quot;${rel(here, 'profile/')}&quot;&gt;</span>
+<mark class="line">&lt;link rel=&quot;help&quot; href=&quot;${rel(here, 'guide/')}&quot;&gt;</mark>
+<span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;${rel(here, 'style.css')}&quot;&gt;</span>
+<span class="line">&lt;/head&gt;</span>
+<span class="line">&lt;body&gt;</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it&#39;s a registered relation that means what this link
+is, so an agent finds the guide from any page without knowing phoropter&#39;s own names.
+It&#39;s in every page&#39;s head and header, and on the orientation&#39;s link. The profile lists
+it.</p>
+</div>
+</section>
+<section class="entry" id="the-guide-is-read-from-phoropter-s-files-and-says-when-they-re-uncommitted" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-is-read-from-phoropter-s-files-and-says-when-they-re-uncommitted"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The guide is read from phoropter&#39;s files, and says when they&#39;re uncommitted</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/guide.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/guide.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">return dirty ? `commit ${sha}, with uncommitted changes to the guide` : `commit ${sha}`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="af47a62a9f2ecdc0e4446cce07a7d3e6af219561"><code>af47a62</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/guide.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="22"><meta itemprop="endLine" content="22"></span>
+<span class="note" itemprop="note">quote at line 22</span>
+</figcaption>
+<meta itemprop="codeStart" content="19"><pre itemprop="code" data-start="19"><code style="counter-reset: line 18"><span class="line">  try {</span>
+<span class="line">    const sha = execFileSync('git', ['-C', dir, 'rev-parse', '--short', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();</span>
+<span class="line">    const dirty = execFileSync('git', ['-C', dir, 'status', '--porcelain', '--', 'guide.md'], { encoding: 'utf8' }).trim();</span>
+<mark class="line">    return dirty ? `commit ${sha}, with uncommitted changes to the guide` : `commit ${sha}`;</mark>
+<span class="line">  } catch {</span>
+<span class="line">    const pkg = JSON.parse(readFileSync(new URL('package.json', root), 'utf8'));</span>
+<span class="line">    return `version ${pkg.version}`;</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/guide.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="22"><meta itemprop="endLine" content="22"></span><meta itemprop="sameAs" content="af47a62">
+<span class="note" itemprop="note">same as at <code>af47a62</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> everything about the generated repository is read
+through git at a commit, but the guide describes the tool, so it comes from whatever
+phoropter is running. Reading it from git too would make an edited guide invisible
+until committed, which is the wrong surprise while writing one. Saying &quot;with
+uncommitted changes&quot; keeps the version line honest instead.</p>
+</div>
+</section>
+<section class="entry" id="someone-who-has-never-heard-of-loom-can-write-a-plan-and-an-as-built-from-the-guide-alone" itemprop="entry" itemscope>
+<h2><a class="self" href="#someone-who-has-never-heard-of-loom-can-write-a-plan-and-an-as-built-from-the-guide-alone"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Someone who has never heard of loom can write a plan and an as-built from the guide alone</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/twill/#someone-who-has-never-heard-of-loom-can-write-a-plan-and-an-as-built-from-the-guide-alone">the plan’s guess</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude</span>):</strong> not tested. The only reader so far is aide&#39;s Claude, which knows
+loom well; its four notes found four gaps, which is evidence the guide had them, not
+that it now has none. The test is still the first person or agent outside this
+conversation.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

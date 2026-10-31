@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What an agent can read without reading prose: source, date, and the plan's own work · phoropter at 8b23da6</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 8b23da6</a></nav>
+<article itemscope>
+<h1 itemprop="title">What an agent can read without reading prose: source, date, and the plan&#39;s own work</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">marl</dd>
+<dt>Cart</dt><dd itemprop="cart">marl</dd>
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="7cc899c45d78d337910bd32ab62936e817e933f6"><code>7cc899c</code></data> <time datetime="2026-10-30T19:20:45.000Z">19:20 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="81bfa6dd4e5300d529b7018e352a8c39ef35c5b7"><code>81bfa6d</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-marl.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/marl/as-built/">plans/2026-10-30-marl.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Sorrel made plans link to each other. A reader arriving cold still has to read prose
+to learn three things that matter most for trusting an entry: where its reason came
+from, how old it is, and whether a quote that&#39;s gone was removed by the plan itself or
+by something later. This plan puts each of those in the page&#39;s structure. It also
+binds the dev server to localhost, which rides along because it&#39;s one line.</p>
+<p>This plan was put up as a draft in its cart first, and Jeff said &quot;go&quot; without
+annotating it. Verdicts on answered guesses are left to their own plan. That&#39;s a revisit of quince,
+which declined them, and per bodkin a revisit doesn&#39;t go inside another plan.</p>
+</div>
+<section class="entry" id="a-reason-s-source-is-itemprop-source-exactly-as-written" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-reason-s-source-is-itemprop-source-exactly-as-written"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A reason&#39;s source is <code>itemprop=&quot;source&quot;</code>, exactly as written</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">${entry.body ? `&lt;div class=&quot;reason&quot; itemprop=&quot;reason&quot;&gt;${block(entry.body)}&lt;/div&gt;` : ''}</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="81bfa6dd4e5300d529b7018e352a8c39ef35c5b7"><code>81bfa6d</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="182"><meta itemprop="endLine" content="182"></span>
+<span class="note" itemprop="note">quote at line 182</span>
+</figcaption>
+<meta itemprop="codeStart" content="179"><pre itemprop="code" data-start="179"><code style="counter-reset: line 178"><span class="line">${pairHtml(here, entry)}</span>
+<span class="line">${anchoredByHtml(here, entry)}</span>
+<span class="line">${entry.resolved.map((a) =&gt; anchorHtml(here, doc, a)).join('\n')}</span>
+<mark class="line">${entry.body ? `&lt;div class=&quot;reason&quot; itemprop=&quot;reason&quot;&gt;${block(entry.body)}&lt;/div&gt;` : ''}</mark>
+<span class="line">&lt;/section&gt;`;</span>
+<span class="line">}</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="32bf4c1">
+<span class="note" itemprop="note">same as at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> the source is the strongest trust signal an entry has,
+and today it exists only as bold prose. It&#39;s the parenthesis in <code>**Because (…):**</code> or
+<code>**Answer (…):**</code>, kept word for word. No categories, and nothing in the code knows any
+source&#39;s name; finding every &quot;Claude, not asked&quot; entry is a substring match. An entry
+without one (a <code>Guess:</code>, whose lead is <code>Disproved if</code>) has no source.</p>
+</div>
+</section>
+<section class="entry" id="plans-carry-their-date-and-are-ordered-by-the-commit-that-added-them" itemprop="entry" itemscope>
+<h2><a class="self" href="#plans-carry-their-date-and-are-ordered-by-the-commit-that-added-them"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Plans carry their date, and are ordered by the commit that added them</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="81bfa6dd4e5300d529b7018e352a8c39ef35c5b7"><code>81bfa6d</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="79"><meta itemprop="endLine" content="79"></span>
+<span class="note" itemprop="note">quote at line 79</span>
+</figcaption>
+<meta itemprop="codeStart" content="76"><pre itemprop="code" data-start="76"><code style="counter-reset: line 75"><span class="line">    const doc = parsePlan(repo.show(sha, file)!);</span>
+<span class="line">    // The filename, not the cart: a cart is optional (lanyard), and plans</span>
+<span class="line">    // without one would share a page.</span>
+<mark class="line">    const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');</mark>
+<span class="line">    const href = `plans/${slugify(name)}/`;</span>
+<span class="line">    const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [], revisitedBy: [] };</span>
+<span class="line">    const asBuiltFile = file.replace(/\.md$/, '.as-built.md');</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="81"><meta itemprop="endLine" content="81"></span>
+<span class="note" itemprop="note">quote at line 81</span>
+</figcaption>
+<meta itemprop="codeStart" content="78"><pre itemprop="code" data-start="78"><code style="counter-reset: line 77"><span class="line">    const doc = parsePlan(repo.show(sha, file)!);</span>
+<span class="line">    // The filename, not the cart: a cart is optional (lanyard), and plans</span>
+<span class="line">    // without one would share a page.</span>
+<mark class="line">    const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');</mark>
+<span class="line">    const href = `plans/${slugify(name)}/`;</span>
+<span class="line">    const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [], revisitedBy: [] };</span>
+<span class="line">    plan.date = /^(\d{4}-\d{2}-\d{2})-/.exec(basename(file))?.[1];</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="97"><meta itemprop="endLine" content="97"></span>
+<span class="note" itemprop="note">quote at line 97</span>
+</figcaption>
+<meta itemprop="codeStart" content="94"><pre itemprop="code" data-start="94"><code style="counter-reset: line 93"><span class="line">    const doc = parsePlan(repo.show(sha, file)!);</span>
+<span class="line">    // The filename, not the cart: a cart is optional (lanyard), and plans</span>
+<span class="line">    // without one would share a page.</span>
+<mark class="line">    const name = basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');</mark>
+<span class="line">    const href = `plans/${slugify(name)}/`;</span>
+<span class="line">    const plan: Plan = { file, href, doc, name, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [], revisitedBy: [] };</span>
+<span class="line">    plan.date = /^(\d{4}-\d{2}-\d{2})-/.exec(basename(file))?.[1];</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> archaeology is mostly about order, and the date exists
+only in the filename. The filename&#39;s date becomes <code>itemprop=&quot;date&quot;</code>. It can&#39;t be the
+order by itself, because vellum, ferrule, and tallow share 2026-10-30. The commit that
+added each plan (13:23, 13:44, 13:52) is what orders them, and it&#39;s shown beside the
+date.</p>
+<p><strong>Which way the lists run (Claude, unanswered, so its fallback):</strong> the home page runs
+oldest first, because it reads as a history. Reverse pages run newest first, because
+someone arriving at a file usually wants what touched it last.</p>
+</div>
+</section>
+<section class="entry" id="a-plan-s-anchors-are-also-shown-at-its-as-built-s-head" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-plan-s-anchors-are-also-shown-at-its-as-built-s-head"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A plan&#39;s anchors are also shown at its as-built&#39;s head</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const commits = d.before &amp;&amp; d.before.sha !== sha ? [d.before, generated] : [generated];</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="81bfa6dd4e5300d529b7018e352a8c39ef35c5b7"><code>81bfa6d</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="125"><meta itemprop="endLine" content="125"></span>
+<span class="note" itemprop="note">quote at line 125</span>
+</figcaption>
+<meta itemprop="codeStart" content="122"><pre itemprop="code" data-start="122"><code style="counter-reset: line 121"><span class="line">  const places = new Map&lt;string, Place&gt;();</span>
+<span class="line">  for (const plan of plans) {</span>
+<span class="line">    for (const d of plan.asBuilt ? [plan, plan.asBuilt] : [plan]) {</span>
+<mark class="line">      const commits = d.before &amp;&amp; d.before.sha !== sha ? [d.before, generated] : [generated];</mark>
+<span class="line">      for (const re of d.entries) {</span>
+<span class="line">        re.resolved = re.anchors.map((anchor) =&gt; {</span>
+<span class="line">          const t = target(anchor, repoName, onSite);</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="32bf4c1">
+<span class="note" itemprop="note">same as at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> &quot;not found&quot; at the generated commit doesn&#39;t say whether the plan&#39;s
+own work removed the quote or something later did. Tallow&#39;s Requirements quote is the
+case: found at its base <code>3c59d26</code>, gone at its head <code>4d28b68</code>, still gone at <code>f02528f</code>.
+Lanyard measures drift from where the work landed, and this makes that visible without
+judging it. A plan with no as-built, or one whose head can&#39;t be resolved, keeps two
+views.</p>
+<p><strong>Three columns is wide (Claude, unanswered, so its fallback):</strong> when the generated
+view matches the head view exactly (same status, same lines), it collapses to one line,
+&quot;same as at <code>4d28b68</code>&quot;, with no code. That&#39;s a statement of fact, not a judgment. The base view
+never collapses. As-built anchors already show head and generated, so the same
+collapse applies to them.</p>
+</div>
+</section>
+<section class="entry" id="the-home-page-orients-a-cold-arrival-and-every-page-links-the-profile-visibly" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-home-page-orients-a-cold-arrival-and-every-page-links-the-profile-visibly"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The home page orients a cold arrival, and every page links the profile visibly</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">&lt;p&gt;Each symbol or file a plan points at has a page listing the plans there.&lt;/p&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="81bfa6dd4e5300d529b7018e352a8c39ef35c5b7"><code>81bfa6d</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="51"><meta itemprop="endLine" content="51"></span>
+<span class="note" itemprop="note">quote at line 51</span>
+</figcaption>
+<meta itemprop="codeStart" content="48"><pre itemprop="code" data-start="48"><code style="counter-reset: line 47"><span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;section&gt;</span>
+<span class="line">&lt;h2&gt;Anchored places&lt;/h2&gt;</span>
+<mark class="line">&lt;p&gt;Each symbol or file a plan points at has a page listing the plans there.&lt;/p&gt;</mark>
+<span class="line">${places ? `&lt;ul class=&quot;list&quot;&gt;${places}&lt;/ul&gt;` : '&lt;p&gt;Nothing is anchored.&lt;/p&gt;'}</span>
+<span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;/div&gt;`);</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="55"><meta itemprop="endLine" content="55"></span>
+<span class="note" itemprop="note">quote at line 55</span>
+</figcaption>
+<meta itemprop="codeStart" content="52"><pre itemprop="code" data-start="52"><code style="counter-reset: line 51"><span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;section&gt;</span>
+<span class="line">&lt;h2&gt;Anchored places&lt;/h2&gt;</span>
+<mark class="line">&lt;p&gt;Each symbol or file a plan points at has a page listing the plans there.&lt;/p&gt;</mark>
+<span class="line">${places ? `&lt;ul class=&quot;list&quot;&gt;${places}&lt;/ul&gt;` : '&lt;p&gt;Nothing is anchored.&lt;/p&gt;'}</span>
+<span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;/div&gt;`);</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="59"><meta itemprop="endLine" content="59"></span>
+<span class="note" itemprop="note">quote at line 59</span>
+</figcaption>
+<meta itemprop="codeStart" content="56"><pre itemprop="code" data-start="56"><code style="counter-reset: line 55"><span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;section&gt;</span>
+<span class="line">&lt;h2&gt;Anchored places&lt;/h2&gt;</span>
+<mark class="line">&lt;p&gt;Each symbol or file a plan points at has a page listing the plans there.&lt;/p&gt;</mark>
+<span class="line">${places ? `&lt;ul class=&quot;list&quot;&gt;${places}&lt;/ul&gt;` : '&lt;p&gt;Nothing is anchored.&lt;/p&gt;'}</span>
+<span class="line">&lt;/section&gt;</span>
+<span class="line">&lt;/div&gt;`);</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> an agent arriving at the home page has to reverse-engineer what
+it&#39;s looking at, and the profile link is only in <code>&lt;head&gt;</code>. One short paragraph says what
+the site is and where to start (a file or a symbol, to find the plans that touch it),
+and the header links the profile on every page.</p>
+</div>
+</section>
+<section class="entry" id="the-dev-server-listens-on-localhost-only" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-dev-server-listens-on-localhost-only"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The dev server listens on localhost only</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/serve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/serve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">}).listen(args.port, () =&gt; {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="81bfa6dd4e5300d529b7018e352a8c39ef35c5b7"><code>81bfa6d</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="46"><meta itemprop="endLine" content="46"></span>
+<span class="note" itemprop="note">quote at line 46</span>
+</figcaption>
+<meta itemprop="codeStart" content="43"><pre itemprop="code" data-start="43"><code style="counter-reset: line 42"><span class="line">  res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });</span>
+<span class="line">  if (req.method === 'HEAD') res.end();</span>
+<span class="line">  else createReadStream(file).pipe(res);</span>
+<mark class="line">}).listen(args.port, () =&gt; {</mark>
+<span class="line">  console.log(`${title}: ${pages} pages, serving http://localhost:${args.port}/`);</span>
+<span class="line">});</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="32bf4c1fc6bf698a3ed4466a5622e26d7480a078"><code>32bf4c1</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="32bf4c1">
+<span class="note" itemprop="note">same as at <code>32bf4c1</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> it listens on every interface (<code>*:4173</code>), so anyone on the
+network can read the site. That&#39;s harmless for plans, but the edge will serve drafts,
+and those are local by agreement.</p>
+</div>
+</section>
+<section class="entry" id="a-base-url-flag-for-links-that-travel" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-base-url-flag-for-links-that-travel"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A <code>--base-url</code> flag for links that travel</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> agreed on how (absolute URLs in microdata, relative
+links kept for <code>file://</code>), but it reopens gimlet&#39;s <code>itemtype</code> decline, and that deserves
+its own look. This plan stays reviewable in one sitting.</p>
+</div>
+</section>
+<section class="entry" id="cross-plan-pages-open-guesses-declines-sources" itemprop="entry" itemscope>
+<h2><a class="self" href="#cross-plan-pages-open-guesses-declines-sources"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Cross-plan pages (open guesses, declines, sources)</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> they come after source and verdict exist. Source lands
+here; verdict is the quince revisit.</p>
+</div>
+</section>
+<section class="entry" id="the-commit-that-added-a-plan-gives-the-order-people-mean" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-commit-that-added-a-plan-gives-the-order-people-mean"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">The commit that added a plan gives the order people mean</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/marl/as-built/#the-commit-that-added-a-plan-gives-the-order-people-mean">the as-built</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> a plan whose adding commit is later was really decided earlier, and
+the page&#39;s order misleads. Backfilled plans are where to look: pumice was backfilled
+into its current file at <code>90c65b9</code>, a day after its work, though it still sorts first.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

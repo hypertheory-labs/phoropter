@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: dimity · phoropter at 8b23da6</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="meta">8b23da6d1b1f07ea24264e469fee3d389ea0d78f</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/dimity/">The indexer guide, revised from what two .NET indexers found</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: dimity</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/dimity/">plans/2026-10-31-dimity.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-dimity.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Nothing departed from the plan, so there&#39;s no <code>Changed:</code>. The experiment&#39;s agent read
+the answers (<code>ANSWERS.md</code>, in its repository, written in this session at Jeff&#39;s request)
+and acted on two of them while this was built:</p>
+<ul>
+<li>the roslyn indexer names packages by <code>AssemblyName</code> now;</li>
+<li>the scip-dotnet wrapper no longer restores by default.</li>
+</ul>
+<p>It measured the second: offline with an empty cache, the wrapper now finishes in 52s with
+249 of 251 definitions, the Aspire host project in <code>missing</code>, where before it failed
+after two minutes. That 52s is MSBuild waiting out an SDK download. The 5-minute limit
+leaves room for it. Two minutes would have cut that commit to <code>no-index</code>.</p>
+</div>
+<section class="entry" id="a-timed-out-indexer-is-killed-outright" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-timed-out-indexer-is-killed-outright"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A timed-out indexer is killed outright</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/indexers.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/indexers.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const r = spawnSync(info.command[0], [...info.command.slice(1), dir, ...packages], { cwd: info.cwd, encoding: 'utf8', maxBuffer: 1 &lt;&lt; 30, timeout, killSignal: 'SIGKILL' });</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="167ebba4b98e564ff6e31b59b49dde9ac6bdfa3a"><code>167ebba</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/indexers.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="91"><meta itemprop="endLine" content="91"></span>
+<span class="note" itemprop="note">quote at line 91</span>
+</figcaption>
+<meta itemprop="codeStart" content="88"><pre itemprop="code" data-start="88"><code style="counter-reset: line 87"><span class="line">// says it timed out.</span>
+<span class="line">export function runIndexer(info: Pick&lt;IndexerInfo, 'command' | 'cwd'&gt;, dir: string, packages: string[] = []): IndexerOutput {</span>
+<span class="line">  const timeout = indexTimeout();</span>
+<mark class="line">  const r = spawnSync(info.command[0], [...info.command.slice(1), dir, ...packages], { cwd: info.cwd, encoding: 'utf8', maxBuffer: 1 &lt;&lt; 30, timeout, killSignal: 'SIGKILL' });</mark>
+<span class="line">  if ((r.error as NodeJS.ErrnoException | undefined)?.code === 'ETIMEDOUT' || r.signal === 'SIGKILL') throw new Error(`timed out after ${timeout / 1000}s (PHOROPTER_INDEX_TIMEOUT changes the limit)`);</span>
+<span class="line">  if (r.error) throw new Error(`couldn't run ${info.command.join(' ')}: ${r.error.message}`);</span>
+<span class="line">  if (r.status !== 0) throw new Error((r.stderr || `exited ${r.status}`).trim().split('\n').at(-1)!);</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="8b23da6d1b1f07ea24264e469fee3d389ea0d78f"><code>8b23da6</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/indexers.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="91"><meta itemprop="endLine" content="91"></span><meta itemprop="sameAs" content="167ebba">
+<span class="note" itemprop="note">same as at <code>167ebba</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a build tool waiting on the network may ignore a polite
+signal, and the point of the limit is that the build goes on. The error names the limit
+and the variable that changes it.</p>
+</div>
+</section>
+<section class="entry" id="an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">An agent with only <code>indexers/README.md</code> and existing code writes an indexer that passes <code>--check</code></span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/dimity/#an-agent-with-only-indexers-readme-md-and-existing-code-writes-an-indexer-that-passes-check">the plan’s guess</a>: <strong class="verdict verdict-partly-disproved" itemprop="verdict">partly disproved</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">the experiment&#39;s agent, measured, then Claude</span>):</strong> partly disproved. It held where
+it mattered most: the agent never read phoropter&#39;s source. It built
+<code>phoropter-index-roslyn</code> from the guide and Jeff&#39;s Roslyn code, and that indexer passes
+<code>--check</code> on three real repositories (397, then 338 definitions after it fixed its own
+overload bug). Phoropter found it on <code>PATH</code> with nothing configured. But the guide
+didn&#39;t stand alone. The agent logged thirty questions the guide should have answered, in
+its <code>QUESTIONS.md</code>, and read scip-dotnet&#39;s source to get the naming right. This plan&#39;s
+guide revisions are those questions, answered.</p>
+</div>
+</section>
+<section class="entry" id="with-the-revised-guide-the-next-indexer-s-agent-asks-a-handful-of-questions-not-thirty" itemprop="entry" itemscope>
+<h2><a class="self" href="#with-the-revised-guide-the-next-indexer-s-agent-asks-a-handful-of-questions-not-thirty"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">With the revised guide, the next indexer&#39;s agent asks a handful of questions, not thirty</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/dimity/#with-the-revised-guide-the-next-indexer-s-agent-asks-a-handful-of-questions-not-thirty">the plan’s guess</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude</span>):</strong> not tested. The next indexer written from the revised guide is the
+test: another language, or another model, as Jeff has floated.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>
