@@ -10,7 +10,7 @@
 // (Jeff); everything else is secondary to that.
 
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { build } from './build.ts';
@@ -38,21 +38,33 @@ export function repoRoot(start: string): string | undefined {
 }
 
 // Where `phoropter url` finds a running server: a small file outside the
-// repository, keyed by its root, removed when the server stops.
-export function servingFile(root: string): string {
-  return join(cacheDir(), 'serving', `${createHash('sha256').update(root).digest('hex').slice(0, 16)}.json`);
+// repository, one per server, keyed by the repository's root and the server's
+// process, removed when that server stops. One file per server, because two
+// can serve one repository, and the first to stop mustn't erase the other.
+function servingId(root: string): string {
+  return createHash('sha256').update(root).digest('hex').slice(0, 16);
 }
 
+export function servingFile(root: string, pid = process.pid): string {
+  return join(cacheDir(), 'serving', `${servingId(root)}.${pid}.json`);
+}
+
+// The newest live server for a repository. Files left by servers that died
+// without tidying up are removed on the way.
 export function servingUrl(root: string): string | undefined {
-  const file = servingFile(root);
-  if (!existsSync(file)) return undefined;
-  const { url, pid } = JSON.parse(readFileSync(file, 'utf8')) as { url: string; pid: number };
-  try {
-    process.kill(pid, 0);
-    return url;
-  } catch {
-    return undefined; // a server that stopped without tidying up
+  const dir = join(cacheDir(), 'serving');
+  if (!existsSync(dir)) return undefined;
+  const live: { url: string; started: number }[] = [];
+  for (const name of readdirSync(dir).filter((n) => n.startsWith(`${servingId(root)}.`) && n.endsWith('.json'))) {
+    const { url, pid, started } = JSON.parse(readFileSync(join(dir, name), 'utf8')) as { url: string; pid: number; started?: number };
+    try {
+      process.kill(pid, 0);
+      live.push({ url, started: started ?? 0 });
+    } catch {
+      rmSync(join(dir, name), { force: true });
+    }
   }
+  return live.sort((a, b) => b.started - a.started)[0]?.url;
 }
 
 // The plan commits whose indexes a build needed but found only in the cache.
@@ -120,7 +132,7 @@ async function main(argv: string[]): Promise<void> {
   const served = await serve({ repo: root, ref: at, out, port: Number(values.port ?? 4173), exactPort: values.port !== undefined, store });
   const file = servingFile(root);
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, JSON.stringify({ url: served.url, root, commit: served.site.generated.sha, pid: process.pid }) + '\n');
+  writeFileSync(file, JSON.stringify({ url: served.url, root, commit: served.site.generated.sha, pid: process.pid, started: Date.now() }) + '\n');
   const tidy = () => rmSync(file, { force: true });
   process.on('exit', tidy);
   for (const signal of ['SIGINT', 'SIGTERM'] as const) process.on(signal, () => process.exit(0));
