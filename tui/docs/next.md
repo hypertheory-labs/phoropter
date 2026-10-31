@@ -130,6 +130,9 @@ drifted. Rendered from phoropter's page, not computed here.
 - **Save and keep writing** (Jeff: "I'm going to have to ask for a :w in notes soon").
   In a form, a key that writes the note and keeps the form open, so a long note can be
   saved as it goes. `ctrl+s` writes and closes.
+- **Show how long the plan list is** (Jeff). With a box per plan, only about six fit, and
+  nothing says how many more there are or where you are among them. A scrollbar, or a
+  "4 of 19" beside the order line.
 
 ## Later, to talk through: a phoropter CLI with plugins
 
