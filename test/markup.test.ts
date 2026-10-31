@@ -32,10 +32,17 @@ test('each match and each excerpt says its lines', () => {
       const n = Number(/itemprop="matches" content="(\d+)"/.exec(view)![1]);
       const items = all(/itemprop="match" itemscope hidden><meta itemprop="startLine" content="(\d+)"><meta itemprop="endLine" content="(\d+)">/g, view);
       assert.equal(items.length, n);
-      const marked = new Set(all(/<mark><span class="ln">(\d+)<\/span>/g, view).map((m) => Number(m[1])));
+      // Numbered the way a reader would: codeStart, then one line per newline.
+      const marked = new Set<number>();
+      for (const [, start, code] of all(/itemprop="codeStart" content="(\d+)"><pre[^>]*><code[^>]*>([\s\S]*?)<\/code>/g, view)) {
+        code.split('\n').forEach((line, i) => line.startsWith('<mark') && marked.add(Number(start) + i));
+      }
       for (const [, s, e] of items) for (let l = Number(s); l <= Number(e); l++) assert.ok(marked.has(l) || view.includes('sameAs'), `line ${l}`);
       matches += n;
     }
+
+    // The code's text is the code: no line numbers written into it (osier).
+    assert.ok(!html.includes('class="ln"'));
 
     // `new` has one shape.
     assert.ok(!/<span itemprop="new">/.test(html));

@@ -310,10 +310,10 @@ function hunkHtml(h: Hunk): string {
   const marked = new Set(h.marked);
   const lines = h.lines.map((line, i) => {
     const n = h.start + i;
-    const text = `<span class="ln">${n}</span>${esc(line) || ' '}`;
-    return marked.has(n) ? `<mark>${text}</mark>` : text;
+    return marked.has(n) ? `<mark class="line">${esc(line)}</mark>` : `<span class="line">${esc(line)}</span>`;
   });
-  return `<meta itemprop="codeStart" content="${h.start}"><pre itemprop="code" data-start="${h.start}"><code>${lines.join('\n')}</code></pre>`;
+  // The numbers are a CSS counter from codeStart, so code's text is just the code.
+  return `<meta itemprop="codeStart" content="${h.start}"><pre itemprop="code" data-start="${h.start}"><code style="counter-reset: line ${h.start - 1}">${lines.join('\n')}</code></pre>`;
 }
 
 function layout(site: Site, here: string, title: string, main: string): Page {
