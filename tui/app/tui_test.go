@@ -1,4 +1,4 @@
-package tui
+package app
 
 import (
 	"os"
@@ -9,7 +9,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/x/ansi"
 
-	"phoropter-tui/internal/substrate"
+	"github.com/hypertheory-labs/phoropter/tui/substrate"
 )
 
 // drive runs a command to completion, the way the program loop would.
@@ -57,7 +57,7 @@ func screenText(t *testing.T, m *Model) string {
 }
 
 func TestWalkAPlan(t *testing.T) {
-	c, err := substrate.NewClient("../../testdata/mock-control-f02528f", substrate.NewLedger())
+	c, err := substrate.NewClient("../testdata/mock-control-f02528f", substrate.NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -119,7 +119,7 @@ func TestWalkAPlan(t *testing.T) {
 }
 
 func TestReadADraft(t *testing.T) {
-	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
+	c, err := substrate.NewClient("../testdata/mock-control-draft", substrate.NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -151,7 +151,7 @@ func TestReadADraft(t *testing.T) {
 // and never the draft. The draft source is the file the fixture's page was
 // served from, so its sha256 matches the page's header.
 func TestAnswerADraft(t *testing.T) {
-	src, err := os.ReadFile("../../testdata/mock-control-draft.source.md")
+	src, err := os.ReadFile("../testdata/mock-control-draft.source.md")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -160,7 +160,7 @@ func TestAnswerADraft(t *testing.T) {
 	os.Mkdir(filepath.Join(repo, "drafts"), 0o755)
 	os.WriteFile(filepath.Join(repo, "drafts", "plan.draft.md"), src, 0o644)
 
-	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
+	c, err := substrate.NewClient("../testdata/mock-control-draft", substrate.NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -241,7 +241,7 @@ func TestTabCycles(t *testing.T) {
 // writes a note into drafts/, quoting the entry's heading; the plan's file is
 // never touched. The notes already on pumice show as rows.
 func TestAskForARevisit(t *testing.T) {
-	src, err := os.ReadFile("../../testdata/mock-control-pumice.plan.md")
+	src, err := os.ReadFile("../testdata/mock-control-pumice.plan.md")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -251,7 +251,7 @@ func TestAskForARevisit(t *testing.T) {
 	plan := filepath.Join(repo, "plans", "2026-10-29-pumice.md")
 	os.WriteFile(plan, src, 0o644)
 
-	c, err := substrate.NewClient("../../testdata/mock-control-draft", substrate.NewLedger())
+	c, err := substrate.NewClient("../testdata/mock-control-draft", substrate.NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -11,7 +11,7 @@ import (
 
 	"golang.org/x/net/html"
 
-	"phoropter-tui/internal/microdata"
+	"github.com/hypertheory-labs/phoropter/tui/microdata"
 )
 
 // Ref is a commit as the page gave it. SHA is empty when the page gave text

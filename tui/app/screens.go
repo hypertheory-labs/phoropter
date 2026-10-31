@@ -1,4 +1,4 @@
-package tui
+package app
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 
-	"phoropter-tui/internal/notes"
-	"phoropter-tui/internal/substrate"
+	"github.com/hypertheory-labs/phoropter/tui/notes"
+	"github.com/hypertheory-labs/phoropter/tui/substrate"
 )
 
 // split lays out a list on the left and a detail pane on the right.

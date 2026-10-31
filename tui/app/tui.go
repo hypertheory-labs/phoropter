@@ -1,7 +1,7 @@
 // Package tui is a read-only terminal reader for a phoropter site: pick a
 // plan, walk its entries, and flip each anchor between the commits phoropter
 // shows it at, like the lenses of the instrument it's named after.
-package tui
+package app
 
 import (
 	"fmt"
@@ -11,8 +11,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 
-	"phoropter-tui/internal/notes"
-	"phoropter-tui/internal/substrate"
+	"github.com/hypertheory-labs/phoropter/tui/notes"
+	"github.com/hypertheory-labs/phoropter/tui/substrate"
 )
 
 type screen interface {
@@ -223,7 +223,7 @@ func (m *Model) View() string {
 	}
 	if len(m.stack) == 0 {
 		if m.status != "" {
-			return "phoropter-tui: " + m.status + "\n\nq to quit"
+			return "phoropter ui: " + m.status + "\n\nq to quit"
 		}
 		return "loading " + m.c.Root.String() + " …"
 	}
@@ -269,7 +269,7 @@ func (m *Model) View() string {
 func (m *Model) gapsView(w int) string {
 	var b strings.Builder
 	b.WriteString(styles.title.Render("Where this session read past the profile") + "\n")
-	b.WriteString(styles.dim.Render("Each is a place the TUI parsed prose, leaned on markup the profile doesn't define, or went without. `phoropter-tui gaps` crawls the whole site.") + "\n\n")
+	b.WriteString(styles.dim.Render("Each is a place the TUI parsed prose, leaned on markup the profile doesn't define, or went without. `phoropter ui gaps` crawls the whole site.") + "\n\n")
 	gaps := m.ledger.Gaps()
 	if len(gaps) == 0 {
 		b.WriteString("None yet.\n")

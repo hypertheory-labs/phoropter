@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const mockControl = "../../testdata/mock-control-f02528f"
+const mockControl = "../testdata/mock-control-f02528f"
 
 func client(t *testing.T) (*Client, *Ledger) {
 	t.Helper()
@@ -129,7 +129,7 @@ func TestCrawlLedger(t *testing.T) {
 }
 
 func TestPhoropterCrawls(t *testing.T) {
-	c, err := NewClient("../../testdata/phoropter-1a83dbc", NewLedger())
+	c, err := NewClient("../testdata/phoropter-1a83dbc", NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -193,7 +193,7 @@ func TestSelvageGapsStayClosed(t *testing.T) {
 // entry's reason, and one has no quote.
 func TestDraft(t *testing.T) {
 	l := NewLedger()
-	c, err := NewClient("../../testdata/mock-control-draft", l)
+	c, err := NewClient("../testdata/mock-control-draft", l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -247,7 +247,7 @@ func TestDraft(t *testing.T) {
 // annotation items, placed like a draft's notes, and the home list counts them.
 func TestPlanNotes(t *testing.T) {
 	l := NewLedger()
-	c, err := NewClient("../../testdata/mock-control-draft", l)
+	c, err := NewClient("../testdata/mock-control-draft", l)
 	if err != nil {
 		t.Fatal(err)
 	}

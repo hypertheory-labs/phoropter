@@ -12,7 +12,7 @@ import (
 
 	"golang.org/x/net/html"
 
-	"phoropter-tui/internal/microdata"
+	"github.com/hypertheory-labs/phoropter/tui/microdata"
 )
 
 // Client fetches substrate pages over http(s), or from a built site on disk

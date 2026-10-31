@@ -1,4 +1,4 @@
-package tui
+package app
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/x/ansi"
 
-	"phoropter-tui/internal/notes"
-	"phoropter-tui/internal/substrate"
+	"github.com/hypertheory-labs/phoropter/tui/notes"
+	"github.com/hypertheory-labs/phoropter/tui/substrate"
 )
 
 // A form answers a draft's prompt or writes a note, into the notes file beside
