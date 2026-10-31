@@ -1,5 +1,11 @@
 # For phoropter: what a second reader found
 
+> **Superseded (2026-10-31).** The TUI moved into phoropter's repository as `tui/`
+> (dowlas), and gimlet declined a separate brief beside the plan. This file's open
+> items are seeds in the root `shelf/`: `paths.md`, `file-pages.md`, `draft-places.md`,
+> `re-check.md`, `select-choices.md` and `indexing.md`. It stays as the record of what
+> the second reader found, read as written.
+
 phoropter-tui reads phoropter's pages and nothing else: no git, no source. Gimlet, the
 plan for phoropter's first version, declined a separate client app because "a second
 representation would let the person and the agent see different things," and said a

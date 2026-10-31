@@ -35,16 +35,18 @@ can find the draft.
   `ctrl+e` opens `$EDITOR`, and `esc` cancels.
 - **Anywhere:** `r` reads the page again, `g` shows the gaps hit so far, `?` is help.
 
-To try a draft: run phoropter's dev server on this repo (`node src/serve.ts
-../phoropter-tui --port 4174`, from `../phoropter`), `cp testdata/sample.draft.md
-plan.draft.md`, and point the TUI at `http://localhost:4174/`.
+To try a draft: from the repository root, `cp tui/testdata/sample.draft.md
+plan.draft.md`, serve the repository (`node src/serve.ts . HEAD --port 4175`), and point
+the TUI at `http://localhost:4175/`.
 
-This repo plans its own work in phoropter's format, in `plans/`. Where it's going is
-in `docs/next.md`, what it has asked phoropter for is in `docs/for-phoropter.md`, and
-how notes are written is in `docs/annotating.md`.
+The TUI lives in phoropter's repository as `tui/` since dowlas (the TUI moves in). Its
+plans are in the root `plans/` with phoropter's. Where it's going is in `docs/next.md`,
+and how notes are written is in `docs/annotating.md`. What it asked phoropter for
+before the move is in `docs/for-phoropter.md`, superseded by seeds in the root
+`shelf/`.
 
-`testdata/` holds sites built by `../phoropter` (`node src/build.ts <repo> <commit> --out
-…`) from mock-control at `f02528f` and phoropter at `1a83dbc`, both built by phoropter at
+`testdata/` holds sites built by phoropter (`node src/build.ts <repo> <commit> --out
+…`, at the root) from mock-control at `f02528f` and phoropter at `1a83dbc`, both built by phoropter at
 `1a83dbc`, so tests don't need a server. Rebuild them when the profile changes.
 `mock-control-draft/` is a draft page from phoropter's dev server, and
 `mock-control-draft.source.md` is the draft it was served from.

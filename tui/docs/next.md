@@ -1,8 +1,8 @@
 # Next
 
 Where phoropter-tui stands and what comes after. What's done has a plan in `plans/`
-saying why. What's next often waits on phoropter, and says which ask in
-`for-phoropter.md`. Phoropter may decide an ask differently or decline it. Then the item
+saying why. What's next often waits on phoropter, and names its seed in the
+root `shelf/`. Phoropter may decide an ask differently or decline it. Then the item
 here changes, and a gap that stays open is a cost the TUI pays by design, like the two
 hops to an answer in another plan.
 
@@ -42,22 +42,22 @@ voile's (nothing disappears on Ghostty's default theme).
 ## 1. What's left in the ledger
 
 Rebuild `testdata/` when phoropter's profile changes (`node src/build.ts <repo> <commit>
---out …`, from `../phoropter`). For each gap it closes, read the new property, delete
+--out …`, from the repository root). For each gap it closes, read the new property, delete
 the workaround and the catalog entry, and add it to a test that keeps it closed.
 
 - **Open, waiting on `›` paths resolving:** `where-path-unresolved`,
-  `new-never-resolved`, `view-no-code`. Brief section 1.
+  `new-never-resolved`, `view-no-code`. `shelf/paths.md`.
 - **Open, waiting on file pages:** `symbol-file-unlinked`, `place-url-convention`.
-  Brief section 2.
+  `shelf/file-pages.md`.
 - **Open, from drafts:** `answer-choices-unprofiled`. A Select's choices are only in
-  `checked`. Brief section 5.
+  `checked`. `shelf/select-choices.md`.
 - **By design:** `same-as-deref` (marl kept a collapsed view whole) and
   `answer-elsewhere` (sorrel declined a skipping link). They stay, saying who decided.
 
 ## 2. File mode
 
 *Needs:* ranges on file pages, symbol anchors on their file's page, a declared place
-lookup, the blob id (brief section 2). Without these the mode can be built, but only by
+lookup, the blob id (`shelf/file-pages.md`). Without these the mode can be built, but only by
 fetching every plan, which is a workaround the ledger would have to note.
 
 - **Entry:** `phoropter-tui files [path]`, or a key from the plan list. The repo root is
@@ -81,7 +81,7 @@ fetching every plan, which is a workaround the ledger would have to note.
 
 ## 3. What's already at a draft's places
 
-*Needs:* phoropter's ranking (brief section 3). Loden put it on the shelf until "there's
+*Needs:* phoropter's ranking (`shelf/draft-places.md`). Loden put it on the shelf until "there's
 a draft to try it on". This repo has written three plans as drafts since (ramie, batiste, challis), so that
 condition is met.
 
@@ -106,7 +106,7 @@ pages alone, an agent reading the HTML can't either, and that's a gap for the le
 
 ## 6. Reasons to re-check
 
-*Needs:* whatever phoropter decides on brief section 4 (a page gathering unconfirmed
+*Needs:* whatever phoropter decides on `shelf/re-check.md` (a page gathering unconfirmed
 sources, age, drift, and open guesses; maybe `Holds while:`).
 
 A view, from the plan list or a file, of the entries whose reasons nobody has confirmed

@@ -1,55 +1,64 @@
 # phoropter-tui
 
-A terminal reader for a phoropter site, the plans-and-anchors substrate that
-`../phoropter` generates from a repo at one commit. It's an experiment in two ways: a
-tool for a human (and, through the same pages, an agent) asking "what were they thinking
-when they wrote this?", and a second reader of phoropter's HTML that finds where its API
-is thin. This file is Claude's; Jeff doesn't edit it. Keep it short and true.
+A terminal reader for a phoropter site, the plans-and-anchors substrate that phoropter
+(this repository's root) generates from a repo at one commit. It's an experiment in two
+ways: a tool for a human (and, through the same pages, an agent) asking "what were they
+thinking when they wrote this?", and a second reader of phoropter's HTML that finds
+where its API is thin. It came into this repository with its history (dowlas: the TUI
+moves in, as `tui/`). This file is Claude's; Jeff doesn't edit it. Keep it short and
+true.
 
-- **Read phoropter's `CLAUDE.md` and `guide.md` first.** The guide is the plan format;
-  the site's `profile/` page defines every rel and microdata property. Those, not
-  phoropter's source, are the contract.
+- **The boundary: the TUI reads only what phoropter serves.** It's tested against
+  served or built pages. It never reads `src/`, and never imports or shells out to
+  phoropter's code beyond running its dev server. The public API is the boundary, not
+  the directory. If the ledger goes quiet, it must be because phoropter closed a gap.
+- **Read phoropter's `guide.md` and the site's `profile/` first.** Those are the
+  contract, not `src/`.
 - **Reasons come from the substrate. The TUI computes only local facts** (file tree,
-  blob match, working-tree drift). If the TUI inferred reasoning the HTML lacks, the
-  person would see more than the agent. Phoropter's gimlet plan declined a separate
-  client app for this reason; this TUI is the "projection of the same pages" it allowed.
-  No git history in the TUI.
-- **The gaps ledger is half the point.** Whenever the code reads past the profile
-  (prose, unprofiled markup, nothing to show), it calls `Ledger.Note` with an id from
-  the catalog in `internal/substrate/gaps.go`. Don't work around a gap silently; note it.
-  `phoropter-tui gaps <site>` crawls and reports. When phoropter closes a gap, delete the
-  workaround and the catalog entry. When phoropter *declines* one, keep it and say which
-  plan declined it and why (see `answer-elsewhere`).
-- **Check phoropter's declines before asking for something.** It records what it turned
-  down and why; several things a reader wants were declined, some for sequencing that
-  has since been met, some on principle. Asks go to phoropter as briefs
-  (`docs/for-phoropter.md`); never edit `../phoropter` or `../mock-control`.
+  whether a local file matches what a page says, working-tree drift). If the TUI
+  inferred reasoning the HTML lacks, the person would see more than the agent. Gimlet
+  declined a separate client app for this reason; the TUI is the "projection of the same
+  pages" it allowed. No git history in the TUI.
+- **Its one write is a draft's notes file,** by `docs/annotating.md` (`internal/notes`).
+  Never the draft, never a landed plan (nankeen declined editing plans), never the
+  substrate.
+- **The gaps ledger is half the point.** Whenever the code reads past the profile, it
+  calls `Ledger.Note` with an id from the catalog in `internal/substrate/gaps.go`. Don't
+  work around a gap silently. `go run . gaps <site>` crawls and reports. When phoropter
+  closes a gap, delete the workaround and the catalog entry, and add it to a test that
+  keeps it closed. When phoropter declines one, keep it and say which plan declined it.
+- **Asking phoropter for something is a draft now,** in this repository, after checking
+  phoropter's declines. The old brief (`docs/for-phoropter.md`) is superseded by seeds
+  in `shelf/`.
+- **Plans** are in the root `plans/`, by the guide, with phoropter's. A TUI plan can
+  anchor and revisit phoropter entries now. Use file anchors with a quote (paths from
+  the repository root: `tui/internal/tui/screens.go`). Phoropter indexes only
+  TypeScript, so a Go symbol anchor won't resolve yet. The TUI's plans from before the
+  move anchor `internal/…` and show `no-file` at later commits; they're read as written.
+- **Drafts:** one, `plan.draft.md` at the repository root. Serve the repository with
+  `node src/serve.ts . HEAD` from the root and point the TUI at it. To try the TUI on a
+  draft, `cp tui/testdata/sample.draft.md plan.draft.md`.
+- **Working with Jeff.** Jeff reads drafts before code, so propose the bigger or bolder
+  version and let his notes trim it. An agent never gets a veto: a draft weighing an
+  idea Claude thinks is bad says so up front, plans it properly anyway, and defaults its
+  prompt to Jeff's idea. Keep the ceremony in proportion: small fixes go straight to
+  `plans/`, or need no plan. Stage commits by explicit path, never `git add -A`: Jeff
+  drops files in that aren't for the commit. Gate commits on `go test ./...` itself,
+  not piped through anything.
+- **When you refer to a plan in prose, say what it's about.**
 - **Where this is going:** `docs/next.md` (file mode, what's already at a draft's
-  places, `init`, `why`, reasons to re-check). Phoropter has no cart: loden replaced it
-  with the one draft, and where the thinking before a draft happens is the pair's
-  business. The entry point is a plan or the draft; a file view may come, or an LSP
-  adapter instead.
-- **This repo uses the plan format itself** (since 2026-10-31): plans in `plans/`, by
-  phoropter's guide, and a draft as `plan.draft.md` at the root (gitignored; we work on
-  main). Serve it with `node src/serve.ts ../phoropter-tui --port 4174` from
-  `../phoropter`. To try the TUI on a draft, `cp testdata/sample.draft.md
-  plan.draft.md`. Use file anchors with a quote. Phoropter indexes only TypeScript, so
-  a Go symbol anchor won't resolve yet. Don't backfill plans for work already done; its
-  reasons are here and in the commits.
-- **`.loom/` is lineage, not a dependency.** Jeff keeps copies of documents this work
-  descends from there (the annotating agreement among them). Read them, but don't
-  reference `.loom` paths from code or docs, and don't require loom tooling. What we
-  adopt is restated here in our own words, as phoropter does.
-- **When you refer to a plan in prose, say what it's about,** as phoropter's file asks.
-- **Layout:** `internal/microdata` (generic WHATWG microdata, nothing phoropter-specific),
-  `internal/substrate` (typed pages, the ledger, the crawl), `internal/notes` (the notes
-  file, by `docs/annotating.md`; the only thing that writes), `internal/tui` (Bubble Tea
-  v1). Page kind is decided from the main item's properties, not the URL.
-- **Running:** `go build -o bin/phoropter-tui .`; `bin/phoropter-tui [url|dir]` (default
-  `http://localhost:4173/`, phoropter's `npm run dev`); `go test ./...`. The tests read
-  `testdata/`, sites built by `node src/build.ts <repo> <commit> --out …` in
-  `../phoropter`; rebuild them when the profile changes.
+  places, `init`, `why`, reasons to re-check, and a phoropter CLI with UIs and indexers
+  as plugins, `gh`- or `kubectl`-style, where this TUI is one UI).
+- **Layout:** `internal/microdata` (generic WHATWG microdata), `internal/substrate`
+  (typed pages, the ledger, the crawl), `internal/notes` (the notes file; the only
+  thing that writes), `internal/tui` (Bubble Tea v1). Page kind is decided from the
+  main item's properties, not the URL.
+- **Running** (from `tui/`): `go build -o bin/phoropter-tui .`, then
+  `bin/phoropter-tui [url|dir]` (default `http://localhost:4173/`), and `go test ./...`.
+  `npm test` at the root doesn't run these, and that's deliberate. The tests read
+  `testdata/`, sites built by `node src/build.ts <repo> <commit> --out …` at the root.
+  Rebuild them in the same work as a profile change.
 - **Dependencies are pinned** for Go 1.24: bubbletea v1.3.4, lipgloss v1.1.0,
   `charmbracelet/x/ansi` v0.8.0. `go mod tidy` will bump `x/ansi`, which breaks
-  lipgloss's `cellbuf`; pin it back with `GOTOOLCHAIN=local go get …@v0.8.0`.
-- **Commit when Jeff asks; Jeff pushes.**
+  lipgloss's `cellbuf`. Pin it back with `GOTOOLCHAIN=local go get …@v0.8.0`.
+- **Claude commits; Jeff pushes.**

@@ -19,15 +19,24 @@ pace with the work, not coverage.
   annotates in nvim. Convert when confident, and delete the draft and its notes.
 - **Carts are thinking, not drafting.** `.loom/cart/` (gitignored) is where Jeff and
   Claude think something through; a cart's result is "let's draft a plan from this."
-  Phoropter knows nothing about carts. A `shelf/` holds seeds for later; restate a seed
-  into a draft when it's picked up, and delete it then.
+  Phoropter knows nothing about carts. A `shelf/` holds seeds for later (many from
+  the TUI's old brief); restate a seed into a draft when it's picked up, and delete it
+  then.
+- **`.loom/` is lineage, not a dependency.** Copies of documents this work descends
+  from (the annotating and cart agreements). Read them, but don't reference `.loom`
+  paths from code or docs, and don't require loom tooling. What's adopted is restated in
+  this repository's own words.
 - **When you refer to a plan in prose, say what it's about**, not just its name. A
   sentence made of plan names reads as Dr. Seuss.
 - **Test data:** `~/Projects/mock-control` (its own plans in `plans/`), and aide's
   `plans/`, which are mostly plan-to-plan anchors.
 - **The rels and microdata are a public API.** The profile defines them, and readers
-  other than a browser may depend on them (Jeff may build a TUI on them, in another
-  repo). Renaming one breaks someone; it's a plan, not a tidy-up.
+  other than a browser depend on them. Renaming one breaks someone; it's a plan, not a
+  tidy-up.
+- **`tui/` is a reader of that API, first-party** (dowlas). It's a Go terminal reader that
+  reads only served or built pages, never `src/`, and keeps a ledger of every place it
+  had to read past the profile. Its gaps are phoropter's to close. A session working
+  in `tui/` reads `tui/CLAUDE.md`. Its plans are in `plans/` with everyone's.
 - **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it
   short and true for the next session.
 - **Running:** `npm run dev` serves mock-control at `90c65b9` on localhost (expects
