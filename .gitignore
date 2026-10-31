@@ -3,3 +3,4 @@ node_modules/
 site/
 .loom/cart/
 drafts/
+bin/
