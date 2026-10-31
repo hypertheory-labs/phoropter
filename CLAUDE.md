@@ -28,6 +28,12 @@ is thin. This file is Claude's; Jeff doesn't edit it. Keep it short and true.
   re-check). The cart (`/cart`, proto-plans the pair drafts) is phoropter's, arriving
   after 2026-10-30. The entry point is a plan for now; a file view may come, or an LSP
   adapter instead.
+- **This repo uses the plan format itself** (since 2026-10-31): plans in `plans/`, by
+  phoropter's guide, and a draft as `plan.draft.md` at the root (gitignored; we work on
+  main). Serve it with `node src/serve.ts ../phoropter-tui --port 4174` from
+  `../phoropter`. Use file anchors with a quote. Phoropter indexes only TypeScript, so a
+  Go symbol anchor won't resolve yet. Don't backfill plans for work already done; its
+  reasons are here and in the commits.
 - **When you refer to a plan in prose, say what it's about,** as phoropter's file asks.
 - **Layout:** `internal/microdata` (generic WHATWG microdata, nothing phoropter-specific),
   `internal/substrate` (typed pages, the ledger, the crawl), `internal/tui` (Bubble Tea

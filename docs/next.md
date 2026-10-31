@@ -121,6 +121,22 @@ A view, from the plan list or a file, of the entries whose reasons nobody has co
 lately: "Claude, not asked," unanswered fallbacks, guesses not tested, anchors that
 drifted. Rendered from phoropter's page, not computed here.
 
+## Later, to talk through: a phoropter CLI with plugins
+
+From Jeff, 2026-10-31. A `phoropter` command in the style of `gh` or `kubectl`. Starting
+it indexes what's missing, builds the site, and serves it. UIs and language indexers
+are plugins found on `PATH` (`phoropter ui` runs `phoropter-ui`, `phoropter index` runs
+`phoropter-index-go`, and so on). This TUI becomes one UI you could plug in. That an
+hour of work against the profile alone gave a usable reader is the evidence that the
+product is the API, not a UI.
+
+- **The boundary holds:** a UI plugin reads the served pages over HTTP, the same ones an
+  agent reads, and never phoropter's internals.
+- **Indexing lives in phoropter**, dispatched by the SCIP scheme each anchor already
+  names (`scip-go gomod …`). A missing indexer is a view status, not a failure.
+- **The gaps ledger could be the conformance test for any UI:** one that needs nothing
+  outside the profile is built correctly, and so is the API.
+
 ## Not planned
 
 - **Git history in the TUI.** If something belongs in a reader's picture, it belongs in
