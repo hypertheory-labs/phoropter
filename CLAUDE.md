@@ -10,6 +10,9 @@ pace with the work, not coverage.
   `guide/`. Read it before writing a plan or changing how phoropter reads them. A
   format change is a phoropter plan, and the guide changes in the same work. Aide's
   format plans (lanyard, grommet, bodkin, awl) are history, not the rules.
+- **A plan lands whole.** If it would leave a gap that only a later plan fills, reorder
+  them or merge them. Two plans that only work together are a distributed transaction
+  (Jeff); the index store was shelved until the `phoropter` command's plan for that.
 - **Changing your mind about an earlier plan is a revisit**: its own plan, with
   `revisits:`, asked in that plan's frame, saying what moved.
 - **Drafts:** `drafts/plan.draft.md`, one at a time, as the guide says (`drafts/` is
