@@ -62,6 +62,7 @@ func TestWalkAPlan(t *testing.T) {
 		t.Fatal(err)
 	}
 	m := New(c, c.Ledger)
+	m.dir = t.TempDir() // no draft on disk, whatever this checkout has
 	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
 	drive(t, m, m.Init())
 
