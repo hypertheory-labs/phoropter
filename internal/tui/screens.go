@@ -43,6 +43,10 @@ func move(cur, n int, k string) int {
 		return 0
 	case "end", "G":
 		return n - 1
+	case "tab":
+		return (cur + 1) % n
+	case "shift+tab":
+		return (cur + n - 1) % n
 	}
 	return cur
 }
@@ -416,9 +420,9 @@ func (s *docScreen) help() string {
 		return "j/k choose · enter follow · esc close"
 	}
 	if s.plan.Draft != nil {
-		return "j/k move · a answer or note · s skip · tab anchor · 1 2 3 layer · enter links · r refresh · esc back"
+		return "j/k or tab move · a answer or note · s skip · n anchor · 1 2 3 layer · enter links · r refresh · esc back"
 	}
-	return "j/k entry · tab anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
+	return "j/k or tab entry · n anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
 }
 
 // refresh reads the plan and its as-built again, back at the same entry.
@@ -454,15 +458,15 @@ func (s *docScreen) key(m *Model, k string) tea.Cmd {
 		return nil
 	}
 	switch k {
-	case "j", "down", "k", "up", "home", "end", "G":
+	case "j", "down", "k", "up", "home", "end", "G", "tab", "shift+tab":
 		s.cur = move(s.cur, len(s.rows), k)
 		s.settle()
-	case "tab", "n":
+	case "n":
 		if e := s.rows[s.cur].entry; e != nil && len(e.Anchors) > 0 {
 			s.anchor = (s.anchor + 1) % len(e.Anchors)
 			s.scroll = 0
 		}
-	case "shift+tab", "N":
+	case "N":
 		if e := s.rows[s.cur].entry; e != nil && len(e.Anchors) > 0 {
 			s.anchor = (s.anchor + len(e.Anchors) - 1) % len(e.Anchors)
 			s.scroll = 0

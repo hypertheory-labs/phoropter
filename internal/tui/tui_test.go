@@ -221,3 +221,16 @@ func TestTextBoxWraps(t *testing.T) {
 		t.Fatalf("text box:\n%s", s)
 	}
 }
+
+// tab moves through a list like j, and wraps at the end; shift+tab goes back.
+func TestTabCycles(t *testing.T) {
+	if got := move(3, 4, "tab"); got != 0 {
+		t.Errorf("tab at the end = %d, want 0", got)
+	}
+	if got := move(0, 4, "shift+tab"); got != 3 {
+		t.Errorf("shift+tab at the top = %d, want 3", got)
+	}
+	if got := move(3, 4, "j"); got != 3 {
+		t.Errorf("j at the end = %d, want 3", got)
+	}
+}

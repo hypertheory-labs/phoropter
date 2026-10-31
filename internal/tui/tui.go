@@ -284,9 +284,9 @@ func (m *Model) gapsView(w int) string {
 
 const helpText = `Keys
 
-  plan list     j/k move · enter open · o newest or oldest first
+  plan list     j/k or tab move (tab wraps) · enter open · o newest or oldest first
                 the draft, when there is one, is in the slot at the top
-  plan          j/k entry · tab next anchor · 1 2 3 or [ ] layer
+  plan          j/k or tab entry · n/N next anchor · 1 2 3 or [ ] layer
                 J/K scroll the right pane · enter links from here · esc back
   place         j/k move · enter open that plan at its entry · esc back
   draft         a answer the prompt, or note the entry (on About, the whole draft)
