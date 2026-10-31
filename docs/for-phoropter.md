@@ -8,9 +8,17 @@ projection, and this is what it ran into.
 
 Every time the TUI reads past the profile (parses prose, leans on a class name, or has
 nothing to show), it notes a gap. `phoropter-tui gaps <site>` crawls a site and prints
-them. The counts here are from mock-control at `f02528f` (4 plans) and phoropter at
-`e8107f3` (7 plans), where the brief was first written, except where an item says otherwise. The current sites are in this repo's `testdata/`, built by phoropter's own
-`build.ts`.
+them. Counts are from when each item was written: mock-control at `f02528f` and
+phoropter at `e8107f3`, unless the item says otherwise. The current fixtures, in this
+repo's `testdata/`, are built by phoropter at `1a83dbc`.
+
+**Where this stands (2026-10-31):**
+- **Taken:** section 1's markup items, in selvage and osier.
+- **Open:** section 1's three path items, all of section 2, and the `checked` item in
+  section 5.
+- **Met condition, not yet taken:** section 3's ranking. Loden shelved it until there
+  was a draft to try it on.
+- **Floated:** section 4.
 
 Nothing here is a format decision. Each item says what a reader wanted to ask, what the
 pages say now, and which earlier plan's ground it stands on, so phoropter's plans can
@@ -119,12 +127,15 @@ Anchors that don't resolve at the generated commit (quote not found, or new) bel
 the page as "plans about this file that can't be placed," not dropped. That's drift, and
 it's the most interesting thing a file page can show.
 
-## 3. Dimensionality: what's already here, for the cart
+## 3. Dimensionality: what's already at a draft's places
 
-When the pair drafts a plan in the cart, its anchors name places. For each one, the
-question is "what else is already here, and does it matter to what we're about to do?"
-That's the guide's revisit rule, made visible before the work instead of found halfway
-through.
+When the pair writes a draft, its anchors name places. For each one, the question is
+"what else is already here, and does it matter to what we're about to do?" That's the
+guide's revisit rule, made visible before the work instead of found halfway through.
+
+Loden (the edge: one draft plan) declined this ranking for now: it "deserves its own
+plan once there's a draft to try it on." Phoropter-tui has written three plans as
+drafts since (ramie, batiste, challis), so there are drafts to try it on.
 
 Not every plan at a place matters equally. Roughly in order:
 
@@ -134,7 +145,7 @@ Not every plan at a place matters equally. Roughly in order:
 - **A decision you're changing**: that's a revisit, not a step in this plan.
 - **A drifted anchor**: the ground has moved since that plan.
 
-This ranking is reasoning, so it belongs in phoropter's cart pages, where the agent reads
+This ranking is reasoning, so it belongs on phoropter's draft page, where the agent reads
 it too. The TUI will render it.
 
 ### Declines are mostly invisible from places
@@ -163,8 +174,8 @@ The pages already carry signals for which reasons to re-check:
 - **Drift**, from the anchor's status at the generated commit.
 - **Guesses** that are unanswered or answered `not tested`.
 
-A page, or a section of the cart's place view, that gathers these would answer "which
-reasons here rest on something nobody has checked lately?"
+A page, or a section of the draft page's view of a place, that gathers these would
+answer "which reasons here rest on something nobody has checked lately?"
 
 A format idea, for phoropter to weigh against lanyard's "a reason squeezed into a field
 gets shorter and worse": a Guess says what would disprove it (`**Disproved if:**`), but a
@@ -177,8 +188,10 @@ changing in the same work.
 
 ## 5. From dogfooding (phoropter-tui's own plans, from 2026-10-31)
 
-This repo now writes its plans in the guide's format. Its first draft became ramie
-(reading the draft), and the TUI now reads draft pages. Two findings so far:
+This repo writes its plans in the guide's format, drafts and all. Its first draft
+became ramie (reading the draft). The TUI reads draft pages, and since batiste
+(answering from the TUI) it writes answers and notes by the annotating agreement,
+restated in `docs/annotating.md`. Three findings so far:
 
 - **A note that quotes a prompt isn't its answer, and that's correct.** Jeff answered
   both of ramie's prompts in nvim, and the draft page showed them as "Not answered yet",
