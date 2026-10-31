@@ -39,7 +39,17 @@ Print one JSON object and exit 0:
 
 `<dir>` is the repository checked out at one commit, at a temporary path. Each
 `package` is a package name, as it appears in symbols. With no packages named, index
-every package you find. Print one JSON object on stdout and exit 0:
+every package you find, anywhere in `<dir>`: a repository may hold several solutions,
+workspaces or modules. Print one JSON object on stdout and exit 0.
+
+**The checkout is bare.** Nothing has been restored, installed or built, and the
+network may not be there. The commit may be years old, and its packages, SDK or
+toolchain may be gone. An indexer that works from source alone (parsing, not
+compiling) keeps working on old commits; one that needs a restore or a build fails
+where it can't get them, or takes minutes where it can. A .NET experiment measured it:
+a syntax-only indexer took 0.2s on any commit, offline, and a build-based one took 8 to
+52s and failed or lost projects without the network. If yours needs a restore, make it
+optional, and report what couldn't load in `missing`.
 
 ```json
 {
@@ -60,14 +70,17 @@ every package you find. Print one JSON object on stdout and exit 0:
 
 - **`packages`:** for each package found, every definition: the symbol, then
   `[file, firstLine, lastLine]`.
-  - The file is relative to `<dir>`, with `/` separators, and must be in the repository.
-    No generated or cached files elsewhere on the machine.
+  - The file is relative to `<dir>`, with `/` separators, and must be a file that was in
+    the checkout. Generated files (`obj/`, build output, source-generator output) and
+    cached files elsewhere on the machine aren't definitions: no plan can quote them.
   - Lines are 1-based and inclusive.
   - The range is the **whole declaration**, from its first line through the end of its
     body, not just the line its name is on. Phoropter searches for a plan's quote within
     this range. A one-line range means a quote inside a method is never found.
-- **`missing`:** packages named on the command line that you couldn't find. Phoropter
-  shows their anchors as `no-index`.
+- **`missing`:** every package you know of but couldn't index, whether or not it was
+  named: one you couldn't find, and one you found but couldn't load. Never leave a
+  failed package out, or it looks like it doesn't exist. Phoropter shows its anchors as
+  `no-index`. It may be omitted when empty.
 - **Failure:** exit non-zero and write one line to stderr saying why, for example
   `scip-go isn't installed: go install …`. Phoropter puts that line on the anchor's
   view and builds everything else. Never let a failure look like an empty result.
@@ -93,7 +106,13 @@ whether or not your indexer uses SCIP. That way anchors read alike in every lang
 - **`manager`:** the package manager: `npm`, `gomod`, `nuget`, `maven`, `cargo`.
 - **`package`:** the name a package is known by. For npm, the `name` in its
   `package.json`. For Go, the module path in `go.mod`. For .NET, the project's
-  `PackageId` or `AssemblyName`. Phoropter asks for packages by this name.
+  `AssemblyName`, or the project file's name when it isn't set: the compiler's name for
+  it, readable without loading anything. Phoropter asks for packages by this name.
+
+  A package name may not be unique in a repository: copies of a project in several
+  solutions often share one. Index each project on its own, and where two define the
+  same symbol, the first in path order wins. Never number overloads or otherwise
+  combine across copies; that invents symbols that exist nowhere.
 - **`version`:** always `.`. Plans store symbols without versions, so a release doesn't
   break an anchor. Replace whatever version your tool produces with `.`.
 - **`descriptors`:** the path to the thing, each part ending in a suffix that says what
@@ -113,7 +132,30 @@ whether or not your indexer uses SCIP. That way anchors read alike in every lang
   backticks: ``src/`mock-panel.ts`/``.
 
 Leave out local variables. A plan anchors what a reader can find by name. Every type,
-member, function, field and constant is a definition.
+member, function, field and constant is a definition. Parameters and type parameters
+are optional, and better left out.
+
+### Naming what the table doesn't cover
+
+**When your language already has a SCIP indexer, name things as it does**, even if you
+don't wrap it: constructors, indexers, operators, events, accessors and the like have an
+established spelling there, and anchors read alike across tools. Read its source or its
+test output to find it. **Except where it loses information**, because a symbol that
+collides points an anchor at the wrong thing:
+- **Keep full namespace paths.** scip-dotnet keeps only the innermost segment
+  (`Vendors/VendorController#` for `Software.Api.Vendors.VendorController`), so types
+  that share a last segment collide. Write `Software/Api/Vendors/VendorController#`.
+- **Write generic arity when a name is reused.** If `Foo`, `Foo<T>` and `Foo<T,U>` share
+  a namespace, the lowest arity is `Foo#` and the others use the language's own arity
+  spelling, like .NET's `` `Foo`1`# ``.
+
+**A type declared in several places** (a partial class across files) gets one definition:
+the first part, ordering files by path, then by position. Its members keep their own
+ranges, so a quote inside one is still found. Number overloads in that same order.
+
+**Code with no name a reader can find** (top-level statements, the compiler's implicit
+`Program` and `<Main>$`) gets no definition. A plan anchors that file with a file anchor
+and a quote instead.
 
 ## Installing an indexer
 
@@ -158,7 +200,10 @@ indexers here pass it on phoropter's own repository.
 ## How phoropter uses what you print
 
 - Phoropter runs the indexer on a temporary checkout, once per commit, for the packages
-  a site's anchors ask for.
+  a site's anchors ask for. **It gives it 5 minutes** (`PHOROPTER_INDEX_TIMEOUT`, in
+  seconds, changes that), then stops it and shows its anchors as `no-index`, timed out.
+  An indexer that works from source finishes in well under a second on most
+  repositories.
 - It keeps the definitions, never re-indexing a commit it already has:
   - the commits plans were written against go in `.phoropter/index/<sha>/<package>.json`,
     committed by `phoropter index`, so an old plan's anchors resolve after your
@@ -174,7 +219,9 @@ phoropter symbols tui/internal/tui/screens.go
 ```
 
 This prints each symbol defined in the file with its lines, at `HEAD`, ready to paste
-into a plan:
+into a plan. When more than one installed indexer handles the file's extension, each
+scheme's symbols are listed under its own heading; `--scheme <scheme>` shows one. The
+scheme a plan's anchor starts with decides which indexer finds it.
 
 ```markdown
 - where: ``scip-go gomod phoropter-tui . `phoropter-tui/internal/tui`/docScreen#annotate().``

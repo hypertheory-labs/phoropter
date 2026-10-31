@@ -29,7 +29,7 @@ const USAGE = `usage:
   phoropter build [path] [--at <commit>] [--out site]   write the static site
   phoropter index [path] [--at <commit>]   commit the indexes plans need into .phoropter/index/
   phoropter url [path]   print the address phoropter is serving this repository at
-  phoropter symbols <file>   list the symbols defined in a file, ready for a plan's where:
+  phoropter symbols <file> [--scheme <scheme>]   list the symbols defined in a file, ready for a plan's where:
   phoropter index --check <program or indexer dir> [path]   check an indexer against indexers/README.md`;
 
 // The repository holding a path: its root, found by walking up to `.git`.
@@ -93,7 +93,7 @@ async function main(argv: string[]): Promise<void> {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
-    options: { at: { type: 'string' }, port: { type: 'string' }, out: { type: 'string' }, check: { type: 'string' }, help: { type: 'boolean', short: 'h' } },
+    options: { at: { type: 'string' }, port: { type: 'string' }, out: { type: 'string' }, check: { type: 'string' }, scheme: { type: 'string' }, help: { type: 'boolean', short: 'h' } },
   });
   const command = positionals[0] && COMMANDS.has(positionals[0]) ? positionals.shift()! : 'serve';
   if (command === 'help' || values.help) {
@@ -118,23 +118,33 @@ async function main(argv: string[]): Promise<void> {
   if (command === 'symbols') {
     const rel = relative(root, resolve(target!));
     const ext = extname(rel);
-    const candidates = indexers().filter((i) => i.extensions.includes(ext));
-    if (!candidates.length) fail(`no indexer here handles ${ext} files (see indexers/README.md)`);
+    // Every indexer for the file's extension, or the one --scheme names. With
+    // more than one, each scheme's symbols are listed under its own heading
+    // (dimity): a plan author picks one, and the scheme picks the indexer.
+    const all = indexers().filter((i) => i.extensions.includes(ext));
+    const candidates = values.scheme ? all.filter((i) => i.scheme === values.scheme) : all;
+    if (!all.length) fail(`no indexer here handles ${ext} files (see indexers/README.md)`);
+    if (!candidates.length) fail(`no indexer for ${ext} files has scheme ${values.scheme}; there's ${all.map((i) => i.scheme).join(', ')}`);
     const sha = repo.resolve(at)!;
     const tree = repo.checkout(sha);
-    const found: [number, number, string][] = [];
+    const byScheme = new Map<string, [number, number, string][]>();
     try {
       for (const info of candidates) {
+        const found: [number, number, string][] = [];
         const out = runIndexer(info, tree);
         for (const { definitions } of Object.values(out.packages)) {
           for (const [symbol, [f, s, e]] of Object.entries(definitions)) if (f === rel) found.push([s, e, symbol]);
         }
+        if (found.length) byScheme.set(`${info.scheme} (${info.indexer})`, found);
       }
     } finally {
       removeDir(tree);
     }
-    if (!found.length) fail(`nothing defined in ${rel} at ${repo.short(sha)} (uncommitted changes aren't indexed)`);
-    for (const [s, e, symbol] of found.sort((a, b) => a[0] - b[0] || a[2].localeCompare(b[2]))) console.log(`${`${s}–${e}`.padEnd(10)} ${symbol}`);
+    if (!byScheme.size) fail(`nothing defined in ${rel} at ${repo.short(sha)} (uncommitted changes aren't indexed)`);
+    for (const [heading, found] of byScheme) {
+      if (byScheme.size > 1) console.log(`${heading}:`);
+      for (const [s, e, symbol] of found.sort((a, b) => a[0] - b[0] || a[2].localeCompare(b[2]))) console.log(`${byScheme.size > 1 ? '  ' : ''}${`${s}–${e}`.padEnd(10)} ${symbol}`);
+    }
     return;
   }
 

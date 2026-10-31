@@ -5,6 +5,10 @@ import './cache.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { chmodSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { runIndexer } from '../src/indexers.ts';
 import { lastName } from '../src/check.ts';
 import { checkIndexer } from '../src/check.ts';
 import { Repo } from '../src/git.ts';
@@ -90,4 +94,39 @@ test('--check reads made-up and differently spelled names, and still catches bad
   for (const n of names) wrong[`roslyn nuget p . Thing#${n}().`] = ['src/store.ts', 1, 1];
   const failing = checkIndexer({ command: fake(wrong) }, here);
   assert.ok(!failing.ok);
+});
+
+// dimity: an indexer that runs past the limit is stopped, and says so.
+test('an indexer that runs too long is stopped, and the error says it timed out', () => {
+  const before = process.env.PHOROPTER_INDEX_TIMEOUT;
+  process.env.PHOROPTER_INDEX_TIMEOUT = '1';
+  try {
+    assert.throws(() => runIndexer({ command: ['node', '-e', 'setTimeout(() => {}, 60000)', '--'] }, '.'), /timed out after 1s/);
+  } finally {
+    if (before === undefined) delete process.env.PHOROPTER_INDEX_TIMEOUT;
+    else process.env.PHOROPTER_INDEX_TIMEOUT = before;
+  }
+});
+
+// dimity: two indexers for one extension list their symbols under a heading
+// each, and --scheme picks one. Fakes on a PATH of their own, in their own process.
+test('phoropter symbols groups by scheme when two indexers claim a file, and --scheme picks one', () => {
+  const bin = mkdtempSync(join(tmpdir(), 'phoropter-bin-'));
+  for (const scheme of ['alpha', 'beta']) {
+    const path = join(bin, `phoropter-index-${scheme}`);
+    writeFileSync(path, `#!/usr/bin/env node
+const out = { indexer: '${scheme}-indexer', version: '0', scheme: '${scheme}', extensions: ['.ts'] };
+if (process.argv[2] === '--describe') { console.log(JSON.stringify(out)); process.exit(0) }
+console.log(JSON.stringify({ ...out, packages: { p: { definitions: { '${scheme} npm p . src/\`store.ts\`/Store#': ['src/store.ts', 1, 2] } } } }));
+`);
+    chmodSync(path, 0o755);
+  }
+  const cli = new URL('../src/cli.ts', import.meta.url).pathname;
+  const env = { ...process.env, PATH: `${bin}:${process.env.PATH}` };
+  const run = (...args: string[]) => spawnSync(process.execPath, [cli, 'symbols', 'src/store.ts', ...args], { cwd: here.dir, env, encoding: 'utf8' }).stdout;
+  const both = run();
+  assert.match(both, /^alpha \(alpha-indexer\):\n  1–2 +alpha npm p/m);
+  assert.match(both, /^beta \(beta-indexer\):\n  1–2 +beta npm p/m);
+  const one = run('--scheme', 'beta');
+  assert.ok(!one.includes('alpha') && one.startsWith('1–2'), one);
 });

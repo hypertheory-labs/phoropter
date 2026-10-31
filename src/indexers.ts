@@ -75,10 +75,21 @@ export function indexerFor(scheme: string): IndexerInfo | undefined {
   return indexers().find((i) => i.scheme === scheme);
 }
 
+// How long an indexer may run before phoropter stops it (dimity): 5 minutes,
+// or PHOROPTER_INDEX_TIMEOUT seconds. Anything longer is more likely stuck,
+// like a package restore retrying with no network, than slow.
+export function indexTimeout(): number {
+  const seconds = Number(process.env.PHOROPTER_INDEX_TIMEOUT);
+  return (Number.isFinite(seconds) && seconds > 0 ? seconds : 300) * 1000;
+}
+
 // Runs an indexer on a checked-out directory, for some packages (all of them
-// when none are named). Throws with the indexer's own one line on failure.
+// when none are named). Throws with the indexer's own one line on failure, or
+// says it timed out.
 export function runIndexer(info: Pick<IndexerInfo, 'command' | 'cwd'>, dir: string, packages: string[] = []): IndexerOutput {
-  const r = spawnSync(info.command[0], [...info.command.slice(1), dir, ...packages], { cwd: info.cwd, encoding: 'utf8', maxBuffer: 1 << 30 });
+  const timeout = indexTimeout();
+  const r = spawnSync(info.command[0], [...info.command.slice(1), dir, ...packages], { cwd: info.cwd, encoding: 'utf8', maxBuffer: 1 << 30, timeout, killSignal: 'SIGKILL' });
+  if ((r.error as NodeJS.ErrnoException | undefined)?.code === 'ETIMEDOUT' || r.signal === 'SIGKILL') throw new Error(`timed out after ${timeout / 1000}s (PHOROPTER_INDEX_TIMEOUT changes the limit)`);
   if (r.error) throw new Error(`couldn't run ${info.command.join(' ')}: ${r.error.message}`);
   if (r.status !== 0) throw new Error((r.stderr || `exited ${r.status}`).trim().split('\n').at(-1)!);
   return JSON.parse(r.stdout) as IndexerOutput;
