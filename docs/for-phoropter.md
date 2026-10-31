@@ -180,15 +180,12 @@ changing in the same work.
 This repo now writes its plans in the guide's format. Its first draft became ramie
 (reading the draft), and the TUI now reads draft pages. Two findings so far:
 
-- **A note that quotes a prompt isn't its answer.** Jeff answered both of ramie's
-  prompts in nvim, and annotations.nvim wrote them as ordinary notes: `## L37-38`, the
-  prompt quoted, then the answer. The draft page showed both prompts as "Not answered
-  yet" and the answers as annotations after the entry. Loden counts an answer only
-  when the note's heading restates the prompt (`## Question: …`). Either
-  annotations.nvim should offer that heading when the quote is a prompt, or phoropter
-  could treat a note whose quote is a prompt's heading line as its answer. That's a
-  decision for phoropter and the agreement. It matters to us too, since the TUI's
-  answering will write whichever shape is decided.
+- **A note that quotes a prompt isn't its answer, and that's correct.** Jeff answered
+  both of ramie's prompts in nvim, and the draft page showed them as "Not answered yet",
+  with the answers as ordinary notes. Phoropter matches a restated prompt heading
+  (`## Question: …`), as the agreement says. annotations.nvim hasn't implemented
+  answering prompts yet, so it wrote quoted notes instead. Nothing for phoropter to
+  change. It does strengthen the case for the TUI answering prompts.
 - **Go symbol anchors don't resolve.** Phoropter indexes only with scip-typescript, so
   this repo's plans use file anchors with a quote. Where indexing should live, and a
   plugin for each language, is a conversation Jeff and Claude are having first; see

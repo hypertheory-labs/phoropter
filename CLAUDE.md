@@ -34,6 +34,10 @@ is thin. This file is Claude's; Jeff doesn't edit it. Keep it short and true.
   `../phoropter`. Use file anchors with a quote. Phoropter indexes only TypeScript, so a
   Go symbol anchor won't resolve yet. Don't backfill plans for work already done; its
   reasons are here and in the commits.
+- **`.loom/` is lineage, not a dependency.** Jeff keeps copies of documents this work
+  descends from there (the annotating agreement among them). Read them, but don't
+  reference `.loom` paths from code or docs, and don't require loom tooling. What we
+  adopt is restated here in our own words, as phoropter does.
 - **When you refer to a plan in prose, say what it's about,** as phoropter's file asks.
 - **Layout:** `internal/microdata` (generic WHATWG microdata, nothing phoropter-specific),
   `internal/substrate` (typed pages, the ledger, the crawl), `internal/tui` (Bubble Tea
