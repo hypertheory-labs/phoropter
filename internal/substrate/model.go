@@ -267,14 +267,15 @@ func (c *Client) Doc(ref string) (*Doc, error) {
 	}
 	if p.Draft != nil {
 		d.Draft, d.AnchorsAt, d.Name = p.Draft, p.AnchorsAt, "draft"
-		draftExtras(d, it, p.Doc.Root)
+		c.draftExtras(d, it, p)
 	}
 	return d, nil
 }
 
 // draftExtras reads a draft's prompts and annotations. Each belongs to the
 // entry it follows in the page, so it's placed by tree order.
-func draftExtras(d *Doc, it *microdata.Item, root *html.Node) {
+func (c *Client) draftExtras(d *Doc, it *microdata.Item, p *Page) {
+	root := p.Doc.Root
 	pos := map[*html.Node]int{}
 	var walk func(n *html.Node)
 	walk = func(n *html.Node) {
@@ -300,6 +301,9 @@ func draftExtras(d *Doc, it *microdata.Item, root *html.Node) {
 			Text:     prose(v.Get("text")),
 			Fallback: prose(v.Get("fallback")),
 			Answer:   prose(v.Get("answer")),
+		}
+		if a := v.Get("answer"); a != nil && hasCheckbox(a.Node) {
+			c.Ledger.Note("answer-choices-unprofiled", p.URL, "%s: %s", pr.Kind, pr.Text)
 		}
 		for _, o := range v.Props["option"] {
 			pr.Options = append(pr.Options, prose(o))
@@ -506,6 +510,14 @@ func prose(v *microdata.Value) string {
 		case n.Type == html.ElementNode && n.Data == "code":
 			b.WriteString("`" + microdata.TextContent(n) + "`")
 			return
+		case n.Type == html.ElementNode && n.Data == "input" && microdata.Attr(n, "type") == "checkbox":
+			// A Select's answer: which options were chosen is only in checked.
+			if hasAttr(n, "checked") {
+				b.WriteString("[x] ")
+			} else {
+				b.WriteString("[ ] ")
+			}
+			return
 		case n.Type == html.ElementNode && (n.Data == "p" || n.Data == "li" || n.Data == "pre"):
 			if b.Len() > 0 {
 				b.WriteString("\n\n")
@@ -528,6 +540,27 @@ func prose(v *microdata.Value) string {
 
 // linkSentence is the sentence an answeredBy link sits in, which carries the
 // verdict ("Answered in the as-built: held.").
+func hasAttr(n *html.Node, key string) bool {
+	for _, a := range n.Attr {
+		if a.Key == key {
+			return true
+		}
+	}
+	return false
+}
+
+func hasCheckbox(n *html.Node) bool {
+	if n.Type == html.ElementNode && n.Data == "input" && microdata.Attr(n, "type") == "checkbox" {
+		return true
+	}
+	for ch := n.FirstChild; ch != nil; ch = ch.NextSibling {
+		if hasCheckbox(ch) {
+			return true
+		}
+	}
+	return false
+}
+
 func linkSentence(v *microdata.Value) string {
 	if p := v.Node.Parent; p != nil {
 		return prose(&microdata.Value{Node: p})

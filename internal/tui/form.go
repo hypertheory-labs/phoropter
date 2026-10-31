@@ -26,6 +26,7 @@ type form struct {
 	note    []rune // **Note:** on any answer
 	field   int    // 0 the answer, 1 the note
 	first   bool   // no notes file yet, so writing fixes the draft
+	leaving bool   // esc once with something typed; esc again discards
 	err     string
 }
 
@@ -62,8 +63,15 @@ func (f *form) help() string {
 // the form asked to write or to cancel.
 func (f *form) key(msg tea.KeyMsg) (write, cancel bool, edit *[]rune) {
 	f.err = ""
+	leaving := f.leaving
+	f.leaving = false
 	switch msg.String() {
 	case "esc":
+		if f.dirty() && !leaving {
+			f.leaving = true
+			f.err = "esc again throws away what's here; any other key keeps it"
+			return
+		}
 		return false, true, nil
 	case "ctrl+s":
 		return true, false, nil
@@ -110,6 +118,19 @@ func (f *form) key(msg tea.KeyMsg) (write, cancel bool, edit *[]rune) {
 	return
 }
 
+// dirty is whether closing the form would lose anything.
+func (f *form) dirty() bool {
+	if len(f.text) > 0 || len(f.note) > 0 || f.yes != nil {
+		return true
+	}
+	for _, c := range f.checked {
+		if c {
+			return true
+		}
+	}
+	return false
+}
+
 // lines are what goes under the restated heading, by docs/annotating.md.
 func (f *form) lines() ([]string, error) {
 	var out []string
@@ -137,6 +158,10 @@ func (f *form) lines() ([]string, error) {
 		return nil, fmt.Errorf("the TUI doesn't know how to answer a %s", f.prompt.Kind)
 	}
 	if note := strings.TrimSpace(string(f.note)); note != "" {
+		if f.prompt.Kind == "Select" {
+			// Directly under the list, markdown would make it the last option's.
+			out = append(out, "")
+		}
 		out = append(out, "**Note:** "+note)
 	}
 	return out, nil

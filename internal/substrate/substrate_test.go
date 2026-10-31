@@ -222,7 +222,7 @@ func TestDraft(t *testing.T) {
 	if q.Kind != "Question" || q.After != first || !strings.HasPrefix(q.Answer, "Per app.") || q.Fallback != "per app, keyed by origin." {
 		t.Errorf("question = %+v", q)
 	}
-	if sel.Kind != "Select" || sel.After != d.Entries[1].ID || len(sel.Options) != 2 || sel.Answer != "" {
+	if sel.Kind != "Select" || sel.After != d.Entries[1].ID || len(sel.Options) != 2 || sel.Answer != "[x] all four\n\n[ ] only the bottom two\n\nNote: the top two hold the browser's UI." {
 		t.Errorf("select = %+v", sel)
 	}
 	if len(d.Annotations) != 2 {
@@ -235,8 +235,10 @@ func TestDraft(t *testing.T) {
 	if quoted.After != first || !strings.Contains(quoted.Quote, "people move it out of the way") {
 		t.Errorf("quoted note = %+v", quoted)
 	}
-	// Ramie's guess: a draft page needs nothing beyond the profile.
-	if g := l.Gaps(); len(g) != 0 {
-		t.Errorf("reading the draft noted gaps:\n%s", l.Report())
+	// Ramie's guess, that a draft page needs nothing beyond the profile, held
+	// until a Select was answered: which options were chosen is only in each
+	// checkbox's checked (crewel).
+	if g := l.Gaps(); len(g) != 1 || g[0].ID != "answer-choices-unprofiled" {
+		t.Errorf("reading the draft noted:\n%s", l.Report())
 	}
 }

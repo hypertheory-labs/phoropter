@@ -20,13 +20,14 @@ type Gap struct {
 }
 
 var catalog = map[string]string{
-	"view-no-code":          "A view exists at this commit but carries no code, so this layer can't be shown.",
-	"same-as-deref":         "A collapsed generated view omits its code, and the TUI copies it from the view sameAs names. Deliberate: marl kept the collapsed view whole (role, commit, status) and dropped only the code, so an agent reading three views gets three answers.",
-	"new-never-resolved":    "A where (new) anchor has no views, even at the as-built head where the work made it.",
-	"where-path-unresolved": "A where with a › path (heading or key) is resolved only by its quote; the path gives no range.",
-	"symbol-file-unlinked":  "A symbol page names its file but doesn't link a file page, so \"other plans in this file\" misses it.",
-	"answer-elsewhere":      "A guess answered in another plan is two hops away (anchoredBy, then answeredBy). Deliberate: sorrel declined a skipping link, since only the answering plan's prose says it answers this one.",
-	"place-url-convention":  "There's no declared way to find a place by path; files/<path>/ is a convention the profile doesn't state.",
+	"view-no-code":              "A view exists at this commit but carries no code, so this layer can't be shown.",
+	"same-as-deref":             "A collapsed generated view omits its code, and the TUI copies it from the view sameAs names. Deliberate: marl kept the collapsed view whole (role, commit, status) and dropped only the code, so an agent reading three views gets three answers.",
+	"new-never-resolved":        "A where (new) anchor has no views, even at the as-built head where the work made it.",
+	"where-path-unresolved":     "A where with a › path (heading or key) is resolved only by its quote; the path gives no range.",
+	"symbol-file-unlinked":      "A symbol page names its file but doesn't link a file page, so \"other plans in this file\" misses it.",
+	"answer-elsewhere":          "A guess answered in another plan is two hops away (anchoredBy, then answeredBy). Deliberate: sorrel declined a skipping link, since only the answering plan's prose says it answers this one.",
+	"answer-choices-unprofiled": "A Select's answer says which options were chosen only by each checkbox's checked attribute; there's no property for the choices.",
+	"place-url-convention":      "There's no declared way to find a place by path; files/<path>/ is a convention the profile doesn't state.",
 }
 
 type Ledger struct {

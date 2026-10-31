@@ -87,13 +87,17 @@ alone, and so phoropter can match it to its prompt by kind and exact text:
 ## Select: Which corners count?
 - [x] all four
 - [ ] only the bottom two
+
 **Note:** the top two are where the browser's own UI lives.
 
 ## Affirm: Ship behind a flag?
 **Answer:** No.
 ```
 
-- Any answer may carry a `**Note:**` with more to say.
+- Any answer may carry a `**Note:**` with more to say. After a `Select`'s list, leave a
+  blank line first. Directly under the list, markdown makes the note part of the last
+  option, and phoropter's page shows it there. The agreement's own example doesn't have
+  the blank line; this is the one place this page departs from it.
 - **A prompt may be skipped on purpose**, so "considered and passed" stays different
   from "never got to it":
 

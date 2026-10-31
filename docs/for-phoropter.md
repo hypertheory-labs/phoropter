@@ -186,6 +186,13 @@ This repo now writes its plans in the guide's format. Its first draft became ram
   (`## Question: …`), as the agreement says. annotations.nvim hasn't implemented
   answering prompts yet, so it wrote quoted notes instead. Nothing for phoropter to
   change. It does strengthen the case for the TUI answering prompts.
+- **A Select's choices are only in `checked`.** Phoropter renders an answer's `- [x]`
+  list as disabled checkboxes, so which options were chosen is only each `<input>`'s
+  `checked` attribute. The profile has no property for it, and a reader that takes the
+  answer as text sees every option alike (`answer-choices-unprofiled`). *Ask:* the
+  chosen options as properties, say a `chosen` value for each, inside the `answer`.
+  This also disproves ramie's guess (reading the draft needs nothing beyond the
+  profile) for a draft with an answered Select. Ramie only tested unanswered ones.
 - **Go symbol anchors don't resolve.** Phoropter indexes only with scip-typescript, so
   this repo's plans use file anchors with a quote. Where indexing should live, and a
   plugin for each language, is a conversation Jeff and Claude are having first; see

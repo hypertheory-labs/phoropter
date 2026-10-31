@@ -119,13 +119,13 @@ func TestReadADraft(t *testing.T) {
 	}
 	press(t, m, "enter")
 	s := screenText(t, m)
-	for _, want := range []string{"draft, not committed, read at 16:12 UTC · anchors at f02528f", "About this draft", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "? Select: Which corners count?"} {
+	for _, want := range []string{"draft, not committed, read at 16:49 UTC · anchors at f02528f", "About this draft", "✎ General (Jeff)", "✓ Question: Should the corner", "✎ L14 (Jeff)", "✓ Select: Which corners count?"} {
 		if !strings.Contains(s, want) {
 			t.Fatalf("draft screen lacks %q:\n%s", want, s)
 		}
 	}
 	press(t, m, "G")
-	if s := screenText(t, m); !strings.Contains(s, "• only the bottom two") || !strings.Contains(s, "Not answered yet") {
+	if s := screenText(t, m); !strings.Contains(s, "• only the bottom two") || !strings.Contains(s, "[x] all four") || !strings.Contains(s, "[ ] only the bottom two") {
 		t.Fatalf("select prompt:\n%s", s)
 	}
 	// r reads the draft again and lands on the entry the prompt follows.
@@ -165,6 +165,15 @@ func TestAnswerADraft(t *testing.T) {
 	if len(m.stack) != 2 {
 		t.Fatalf("form didn't write: %s\n%s", m.status, screenText(t, m))
 	}
+	// esc with something typed asks first; a second esc discards.
+	press(t, m, "G", "a", " ", "esc")
+	if s := screenText(t, m); !strings.Contains(s, "esc again throws away") {
+		t.Fatalf("esc should ask first:\n%s", s)
+	}
+	press(t, m, "esc")
+	if s := screenText(t, m); strings.Contains(s, "Answer · Select") {
+		t.Fatalf("second esc should close the form:\n%s", s)
+	}
 	// A note on the Decline, then on the whole draft.
 	press(t, m, "G", "k", "a", "W", "h", "y", "?", "ctrl+s")
 	press(t, m, "home", "a", "G", "o", ".", "ctrl+s")
@@ -176,7 +185,7 @@ func TestAnswerADraft(t *testing.T) {
 		"# Notes on plan.draft.md\n<!-- annotates: plan.draft.md sha256:",
 		"\n\n## — jeff\n\nGo.\n",
 		"\n\n## L18 — jeff\n> ## Decline: A drag handle\n\nWhy?\n",
-		"\n\n## Select: Which corners count?\n- [x] all four\n- [ ] only the bottom two\n**Note:** quiet\n",
+		"\n\n## Select: Which corners count?\n- [x] all four\n- [ ] only the bottom two\n\n**Note:** quiet\n",
 	}
 	got := string(notes)
 	last := -1
