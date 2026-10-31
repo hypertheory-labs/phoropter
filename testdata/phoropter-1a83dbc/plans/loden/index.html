@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The edge: one draft plan, served live, with its notes beside it · phoropter at 1a83dbc</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="meta">1a83dbc6bce50d8051eecafbdcf86a9d21d89799</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 1a83dbc</a></nav>
+<article itemscope>
+<h1 itemprop="title">The edge: one draft plan, served live, with its notes beside it</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">loden</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-31">2026-10-31</time>, added in <data itemprop="added" value="7edec13db4a9343b5a753a1da07a4a9d8dadfee6"><code>7edec13</code></data> <time datetime="2026-10-31T15:09:14.000Z">15:09 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="f62365f7043f250d6d71b2f77f4019bb8fa2f3f2"><code>f62365f</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-loden.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/loden/as-built/">plans/2026-10-31-loden.as-built.md</a></dd>
+<dt>Revisits</dt><dd><a rel="revisits" itemprop="revisits" href="../../plans/gimlet/">Phoropter v0: open one plan and walk it</a> <span class="meta">gimlet</span></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Jeff wants to question a plan before it&#39;s testimony, at the level of his understanding,
+without that ever becoming an approval step. The hope reaches past this pair: a
+developer on a branch can say &quot;can you look over my plan?&quot;, and a senior or mentor&#39;s
+feedback lands before the code exists, instead of in judgment at the code review.</p>
+<p>So a repository has at most one draft, <code>plan.draft.md</code> at its root. Phoropter&#39;s dev
+server shows it the way it shows a plan, with its anchors resolved, its open questions
+and their fallbacks, and any annotations beside what they quote. When the pair is
+confident, the draft becomes a plan in <code>plans/</code> and the draft is gone. Where the thinking before
+the draft happened (a cart, a conversation, a whiteboard) is none of phoropter&#39;s
+business.</p>
+<p>It&#39;s a revisit of gimlet, phoropter&#39;s first version, which decided the site is a pure
+function of one commit: &quot;nothing goes stale; a page is only ever old,&quot; and every page
+says its commit. A draft is uncommitted by nature. Asked in gimlet&#39;s frame: does a draft
+belong on the site? What moved is our understanding: gimlet was about reading plans
+that exist, and the edge is about the moment before one does.</p>
+</div>
+<section class="entry" id="there-is-one-draft-plan-draft-md-at-the-repository-s-root" itemprop="entry" itemscope>
+<h2><a class="self" href="#there-is-one-draft-plan-draft-md-at-the-repository-s-root"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">There is one draft, <code>plan.draft.md</code>, at the repository&#39;s root</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md › Working with plans › Drafts (optional)</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="note" itemprop="note">no quote, so nothing to search for</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> the highlander principle. A folder of <code>draft.drp</code>, <code>draft-2.drp</code>,
+<code>final.drp</code>, <code>final-i-really-mean-it.drp</code> is what happens when drafts can pile up, and
+a pile of draft plans is a backlog. One fixed name means anyone opening the repository
+sees whether a plan is being drafted, and the dev server finds it without being told.
+Its notes are <code>plan.draft.notes.md</code>, by the annotating agreement. Parallel work isn&#39;t
+blocked: each branch or worktree has its own working tree, so it has its own draft. A
+draft that wants to be two plans gets smaller: the rest waits wherever the pair keeps
+such things (a cart&#39;s shelf, for a pair using carts) and is drafted after this one
+converts.</p>
+<p>Most plans are never drafts; they go straight to <code>plans/</code>. A draft is for when the
+agent&#39;s confidence or the shared understanding is thin, or when the pair has agreed,
+for a session, that the human sees every plan first: not to judge it, but to follow it.
+Who decides that is the pair&#39;s to work out, not the format&#39;s.</p>
+</div>
+</section>
+<section class="entry" id="naming-a-draft-on-the-command-line-draft-file" itemprop="entry" itemscope>
+<h2><a class="self" href="#naming-a-draft-on-the-command-line-draft-file"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Naming a draft on the command line, <code>--draft &lt;file&gt;</code></span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, then Claude</span>):</strong> it was this draft&#39;s first version, to keep carts out
+of phoropter&#39;s code. A fixed name does that better: there&#39;s nothing to remember to
+pass, and nothing to point at a cart. A flag like this is a configuration override, and
+adding one now would be timid too early (Jeff); the convention should be solid first.</p>
+</div>
+</section>
+<section class="entry" id="more-than-one-draft-at-a-time" itemprop="entry" itemscope>
+<h2><a class="self" href="#more-than-one-draft-at-a-time"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">More than one draft at a time</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> see the decision above. If a real case for two drafts in one
+working tree shows up, that&#39;s a later plan, with the case in it.</p>
+</div>
+</section>
+<section class="entry" id="ignoring-the-draft-in-git-is-a-suggestion-not-a-requirement" itemprop="entry" itemscope>
+<h2><a class="self" href="#ignoring-the-draft-in-git-is-a-suggestion-not-a-requirement"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Ignoring the draft in git is a suggestion, not a requirement</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">.gitignore</code> <a rel="anchored-at" itemprop="place" href="../../files/.gitignore/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">.loom/cart/</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f62365f7043f250d6d71b2f77f4019bb8fa2f3f2"><code>f62365f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">.gitignore</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="4"><meta itemprop="endLine" content="4"></span>
+<span class="note" itemprop="note">quote at line 4</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">.DS_Store</span>
+<span class="line">node_modules/</span>
+<span class="line">site/</span>
+<mark class="line">.loom/cart/</mark>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">.gitignore</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="4"><meta itemprop="endLine" content="4"></span>
+<span class="note" itemprop="note">quote at line 4</span>
+</figcaption>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">.DS_Store</span>
+<span class="line">node_modules/</span>
+<span class="line">site/</span>
+<mark class="line">.loom/cart/</mark>
+<span class="line">plan.draft.md</span>
+<span class="line">plan.draft.notes.md</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">.gitignore</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="4"><meta itemprop="endLine" content="4"></span><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> on a branch, committing the draft (and its notes) is how a mentor
+reads it before the code: they check out the branch and run the dev server. Working
+alone on a main line, there&#39;s no reason to commit it. People can figure out which they
+are. Nothing breaks either way: <code>build.ts</code> reads only <code>plans/</code>, so a committed draft
+never reaches a built site. This repository ignores <code>plan.draft.md</code> and
+<code>plan.draft.notes.md</code>, since Jeff and Claude work on main.</p>
+</div>
+</section>
+<section class="entry" id="converting-a-draft-writes-the-plan-and-removes-the-draft" itemprop="entry" itemscope>
+<h2><a class="self" href="#converting-a-draft-writes-the-plan-and-removes-the-draft"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Converting a draft writes the plan and removes the draft</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md › Working with plans › Drafts (optional)</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="note" itemprop="note">no quote, so nothing to search for</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> a draft doesn&#39;t need a name or a date until it&#39;s a plan,
+and the guide&#39;s date is &quot;the day you say we&#39;re implementing this,&quot; which is the moment
+of converting. Converting writes <code>plans/YYYY-MM-DD-&lt;name&gt;.md</code>, folds each answer into
+its entry&#39;s reason, labels a fallback that became the decision (<code>Claude, unanswered, so its fallback</code>), drops the prompts and the draft comment, and deletes
+<code>plan.draft.md</code> and its notes. When the pair has enough confidence, the draft converts
+whether or not every prompt is answered, since silence means proceed. Usually the
+agent says it&#39;s ready, and either can; whoever wrote the draft converts it, usually the
+agent. Phoropter only reads. Some will push back on converting with prompts open;
+we&#39;re keeping it (Jeff).</p>
+<p>The notes are deleted, not kept. A draft&#39;s annotations are mostly the questions a human
+asked to get their understanding lined up, and those don&#39;t need a record (Jeff). What
+mattered from them is in the plan&#39;s reasons. On a branch where the draft was committed,
+git keeps them anyway.</p>
+</div>
+</section>
+<section class="entry" id="the-static-site-stays-a-function-of-the-commit-only-the-dev-server-shows-the-draft" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-static-site-stays-a-function-of-the-commit-only-the-dev-server-shows-the-draft"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The static site stays a function of the commit; only the dev server shows the draft</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/serve.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/serve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const { pages, title } = build(args.repo, args.ref, args.out);</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f62365f7043f250d6d71b2f77f4019bb8fa2f3f2"><code>f62365f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="16"><meta itemprop="endLine" content="16"></span>
+<span class="note" itemprop="note">quote at line 16</span>
+</figcaption>
+<meta itemprop="codeStart" content="13"><pre itemprop="code" data-start="13"><code style="counter-reset: line 12"><span class="line">};</span>
+<span class="line"></span>
+<span class="line">const args = cli(process.argv.slice(2));</span>
+<mark class="line">const { pages, title } = build(args.repo, args.ref, args.out);</mark>
+<span class="line">const root = resolve(args.out);</span>
+<span class="line"></span>
+<span class="line">createServer((req, res) =&gt; {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>b240666</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> gimlet&#39;s ground holds for everything <code>build.ts</code> writes,
+so a built site can still be published, compared, or read from <code>file://</code> as a
+projection of one commit. The dev server already listens only on localhost, and it&#39;s
+where a person sits while a plan is being written. It re-reads the draft and its notes
+on every request to <code>draft/</code>, so refreshing the page is the update. Every page links
+<code>draft/</code> while one exists.</p>
+</div>
+</section>
+<section class="entry" id="the-draft-page-says-it-s-the-working-tree-not-a-commit" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-draft-page-says-it-s-the-working-tree-not-a-commit"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The draft page says it&#39;s the working tree, not a commit</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">Generated from &lt;span itemprop=&quot;repository&quot;&gt;${esc(site.repoName)}&lt;/span&gt;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f62365f7043f250d6d71b2f77f4019bb8fa2f3f2"><code>f62365f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="334"><meta itemprop="endLine" content="334"></span>
+<span class="note" itemprop="note">quote at line 334</span>
+</figcaption>
+<meta itemprop="codeStart" content="331"><pre itemprop="code" data-start="331"><code style="counter-reset: line 330"><span class="line">&lt;/head&gt;</span>
+<span class="line">&lt;body&gt;</span>
+<span class="line">&lt;header class=&quot;provenance&quot; itemscope&gt;</span>
+<mark class="line">Generated from &lt;span itemprop=&quot;repository&quot;&gt;${esc(site.repoName)}&lt;/span&gt;</mark>
+<span class="line">at &lt;data itemprop=&quot;commit&quot; value=&quot;${site.generated.sha}&quot;&gt;&lt;code&gt;${esc(site.generated.short)}&lt;/code&gt;&lt;/data&gt;</span>
+<span class="line">&lt;span class=&quot;meta&quot;&gt;${site.generated.sha}&lt;/span&gt;</span>
+<span class="line">&lt;span class=&quot;links&quot;&gt;&lt;a rel=&quot;help&quot; href=&quot;${rel(here, 'guide/')}&quot;&gt;guide&lt;/a&gt;</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="395"><meta itemprop="endLine" content="395"></span>
+<span class="note" itemprop="note">quote at line 395</span>
+</figcaption>
+<meta itemprop="codeStart" content="392"><pre itemprop="code" data-start="392"><code style="counter-reset: line 391"><span class="line">function layout(site: Site, here: string, title: string, main: string, header?: string): Page {</span>
+<span class="line">  // The home page's title already is the provenance, so it isn't said twice.</span>
+<span class="line">  const provenance = `${site.repoName} at ${site.generated.short}`;</span>
+<mark class="line">  header ??= `Generated from &lt;span itemprop=&quot;repository&quot;&gt;${esc(site.repoName)}&lt;/span&gt;</mark>
+<span class="line">at &lt;data itemprop=&quot;commit&quot; value=&quot;${site.generated.sha}&quot;&gt;&lt;code&gt;${esc(site.generated.short)}&lt;/code&gt;&lt;/data&gt;</span>
+<span class="line">&lt;span class=&quot;meta&quot;&gt;${site.generated.sha}&lt;/span&gt;`;</span>
+<span class="line">  const html = `&lt;!doctype html&gt;</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="395"><meta itemprop="endLine" content="395"></span><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">gimlet, then Claude</span>):</strong> gimlet&#39;s &quot;every page says which repo and commit it
+was generated from&quot; exists so a reader can tell what they&#39;re looking at. The draft page
+says &quot;draft, not committed, read at <time>&quot;, plus its notes file&#39;s hash when it has
+one, so an annotation can say which version it answered. Its anchors still resolve at
+commits: its <code>base:</code> and the commit being served. Jeff: the right default, and likely
+forever, but keep watching that it doesn&#39;t turn draconian.</p>
+</div>
+</section>
+<section class="entry" id="a-draft-s-open-questions-use-the-annotating-agreement-s-prompts-each-with-a-fallback" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-s-open-questions-use-the-annotating-agreement-s-prompts-each-with-a-fallback"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A draft&#39;s open questions use the annotating agreement&#39;s prompts, each with a fallback</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md › Working with plans › Drafts (optional)</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="note" itemprop="note">no quote, so nothing to search for</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, agreed in sorrel&#39;s cart</span>):</strong> <code>Question</code>, <code>Select</code> and <code>Affirm</code> are what
+annotations.nvim already answers, and the agreement allows them at any heading level,
+so <code>### Question:</code> sits inside an entry without becoming one. Phoropter adds one line,
+<code>**If unanswered:**</code>, because silence means proceed; the agreement says a reader that
+doesn&#39;t know something keeps it. The page shows each prompt with its fallback, and its
+answer when the notes have one. Whatever writes the notes only has to follow the
+agreement: annotations.nvim now, and perhaps phoropter-tui later, letting a person
+annotate inside it or open the draft in <code>$EDITOR</code> (Jeff). Phoropter-tui hasn&#39;t been
+given the annotating conventions yet; its next brief carries them.</p>
+<p>This replaces twill&#39;s <code>**Open:** … **If unanswered:**</code> (Claude, unanswered, so its
+fallback): the draft asked, and this plan&#39;s own draft was written that way.</p>
+</div>
+</section>
+<section class="entry" id="annotations-are-shown-after-the-entry-that-holds-their-quote" itemprop="entry" itemscope>
+<h2><a class="self" href="#annotations-are-shown-after-the-entry-that-holds-their-quote"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Annotations are shown after the entry that holds their quote</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+<meta itemprop="new" content="true">
+<p class="where"><span class="label">where (new)</span> <code itemprop="where">src/draft.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/draft.ts/">file page</a></p>
+<p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> an annotation quotes the markdown source, and the page
+shows rendered HTML, so placing it beside the exact span means mapping one to the
+other. Finding the entry whose source contains the quote is exact enough to read
+beside, and simple. A quote that matches nowhere is shown at the top as &quot;quote not
+found,&quot; not dropped: the source moved under it, which the agreement says shouldn&#39;t
+happen while notes exist.</p>
+</div>
+</section>
+<section class="entry" id="this-repository-s-instructions-say-drafts-go-at-the-root-and-carts-are-optional" itemprop="entry" itemscope>
+<h2><a class="self" href="#this-repository-s-instructions-say-drafts-go-at-the-root-and-carts-are-optional"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">This repository&#39;s instructions say drafts go at the root, and carts are optional</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">CLAUDE.md</code> <a rel="anchored-at" itemprop="place" href="../../files/CLAUDE.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">- **Drafts:** when you're unsure or the shared understanding looks thin</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="f62365f7043f250d6d71b2f77f4019bb8fa2f3f2"><code>f62365f</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="15"><meta itemprop="endLine" content="15"></span>
+<span class="note" itemprop="note">quote at line 15</span>
+</figcaption>
+<meta itemprop="codeStart" content="12"><pre itemprop="code" data-start="12"><code style="counter-reset: line 11"><span class="line">  format plans (lanyard, grommet, bodkin, awl) are history, not the rules.</span>
+<span class="line">- **Changing your mind about an earlier plan is a revisit**: its own plan, with</span>
+<span class="line">  `revisits:`, asked in that plan's frame, saying what moved.</span>
+<mark class="line">- **Drafts:** when you're unsure or the shared understanding looks thin, put the plan up</mark>
+<span class="line">  as a draft in the cart before committing it, so Jeff can question it before it's</span>
+<span class="line">  testimony. Never an approval gate: every open question has a fallback, and silence</span>
+<span class="line">  means proceed. Most work just goes.</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>b240666</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">CLAUDE.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> phoropter isn&#39;t part of loom, and shouldn&#39;t be beholden to a
+<code>.loom</code> directory. Jeff still uses carts to think things through, and a cart&#39;s result
+is &quot;let&#39;s draft a plan from this.&quot; CLAUDE.md says so; the guide doesn&#39;t mention carts.</p>
+</div>
+</section>
+<section class="entry" id="annotating-in-the-browser" itemprop="entry" itemscope>
+<h2><a class="self" href="#annotating-in-the-browser"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Annotating in the browser</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, in sorrel&#39;s cart</span>):</strong> the File System Access API would let the page
+write a notes file without phoropter&#39;s server writing, but it&#39;s Chromium-only and not
+needed while Jeff annotates in nvim. It comes back if teams that won&#39;t use vim are to
+use this.</p>
+</div>
+</section>
+<section class="entry" id="ranking-what-else-is-anchored-at-the-draft-s-places" itemprop="entry" itemscope>
+<h2><a class="self" href="#ranking-what-else-is-anchored-at-the-draft-s-places"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Ranking what else is anchored at the draft&#39;s places</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> phoropter-tui&#39;s brief asks, for each place a draft
+names, what already stands there: unanswered guesses, declines, decisions it would
+change, drift. Each anchor already links its place page, which lists those plans. The
+ranking is reasoning that deserves its own plan once there&#39;s a draft to try it on.
+Neither a plain &quot;also anchored here&quot; list nor the ranked one comes into this plan
+(Claude, unanswered, so its fallback); the ranking goes on the shelf.</p>
+</div>
+</section>
+<section class="entry" id="jeff-will-read-a-draft-on-the-page-and-annotate-it-beside-it" itemprop="entry" itemscope>
+<h2><a class="self" href="#jeff-will-read-a-draft-on-the-page-and-annotate-it-beside-it"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Jeff will read a draft on the page, and annotate it beside it</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/loden/as-built/#jeff-will-read-a-draft-on-the-page-and-annotate-it-beside-it">the as-built</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> after a few drafts, he reads them only in his editor and the page goes
+unopened. Then the file is the edge, not the page, and what&#39;s worth keeping from this
+plan is the one-draft rule and the prompt format. What annotates may change (nvim now,
+perhaps phoropter-tui later); the mechanism, a notes file beside the draft, doesn&#39;t
+(Jeff).</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

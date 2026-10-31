@@ -320,7 +320,7 @@ func (c *Client) view(it *microdata.Item, page string) View {
 	if len(v.Match) > 0 {
 		v.MatchLine = v.Match[0].Start
 	}
-	if codes := c.codes(it, page); len(codes) > 0 {
+	if codes := c.codes(it); len(codes) > 0 {
 		v.Code = codes[0]
 		for i := range v.Code.Lines {
 			l := &v.Code.Lines[i]
@@ -334,7 +334,7 @@ func (c *Client) view(it *microdata.Item, page string) View {
 
 // codes reads an item's excerpts. The nth codeStart is the first line of the
 // nth code.
-func (c *Client) codes(it *microdata.Item, page string) []*Excerpt {
+func (c *Client) codes(it *microdata.Item) []*Excerpt {
 	starts := it.Props["codeStart"]
 	var out []*Excerpt
 	for i, v := range it.Props["code"] {
@@ -342,34 +342,12 @@ func (c *Client) codes(it *microdata.Item, page string) []*Excerpt {
 		if i < len(starts) {
 			ex.Start, _ = strconv.Atoi(starts[i].Text)
 		}
-		for j, text := range strings.Split(c.codeText(v.Node, page), "\n") {
+		for j, text := range strings.Split(strings.TrimSuffix(microdata.TextContent(v.Node), "\n"), "\n") {
 			ex.Lines = append(ex.Lines, Line{N: ex.Start + j, Text: text})
 		}
 		out = append(out, ex)
 	}
 	return out
-}
-
-// codeText is a code's text without its line numbers. Each line starts with
-// its number in a span.ln, inside the property, so the property's own value
-// has them run into the code.
-func (c *Client) codeText(pre *html.Node, page string) string {
-	var b strings.Builder
-	var walk func(n *html.Node)
-	walk = func(n *html.Node) {
-		if n.Type == html.ElementNode && microdata.HasClass(n, "ln") {
-			return
-		}
-		if n.Type == html.TextNode {
-			b.WriteString(n.Data)
-		}
-		for ch := n.FirstChild; ch != nil; ch = ch.NextSibling {
-			walk(ch)
-		}
-	}
-	walk(pre)
-	c.Ledger.Note("line-numbers-unprofiled", page, "")
-	return strings.TrimSuffix(b.String(), "\n")
 }
 
 // Place reads a symbol or file page.
@@ -388,7 +366,7 @@ func (c *Client) Place(ref string) (*Place, error) {
 	}
 	pl.StartLine, _ = strconv.Atoi(it.Str("startLine"))
 	pl.EndLine, _ = strconv.Atoi(it.Str("endLine"))
-	if codes := c.codes(it, p.URL); len(codes) > 0 {
+	if codes := c.codes(it); len(codes) > 0 {
 		pl.Code = codes[0]
 	}
 	if pl.Kind == "symbol" && pl.File != "" {

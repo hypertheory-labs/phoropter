@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: loden · phoropter at 1a83dbc</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="meta">1a83dbc6bce50d8051eecafbdcf86a9d21d89799</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/loden/">The edge: one draft plan, served live, with its notes beside it</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: loden</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/loden/">plans/2026-10-31-loden.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-31-loden.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>The first plan drafted as <code>plan.draft.md</code> and converted the way it describes. Jeff
+annotated it in nvim and said to proceed at Claude&#39;s confidence; both prompts went
+unanswered and became their fallbacks. Converting also removed the cart it started in
+and the shelf seed it grew from. Nothing departed from the plan, so there&#39;s no
+<code>Changed:</code>.</p>
+<p>Anchor resolution moved out of the build loop first, in its own commit with no change
+to built sites, so a draft can resolve against the same context per request.</p>
+</div>
+<section class="entry" id="prompts-and-annotations-follow-their-entry-not-their-exact-place-in-it" itemprop="entry" itemscope>
+<h2><a class="self" href="#prompts-and-annotations-follow-their-entry-not-their-exact-place-in-it"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Prompts and annotations follow their entry, not their exact place in it</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/render.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">${plan.entries.map((e) =&gt; entryHtml(here, plan, e) + extras(e.slug)).join('\n')}</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="225"><meta itemprop="endLine" content="225"></span>
+<span class="note" itemprop="note">quote at line 225</span>
+</figcaption>
+<meta itemprop="codeStart" content="222"><pre itemprop="code" data-start="222"><code style="counter-reset: line 221"><span class="line">${top.map(annotationHtml).join('\n')}</span>
+<span class="line">${plan.doc.intro ? `&lt;div class=&quot;intro&quot; itemprop=&quot;intro&quot;&gt;${block(plan.doc.intro)}&lt;/div&gt;` : ''}</span>
+<span class="line">${extras('intro')}</span>
+<mark class="line">${plan.entries.map((e) =&gt; entryHtml(here, plan, e) + extras(e.slug)).join('\n')}</mark>
+<span class="line">&lt;/article&gt;`, header);</span>
+<span class="line">}</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/render.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="225"><meta itemprop="endLine" content="225"></span><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan placed annotations after the entry holding
+their quote; prompts get the same treatment. A prompt is taken out of its entry&#39;s
+markdown and shown after the entry&#39;s reason, which is where a draft&#39;s prompts sit
+anyway. A note with no quote, or whose quote is gone, comes first.</p>
+</div>
+</section>
+<section class="entry" id="notes-count-as-current-when-they-match-annotations-nvim-s-own-hash" itemprop="entry" itemscope>
+<h2><a class="self" href="#notes-count-as-current-when-they-match-annotations-nvim-s-own-hash"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Notes count as current when they match annotations.nvim&#39;s own hash</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/draft.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/draft.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const current = !!annotates &amp;&amp; [source, source.replace(/\n$/, '')].some((v) =&gt; sha256(v).startsWith(annotates));</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/draft.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="88"><meta itemprop="endLine" content="88"></span>
+<span class="note" itemprop="note">quote at line 88</span>
+</figcaption>
+<meta itemprop="codeStart" content="85"><pre itemprop="code" data-start="85"><code style="counter-reset: line 84"><span class="line">    const annotates = /annotates: \S+ sha256:([0-9a-f]+)/.exec(text)?.[1];</span>
+<span class="line">    // annotations.nvim hashes the buffer's lines joined by newlines, which</span>
+<span class="line">    // drops the file's final newline; either form counts as this version.</span>
+<mark class="line">    const current = !!annotates &amp;&amp; [source, source.replace(/\n$/, '')].some((v) =&gt; sha256(v).startsWith(annotates));</mark>
+<span class="line">    draft.notes = { sha256: sha256(text), annotates, current, annotations: rest };</span>
+<span class="line">  }</span>
+<span class="line">  return draft;</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/draft.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="88"><meta itemprop="endLine" content="88"></span><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> the plan said the page shows the notes&#39; hash, so an annotation
+can say which version it answered. The notes file already says which version of the
+draft it annotates, <code>annotates: plan.draft.md sha256:…</code>, so the page compares that
+instead and says when the draft has moved since. annotations.nvim hashes the buffer&#39;s
+lines joined by newlines (its <code>sha_of</code>), which drops the file&#39;s final newline; hashing
+the file as-is would have called every note out of date.</p>
+</div>
+</section>
+<section class="entry" id="a-restated-prompt-in-the-notes-is-its-answer-matched-by-kind-and-exact-text" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-restated-prompt-in-the-notes-is-its-answer-matched-by-kind-and-exact-text"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A restated prompt in the notes is its answer, matched by kind and exact text</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/draft.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/draft.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const prompt = restated &amp;&amp; all.find((p) =&gt; p.kind.toLowerCase() === restated[1].toLowerCase() &amp;&amp; p.text === restated[2].trim());</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/draft.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="81"><meta itemprop="endLine" content="81"></span>
+<span class="note" itemprop="note">quote at line 81</span>
+</figcaption>
+<meta itemprop="codeStart" content="78"><pre itemprop="code" data-start="78"><code style="counter-reset: line 77"><span class="line">    const rest: Annotation[] = [];</span>
+<span class="line">    for (const a of annotations) {</span>
+<span class="line">      const restated = /^(Question|Select|Affirm):\s*(.*)$/i.exec(a.heading);</span>
+<mark class="line">      const prompt = restated &amp;&amp; all.find((p) =&gt; p.kind.toLowerCase() === restated[1].toLowerCase() &amp;&amp; p.text === restated[2].trim());</mark>
+<span class="line">      if (prompt) prompt.answer = a;</span>
+<span class="line">      else rest.push(placed(a, source, plan));</span>
+<span class="line">    }</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/draft.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="81"><meta itemprop="endLine" content="81"></span><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the agreement says an answer restates the question so
+the notes stand alone. Restating it exactly is what annotations.nvim does; a restated
+heading that matches no prompt is shown as an ordinary annotation, not dropped.</p>
+</div>
+</section>
+<section class="entry" id="the-draft-link-is-added-by-the-server-not-built-into-pages" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-draft-link-is-added-by-the-server-not-built-into-pages"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The draft link is added by the server, not built into pages</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/serve.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/serve.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">function withDraftLink(html: string, here: string): string {</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="81"><meta itemprop="endLine" content="81"></span>
+<span class="note" itemprop="note">quote at line 81</span>
+</figcaption>
+<meta itemprop="codeStart" content="78"><pre itemprop="code" data-start="78"><code style="counter-reset: line 77"><span class="line"></span>
+<span class="line">// Built pages don't know about the draft; the server adds the link while one</span>
+<span class="line">// exists, relative to the page it's on.</span>
+<mark class="line">function withDraftLink(html: string, here: string): string {</mark>
+<span class="line">  if (!hasDraft(repoDir)) return html;</span>
+<span class="line">  const dir = here.endsWith('/') || here === '' ? here : here.slice(0, here.lastIndexOf('/') + 1);</span>
+<span class="line">  return html.replace('&lt;span class=&quot;links&quot;&gt;', `&lt;span class=&quot;links&quot;&gt;&lt;a rel=&quot;draft&quot; href=&quot;${rel(dir, 'draft/')}&quot;&gt;draft&lt;/a&gt;\n`);</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/serve.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="81"><meta itemprop="endLine" content="81"></span>
+<span class="note" itemprop="note">quote at line 81</span>
+</figcaption>
+<meta itemprop="codeStart" content="78"><pre itemprop="code" data-start="78"><code style="counter-reset: line 77"><span class="line"></span>
+<span class="line">// Built pages don't know about the draft; the server adds the link while one</span>
+<span class="line">// exists, relative to the page it's on.</span>
+<mark class="line">function withDraftLink(html: string, here: string): string {</mark>
+<span class="line">  if (!hasDraft(repoDir)) return html;</span>
+<span class="line">  const dir = here.endsWith('/') || here === '' ? here : here.slice(0, here.lastIndexOf('/') + 1);</span>
+<span class="line">  return html.replace(/(&lt;a class=&quot;home-link&quot;[^&gt;]*&gt;home&lt;\/a&gt;)/, `$1\n&lt;a rel=&quot;draft&quot; href=&quot;${rel(dir, 'draft/')}&quot;&gt;draft&lt;/a&gt;`);</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> built pages are a function of the commit and can&#39;t
+know about a working-tree file, so the dev server adds <code>rel=&quot;draft&quot;</code> to each page&#39;s
+header as it serves it, while the draft exists. A built site is unchanged.</p>
+</div>
+</section>
+<section class="entry" id="a-draft-reads-the-site-s-places-but-isn-t-listed-on-them" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-reads-the-site-s-places-but-isn-t-listed-on-them"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A draft reads the site&#39;s places but isn&#39;t listed on them</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">ra.place = cx.places.get(placeKey(t));</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="b2406661e7a490543498351e995d9a61124408c7"><code>b240666</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="239"><meta itemprop="endLine" content="239"></span>
+<span class="note" itemprop="note">quote at line 239</span>
+</figcaption>
+<meta itemprop="codeStart" content="236"><pre itemprop="code" data-start="236"><code style="counter-reset: line 235"><span class="line">        ra.place = placeFor(cx.places, t, cx.indexFor(generated, packages));</span>
+<span class="line">        ra.place.refs.push({ plan, doc: d, entry: re, anchor });</span>
+<span class="line">      } else {</span>
+<mark class="line">        ra.place = cx.places.get(placeKey(t));</mark>
+<span class="line">      }</span>
+<span class="line">      if (anchor.isNew) {</span>
+<span class="line">        ra.note = 'made by the work, so there is nothing to resolve';</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="239"><meta itemprop="endLine" content="239"></span><meta itemprop="sameAs" content="b240666">
+<span class="note" itemprop="note">same as at <code>b240666</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan said a built site never contains a draft;
+the place pages are built once, so a draft can&#39;t appear on them without rebuilding.
+Its anchors link a place page when the site has one, and other plans&#39; entries don&#39;t
+list it under &quot;anchored by.&quot;</p>
+</div>
+</section>
+<section class="entry" id="jeff-will-read-a-draft-on-the-page-and-annotate-it-beside-it" itemprop="entry" itemscope>
+<h2><a class="self" href="#jeff-will-read-a-draft-on-the-page-and-annotate-it-beside-it"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Jeff will read a draft on the page, and annotate it beside it</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/loden/#jeff-will-read-a-draft-on-the-page-and-annotate-it-beside-it">the plan’s guess</a>: <strong class="verdict verdict-not-tested" itemprop="verdict">not tested</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude</span>):</strong> not tested. This plan&#39;s own draft was read and annotated in nvim
+before the page existed. The first draft after this one is the first chance.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

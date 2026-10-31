@@ -9,7 +9,7 @@ projection, and this is what it ran into.
 Every time the TUI reads past the profile (parses prose, leans on a class name, or has
 nothing to show), it notes a gap. `phoropter-tui gaps <site>` crawls a site and prints
 them. The counts here are from mock-control at `f02528f` (4 plans) and phoropter at
-`e8107f3` (7 plans), except where an item says otherwise; both sites are in this repo's `testdata/`, built by phoropter's own
+`e8107f3` (7 plans), where the brief was first written, except where an item says otherwise. The current sites are in this repo's `testdata/`, built by phoropter's own
 `build.ts`.
 
 Nothing here is a format decision. Each item says what a reader wanted to ask, what the
@@ -26,33 +26,25 @@ HTML lacks, the person would see more than the agent.
 
 Ordered by how much they cost a reader.
 
-### Closed by selvage, and the answer to its guess
+### Closed by selvage and osier
 
-Selvage (say in markup what the pages already say in prose) closed six gaps outright.
-phoropter-tui now reads each one from a property, with the workaround deleted, on
-fixtures rebuilt at `4ffb7d8`:
+Selvage (say in markup what the pages already say in prose) and osier (line numbers out
+of the code's text) closed seven gaps. phoropter-tui reads each one from a property,
+with its workaround deleted, on fixtures rebuilt at `1a83dbc`:
 
 - `match-line-prose`: each view's `match` items give the lines. Pumice's README view
   reads `startLine` 94, as its note says.
+- `line-numbers-unprofiled`: `codeStart` numbers an excerpt, and the `code` property's
+  text is only the lines. The TUI reads it as plain microdata text, with no class names.
 - `home-as-built-unmarked`, `home-revisits-unmarked`, `home-entries-prose`: the home
   list's `asBuilt`, `revisits` and `entryCount`.
 - `new-two-shapes`: one `<meta>`, everywhere.
-- `base-not-commit`: the profile now says a `base` is text when it isn't a commit here.
-  The TUI no longer treats that as a gap.
+- `base-not-commit`: the profile says a `base` is text when it isn't a commit here.
 
-Selvage's guess was "once phoropter-tui reads these, none of the closed gaps need prose
-or class names." **Answer: partly disproved.** Six of the seven need nothing. The
-seventh, `line-numbers-unprofiled`, is half closed. `codeStart` numbers the lines, but
-each line's number is still a `<span class="ln">` *inside* the `code` property
-(`render.ts:313`). So the property's value, read as microdata, is "91**Mocks are for…",
-with the numbers run into the text. The profile doesn't say so. A reader has to know to
-drop `span.ln` by class name. That's 30 code values in mock-control and 87 in
-phoropter.
-
-*Ask:* keep the numbers out of the property's text. Draw them with a CSS counter
-started from `codeStart`, or put them in an attribute shown through `::before`. Or have
-the profile say that each line starts with its number in a `span.ln`. The first keeps
-`code` true to its name.
+Selvage's guess, restated in osier ("none of the closed gaps need prose or class
+names"): **held**, at `1a83dbc`. At selvage's head it was partly disproved, since line
+numbers were still inside `code`. Osier's work closed that last one.
+`TestSelvageGapsStayClosed` keeps them closed.
 
 ### Still open: the three that need a `›` path to resolve
 

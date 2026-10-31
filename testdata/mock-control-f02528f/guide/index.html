@@ -13,7 +13,8 @@
 Generated from <span itemprop="repository">mock-control</span>
 at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
 <span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
-<span class="links"><a rel="help" href="../guide/">guide</a>
+<span class="links"><a class="home-link" href="../">home</a>
+<a rel="help" href="../guide/">guide</a>
 <a class="profile-link" href="../profile/">profile</a></span>
 </header>
 <main>
@@ -21,7 +22,7 @@ at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><cod
 <nav><a href="../">mock-control at f02528f</a></nav>
 <article class="guide">
 <h1>Working with plans</h1>
-<p class="meta">From phoropter, commit 4ffb7d8. It describes the tool, so it’s the same on every site phoropter generates.</p>
+<p class="meta">From phoropter, commit 1a83dbc. It describes the tool, so it’s the same on every site phoropter generates.</p>
 <p>A plan is a short markdown file that records what you were thinking before a piece of
 work: what you decided, what you turned down, and what you guessed, each with its reason
 and where the reason came from. The code shows what was done. The plan shows why, in a
@@ -148,13 +149,37 @@ plan it revisited)</em></p>
 anchored at the original, and answer it in your as-built. <em>(mock-control&#39;s vellum, following its README in a fresh app, answered pumice&#39;s
 <code>@source</code> guess this way)</em></p>
 <h2>Drafts (optional)</h2>
-<p>When you&#39;re unsure, or the shared understanding looks thin, put the plan up as a draft
-before committing it, so someone can question it before it becomes testimony. The agent
-decides when. A draft can have no questions at all: &quot;look, then tell me to go.&quot; Every
-open question carries its fallback, so &quot;go&quot; and silence both mean proceed, and only
-annotations change anything. It&#39;s never an approval gate.</p>
-<p>Drafts are done by hand for now: the draft is a markdown file the person reads and
-annotates in their editor. Phoropter doesn&#39;t serve them yet. <em>(phoropter: marl, on source and date, was the first)</em></p>
+<p>Most plans are never drafts: they go straight to <code>plans/</code>. A draft is for when the
+agent&#39;s confidence or the shared understanding is thin, or when the pair has agreed,
+for a session, that the person sees every plan first, not to judge it but to follow
+it. Who decides that is the pair&#39;s to work out. It&#39;s never an approval gate: a draft
+serves the agent&#39;s confidence and the person&#39;s understanding, not permission.
+<em>(phoropter&#39;s loden, which served the first draft)</em></p>
+<p>A repository has at most one draft, <code>plan.draft.md</code> at its root. One fixed name means
+anyone can see whether a plan is being drafted, and drafts can&#39;t pile up into a
+backlog. Each branch or worktree has its own working tree, so parallel work isn&#39;t
+blocked. A draft that wants to be two plans gets smaller; the rest waits for the next
+one. Ignoring the draft in git is a suggestion: on a branch, committing it lets a
+mentor or senior read it before the code exists.</p>
+<p>Annotations go in <code>plan.draft.notes.md</code> beside it, in the
+<a href="https://github.com/JeffryGonzalez/annotations.nvim">annotating agreement</a>&#39;s format.
+An open question is one of that agreement&#39;s prompts, at any heading level below the
+entry it belongs to, with what happens if nobody answers:</p>
+<pre><code class="language-markdown">### Question: Should phoropter also look anywhere else for a draft?
+**If unanswered:** no. One name, and nothing else to configure.
+</code></pre>
+<p><code>Select</code> lists its options as the first bulleted list; <code>Affirm</code> is yes or no. A draft
+can have no questions at all: &quot;look, then tell me to go.&quot;</p>
+<p>When the pair is confident, the draft converts, whether or not every prompt is
+answered, since silence means proceed. Converting writes <code>plans/YYYY-MM-DD-&lt;name&gt;.md</code>
+(the date is today, the day you say &quot;we&#39;re implementing this&quot;), folds each answer into
+its entry&#39;s reason, labels a fallback that became the decision (<code>Claude, unanswered, so its fallback</code>), drops the prompts, and deletes the draft and its notes. The notes
+aren&#39;t kept: they&#39;re mostly the questions that lined up someone&#39;s understanding, and
+what mattered from them is in the reasons now.</p>
+<p>Phoropter&#39;s dev server shows the draft at <code>draft/</code>, re-read on every request, with its
+anchors resolved, its prompts and their fallbacks and answers, and each annotation
+after the entry it quotes. It says it&#39;s the working tree, not a commit. A built site
+never contains a draft.</p>
 <h2>Older plans</h2>
 <p>Plans are read as written. Plans from before a rule here existed may use earlier forms,
 like an as-built that uses <code>Changed:</code> for everything, or a <code>cart:</code> line. Phoropter

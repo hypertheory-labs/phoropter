@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Name plans by their file, and read grommet's kinds · phoropter at 1a83dbc</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="meta">1a83dbc6bce50d8051eecafbdcf86a9d21d89799</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 1a83dbc</a></nav>
+<article itemscope>
+<h1 itemprop="title">Name plans by their file, and read grommet&#39;s kinds</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">quince</dd>
+<dt>Cart</dt><dd itemprop="cart">none, drafted in chat</dd>
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-10-30">2026-10-30</time>, added in <data itemprop="added" value="fc22ea57d4deb219ec726fdaaac4d6edce9a234b"><code>fc22ea5</code></data> <time datetime="2026-10-30T18:04:30.000Z">18:04 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="535ec6376e6003d3caac67c5234dfba003c63623"><code>535ec63</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-10-30-quince.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/quince/as-built/">plans/2026-10-30-quince.as-built.md</a></dd>
+<dt>Revisited by</dt><dd><a rel="revisited-by" itemprop="revisitedBy" href="../../plans/burlap/">Revisit quince: an answer&#39;s verdict is structure</a> <span class="meta">burlap</span></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Generating mock-control at <code>f02528f</code>, which has three new plans (vellum, ferrule,
+tallow), showed two things phoropter gets wrong that don&#39;t need a cart. Plans
+overwrite each other&#39;s pages, and as-builts in grommet&#39;s kinds (aide
+<code>plans/2026-10-30-grommet.md</code>) render without a kind. Revisits (bodkin) and anchors
+from one plan into another wait for a cart.</p>
+</div>
+<section class="entry" id="a-plan-s-page-is-named-by-its-filename-not-its-cart" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-plan-s-page-is-named-by-its-filename-not-its-cart"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A plan&#39;s page is named by its filename, not its cart</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/site.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/site.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const href = `plans/${slugify(cart)}/`;</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="535ec6376e6003d3caac67c5234dfba003c63623"><code>535ec63</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="64"><meta itemprop="endLine" content="64"></span>
+<span class="note" itemprop="note">quote at line 64</span>
+</figcaption>
+<meta itemprop="codeStart" content="61"><pre itemprop="code" data-start="61"><code style="counter-reset: line 60"><span class="line">  const plans: Plan[] = planFiles.sort().map((file) =&gt; {</span>
+<span class="line">    const doc = parsePlan(repo.show(sha, file)!);</span>
+<span class="line">    const cart = doc.frontmatter.cart || basename(file, '.md').replace(/^\d{4}-\d{2}-\d{2}-/, '');</span>
+<mark class="line">    const href = `plans/${slugify(cart)}/`;</mark>
+<span class="line">    const plan: Plan = { file, href, doc, cart, ...commitOf(repo, doc.frontmatter.base, 'base'), entries: [] };</span>
+<span class="line">    const asBuiltFile = file.replace(/\.md$/, '.as-built.md');</span>
+<span class="line">    if (files.includes(asBuiltFile)) {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="e4d531dea5fc2bd29150e065a89ee210e8e18b8b"><code>e4d531d</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>e4d531d</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/site.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="e4d531d">
+<span class="note" itemprop="note">same as at <code>e4d531d</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> vellum, ferrule, and tallow all say <code>cart: none; Jeff handed mock-control&#39;s next plans to Claude</code>, so all three wrote one page and two were lost.
+Lanyard makes the cart optional and puts the meaningless name in the filename, which is
+unique by construction. <code>2026-10-30-vellum.md</code> is <code>vellum</code>. The cart stays on the page
+as a fact, as written. Where a page names a plan in passing (&quot;in pumice&quot;), it uses the
+filename&#39;s name too.</p>
+</div>
+</section>
+<section class="entry" id="chose-and-answered-are-kinds-wherever-they-appear" itemprop="entry" itemscope>
+<h2><a class="self" href="#chose-and-answered-are-kinds-wherever-they-appear"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>Chose:</code> and <code>Answered:</code> are kinds, wherever they appear</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/plan.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/plan.ts/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">const match = /^(Decision|Decline|Guess|Changed):\s*(.*)$/.exec(token.text);</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="535ec6376e6003d3caac67c5234dfba003c63623"><code>535ec63</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">src/plan.ts</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="41"><meta itemprop="endLine" content="41"></span>
+<span class="note" itemprop="note">quote at line 41</span>
+</figcaption>
+<meta itemprop="codeStart" content="38"><pre itemprop="code" data-start="38"><code style="counter-reset: line 37"><span class="line">      continue;</span>
+<span class="line">    }</span>
+<span class="line">    if (token.type === 'heading' &amp;&amp; token.depth === 2) {</span>
+<mark class="line">      const match = /^(Decision|Decline|Guess|Changed):\s*(.*)$/.exec(token.text);</mark>
+<span class="line">      const title = match ? match[2] : token.text;</span>
+<span class="line">      current = { kind: match ? match[1] : '', title, slug: uniqueSlug(title, slugs), anchors: [], body: '' };</span>
+<span class="line">      doc.entries.push(current);</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="e4d531dea5fc2bd29150e065a89ee210e8e18b8b"><code>e4d531d</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/plan.ts</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>e4d531d</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><code>1a83dbc</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">src/plan.ts</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="e4d531d">
+<span class="note" itemprop="note">same as at <code>e4d531d</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">grommet</span>):</strong> grommet defines them, and vellum&#39;s, ferrule&#39;s, and tallow&#39;s
+as-builts use them. Old as-builts keep <code>Changed:</code> as written, so <code>Changed:</code> stays.</p>
+</div>
+</section>
+<section class="entry" id="an-answered-links-to-the-plan-s-guess-with-the-same-title-and-back" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-answered-links-to-the-plan-s-guess-with-the-same-title-and-back"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An <code>Answered:</code> links to the plan&#39;s <code>Guess:</code> with the same title, and back</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">src/render.ts</code> <a rel="anchored-at" itemprop="place" href="../../files/src/render.ts/">file page</a></p>
+<p class="note" itemprop="note">no quote, so nothing to search for</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">grommet, Claude</span>):</strong> grommet titles an answer with its guess&#39;s own title so the
+two can be paired. All four answers in mock-control match their guesses exactly. The
+rels are <code>answers</code> (answer to guess) and <code>answered-by</code> (guess to answer), defined in the
+profile like the others. An answer with no matching guess says so in plain words.</p>
+</div>
+</section>
+<section class="entry" id="reading-the-verdict-held-disproved-not-tested-out-of-an-answer-s-prose" itemprop="entry" itemscope>
+<h2><a class="self" href="#reading-the-verdict-held-disproved-not-tested-out-of-an-answer-s-prose"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Reading the verdict (held, disproved, not tested) out of an answer&#39;s prose</span></a></h2>
+
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/burlap/#what-moved-is-our-understanding-not-the-world-or-the-code">burlap, Decision: What moved is our understanding, not the world or the code</a>.</p>
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude</span>):</strong> grommet puts it in the prose, and parsing prose for a word is the
+kind of guess the HTML shouldn&#39;t carry as structure. The answer&#39;s text is one link away
+from the guess.</p>
+</div>
+</section>
+<section class="entry" id="checking-which-kinds-belong-in-a-plan-and-which-in-an-as-built" itemprop="entry" itemscope>
+<h2><a class="self" href="#checking-which-kinds-belong-in-a-plan-and-which-in-an-as-built"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Checking which kinds belong in a plan and which in an as-built</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude</span>):</strong> lanyard: the tool never flags. A <code>Chose:</code> in a plan renders as a
+<code>Chose:</code>.</p>
+</div>
+</section>
+<section class="entry" id="linking-vellum-s-answer-to-pumice-s-guess" itemprop="entry" itemscope>
+<h2><a class="self" href="#linking-vellum-s-answer-to-pumice-s-guess"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Linking vellum&#39;s answer to pumice&#39;s guess</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">mock-control: plans/2026-10-30-vellum.as-built.md › Tailwind finds the panel's classes through the `@source` line</code></p>
+<p class="note" itemprop="note">in mock-control, which this site doesn't read</p>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> it answers a guess in another plan, which is a link from
+one plan into another. That&#39;s the cart&#39;s question.</p>
+</div>
+</section>
+<section class="entry" id="an-exact-title-match-is-enough-to-pair-an-answer-with-its-guess" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-exact-title-match-is-enough-to-pair-an-answer-with-its-guess"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">An exact title match is enough to pair an answer with its guess</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/quince/as-built/#an-exact-title-match-is-enough-to-pair-an-answer-with-its-guess">the as-built</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> an <code>Answered:</code> title drifts from its guess&#39;s title (a typo, a
+rephrase) and the page shows a real answer as unpaired.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

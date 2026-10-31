@@ -15,11 +15,10 @@ separate client app is the ground for this.
 
 ## 1. Let the ledger go quiet
 
-*Started:* selvage's six closed gaps are read from properties, with fixtures at
-`4ffb7d8` and `TestSelvageGapsStayClosed` guarding them. What's left is the `span.ln`
-half of `line-numbers-unprofiled`, the three that need path resolution, `same-as-deref`
-(the profile allows it, so it may simply be the shape), and section 2's file-page
-items.
+*Started:* the seven gaps selvage and osier closed are read from properties, with
+fixtures at `1a83dbc` and `TestSelvageGapsStayClosed` guarding them. What's left is the
+three that need path resolution, and section 2's file-page items. `same-as-deref`
+stays in the ledger as a cost by design (marl), like `answer-elsewhere`.
 
 - Rebuild `testdata/` from both repos at their new heads (`node src/build.ts <repo>
   <commit> --out …` from `../phoropter`), and keep the old fixtures until the new
@@ -29,6 +28,38 @@ items.
   none of the closed gaps, so a regression in phoropter shows up here as a test failure.
 - Gaps phoropter declines stay, with their summary saying which plan declined them and
   why, as `answer-elsewhere` does now.
+
+## 1½. The draft (loden's edge)
+
+Phoropter's dev server serves the repo's one draft, `plan.draft.md`, at `draft/`, and
+every page links it with `rel="draft"` while it exists. The profile defines it: a
+`draft` item with entries as on a plan, plus `prompt` items (Question, Select, Affirm,
+each with its `fallback` and any `answer`) and `annotation` items from the notes file.
+A prompt or annotation belongs to the entry it follows.
+
+The TUI's code today reads a draft page as an ordinary plan. That's wrong in a way that
+matters. It would show the header's commit as if the draft were committed (on a draft
+page it's only where the anchors resolve), and it would drop the prompts. So:
+
+- Recognize the draft from the `draft` header (`readAt`, `sha256`), not from the URL,
+  and say "draft, not committed, read at …" where a plan shows its commit.
+- Show each prompt after its entry, with its fallback and answer, and annotations the
+  same way.
+- When the plan list's page has `rel="draft"`, put the draft at the top of the list.
+- Re-fetch on a key: the server re-reads the draft on every request.
+
+**Answering prompts, without vim.** Phoropter's pages are read-only, and loden declined
+annotating in the browser (Chromium-only). The TUI is local and can write a file. It
+can answer a draft's `Question`, `Select` and `Affirm` into `plan.draft.notes.md`,
+following the annotating agreement exactly: restate the prompt, `**Answer:**`, `[x]` for
+selections, `**Skipped.**` on purpose. That's the first path for a team that doesn't use
+annotations.nvim. It writes the notes file only, never `plan.draft.md` and never the
+substrate. Jeff's idea: annotate inside the TUI, with a key to open the draft in
+`$EDITOR`, so annotations.nvim still works there.
+
+*Needs:* the annotating agreement restated for this repo (phoropter doesn't depend on
+loom), phoropter's `**If unanswered:**` addition, the one-draft rule, and conversion,
+which deletes the notes.
 
 ## 2. File mode
 
@@ -67,6 +98,12 @@ plan, which is a workaround the ledger would have to note.
   as the guide puts it: that's a revisit.
 - Read only. The cart's edge feature may write, but never the substrate, and the TUI's
   first version of cart mode doesn't need to.
+
+## 3½. `init`, step 0
+
+From phoropter's shelf (`guide-shape.md`): create `plans/` and put up a first draft
+whose prompts are the defaults, each fallback being the default. Phoropter can't write
+files, but the TUI can. It waits until the guide's shape is decided.
 
 ## 4. `why`
 

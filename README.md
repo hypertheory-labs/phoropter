@@ -17,7 +17,7 @@ This will be completely read only. There is an "edge" feature coming that will h
 ```sh
 go build -o bin/phoropter-tui .
 bin/phoropter-tui                                # http://localhost:4173/, phoropter's npm run dev
-bin/phoropter-tui testdata/phoropter-4ffb7d8     # or a built site on disk
+bin/phoropter-tui testdata/phoropter-1a83dbc     # or a built site on disk
 bin/phoropter-tui gaps [site]                    # crawl, and list where it read past the profile
 go test ./...
 ```
@@ -27,5 +27,5 @@ base, as-built head, and generated; `enter` follows the rels out of an entry; `g
 shows the gaps the session has hit so far.
 
 `testdata/` holds sites built by `../phoropter` (`node src/build.ts <repo> <commit> --out …`)
-from mock-control at `f02528f` and phoropter at `4ffb7d8`, both built by phoropter at `4ffb7d8`, so tests don't need a server.
+from mock-control at `f02528f` and phoropter at `1a83dbc`, both built by phoropter at `1a83dbc`, so tests don't need a server.
 Rebuild them when the profile changes.

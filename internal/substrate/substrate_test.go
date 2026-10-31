@@ -121,7 +121,7 @@ func TestCrawlLedger(t *testing.T) {
 	for _, g := range l.Gaps() {
 		seen[g.ID] = true
 	}
-	for _, id := range []string{"line-numbers-unprofiled", "new-never-resolved", "symbol-file-unlinked", "answer-elsewhere", "same-as-deref"} {
+	for _, id := range []string{"new-never-resolved", "symbol-file-unlinked", "answer-elsewhere", "same-as-deref"} {
 		if !seen[id] {
 			t.Errorf("crawl didn't note %s", id)
 		}
@@ -129,7 +129,7 @@ func TestCrawlLedger(t *testing.T) {
 }
 
 func TestPhoropterCrawls(t *testing.T) {
-	c, err := NewClient("../../testdata/phoropter-4ffb7d8", NewLedger())
+	c, err := NewClient("../../testdata/phoropter-1a83dbc", NewLedger())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -137,7 +137,7 @@ func TestPhoropterCrawls(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(s.Home.Plans) != 8 || len(s.Docs) != 16 {
+	if len(s.Home.Plans) != 11 || len(s.Docs) != 21 {
 		t.Errorf("plans = %d, docs = %d", len(s.Home.Plans), len(s.Docs))
 	}
 	if s.Home.Plans[0].Base.SHA != "" {

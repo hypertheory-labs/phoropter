@@ -13,7 +13,8 @@
 Generated from <span itemprop="repository">mock-control</span>
 at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
 <span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
-<span class="links"><a rel="help" href="../../../guide/">guide</a>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="help" href="../../../guide/">guide</a>
 <a class="profile-link" href="../../../profile/">profile</a></span>
 </header>
 <main>
@@ -46,13 +47,13 @@ departs from the plan, so there&#39;s no <code>Changed:</code>.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="25"><meta itemprop="endLine" content="25"></span>
 <span class="note" itemprop="note">quote at line 25</span>
 </figcaption>
-<meta itemprop="codeStart" content="22"><pre itemprop="code" data-start="22"><code><span class="ln">22</span>### 1. Install
-<span class="ln">23</span> 
-<span class="ln">24</span>```sh
-<mark><span class="ln">25</span>npm install -D @hypertheory-labs/mock-control msw@2 daisyui@5</mark>
-<span class="ln">26</span>npx msw init public --save
-<span class="ln">27</span>```
-<span class="ln">28</span> </code></pre>
+<meta itemprop="codeStart" content="22"><pre itemprop="code" data-start="22"><code style="counter-reset: line 21"><span class="line">### 1. Install</span>
+<span class="line"></span>
+<span class="line">```sh</span>
+<mark class="line">npm install -D @hypertheory-labs/mock-control msw@2 daisyui@5</mark>
+<span class="line">npx msw init public --save</span>
+<span class="line">```</span>
+<span class="line"></span></code></pre>
 </figure>
 <figure class="view status-not-found" itemprop="view" itemscope>
 <figcaption>
@@ -91,13 +92,13 @@ call whether the class apps move.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="18"><meta itemprop="endLine" content="18"></span>
 <span class="note" itemprop="note">quote at line 18</span>
 </figcaption>
-<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code><span class="ln">15</span>- Angular 22, with MSW 2.
-<span class="ln">16</span>- **Tailwind CSS v4 and daisyUI 5 in the app.** The panel uses their classes and ships no
-<span class="ln">17</span>  styles of its own. This is a stopgap; see step 5 below. `ng new --style=tailwind` sets
-<mark><span class="ln">18</span>  up Tailwind; daisyUI is installed in step 1.</mark>
-<span class="ln">19</span> 
-<span class="ln">20</span>## Setup
-<span class="ln">21</span> </code></pre>
+<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code style="counter-reset: line 14"><span class="line">- Angular 22, with MSW 2.</span>
+<span class="line">- **Tailwind CSS v4 and daisyUI 5 in the app.** The panel uses their classes and ships no</span>
+<span class="line">  styles of its own. This is a stopgap; see step 5 below. `ng new --style=tailwind` sets</span>
+<mark class="line">  up Tailwind; daisyUI is installed in step 1.</mark>
+<span class="line"></span>
+<span class="line">## Setup</span>
+<span class="line"></span></code></pre>
 </figure>
 <figure class="view status-found" itemprop="view" itemscope>
 <figcaption>
@@ -108,13 +109,13 @@ call whether the class apps move.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="18"><meta itemprop="endLine" content="18"></span>
 <span class="note" itemprop="note">quote at line 18</span>
 </figcaption>
-<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code><span class="ln">15</span>- Angular 22, with MSW 3 or 2.15+.
-<span class="ln">16</span>- **Tailwind CSS v4 and daisyUI 5 in the app.** The panel uses their classes and ships no
-<span class="ln">17</span>  styles of its own. This is a stopgap; see step 5 below. `ng new --style=tailwind` sets
-<mark><span class="ln">18</span>  up Tailwind; daisyUI is installed in step 1.</mark>
-<span class="ln">19</span> 
-<span class="ln">20</span>## Setup
-<span class="ln">21</span> </code></pre>
+<meta itemprop="codeStart" content="15"><pre itemprop="code" data-start="15"><code style="counter-reset: line 14"><span class="line">- Angular 22, with MSW 3 or 2.15+.</span>
+<span class="line">- **Tailwind CSS v4 and daisyUI 5 in the app.** The panel uses their classes and ships no</span>
+<span class="line">  styles of its own. This is a stopgap; see step 5 below. `ng new --style=tailwind` sets</span>
+<mark class="line">  up Tailwind; daisyUI is installed in step 1.</mark>
+<span class="line"></span>
+<span class="line">## Setup</span>
+<span class="line"></span></code></pre>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> <code>ng new --style=tailwind</code> sets up Tailwind v4 but not daisyUI,
@@ -137,13 +138,13 @@ and nothing in the README installed it; step 5&#39;s <code>@plugin &#39;daisyui&
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="41"><meta itemprop="endLine" content="41"></span>
 <span class="note" itemprop="note">quote at line 41</span>
 </figcaption>
-<meta itemprop="codeStart" content="38"><pre itemprop="code" data-start="38"><code><span class="ln">38</span>// src/mocks/handlers.ts
-<span class="ln">39</span>import { HttpResponse } from 'msw';
-<span class="ln">40</span>import { configurable } from '@hypertheory-labs/mock-control';
-<mark><span class="ln">41</span>// `catalog` (the API's base URL) and `findTitle` stand in for your own code.</mark>
-<span class="ln">42</span> 
-<span class="ln">43</span>export const handlers = [
-<span class="ln">44</span>  configurable(</code></pre>
+<meta itemprop="codeStart" content="38"><pre itemprop="code" data-start="38"><code style="counter-reset: line 37"><span class="line">// src/mocks/handlers.ts</span>
+<span class="line">import { HttpResponse } from 'msw';</span>
+<span class="line">import { configurable } from '@hypertheory-labs/mock-control';</span>
+<mark class="line">// `catalog` (the API's base URL) and `findTitle` stand in for your own code.</mark>
+<span class="line"></span>
+<span class="line">export const handlers = [</span>
+<span class="line">  configurable(</span></code></pre>
 </figure>
 <figure class="view status-found" itemprop="view" itemscope>
 <figcaption>

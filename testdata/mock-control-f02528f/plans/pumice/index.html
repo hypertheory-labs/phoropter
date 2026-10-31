@@ -13,7 +13,8 @@
 Generated from <span itemprop="repository">mock-control</span>
 at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
 <span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
-<span class="links"><a rel="help" href="../../guide/">guide</a>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="help" href="../../guide/">guide</a>
 <a class="profile-link" href="../../profile/">profile</a></span>
 </header>
 <main>
@@ -52,13 +53,13 @@ of production builds.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="94"><meta itemprop="endLine" content="94"></span>
 <span class="note" itemprop="note">quote at line 94</span>
 </figcaption>
-<meta itemprop="codeStart" content="91"><pre itemprop="code" data-start="91"><code><span class="ln">91</span>**Mocks are for things you only read; things that remember are a real API.** An
-<span class="ln">92</span>endpoint whose data the app changes gets a pass-through entry, not a mock.
-<span class="ln">93</span> 
-<mark><span class="ln">94</span>### Wiring it into an app</mark>
-<span class="ln">95</span> 
-<span class="ln">96</span>```ts
-<span class="ln">97</span>// mocks/browser.ts</code></pre>
+<meta itemprop="codeStart" content="91"><pre itemprop="code" data-start="91"><code style="counter-reset: line 90"><span class="line">**Mocks are for things you only read; things that remember are a real API.** An</span>
+<span class="line">endpoint whose data the app changes gets a pass-through entry, not a mock.</span>
+<span class="line"></span>
+<mark class="line">### Wiring it into an app</mark>
+<span class="line"></span>
+<span class="line">```ts</span>
+<span class="line">// mocks/browser.ts</span></code></pre>
 </figure>
 <figure class="view status-not-found" itemprop="view" itemscope>
 <figcaption>
@@ -104,11 +105,11 @@ not a promise to users.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="10"><meta itemprop="endLine" content="10"></span><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="152">
 <span class="note" itemprop="note">lines 9–152; quote at line 10</span>
 </figcaption>
-<meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code><span class="ln">9</span>@Component({
-<mark><span class="ln">10</span>  selector: 'app-mock-panel',</mark>
-<span class="ln">11</span>  imports: [EndpointSettings, RequestLog],
-<span class="ln">12</span>  template: `
-<span class="ln">13</span>    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</code></pre>
+<meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code style="counter-reset: line 8"><span class="line">@Component({</span>
+<mark class="line">  selector: 'app-mock-panel',</mark>
+<span class="line">  imports: [EndpointSettings, RequestLog],</span>
+<span class="line">  template: `</span>
+<span class="line">    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</span></code></pre>
 </figure>
 <figure class="view status-not-found" itemprop="view" itemscope>
 <figcaption>
@@ -119,13 +120,13 @@ not a promise to users.</p>
 <meta itemprop="matches" content="0"><meta itemprop="startLine" content="9"><meta itemprop="endLine" content="152">
 <span class="note" itemprop="note">lines 9–152; quote not found at <code>e92db76</code>, so this is the declaration</span>
 </figcaption>
-<meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code><span class="ln">9</span>@Component({
-<span class="ln">10</span>  selector: 'mock-panel',
-<span class="ln">11</span>  imports: [EndpointSettings, RequestLog],
-<span class="ln">12</span>  template: `
-<span class="ln">13</span>    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;
-<span class="ln">14</span>      @if (control.heldCount()) {
-<span class="ln">15</span>        &lt;button type=&quot;button&quot; class=&quot;btn btn-warning shadow-lg&quot; (click)=&quot;control.releaseAll()&quot;&gt;</code></pre>
+<meta itemprop="codeStart" content="9"><pre itemprop="code" data-start="9"><code style="counter-reset: line 8"><span class="line">@Component({</span>
+<span class="line">  selector: 'mock-panel',</span>
+<span class="line">  imports: [EndpointSettings, RequestLog],</span>
+<span class="line">  template: `</span>
+<span class="line">    &lt;div class=&quot;fixed bottom-4 left-4 z-40 flex items-center gap-2&quot;&gt;</span>
+<span class="line">      @if (control.heldCount()) {</span>
+<span class="line">        &lt;button type=&quot;button&quot; class=&quot;btn btn-warning shadow-lg&quot; (click)=&quot;control.releaseAll()&quot;&gt;</span></code></pre>
 </figure>
 <figure class="view status-not-found" itemprop="view" itemscope>
 <figcaption>
@@ -238,12 +239,12 @@ unstyled.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="3"><meta itemprop="endLine" content="3"></span>
 <span class="note" itemprop="note">quote at line 3</span>
 </figcaption>
-<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code><span class="ln">1</span>{
-<span class="ln">2</span>  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,
-<mark><span class="ln">3</span>  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
-<span class="ln">4</span>  &quot;peerDependencies&quot;: {
-<span class="ln">5</span>    &quot;@angular/common&quot;: &quot;^22.2.0&quot;,
-<span class="ln">6</span>    &quot;@angular/core&quot;: &quot;^22.2.0&quot;,</code></pre>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">{</span>
+<span class="line">  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,</span>
+<mark class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
+<span class="line">  &quot;peerDependencies&quot;: {</span>
+<span class="line">    &quot;@angular/common&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;@angular/core&quot;: &quot;^22.2.0&quot;,</span></code></pre>
 </figure>
 <figure class="view status-found" itemprop="view" itemscope>
 <figcaption>
@@ -254,12 +255,12 @@ unstyled.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="3"><meta itemprop="endLine" content="3"></span>
 <span class="note" itemprop="note">quote at line 3</span>
 </figcaption>
-<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code><span class="ln">1</span>{
-<span class="ln">2</span>  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,
-<mark><span class="ln">3</span>  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
-<span class="ln">4</span>  &quot;peerDependencies&quot;: {
-<span class="ln">5</span>    &quot;@angular/common&quot;: &quot;^22.2.0&quot;,
-<span class="ln">6</span>    &quot;@angular/core&quot;: &quot;^22.2.0&quot;,</code></pre>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">{</span>
+<span class="line">  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,</span>
+<mark class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
+<span class="line">  &quot;peerDependencies&quot;: {</span>
+<span class="line">    &quot;@angular/common&quot;: &quot;^22.2.0&quot;,</span>
+<span class="line">    &quot;@angular/core&quot;: &quot;^22.2.0&quot;,</span></code></pre>
 </figure>
 <figure class="view status-found" itemprop="view" itemscope>
 <figcaption>
@@ -270,12 +271,12 @@ unstyled.</p>
 <meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="3"><meta itemprop="endLine" content="3"></span>
 <span class="note" itemprop="note">quote at line 3</span>
 </figcaption>
-<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code><span class="ln">1</span>{
-<span class="ln">2</span>  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,
-<mark><span class="ln">3</span>  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
-<span class="ln">4</span>  &quot;description&quot;: &quot;Runtime-configurable MSW mocks for Angular apps, and a panel to slow, fail, empty, or hold requests while the app runs.&quot;,
-<span class="ln">5</span>  &quot;license&quot;: &quot;MIT&quot;,
-<span class="ln">6</span>  &quot;repository&quot;: {</code></pre>
+<meta itemprop="codeStart" content="1"><pre itemprop="code" data-start="1"><code style="counter-reset: line 0"><span class="line">{</span>
+<span class="line">  &quot;name&quot;: &quot;@hypertheory-labs/mock-control&quot;,</span>
+<mark class="line">  &quot;version&quot;: &quot;0.0.1&quot;,</mark>
+<span class="line">  &quot;description&quot;: &quot;Runtime-configurable MSW mocks for Angular apps, and a panel to slow, fail, empty, or hold requests while the app runs.&quot;,</span>
+<span class="line">  &quot;license&quot;: &quot;MIT&quot;,</span>
+<span class="line">  &quot;repository&quot;: {</span></code></pre>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> this round is the work Jeff is into; publishing waits until the <code>@source</code>

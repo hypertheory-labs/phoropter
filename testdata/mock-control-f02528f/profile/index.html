@@ -13,7 +13,8 @@
 Generated from <span itemprop="repository">mock-control</span>
 at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><code>f02528f</code></data>
 <span class="meta">f02528f949ffc39b8517916cf2acf2da39abc7b7</span>
-<span class="links"><a rel="help" href="../guide/">guide</a>
+<span class="links"><a class="home-link" href="../">home</a>
+<a rel="help" href="../guide/">guide</a>
 <a class="profile-link" href="../profile/">profile</a></span>
 </header>
 <main>
@@ -25,6 +26,7 @@ at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><cod
 <dl class="defs">
 <dt id="profile"><code>profile</code> <span class="meta">registered</span></dt><dd>What do the rels and properties on this page mean? This document.</dd>
 <dt id="help"><code>help</code> <span class="meta">registered</span></dt><dd>How are plans written? From every page to the guide, which is the same on every site.</dd>
+<dt id="draft"><code>draft</code> <span class="meta">phoropter</span></dt><dd>Is a plan being drafted? From every page to <code>draft/</code>, the repository’s one draft, while <code>plan.draft.md</code> exists. Only the dev server adds it; a built site never has a draft.</dd>
 <dt id="item"><code>item</code> <span class="meta">registered</span></dt><dd>What does this collection hold? From the home page to each plan and anchored place.</dd>
 <dt id="collection"><code>collection</code> <span class="meta">registered</span></dt><dd>What is this a member of? From a plan or place to the home page.</dd>
 <dt id="up"><code>up</code> <span class="meta">registered</span></dt><dd>What is this part of? From an as-built page to its plan.</dd>
@@ -45,6 +47,10 @@ at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><cod
 <dt id="prop-anchor"><code>anchor</code></dt><dd>Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> (content <code>true</code>) for <code>where (new)</code>, in the same shape wherever it appears, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.</dd>
 <dt id="prop-view"><code>view</code></dt><dd>An anchor at one commit: <code>role</code> (base, as-built head, generated), <code>commit</code>, <code>status</code>, <code>file</code>, <code>startLine</code>/<code>endLine</code> for a symbol, <code>matches</code>, one <code>match</code> item per match with the <code>startLine</code> and <code>endLine</code> the quote covers, <code>note</code>, <code>code</code> (each one preceded by <code>codeStart</code>, the line number of its first line; the nth <code>codeStart</code> belongs to the nth <code>code</code>), and <code>sameAs</code> when a generated view matches the as-built head’s exactly and its code isn’t repeated. A plan’s anchors have up to three views: base, as-built head (where the plan’s own work landed), and generated.</dd>
 <dt id="prop-status"><code>status</code></dt><dd><code>found</code>: the quote matched. <code>not-found</code>: it didn’t. <code>no-quote</code>: nothing to search for. <code>no-file</code>: the file isn’t at that commit. <code>no-symbol</code>: the symbol isn’t in that commit’s index. None of these judges a difference between commits.</dd>
+<dt id="prop-(draft header)"><code>(draft header)</code></dt><dd>On the draft page, the header says it’s the working tree, not a commit: <code>file</code> (<code>plan.draft.md</code>), <code>repository</code>, <code>readAt</code>, the draft’s <code>sha256</code>, and the <code>commit</code> its anchors resolve at.</dd>
+<dt id="prop-draft"><code>draft</code></dt><dd>The draft page’s item: <code>title</code>, <code>base</code>, <code>revisits</code>, <code>notesSha256</code> and <code>annotates</code> (the draft version the notes were written against, when it isn’t this one), <code>intro</code>, <code>entry</code> items as on a plan (but never listed on places or other plans’ entries), <code>prompt</code> items, and <code>annotation</code> items.</dd>
+<dt id="prop-prompt"><code>prompt</code></dt><dd>An open question in a draft, in the annotating agreement’s form: <code>kind</code> (Question, Select, Affirm), <code>text</code>, <code>option</code> for each of a Select’s choices, <code>fallback</code> (what happens if it goes unanswered), and <code>answer</code> when the notes restate it. It follows the entry (or intro) it belongs to.</dd>
+<dt id="prop-annotation"><code>annotation</code></dt><dd>A note from <code>plan.draft.notes.md</code>: <code>heading</code> as written, <code>quote</code> (the draft’s source text it quotes), and <code>comment</code>. It follows the entry whose source holds its quote; a note without a quote, or whose quote isn’t in the draft anymore, comes first.</dd>
 <dt id="prop-place"><code>place</code></dt><dd>A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code> with its <code>codeStart</code>, <code>entryCount</code> on the home page, and <code>anchoredBy</code> items.</dd>
 </dl>
 </main>
