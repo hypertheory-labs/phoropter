@@ -31,7 +31,7 @@ is thin. This file is Claude's; Jeff doesn't edit it. Keep it short and true.
 - **This repo uses the plan format itself** (since 2026-10-31): plans in `plans/`, by
   phoropter's guide, and a draft as `plan.draft.md` at the root (gitignored; we work on
   main). Serve it with `node src/serve.ts ../phoropter-tui --port 4174` from
-  `../phoropter`. Use file anchors with a quote. Phoropter indexes only TypeScript, so a
+  `../phoropter`. To try the TUI on a draft, `cp testdata/sample.draft.md plan.draft.md`. Use file anchors with a quote. Phoropter indexes only TypeScript, so a
   Go symbol anchor won't resolve yet. Don't backfill plans for work already done; its
   reasons are here and in the commits.
 - **`.loom/` is lineage, not a dependency.** Jeff keeps copies of documents this work

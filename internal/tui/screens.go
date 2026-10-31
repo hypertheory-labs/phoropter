@@ -172,19 +172,21 @@ func (s *listScreen) view(m *Model, w, h int) string {
 	if len(s.home.Plans) == 0 {
 		left = append(left, styles.dim.Render("No plans on this site yet."))
 	}
-	// Two lines a plan; scroll so the chosen one shows.
-	room := max(1, (h-lipgloss.Height(slot)-1)/2)
+	// A box a plan, with a gap after; scroll so the chosen one shows.
+	const each = 5
+	room := max(1, (h-lipgloss.Height(slot)-1)/each)
 	first := 0
 	if s.cur > room {
 		first = s.cur - room
 	}
+	inner := lw - 4
 	for i := first; i < len(s.home.Plans) && i < first+room; i++ {
 		p := s.plan(i)
-		title := ansi.Truncate("  "+p.Title, lw, "…")
+		title, box := ansi.Truncate(p.Title, inner, "…"), styles.card
 		if i+1 == s.cur {
-			title = styles.cursor.Render(ansi.Strip(title))
+			title, box = styles.cursor.Render(title), styles.cardChosen
 		}
-		left = append(left, title, styles.dim.Render(ansi.Truncate("  "+meta(p), lw, "…")))
+		left = append(left, box.Width(lw-2).Render(title+"\n"+styles.dim.Render(ansi.Truncate(meta(p), inner, "…"))), "")
 	}
 
 	rw := detailWidth(w)
