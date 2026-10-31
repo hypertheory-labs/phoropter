@@ -7,11 +7,36 @@ import { describe, runIndexer, type IndexerOutput } from './indexers.ts';
 import { isScipSymbol } from './scip.ts';
 
 // The last name in a symbol's descriptors: `…/docScreen#annotate().` is
-// `annotate`, `…/\`mock-panel.ts\`/MockPanel#` is `MockPanel`.
+// `annotate`, `…/\`mock-panel.ts\`/MockPanel#` is `MockPanel`, and
+// `…/OrderService#\`.ctor\`().` is `.ctor`. A backticked name is read whole,
+// with a doubled backtick standing for one, as SCIP escapes them.
 export function lastName(symbol: string): string | undefined {
-  const descriptors = symbol.split(' ').slice(4).join(' ');
-  return descriptors.split(/[/#.`:()[\]!]+/).filter(Boolean).at(-1);
+  const d = symbol.split(' ').slice(4).join(' ');
+  const names: string[] = [];
+  for (let i = 0; i < d.length; ) {
+    if (d[i] === '`') {
+      let name = '';
+      for (i++; i < d.length; i++) {
+        if (d[i] === '`' && d[i + 1] === '`') name += d[i++];
+        else if (d[i] === '`') break;
+        else name += d[i];
+      }
+      names.push(name);
+      i++;
+    } else if (/[\w$+-]/.test(d[i])) {
+      let name = '';
+      while (i < d.length && /[\w$+-]/.test(d[i])) name += d[i++];
+      names.push(name);
+    } else i++;
+  }
+  return names.at(-1);
 }
+
+// The name check applies to names a source file spells as written. Anything
+// else (`.ctor`, `this[]`, `<constructor>` once its brackets are off) is a
+// name an indexer made up, and isn't looked for.
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
+const ALLOWED_MISSES = 0.05;
 
 // How a name can appear in the source. Indexers name some things the source
 // never spells: scip-typescript's `<constructor>` is `constructor`, and an
@@ -56,6 +81,8 @@ export function checkIndexer(program: { command: string[]; cwd?: string }, repo:
   if (!out.packages || typeof out.packages !== 'object') return { ok: false, report: [...report, 'its output has no packages object'] };
 
   let count = 0;
+  let named = 0;
+  const misses: string[] = [];
   const lines = new Map<string, string[] | undefined>();
   for (const [pkg, { definitions }] of Object.entries(out.packages)) {
     for (const [symbol, value] of Object.entries(definitions ?? {})) {
@@ -85,10 +112,17 @@ export function checkIndexer(program: { command: string[]; cwd?: string }, repo:
       const range = text.slice(start - 1, end).join('\n');
       // A namespace (a package or a file, ending in `/`) is named by its path,
       // which the source doesn't spell.
-      if (name && !symbol.endsWith('/') && !spellings(name).some((n) => range.includes(n))) say(`"${name}" isn't on lines ${start}–${end} of ${file}`);
+      const plain = name ? spellings(name).filter((n) => IDENTIFIER.test(n)) : [];
+      if (!name || symbol.endsWith('/') || !plain.length) continue;
+      named++;
+      if (!plain.some((n) => range.includes(n))) misses.push(`${symbol}: "${name}" isn't on lines ${start}–${end} of ${file}`);
     }
   }
   report.push(`${Object.keys(out.packages).length} package(s), ${count} definition(s) at ${repo.short(sha)}`);
+  // A few names spelled differently in source (an operator's op_Addition is
+  // `operator +`) are notes. Many are a range bug, which misses nearly all.
+  if (misses.length > named * ALLOWED_MISSES) problems.push(...misses);
+  else if (misses.length) report.push(`${misses.length} of ${named} name(s) aren't spelled in their ranges, within the ${ALLOWED_MISSES * 100}% allowed for names a language spells differently:`, ...misses.slice(0, 10).map((m) => `  ${m}`));
   if (!count) problems.push('it found no definitions at all');
   if (problems.length) report.push(`${problems.length} problem(s):`, ...problems.slice(0, 20).map((p) => `  ${p}`));
   else report.push('passes: every definition is a symbol in its scheme, in a file at HEAD, on lines that hold its name.');

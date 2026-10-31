@@ -145,8 +145,12 @@ the indexer on the repository at `HEAD` with no packages named, and checks that:
 - every symbol is in the grammar, under the package it names, with version `.`;
 - every file exists at `HEAD`;
 - every range is inside its file;
-- each definition's name appears in its range. Namespaces, whose names are paths, are
-  skipped, and so are the names scip-typescript invents, like `<constructor>`.
+- each definition's name appears in its range. A backticked name is read whole
+  (`` `.ctor` `` is `.ctor`). Only names a source file spells as written are looked for,
+  so namespaces (named by their paths) and names an indexer makes up (`.ctor`,
+  `this[]`, `<constructor>`) are skipped. Up to 5% of names may be missing from their
+  ranges, for names a language spells differently, like an operator's `op_Addition`;
+  they're listed as notes. More than that is a range bug, and fails.
 
 It prints what failed and why, and exits non-zero until everything passes. Both
 indexers here pass it on phoropter's own repository.

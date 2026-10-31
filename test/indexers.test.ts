@@ -24,6 +24,8 @@ test('any scheme is a symbol, and a › path never is', () => {
   assert.ok(!isScipSymbol('src/render.ts'));
   assert.equal(packageKey('scip-go gomod phoropter-tui . `phoropter-tui/internal/tui`/form#'), 'scip-go phoropter-tui');
   assert.equal(lastName('scip-go gomod phoropter-tui . `phoropter-tui/internal/tui`/docScreen#annotate().'), 'annotate');
+  assert.equal(lastName('roslyn nuget Contoso.Orders . Contoso/Orders/OrderService#`.ctor`().'), '.ctor');
+  assert.equal(lastName('scip-typescript npm p . src/`mock-panel.ts`/MockPanel#'), 'MockPanel');
 });
 
 test('the first-party indexers are found by scheme', () => {
@@ -61,4 +63,31 @@ test('--check says what is wrong with an indexer that breaks the contract', () =
   const text = report.join('\n');
   assert.match(text, /version should be written as "\."/);
   assert.match(text, /package q, but it's listed under p/);
+});
+
+// Names an indexer makes up (`.ctor`) aren't looked for, and a few names a
+// language spells differently (`op_Addition` is `operator +`) are notes. Wrong
+// ranges still fail, because then nearly every name is missing.
+test('--check reads made-up and differently spelled names, and still catches bad ranges', () => {
+  const sha = here.resolve('HEAD')!;
+  const text = here.show(sha, 'src/store.ts')!.split('\n');
+  const at = (needle: string) => text.findIndex((l) => l.includes(needle)) + 1;
+  const store = at('export class Store {');
+  const fake = (defs: Record<string, [string, number, number]>) => ['node', '-e', `
+    const out = { indexer: 'fake', version: '0', scheme: 'roslyn', extensions: ['.cs'] };
+    if (process.argv[1] === '--describe') { console.log(JSON.stringify(out)); process.exit(0) }
+    console.log(JSON.stringify({ ...out, packages: { p: { definitions: ${JSON.stringify(defs)} } } }))`, '--'];
+  const names = ['lookup', 'commit', 'isCommitted', 'committedPath', 'readAt', 'read', 'write', 'repo', 'cache', 'asked', 'indexer', 'memory', 'constructor', 'cachedPath', 'Lookup', 'Found', 'Indexer', 'Stored', 'STORE', 'cacheDir'];
+  const good: Record<string, [string, number, number]> = {};
+  for (const n of names) good[`roslyn nuget p . Thing#${n}().`] = ['src/store.ts', 1, text.length];
+  good['roslyn nuget p . Store#`.ctor`().'] = ['src/store.ts', store, store + 5];
+  good['roslyn nuget p . Store#op_Addition().'] = ['src/store.ts', store, store];
+  const passing = checkIndexer({ command: fake(good) }, here);
+  assert.ok(passing.ok, passing.report.join('\n'));
+  assert.match(passing.report.join('\n'), /1 of 21 name\(s\) aren't spelled in their ranges/);
+
+  const wrong: Record<string, [string, number, number]> = {};
+  for (const n of names) wrong[`roslyn nuget p . Thing#${n}().`] = ['src/store.ts', 1, 1];
+  const failing = checkIndexer({ command: fake(wrong) }, here);
+  assert.ok(!failing.ok);
 });
