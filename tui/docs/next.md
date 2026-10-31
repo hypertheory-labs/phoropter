@@ -104,6 +104,11 @@ from Jeff: whether `drafts/` is ignored in git (yes for a pair on main, no for a
 that shares drafts on branches), and maybe the folder's name, if a repository already
 has a `drafts/`. It waits until the guide's shape is decided.
 
+Jeff's idea for the first draft: it's about how the pair works together, with the
+defaults as its prompts' fallbacks. For example, "the agent always asks before
+converting a plan to code", defaulting to no. `phoropter` with no plans shows a welcome
+page, which will point here once `init` exists.
+
 ## 5. `why`
 
 `phoropter-tui why <path>:<line>` prints, as plain text, the entries about that line
@@ -119,6 +124,12 @@ sources, age, drift, and open guesses; maybe `Holds while:`).
 A view, from the plan list or a file, of the entries whose reasons nobody has confirmed
 lately: "Claude, not asked," unanswered fallbacks, guesses not tested, anchors that
 drifted. Rendered from phoropter's page, not computed here.
+
+## Small things
+
+- **Save and keep writing** (Jeff: "I'm going to have to ask for a :w in notes soon").
+  In a form, a key that writes the note and keeps the form open, so a long note can be
+  saved as it goes. `ctrl+s` writes and closes.
 
 ## Later, to talk through: a phoropter CLI with plugins
 
