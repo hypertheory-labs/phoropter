@@ -17,3 +17,9 @@ asked for this one.
 
 Anchors that can't be placed at the generated commit belong on the page as drift, not
 dropped.
+
+**Jeff's guard, 2026-11-01:** plans are the way into a codebase, so a file is only ever
+reached from a plan: a "now" view (with its span lit), a place, or a lens. Then the stack
+of plans touching the file is there to explore. No tree view and no file picker: "if we
+add a tree-view file explorer, we've failed or given up." A file no plan leads to is a
+finding: nobody wrote down why it's that way.
