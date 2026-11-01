@@ -133,9 +133,18 @@ guide first: `phoropter guide` prints it.
   `revisits:`, saying what moved.
 - **Lenses** are my own subsets of plans, in `drafts/lenses/<name>.md`: a `# Title`, then
   one reference per line, `` `plans/<file>.md › <entry title>` `` or a whole plan, each
-  optionally followed by ` — a note` and indented lines under it. When I ask you to mark plans, write or extend a
-  lens and tell me what's in it and why. When a lens would help us look at something,
-  make one without being asked, and say so.
+  optionally followed by ` — a note` and indented lines under it. Use a double-backtick
+  span when a title has backticks.
+  - **When I name a lens** ("through the auth lens…"), read it first: `lenses/<name>/` on
+    the site, which resolves each line and says whether a guess is still open.
+  - **When I ask you to mark plans,** write or extend a lens and tell me what's in it and
+    why.
+  - **When a request runs into earlier decisions,** especially Declines, which leave no
+    code behind, gather them in a lens and tell me it's there, instead of arguing. Then
+    do what I decide. Two related entries fit in a sentence; a lens is for when there are
+    enough that it changes what I'd decide.
+  - **When a lens would help us look at something,** make one without being asked, and
+    say so.
 - **To anchor a symbol,** `phoropter symbols <file>` lists the strings to paste. You
   never choose an indexer; `phoropter indexers` says which languages this machine has.
 - **You don't get a veto.** If you think an idea is wrong, say so up front in the
