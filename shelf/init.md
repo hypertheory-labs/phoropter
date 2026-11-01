@@ -51,3 +51,10 @@ The line to keep: phoropter publishes and loom adopts, so phoropter still works 
 loom. `indexers/README.md` is a contract too (the roslyn indexer depends on it). Publishing
 needs a fetch someone else performs, and phoropter's raw `guide.md` returned 404 on
 2026-11-01, so the readers have to be named.
+
+**Jeff, on the lens draft (percale), 2026-11-01:** the server could carry recipes for the
+agent, like skills: when the person says "mark these for me", the agent has somewhere to
+look up what that means. Converting a draft and answering notes are recipes too.
+`phoropter guide` already shows the binary can carry agent-facing text with no server, so
+`init` could install a skill file that points at it. And recipes let the agent act
+unprompted: "I made a lens through which we might look at this."
