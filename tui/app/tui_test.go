@@ -292,3 +292,38 @@ func TestAskForARevisit(t *testing.T) {
 		t.Error("the landed plan was changed")
 	}
 }
+
+// nainsook: y copies the address of what you're on, Y its reference, b opens
+// it. On a site on disk, a directory gets its index.html so a browser opens it.
+func TestLinksOut(t *testing.T) {
+	c, err := substrate.NewClient("../testdata/mock-control-f02528f", substrate.NewLedger())
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := New(c, c.Ledger)
+	m.dir = t.TempDir()
+	var clip, opened []string
+	m.clip = func(s string) error { clip = append(clip, s); return nil }
+	m.browse = func(s string) error { opened = append(opened, s); return nil }
+	m.Update(tea.WindowSizeMsg{Width: 120, Height: 36})
+	drive(t, m, m.Init())
+
+	press(t, m, "Y")
+	if len(clip) != 0 || !strings.Contains(m.status, "open a plan") {
+		t.Fatalf("the list has no references: %v %q", clip, m.status)
+	}
+	// pumice is the older plan, last in newest-first order.
+	press(t, m, "end", "enter", "j", "y", "Y", "b")
+	if len(clip) != 2 || len(opened) != 1 {
+		t.Fatalf("clip %v, opened %v, status %q", clip, opened, m.status)
+	}
+	if !strings.HasPrefix(clip[0], "file://") || !strings.HasSuffix(clip[0], "/plans/pumice/index.html#the-readme-is-a-setup-guide-for-an-angular-app") {
+		t.Errorf("address: %s", clip[0])
+	}
+	if clip[1] != "plans/2026-10-29-pumice.md › The README is a setup guide for an Angular app" {
+		t.Errorf("reference: %s", clip[1])
+	}
+	if opened[0] != clip[0] || !strings.HasPrefix(m.status, "opened ") {
+		t.Errorf("opened %s, status %q", opened[0], m.status)
+	}
+}

@@ -83,7 +83,7 @@ func (s *listScreen) title() string {
 }
 
 func (s *listScreen) help() string {
-	return "j/k move · enter open · o oldest/newest first · r refresh"
+	return "j/k move · enter open · o oldest/newest first · y copy link · b browser · r refresh"
 }
 
 func (s *listScreen) refresh() ([]string, string) {
@@ -457,7 +457,7 @@ func (s *docScreen) help() string {
 	if s.plan.Draft != nil {
 		return "j/k or tab move · a answer or note · s skip · n anchor · 1 2 3 layer · enter links · r refresh · esc back"
 	}
-	return "j/k or tab entry · a note · n anchor · 1 2 3 [ ] layer · J/K scroll · enter links · r refresh · esc back"
+	return "j/k or tab entry · a note · n anchor · 1 2 3 [ ] layer · enter links · y/Y copy link/ref · b browser · esc back"
 }
 
 // refresh reads the plan and its as-built again, back at the same entry.

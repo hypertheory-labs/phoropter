@@ -37,6 +37,9 @@ can find the draft.
   `s` skips a prompt on purpose. In a form, `ctrl+s` writes, `tab` moves between fields,
   `ctrl+e` opens `$EDITOR`, and `esc` cancels.
 - **Anywhere:** `r` reads the page again, `g` shows the gaps hit so far, `?` is help.
+  `y` copies the address of what you're on (a plan's at the entry), `b` opens it in the
+  browser, and `Y` copies its reference, `plans/<file>.md › <entry title>`, which
+  outlasts the server's port (nainsook).
 
 To try a draft: from the repository root, `mkdir -p drafts && cp
 tui/testdata/sample.draft.md drafts/plan.draft.md`, run `phoropter`, and open the TUI

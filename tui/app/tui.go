@@ -37,6 +37,9 @@ type Model struct {
 
 	dir        string // where to look for the draft's repository; "" is the working directory
 	authorName string
+
+	clip   func(string) error // the clipboard, and the browser; tests swap them
+	browse func(string) error
 }
 
 // A capturing screen has a form open, and takes every key but ctrl+c.
@@ -46,7 +49,7 @@ type capturing interface {
 }
 
 func New(c *substrate.Client, ledger *substrate.Ledger) *Model {
-	return &Model{c: c, ledger: ledger}
+	return &Model{c: c, ledger: ledger, clip: clipboard, browse: browser}
 }
 
 type loadedMsg struct {
@@ -193,6 +196,10 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if k == "r" {
 			return m, m.reload()
 		}
+		if k == "y" || k == "Y" || k == "b" {
+			m.link(k)
+			return m, nil
+		}
 		if cmd := m.top().key(m, k); cmd != nil {
 			return m, cmd
 		}
@@ -293,6 +300,9 @@ const helpText = `Keys
                 s skip a prompt on purpose · in a form: ctrl+s write, tab next
                 field, ctrl+e $EDITOR, esc cancel
   anywhere      r read this page again · g gaps ledger · ? this help · q quit
+                y copy this page's address (at the entry, on a plan) · b open it
+                in the browser · Y copy its reference, plans/<file>.md › <entry>,
+                which outlasts the server's port
 
 Layers are the commits phoropter shows an anchor at:
   1 before    what the plan was deciding against (its base)
