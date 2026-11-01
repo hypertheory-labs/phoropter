@@ -68,6 +68,9 @@ pace with the work, not coverage.
 - **Lenses** (percale): a reader's own subsets of plans in `drafts/lenses/<name>.md`, one
   reference per line in `where:` syntax. The dev server serves `lenses/` and links it from
   every page; a built site never has them. The TUI lists, filters, and appends (`+`).
+  Use them here too: when Jeff names a lens, read `lenses/<name>/` first; when a request
+  runs into earlier Declines, gather them in a lens instead of arguing, then do what he
+  decides. A lens is a proto-plan; nothing in phoropter tracks state.
 - **Indexers** (seersucker) are programs in `indexers/` (TypeScript, Go), or on `PATH` as
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols
