@@ -355,6 +355,11 @@ func TestLenses(t *testing.T) {
 	if !strings.Contains(s, "all · 5 of 5") || !strings.Contains(s, "✗ plans/nope.md") || !strings.Contains(s, "Guess Following HEAD costs nothing") {
 		t.Fatalf("the lens:\n%s", s)
 	}
+	// e needs the lens on disk, and this repository doesn't have it (lawn).
+	press(t, m, "e")
+	if !strings.Contains(m.status, "no drafts/lenses/try.md here") {
+		t.Errorf("e without the file: %q", m.status)
+	}
 	press(t, m, "f", "f")
 	if s := screenText(t, m); !strings.Contains(s, "Decline · 1 of 5") || !strings.Contains(s, "Opening the TUI from the server") || strings.Contains(s, "Following HEAD") {
 		t.Fatalf("declines only:\n%s", s)

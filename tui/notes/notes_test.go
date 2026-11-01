@@ -133,3 +133,18 @@ func TestOpenChecksThePagesHash(t *testing.T) {
 		t.Error("the draft was changed")
 	}
 }
+
+// lawn: + puts a new item after the last one and its notes, never below a
+// lens's closing text, and never changes what's there.
+func TestInsertItem(t *testing.T) {
+	for _, c := range []struct{ in, want string }{
+		{"# L\n\n", "# L\n\n- new\n"},
+		{"# L\n\nIntro.", "# L\n\nIntro.\n\n- new\n"},
+		{"# L\n\n- a\n  note\n\n  more\n\nClosing.\n", "# L\n\n- a\n  note\n\n  more\n- new\n\nClosing.\n"},
+		{"# L\n\n- a\n- b\n", "# L\n\n- a\n- b\n- new\n"},
+	} {
+		if got := insertItem(c.in, "- new"); got != c.want {
+			t.Errorf("insertItem(%q) =\n%q\nwant\n%q", c.in, got, c.want)
+		}
+	}
+}

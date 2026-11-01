@@ -19,6 +19,7 @@ type LensSummary struct {
 
 type Lens struct {
 	URL, Title, File, Intro    string
+	Closing                    string // the lens's prose after its items (lawn)
 	Repository, RepositoryNote string
 	Items                      []LensItem
 }
@@ -51,7 +52,7 @@ func (c *Client) Lens(ref string) (*Lens, error) {
 		return nil, err
 	}
 	m := p.Main
-	l := &Lens{URL: p.URL, Title: prose(m.Get("title")), File: m.Str("file"), Intro: prose(m.Get("intro")),
+	l := &Lens{URL: p.URL, Title: prose(m.Get("title")), File: m.Str("file"), Intro: prose(m.Get("intro")), Closing: prose(m.Get("closing")),
 		Repository: m.Str("repository"), RepositoryNote: m.Str("repositoryNote")}
 	for _, it := range m.Items("lensItem") {
 		l.Items = append(l.Items, LensItem{

@@ -172,6 +172,12 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case errMsg:
 		m.loading = false
 		m.status = msg.err.Error()
+	case lensEditedMsg:
+		if msg.err != nil {
+			m.status = "editor: " + msg.err.Error()
+			return m, nil
+		}
+		return m, m.reload()
 	case editedMsg:
 		if msg.err != nil {
 			m.status = "editor: " + msg.err.Error()
@@ -312,7 +318,8 @@ const helpText = `Keys
   place         j/k move · enter open that plan at its entry · esc back
   lenses        L from the plan list · in a lens, f filters: all, Decisions,
                 Declines, open guesses · + on an entry or a plan adds it to a
-                lens (tab cycles yours; a new name starts one)
+                lens (tab cycles yours; a new name starts one) · e on a lens
+                opens it in $EDITOR: indent a line under an item to note it
   draft         a answer the prompt, or note the entry (on About, the whole draft)
                 s skip a prompt on purpose · in a form: ctrl+s write, tab next
                 field, ctrl+e $EDITOR, esc cancel

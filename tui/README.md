@@ -43,7 +43,8 @@ can find the draft.
 - **Lenses** (percale): `L` from the plan list opens your lenses, from `drafts/lenses/`.
   In a lens, `f` cycles all, Decisions, Declines, and open guesses. `+` on an entry or a
   plan adds it to a lens, offering the last one; `tab` cycles yours, and a new name
-  starts one.
+  starts one. `e` opens a lens in `$EDITOR`; lines indented under an item are its note
+  (lawn).
 
 To try a draft: from the repository root, `mkdir -p drafts && cp
 tui/testdata/sample.draft.md drafts/plan.draft.md`, run `phoropter`, and open the TUI

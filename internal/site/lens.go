@@ -22,6 +22,7 @@ type Lens struct {
 	File       string // repo-relative
 	Title      string
 	Intro      string
+	Closing    string // prose after the list (lawn)
 	Repository string // the first commit's sha, as written
 	Items      []LensItem
 }
@@ -95,25 +96,61 @@ func ParseLens(source string) *Lens {
 		}
 		source = source[m[1]:]
 	}
-	var intro []string
+	// An item is a bullet at the start of a line. Indented lines after it, and
+	// blank lines between them, are its note (lawn). Unindented prose before
+	// the first item is the intro, and after it the lens's closing text.
+	var intro, closing []string
+	nested := map[int][]string{}
+	open := false
 	for _, line := range strings.Split(source, "\n") {
 		t := strings.TrimSpace(line)
+		indented := t != "" && (line[0] == ' ' || line[0] == '\t')
 		switch {
-		case strings.HasPrefix(t, "# ") && l.Title == "":
+		case l.Title == "" && strings.HasPrefix(t, "# "):
 			l.Title = strings.TrimSpace(t[2:])
-		case strings.HasPrefix(t, "- ") || strings.HasPrefix(t, "* "):
+		case open && (indented || t == ""):
+			nested[len(l.Items)-1] = append(nested[len(l.Items)-1], line)
+		case !indented && (strings.HasPrefix(t, "- ") || strings.HasPrefix(t, "* ")):
 			if ref, rest, ok := codeSpan(strings.TrimSpace(t[2:])); ok {
 				l.Items = append(l.Items, LensItem{Ref: strings.TrimSpace(ref), Note: strings.TrimSpace(lensNoteSep.ReplaceAllString(rest, ""))})
 			} else {
 				ref, note, _ := strings.Cut(strings.TrimSpace(t[2:]), " — ")
 				l.Items = append(l.Items, LensItem{Ref: strings.TrimSpace(ref), Note: strings.TrimSpace(note)})
 			}
-		case len(l.Items) == 0 && l.Title != "":
+			open = true
+		case l.Title == "":
+		case len(l.Items) == 0:
 			intro = append(intro, line)
+		default:
+			open = false
+			closing = append(closing, line)
+		}
+	}
+	for i, lines := range nested {
+		if n := dedent(lines); n != "" {
+			l.Items[i].Note = strings.TrimSpace(l.Items[i].Note + "\n\n" + n)
 		}
 	}
 	l.Intro = strings.TrimSpace(strings.Join(intro, "\n"))
+	l.Closing = strings.TrimSpace(strings.Join(closing, "\n"))
 	return l
+}
+
+// dedent removes the first line's indentation from every line.
+func dedent(lines []string) string {
+	for len(lines) > 0 && strings.TrimSpace(lines[0]) == "" {
+		lines = lines[1:]
+	}
+	if len(lines) == 0 {
+		return ""
+	}
+	text, first := strings.Join(lines, "\n"), lines[0]
+	indent := first[:len(first)-len(strings.TrimLeft(first, " \t"))]
+	var out []string
+	for _, line := range strings.Split(text, "\n") {
+		out = append(out, strings.TrimPrefix(line, indent))
+	}
+	return strings.TrimSpace(strings.Join(out, "\n"))
 }
 
 // ResolveLens finds each item's plan, and its entry when it names one.
@@ -223,7 +260,7 @@ func LensPage(s *Site, l *Lens, first string) Page {
 		}
 		note := ""
 		if it.Note != "" {
-			note = fmt.Sprintf(`<p class="note-text" itemprop="note">%s</p>`, inline(it.Note))
+			note = fmt.Sprintf(`<div class="note-text" itemprop="note">%s</div>`, block(it.Note))
 		}
 		items = append(items, fmt.Sprintf(`<li itemprop="lensItem" itemscope>%s
 <p class="meta"><code itemprop="reference">%s</code></p>%s</li>`, what, esc(it.Ref), note))
@@ -231,6 +268,10 @@ func LensPage(s *Site, l *Lens, first string) Page {
 	intro := ""
 	if l.Intro != "" {
 		intro = fmt.Sprintf(`<div class="intro" itemprop="intro">%s</div>`, block(l.Intro))
+	}
+	closing := ""
+	if l.Closing != "" {
+		closing = fmt.Sprintf(`<div class="intro" itemprop="closing">%s</div>`, block(l.Closing))
 	}
 	repo := `<dd class="note">not given</dd>`
 	if l.Repository != "" {
@@ -253,7 +294,8 @@ func LensPage(s *Site, l *Lens, first string) Page {
 <ul class="lens-items">
 %s
 </ul>
-</article>`, Rel(here, ""), esc(s.RepoName), esc(s.Generated.Short), inline(l.Title), len(l.Items), esc(l.File), repo, intro, strings.Join(items, "\n")), "")
+%s
+</article>`, Rel(here, ""), esc(s.RepoName), esc(s.Generated.Short), inline(l.Title), len(l.Items), esc(l.File), repo, intro, strings.Join(items, "\n"), closing), "")
 }
 
 func short(sha string) string {

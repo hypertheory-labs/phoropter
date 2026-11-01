@@ -40,7 +40,7 @@ func TestLensResolvesAndShows(t *testing.T) {
 		t.Errorf("%+v", l.Items)
 	}
 	page := LensPage(s, l, FirstCommit(repo)).HTML
-	for _, want := range []string{`itemprop="itemCount" content="6"`, `itemprop="repositoryNote"`, `rel="lens-item" itemprop="entry" href="../../plans/burlap/#the-verdict-shows-on-the-answer-and-on-its-guess"`, `<span itemprop="kind">Plan</span>`, `itemprop="problem">no entry titled this in burlap`, `itemprop="note">the rewrite`} {
+	for _, want := range []string{`itemprop="itemCount" content="6"`, `itemprop="repositoryNote"`, `rel="lens-item" itemprop="entry" href="../../plans/burlap/#the-verdict-shows-on-the-answer-and-on-its-guess"`, `<span itemprop="kind">Plan</span>`, `itemprop="problem">no entry titled this in burlap`, `itemprop="note"><p>the rewrite</p>`} {
 		if !strings.Contains(page, want) {
 			t.Errorf("no %s", want)
 		}
@@ -51,5 +51,40 @@ func TestLensResolvesAndShows(t *testing.T) {
 	list := LensesPage(s, lenses, FirstCommit(repo)).HTML
 	if !strings.Contains(list, `itemprop="firstCommit" value="`+FirstCommit(repo)+`"`) || !strings.Contains(list, `href="verdicts/"`) {
 		t.Errorf("lenses page:\n%s", list)
+	}
+}
+
+// lawn: a lens written as prompt prep reads back whole. Indented lines under
+// an item are its note, a paragraph between items closes the one above, and
+// prose after the list is the lens's own.
+func TestLensNotesReadBackWhole(t *testing.T) {
+	l := ParseLens(`# Dev server
+
+How the dev server behaves.
+
+- ` + "`plans/a.md › One`" + ` — fine for now
+  - 5.9s on the first request
+  - does hot reload change this?
+
+    a second paragraph, still about One
+- ` + "`plans/b.md`" + `
+
+Between items, and so the lens's.
+
+- ` + "`plans/c.md › Three`" + `
+
+Want to talk it through?
+`)
+	if len(l.Items) != 3 {
+		t.Fatalf("%d items: %+v", len(l.Items), l.Items)
+	}
+	if want := "fine for now\n\n- 5.9s on the first request\n- does hot reload change this?\n\n  a second paragraph, still about One"; l.Items[0].Note != want {
+		t.Errorf("note:\n%q\nwant\n%q", l.Items[0].Note, want)
+	}
+	if l.Items[1].Note != "" || l.Intro != "How the dev server behaves." {
+		t.Errorf("%+v %q", l.Items[1], l.Intro)
+	}
+	if l.Closing != "Between items, and so the lens's.\n\nWant to talk it through?" {
+		t.Errorf("closing %q", l.Closing)
 	}
 }

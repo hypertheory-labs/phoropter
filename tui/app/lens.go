@@ -2,6 +2,8 @@ package app
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -25,7 +27,7 @@ type lensesScreen struct {
 
 func (s *lensesScreen) title() string { return "Lenses" }
 func (s *lensesScreen) help() string {
-	return "j/k move · enter open · y copy link · b browser · r refresh · esc back"
+	return "j/k move · enter open · e edit · y copy link · b browser · r refresh · esc back"
 }
 func (s *lensesScreen) refresh() ([]string, string) { return []string{s.lenses.URL}, s.lenses.URL }
 
@@ -38,6 +40,10 @@ func (s *lensesScreen) here() (string, string) {
 
 func (s *lensesScreen) key(m *Model, k string) tea.Cmd {
 	switch k {
+	case "e":
+		if s.cur < len(s.lenses.Lenses) {
+			return m.editLens(s.lenses.Lenses[s.cur].File)
+		}
 	case "enter", "l", "right":
 		if s.cur < len(s.lenses.Lenses) {
 			return m.open(s.lenses.Lenses[s.cur].URL)
@@ -89,7 +95,7 @@ type lensScreen struct {
 
 func (s *lensScreen) title() string { return "lens: " + s.lens.Title }
 func (s *lensScreen) help() string {
-	return "j/k move · f filter · enter open · y/Y copy link/ref · b browser · J/K scroll · esc back"
+	return "j/k move · f filter · enter open · e edit · y/Y copy link/ref · b browser · J/K scroll · esc back"
 }
 func (s *lensScreen) refresh() ([]string, string) { return []string{s.lens.URL}, s.lens.URL }
 
@@ -123,6 +129,8 @@ func (s *lensScreen) here() (string, string) {
 func (s *lensScreen) key(m *Model, k string) tea.Cmd {
 	items := s.shown()
 	switch k {
+	case "e":
+		return m.editLens(s.lens.File)
 	case "f":
 		s.filter = (s.filter + 1) % len(filters)
 		s.cur, s.scroll = 0, 0
@@ -184,6 +192,9 @@ func (s *lensScreen) view(m *Model, w, h int) string {
 	if s.lens.Intro != "" {
 		b.WriteString("\n" + wrap(s.lens.Intro, rw) + "\n")
 	}
+	if s.lens.Closing != "" {
+		b.WriteString("\n" + styles.dim.Render(wrap(s.lens.Closing, rw)) + "\n")
+	}
 	b.WriteString("\n")
 	if s.cur < len(items) {
 		it := items[s.cur]
@@ -204,6 +215,30 @@ func (s *lensScreen) view(m *Model, w, h int) string {
 	s.scroll = min(s.scroll, max(0, strings.Count(detail, "\n")+1-h))
 	return split(listWindow(rows, s.cur+1, h), detail, w, h, s.scroll)
 }
+
+// editLens opens a lens's file in $VISUAL or $EDITOR, then reads the page
+// again (lawn): the intro, notes, order and pruning are all editing.
+func (m *Model) editLens(file string) tea.Cmd {
+	path, err := notes.Path(m.workDir(), file)
+	if err == nil {
+		_, err = os.Stat(path)
+	}
+	if err != nil {
+		m.status = "no " + file + " here: e needs the lens's repository on disk"
+		return nil
+	}
+	name := os.Getenv("VISUAL")
+	if name == "" {
+		name = os.Getenv("EDITOR")
+	}
+	if name == "" {
+		name = "vi"
+	}
+	args := append(strings.Fields(name), path)
+	return tea.ExecProcess(exec.Command(args[0], args[1:]...), func(err error) tea.Msg { return lensEditedMsg{err} })
+}
+
+type lensEditedMsg struct{ err error }
 
 // ---- + adds what you're on to a lens
 

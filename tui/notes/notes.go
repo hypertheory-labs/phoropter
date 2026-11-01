@@ -373,11 +373,48 @@ func AppendLens(dir, name, ref, firstCommit string) (path string, added bool, er
 		return "", false, err
 	case strings.Contains(text, span):
 		return path, false, nil
-	case text != "" && !strings.HasSuffix(text, "\n"):
-		text += "\n"
 	}
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return "", false, err
 	}
-	return path, true, os.WriteFile(path, []byte(text+"- "+span+"\n"), 0o644)
+	return path, true, os.WriteFile(path, []byte(insertItem(text, "- "+span)), 0o644)
+}
+
+// insertItem puts a new item right after the last one and the indented lines
+// under it, so it never lands below a lens's closing text (lawn). With no
+// items yet, it goes at the end, after a blank line.
+func insertItem(text, item string) string {
+	lines := strings.Split(strings.TrimRight(text, "\n"), "\n")
+	at := -1
+	for i, l := range lines {
+		if strings.HasPrefix(l, "- ") || strings.HasPrefix(l, "* ") {
+			at = i
+		}
+	}
+	if at < 0 {
+		if n := len(lines); n > 0 && strings.TrimSpace(lines[n-1]) != "" {
+			lines = append(lines, "")
+		}
+		return strings.Join(append(lines, item), "\n") + "\n"
+	}
+	end := at + 1
+	for i := at + 1; i < len(lines); i++ {
+		if l := lines[i]; l != "" && l[0] != ' ' && l[0] != '\t' {
+			break
+		} else if strings.TrimSpace(l) != "" {
+			end = i + 1
+		}
+	}
+	out := append(append(append([]string{}, lines[:end]...), item), lines[end:]...)
+	return strings.Join(out, "\n") + "\n"
+}
+
+// Path is a repository-relative file's place on disk, in the repository
+// holding dir.
+func Path(dir, rel string) (string, error) {
+	root, err := repoRoot(dir)
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(root, filepath.FromSlash(rel)), nil
 }

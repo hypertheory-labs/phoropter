@@ -86,10 +86,15 @@ to yourself:
 
 - `plans/2026-10-31-batik.md › The index store is committed only by phoropter index`
 - `plans/2026-11-01-poplin.md` — the whole plan
+  - lines indented under an item are its note, in markdown
+  - handy for prompt prep: what you want to talk through, and why
+
+Prose after the list is the lens's own closing note.
 ```
 
 The dev server shows them at `lenses/`. In the TUI, `L` lists them, `f` filters one by
-kind (Decisions, Declines, open guesses), and `+` adds what you're on to one. A lens can
+kind (Decisions, Declines, open guesses), `+` adds what you're on to one, and `e` opens
+one in your editor. A lens can
 be pasted into a ticket or a message as is. A built site never has lenses: they're a way
 of reading the plans, not part of them.
 
@@ -128,7 +133,7 @@ guide first: `phoropter guide` prints it.
   `revisits:`, saying what moved.
 - **Lenses** are my own subsets of plans, in `drafts/lenses/<name>.md`: a `# Title`, then
   one reference per line, `` `plans/<file>.md › <entry title>` `` or a whole plan, each
-  optionally followed by ` — a note`. When I ask you to mark plans, write or extend a
+  optionally followed by ` — a note` and indented lines under it. When I ask you to mark plans, write or extend a
   lens and tell me what's in it and why. When a lens would help us look at something,
   make one without being asked, and say so.
 - **To anchor a symbol,** `phoropter symbols <file>` lists the strings to paste. You
