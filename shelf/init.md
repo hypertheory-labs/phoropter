@@ -29,3 +29,25 @@ To talk through:
 - Does phoropter read the first plan to change what it does, or is it only for the
   person and the agent?
 - Item by item, where is the line between format and convention?
+
+**From the course repository, 2026-11-01.** An agent learns that phoropter exists only
+from something it reads unprompted, so this is three layers, each where it belongs:
+- **a pointer** in `CLAUDE.md` or `AGENTS.md`, a line or two, which `init` can write or
+  print;
+- **the format**, from `phoropter guide` (no server needed);
+- **the conventions**, in the first plan, including who starts the server.
+
+That other Claude's "notes for phoropter" were a gaps file before it had the name. Jeff
+suggested loom: loom's orientation is a general pointer, and adopting the guide as an
+external gives gaps and usages a home. Loom's publication document
+(`git.hypertheory-labs.dev/loom/bedrock`, `.loom/published/publication.md`) lines up:
+- "a published one is a contract" is the line between format and conventions;
+- "a document… published inside the thing that cannot be seen" is the guide served by
+  the server it explains how to start;
+- "a published document that quietly requires a private one" is the guide's citations
+  of other repositories' plans.
+
+The line to keep: phoropter publishes and loom adopts, so phoropter still works without
+loom. `indexers/README.md` is a contract too (the roslyn indexer depends on it). Publishing
+needs a fetch someone else performs, and phoropter's raw `guide.md` returned 404 on
+2026-11-01, so the readers have to be named.
