@@ -142,8 +142,11 @@ func ResolveLens(s *Site, l *Lens) {
 		if !hasTitle {
 			continue
 		}
+		// The title as the heading has it, or with the entry's kind in front,
+		// the way pages show it: an agent wrote "Decline: …" for six of 25
+		// lines before this (percale's as-built).
 		for _, e := range it.Doc.Entries {
-			if e.Title == title {
+			if e.Title == title || (e.Kind != "" && title == e.Kind+": "+e.Title) {
 				it.Entry = e
 				break
 			}

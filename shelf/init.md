@@ -58,3 +58,9 @@ look up what that means. Converting a draft and answering notes are recipes too.
 `phoropter guide` already shows the binary can carry agent-facing text with no server, so
 `init` could install a skill file that points at it. And recipes let the agent act
 unprompted: "I made a lens through which we might look at this."
+
+**Jeff, reading percale:** the split between static pages (a commit's testimony) and what
+the dev server adds at run time (the draft, notes, lenses) is the seam for recipes too. A
+`tools/` (or `recipes/`) page the dev server serves, configured per repository by what
+`init` wrote, would give the agent its "what does 'mark these' mean here" in the same
+hypermedia it already reads, and a built site would never carry it.

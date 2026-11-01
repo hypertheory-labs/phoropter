@@ -55,3 +55,10 @@ agent), so it's a question, not browsing a tree. It needs two gaps closed so the
 complete: a declared way to find a file's place from its path (`place-url-convention`),
 and the symbol anchors inside a file listed on its page (`symbol-file-unlinked`).
 Otherwise anchors on a class in that file are missing.
+
+**Jeff, once lenses existed (percale):** a lens is a way to start a conversation. Collect
+a few entries, add a note ("the new version of super-framework-2000 might change some of
+this, want to talk it through?"), and hand it to the agent. The lens stays stateless; what
+comes out of the conversation is testimony in the usual places: a revisit of the plan
+whose ground moved, a citation in the current draft, or nothing. Close to a note on a
+landed plan, but across several plans at once, and about an idea, not one plan.

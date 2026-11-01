@@ -27,17 +27,20 @@ func TestLensResolvesAndShows(t *testing.T) {
 	}
 	dir := t.TempDir()
 	os.MkdirAll(filepath.Join(dir, LensDir), 0o755)
-	os.WriteFile(filepath.Join(dir, LensDir, "verdicts.md"), []byte("---\nrepository: 0000000\n---\n\n# Verdicts\n\n- `plans/2026-10-30-burlap.md › The verdict shows on the answer and on its guess`\n- `plans/2026-10-31-organdy.md` — the rewrite\n- `plans/2026-10-31-organdy.as-built.md › A Go repository needs nothing installed but the binary and scip-go`\n- `plans/2026-10-30-burlap.md › Nothing by this title`\n- `plans/2026-10-31-organdy.md › A Go repository needs nothing installed but the binary and scip-go`\n"), 0o644)
+	os.WriteFile(filepath.Join(dir, LensDir, "verdicts.md"), []byte("---\nrepository: 0000000\n---\n\n# Verdicts\n\n- `plans/2026-10-30-burlap.md › The verdict shows on the answer and on its guess`\n- `plans/2026-10-31-organdy.md` — the rewrite\n- `plans/2026-10-31-organdy.as-built.md › A Go repository needs nothing installed but the binary and scip-go`\n- `plans/2026-10-30-burlap.md › Nothing by this title`\n- `plans/2026-10-31-organdy.md › Guess: A Go repository needs nothing installed but the binary and scip-go`\n- `plans/2026-10-31-organdy.md › Decline: A Go repository needs nothing installed but the binary and scip-go`\n"), 0o644)
 	lenses := ReadLenses(s, dir)
 	if len(lenses) != 1 || lenses[0].Name != "verdicts" {
 		t.Fatalf("%+v", lenses)
 	}
 	l := lenses[0]
+	if l.Items[4].Entry == nil || l.Items[5].Entry != nil {
+		t.Errorf("a kind in front resolves only when it's the entry's own: %+v %+v", l.Items[4], l.Items[5])
+	}
 	if l.Items[0].Entry == nil || l.Items[1].Entry != nil || l.Items[1].Doc == nil || l.Items[2].Doc != l.Items[2].Plan.AsBuilt || !strings.HasPrefix(l.Items[3].Problem, "no entry titled") {
 		t.Errorf("%+v", l.Items)
 	}
 	page := LensPage(s, l, FirstCommit(repo)).HTML
-	for _, want := range []string{`itemprop="itemCount" content="5"`, `itemprop="repositoryNote"`, `rel="lens-item" itemprop="entry" href="../../plans/burlap/#the-verdict-shows-on-the-answer-and-on-its-guess"`, `<span itemprop="kind">Plan</span>`, `itemprop="problem">no entry titled this in burlap`, `itemprop="note">the rewrite`} {
+	for _, want := range []string{`itemprop="itemCount" content="6"`, `itemprop="repositoryNote"`, `rel="lens-item" itemprop="entry" href="../../plans/burlap/#the-verdict-shows-on-the-answer-and-on-its-guess"`, `<span itemprop="kind">Plan</span>`, `itemprop="problem">no entry titled this in burlap`, `itemprop="note">the rewrite`} {
 		if !strings.Contains(page, want) {
 			t.Errorf("no %s", want)
 		}
