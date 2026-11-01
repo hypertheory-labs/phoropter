@@ -64,3 +64,14 @@ the dev server adds at run time (the draft, notes, lenses) is the seam for recip
 `tools/` (or `recipes/`) page the dev server serves, configured per repository by what
 `init` wrote, would give the agent its "what does 'mark these' mean here" in the same
 hypermedia it already reads, and a built site would never carry it.
+
+**From Jeff's "today" lens (dimity's timeout, seersucker's discovery), 2026-11-01:** some of
+what `init` sets up is tool settings, not conventions. The indexer timeout is really per
+repository (a build-based .NET indexer needs more room than a Go one), but today it's an
+environment variable. And which indexer answers when two handle a language (roslyn and
+scip-dotnet, both on Jeff's machine) is the "per-repository preference" dimity put off
+until someone needed it. Killing a timed-out indexer outright is behavior with a reason,
+not a setting. The split: conventions in the first plan as decisions; settings in a
+small file phoropter reads (under `.phoropter/`, beside the index store), each with a
+plan decision saying why it's set that way. The file holds the value, and the plan
+holds the reason.
