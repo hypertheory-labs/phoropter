@@ -5,9 +5,9 @@ work: what you decided, what you turned down, and what you guessed, each with it
 and where the reason came from. The code shows what was done. The plan shows why, in a
 form you can argue with later.
 
-This guide is the format, in the present tense. Each rule names the plan that decided it,
-so the reasoning is there when you want it. Phoropter, the tool serving this page, reads
-plans written this way and links them to the code they're about.
+This guide is the format, in the present tense. The plans that decided its rules are
+listed at the end, as history; nothing here needs them. Phoropter, the tool serving this
+page, reads plans written this way and links them to the code they're about.
 
 ## An example
 
@@ -32,7 +32,6 @@ shows both versions side by side.
 Name it `plans/YYYY-MM-DD-<name>.md`. The date is the day you say "we're implementing
 this," and it's written only in the filename, so it can't disagree with a second copy.
 The name is any unique word that means nothing, so it can't turn into a category.
-*(Decided in lanyard, aide's first plan, which defined the format.)*
 
 The frontmatter has `base:`, the commit you're deciding against. Then a `# Title`, and a
 short opening paragraph saying what the work is and why now, before any entries:
@@ -60,7 +59,6 @@ Three kinds, each a `##` heading:
 - `## Guess: <title>`, then `**Disproved if:**` and what would show it wrong.
 
 Reasons stay prose. A reason squeezed into a field gets shorter and worse.
-*(lanyard)*
 
 ### Sources
 
@@ -68,53 +66,55 @@ Every reason says where it came from, in the parentheses: a person's name, `meas
 or `Claude, not asked` (or whichever agent). Combine them when that's the truth: `Jeff
 and Claude`, `measured, then Claude, not asked`. An agent told to do something won't ask
 why, so the record has to show when nobody said. A reason the agent guessed stays
-labeled that way until someone confirms it. *(lanyard)*
+labeled that way until someone confirms it.
 
 When a draft's open question went unanswered and its fallback became the decision, say
-so: `Claude, unanswered, so its fallback`. *(phoropter: first used in the plans for links between plans, sorrel, and for source and date, marl)*
+so: `Claude, unanswered, so its fallback`.
 
 ### Anchors
 
 An entry can say what it's about, as a list under its heading:
 
-- `- where:` a file path, optionally narrowed with `›`: a heading path in markdown
-  (`README.md › Setup › 1. Install`), or a key path in JSON (`package.json › version`).
-  Or a symbol, in SCIP's grammar, with the package version written as `.` so a
-  release doesn't change it: `phoropter symbols <file>` lists a file's symbols ready to
-  paste. A symbol's first word picks the indexer that finds it; `indexers/README.md` in
-  phoropter's repository says how indexers work and how to write one. Or another
-  plan's entry: `plans/<file>.md › <entry title>`.
+- `- where:` one of three things.
+  - **A file path,** optionally narrowed with `›`: a heading path in markdown
+    (`README.md › Setup › 1. Install`), or a key path in JSON (`package.json › version`).
+    It works in any language, with nothing installed.
+  - **A symbol,** like a class or a method. Run `phoropter symbols <file>` and paste one
+    of the lines it prints. You never choose an indexer or type a scheme: phoropter
+    picks the indexer by the file's extension, and the symbol's first word records
+    which one found it. `phoropter indexers` lists what this machine can index. A file
+    with no named declarations, like a `Program.cs` of top-level statements, has no
+    symbols: anchor its path, with a quote. How symbols are spelled, and how to write
+    an indexer, is in `indexers/README.md` in phoropter's repository.
+  - **Another plan's entry:** `plans/<file>.md › <entry title>`.
 - `- quote:` exact text from the file at the base, so a reader can tell which lines you
   meant. It's searched for only in the anchor's own file.
 - `- where (new):` something the work will create. No quote, since it doesn't exist
   yet.
 
 Values go in code spans. When a value contains a backtick, use a double-backtick span:
-`` `a `b` c` `` breaks; ``` `` a `b` c `` ``` doesn't. *(lanyard; the double-backtick rule is phoropter's, after awl, aide's plan on when
-as-builts freeze, wrote one wrong)*
+`` `a `b` c` `` breaks; ``` `` a `b` c `` ``` doesn't.
 
 Anchor at the code as it is when you decide. The plan's own work will move it, and
-that isn't drift: drift is measured from where the work landed. *(lanyard)*
+that isn't drift: drift is measured from where the work landed.
 
-Keep a plan small enough for one person to review in one sitting. *(lanyard, where it's
-still a guess)*
+Keep a plan small enough for one person to review in one sitting.
 
 ## 2. Commit it before the work
 
 That's how git shows the plan came first. From then on it's never edited. You don't
-revise what you believed; you write a new plan that links the old one. *(lanyard)*
+revise what you believed; you write a new plan that links the old one.
 
 ## 3. Do the work, and depart from the plan when the code disagrees
 
 Don't force a plan through code that doesn't share its understanding, and don't quietly
 do something else. Depart, and write it down in the as-built. Whether the departure was
-right is a later conversation. *(lanyard)*
+right is a later conversation.
 
 ## 4. Write the as-built
 
 `<plan>.as-built.md`, beside the plan. Its frontmatter has `head:`, the commit where the
 work landed. Its anchors point at that commit, because they're about code the work made.
-*(aide's grommet, the second version of as-builts)*
 
 Three kinds of entry:
 
@@ -126,13 +126,13 @@ Three kinds of entry:
   disproved`, or `not tested`, then how much evidence that rests on.
 
 Keep departures and choices apart. A reviewer wants the departures first, and `Chose:`
-is the comfortable label. *(grommet; reading the verdict as structure is phoropter's burlap)*
+is the comfortable label.
 
 Anything else worth knowing, like a finding that isn't an answer to a guess, goes in
-the as-built's opening prose, not in an entry. *(phoropter: burlap's as-built, which filed a finding as an answer first)*
+the as-built's opening prose, not in an entry.
 
 An as-built can say nothing changed. Nothing requires one, and nothing flags a missing
-one. *(lanyard)*
+one.
 
 ## 5. It freezes
 
@@ -142,8 +142,6 @@ it freely. When that is depends on how your team shares work: a push, a pull req
 merge. If you're unsure, treat it as frozen once it's merged into your main line.
 Anything learned after that belongs in a new plan or a revisit. Phoropter can't tell
 when this happened and doesn't check; it's advice with a reason, not a rule it enforces.
-*(aide's awl said "committed"; phoropter's twill, the plan that brought this guide
-here, made it "once someone else could have read it")*
 
 ## 6. When an earlier plan's ground is wrong, revisit it
 
@@ -153,18 +151,14 @@ so in the current as-built: `## Changed:` "stopped here; revisiting …". Then w
 revisit: a new plan with `revisits: plans/<file>.md` in its frontmatter, naming exactly
 one plan. It asks the question in that plan's frame, and every reason says what moved:
 the world, the code, or your understanding. The outcome can be "it still holds."
-Revisiting your own plan is the same move. *(aide's bodkin, on revisits; phoropter's burlap is one, reversing quince's decision
-not to read verdicts)*
+Revisiting your own plan is the same move.
 
 Sometimes the earlier plan never wrote down what it assumed. Then the revisit anchors
 where the assumption shows, in the code or the docs, and says it wasn't in the plan.
-That records a gap in the old plan, which is worth knowing too. *(mock-control's tallow,
-the first revisit, about MSW 3: "MSW 2" was a line in the README, never an entry in the
-plan it revisited)*
+That records a gap in the old plan, which is worth knowing too.
 
 To answer a guess from an earlier plan, restate it as a `## Guess:` in your plan,
-anchored at the original, and answer it in your as-built. *(mock-control's vellum, following its README in a fresh app, answered pumice's
-`@source` guess this way)*
+anchored at the original, and answer it in your as-built.
 
 ## Drafts (optional)
 
@@ -173,12 +167,11 @@ agent's confidence or the shared understanding is thin, or when the pair has agr
 for a session, that the person sees every plan first, not to judge it but to follow
 it. Who decides that is the pair's to work out. It's never an approval gate: a draft
 serves the agent's confidence and the person's understanding, not permission.
-*(phoropter's loden, which served the first draft)*
 
 Work in progress lives in `drafts/`, at the repository's root, and `plans/` holds
 testimony and nothing else. A repository has at most one draft, `drafts/plan.draft.md`.
 One fixed name means anyone can see whether a plan is being drafted, and drafts can't
-pile up into a backlog. *(phoropter's tarlatan, which moved it from the root)* Each branch or worktree has its own working tree, so parallel work isn't
+pile up into a backlog. Each branch or worktree has its own working tree, so parallel work isn't
 blocked. A draft that wants to be two plans gets smaller; the rest waits for the next
 one. Ignoring `drafts/` in git is a suggestion: on a branch, committing it lets a
 mentor or senior read a draft before the code exists. On main, what lands is plans.
@@ -202,7 +195,9 @@ answered, since silence means proceed. Converting writes `plans/YYYY-MM-DD-<name
 its entry's reason, labels a fallback that became the decision (`Claude, unanswered, so
 its fallback`), drops the prompts, and deletes the draft and its notes. The notes
 aren't kept: they're mostly the questions that lined up someone's understanding, and
-what mattered from them is in the reasons now.
+what mattered from them is in the reasons now. An answer that turns down a question's
+premise, or creates work the draft didn't have, becomes an entry of its own, usually a
+Decision, not a clause in another entry's reason.
 
 Phoropter's dev server shows the draft at `draft/`, re-read on every request, with its
 anchors resolved, its prompts and their fallbacks and answers, and each annotation
@@ -235,7 +230,7 @@ On a branch, committed notes are how a teammate says "look at my branch, here's 
 I'm thinking about this old plan." Some teams keep a long-lived branch for this kind of
 work. That's a way of working, not a rule. Phoropter's dev server shows a plan's notes
 on its page, after the entries they quote, and counts them on the home page. A built
-site never shows them. *(phoropter's tarlatan and organza)*
+site never shows them.
 
 ## Older plans
 
@@ -251,11 +246,37 @@ work's commits with new ones, and the as-built was written before that happened,
 commit may be gone. Phoropter doesn't reconcile this today: when `head:` isn't a commit
 it can find, it shows the text as written, and the as-built's anchors are shown only at
 the generated commit. Plans read best on a history of meaningful commits that are
-merged, not squashed. *(phoropter's twill; not yet seen in a real repository)*
+merged, not squashed. Not yet seen in a real repository.
 
 ## Reading the site
 
-Every page says which repository and commit it was generated from. The home page lists
+Every page says which repository and commit it was generated from. Served by
+`phoropter`, the site follows HEAD as commits land. The home page lists
 plans oldest first and the places they anchor; each place lists the plans that touch
 it, newest first. The [profile](../profile/) defines every link relation and microdata
 property, so an agent can read the same pages a person does.
+
+## Where these rules came from
+
+Each rule here was decided in a plan, and those plans hold the reasons in full. They're
+history: most are in private repositories, their names mean nothing by design, and
+nothing above needs them. They're listed for anyone who has access and wants to know
+why.
+
+- **The format,** its file names, entries, sources and anchors; committing the plan
+  first; departing from it; keeping plans small enough to review in one sitting, which
+  is still a guess: aide's lanyard, the first plan.
+- **As-builts** and their three kinds of entry: aide's grommet. Reading the verdict as
+  structure, and keeping findings in the opening prose: phoropter's burlap.
+- **When an as-built freezes:** aide's awl said "committed"; phoropter's twill made it
+  "once someone else could have read it".
+- **The double-backtick rule:** phoropter's, after awl wrote one wrong.
+- **Revisits:** aide's bodkin. Burlap is one, reversing quince. An assumption the old
+  plan never wrote down: mock-control's tallow. Answering an earlier plan's guess:
+  mock-control's vellum.
+- **Labeling an unanswered fallback:** phoropter's sorrel and marl.
+- **Drafts:** phoropter's loden. `drafts/`: tarlatan. Notes on landed plans: tarlatan and
+  organza.
+- **Squash merges and rebases:** phoropter's twill.
+- **Answers that become their own decision, and these citations moving here:** phoropter's
+  poplin, from the first repository outside phoropter to use it.

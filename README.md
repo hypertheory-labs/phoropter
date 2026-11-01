@@ -27,7 +27,8 @@ cd phoropter && go build -o bin/phoropter .
 ln -s "$PWD/bin/phoropter" ~/.local/bin/phoropter   # any directory on your PATH
 ```
 
-Check it with `phoropter help`.
+Check it with `phoropter help`. `phoropter guide` prints the plan format, and
+`phoropter indexers` lists the languages it can index here.
 
 **Indexers**, for anchors on symbols (a class, a method) rather than files and quotes:
 - **TypeScript:** in a clone, `npm install` (it runs scip-typescript, which is Node).
@@ -47,7 +48,10 @@ phoropter
 
 It finds the repository's root, builds the site at `HEAD`, serves it on
 `http://localhost:4173/` (or the next free port), and prints the address.
-`phoropter url` prints it again, from anywhere in the repository. With no plans yet,
+`phoropter url` prints it again, from anywhere in the repository. As commits land, the
+site follows `HEAD`. In a terminal, `h` + enter lists keys to rebuild, open the
+browser, print the address, or quit. Usually your agent runs it, in the background, and
+one server lasts the session. With no plans yet,
 the home page says how to start.
 
 A day's loop:
@@ -86,8 +90,10 @@ Paste this into its `CLAUDE.md` (or `AGENTS.md`), and adjust it to taste:
 ## Plans (phoropter)
 
 This repository records its decisions as plans, in phoropter's format. Read the
-guide first: it's at `guide/` on the site (`phoropter url` prints the address), or
-`guide.md` in phoropter's repository.
+guide first: `phoropter guide` prints it.
+
+- **You run the server.** If `phoropter url` finds none, start `phoropter` in the
+  background and tell me the address. It follows HEAD, so one lasts the session.
 
 - **Before non-trivial work, write a plan** in `plans/YYYY-MM-DD-<name>.md`: the
   decisions, the declines, and the guesses, each with its reason and an anchor to the
@@ -103,7 +109,8 @@ guide first: it's at `guide/` on the site (`phoropter url` prints the address), 
   current plan, or a reply.
 - **Never edit a landed plan.** Changing an old decision is a revisit: a new plan, with
   `revisits:`, saying what moved.
-- **To anchor a symbol,** `phoropter symbols <file>` lists the strings to paste.
+- **To anchor a symbol,** `phoropter symbols <file>` lists the strings to paste. You
+  never choose an indexer; `phoropter indexers` says which languages this machine has.
 - **You don't get a veto.** If you think an idea is wrong, say so up front in the
   draft, plan it properly anyway, and let me decide.
 ```

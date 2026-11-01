@@ -6,15 +6,19 @@
 //	phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
 //	phoropter symbols <file> [--scheme <scheme>]         list a file's symbols, for a plan's where:
 //	phoropter url [path]                                 print where phoropter is serving this repository
+//	phoropter indexers                                   list the indexers this machine has
+//	phoropter guide                                      print the plan format's guide
 //	phoropter ui [site]                                  read the site in the terminal
 //	phoropter ui gaps [site]                             crawl it, and print where it read past the profile
 //
 // With no command it finds the repository's root, indexes what's missing,
-// builds the site at HEAD, and serves it with the draft and notes in drafts/.
+// builds the site at HEAD, and serves it with the draft and notes in drafts/,
+// following HEAD as it moves (poplin).
 // "You run ph in the repo" (Jeff); everything else is secondary to that.
 package main
 
 import (
+	"bufio"
 	"crypto/sha256"
 	_ "embed"
 	"encoding/hex"
@@ -22,14 +26,18 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"runtime"
 	"runtime/debug"
 	"sort"
 	"strings"
 	"syscall"
+	"text/tabwriter"
 	"time"
 
+	"github.com/charmbracelet/x/term"
 	"github.com/hypertheory-labs/phoropter/internal/site"
 	"github.com/hypertheory-labs/phoropter/tui/app"
 )
@@ -44,6 +52,8 @@ const usage = `usage:
   phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
   phoropter symbols <file> [--scheme <scheme>]         list a file's symbols, ready for a plan's where:
   phoropter url [path]                                 print the address phoropter is serving this repository at
+  phoropter indexers                                   list the indexers this machine has, and where they were found
+  phoropter guide                                      print the guide to writing plans (no server needed)
   phoropter ui [site]                                  read the site in the terminal (default: the one phoropter url finds)
   phoropter ui gaps [site]                             crawl the site and print where it read past the profile`
 
@@ -52,7 +62,7 @@ func main() {
 	command := "serve"
 	if len(args) > 0 {
 		switch args[0] {
-		case "build", "index", "url", "symbols", "ui", "help", "-h", "--help":
+		case "build", "index", "url", "symbols", "ui", "indexers", "guide", "help", "-h", "--help":
 			command, args = args[0], args[1:]
 		}
 	}
@@ -62,6 +72,14 @@ func main() {
 	}
 	if command == "ui" {
 		runUI(args)
+		return
+	}
+	if command == "guide" {
+		fmt.Print(guideMarkdown)
+		return
+	}
+	if command == "indexers" {
+		indexers()
 		return
 	}
 
@@ -176,18 +194,34 @@ func main() {
 		if dir == "" {
 			dir = filepath.Join(site.CacheDir(), "sites", id(root))
 		}
-		served, err := site.Serve(site.ServeOptions{Repo: repo, Ref: *at, Out: dir, Port: *port, ExactPort: portSet, Store: store, Guide: guide})
+		file := servingFile(root, os.Getpid())
+		started := time.Now().UnixMilli()
+		var served *site.Served
+		record := func(commit string) {
+			os.MkdirAll(filepath.Dir(file), 0o755)
+			info, _ := json.Marshal(map[string]any{"url": served.URL, "root": root, "commit": commit, "pid": os.Getpid(), "started": started})
+			os.WriteFile(file, append(info, '\n'), 0o644)
+		}
+		served, err := site.Serve(site.ServeOptions{Repo: repo, Ref: *at, Out: dir, Port: *port, ExactPort: portSet, Store: store, Guide: guide,
+			OnRebuild: func(s *site.Site, pages int) {
+				record(s.Generated.SHA)
+				fmt.Printf("rebuilt at %s: %d pages\n", s.Generated.Short, pages)
+				remind(s, store)
+			}})
 		if err != nil {
 			fail(err.Error())
 		}
-		file := servingFile(root, os.Getpid())
-		os.MkdirAll(filepath.Dir(file), 0o755)
-		info, _ := json.Marshal(map[string]any{"url": served.URL, "root": root, "commit": served.Site.Generated.SHA, "pid": os.Getpid(), "started": time.Now().UnixMilli()})
-		os.WriteFile(file, append(info, '\n'), 0o644)
+		record(served.Site.Generated.SHA)
 		fmt.Printf("%s at %s: %d pages\nserving %s\n", served.Site.RepoName, served.Site.Generated.Short, served.Pages, served.URL)
 		remind(served.Site, store)
 		stop := make(chan os.Signal, 1)
 		signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+		// The menu is for a person at a terminal. Run in the background, as an
+		// agent usually runs it, nothing reads stdin (poplin).
+		if term.IsTerminal(os.Stdin.Fd()) {
+			fmt.Println("press h + enter to show help")
+			go menu(served, stop)
+		}
 		<-stop
 		os.Remove(file)
 	}
@@ -251,11 +285,13 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 	}
 	var headings []string
 	byScheme := map[string][]sym{}
+	var outputs []site.IndexerOutput
 	for _, info := range candidates {
 		o, err := site.RunIndexer(info.Command, info.Cwd, tree, nil)
 		if err != nil {
 			fail(err.Error())
 		}
+		outputs = append(outputs, o)
 		var found []sym
 		for _, p := range o.Packages {
 			for symbol, v := range p.Definitions {
@@ -274,7 +310,17 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 		}
 	}
 	if len(headings) == 0 {
-		fail(fmt.Sprintf("nothing defined in %s at %s (uncommitted changes aren't indexed)", rel, repo.Short(sha)))
+		var indexed []string
+		for _, o := range outputs {
+			for _, p := range o.Packages {
+				for _, v := range p.Definitions {
+					if f, ok := v[0].(string); ok {
+						indexed = append(indexed, f)
+					}
+				}
+			}
+		}
+		fail(nothingDefined(repo, rel, at, sha, indexed))
 	}
 	for _, h := range headings {
 		found := byScheme[h]
@@ -291,6 +337,106 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 		}
 		for _, f := range found {
 			fmt.Printf("%s%-10s %s\n", indent, fmt.Sprintf("%d–%d", f.start, f.end), f.symbol)
+		}
+	}
+}
+
+// nothingDefined says why a file has no symbols, as far as phoropter can tell
+// (poplin): changes that aren't committed, a copy elsewhere whose package has
+// the same name and was indexed instead, or no named declarations at all.
+func nothingDefined(repo *site.Repo, rel, at, sha string, indexed []string) string {
+	msg := fmt.Sprintf("nothing defined in %s at %s: ", rel, repo.Short(sha))
+	if at == "HEAD" {
+		if out, _ := exec.Command("git", "-C", repo.Dir, "status", "--porcelain", "--", rel).Output(); len(out) > 0 {
+			return msg + "it has changes that aren't committed, and only commits are indexed"
+		}
+	}
+	if c := copyOf(rel, indexed); c != "" {
+		return msg + c + " is indexed instead. It looks like a copy, and when copies' packages share a name, only the first path is indexed (see indexers/README.md); a file anchor with a quote reaches this one"
+	}
+	return msg + "it has no named declarations (top-level statements, say); a file anchor with a quote reaches it"
+}
+
+// copyOf is the indexed file that shares the longest tail of path with rel,
+// at least a directory and a file name: …/Vendors/Api.cs for
+// student/…/Vendors/Api.cs. It still matches after copies diverge.
+func copyOf(rel string, indexed []string) string {
+	parts := strings.Split(rel, "/")
+	best, bestN := "", 1
+	for _, f := range indexed {
+		if f == rel {
+			continue
+		}
+		fp := strings.Split(f, "/")
+		n := 0
+		for n < len(parts) && n < len(fp) && parts[len(parts)-1-n] == fp[len(fp)-1-n] {
+			n++
+		}
+		if n > bestN || (n == bestN && n > 1 && f < best) {
+			best, bestN = f, n
+		}
+	}
+	return best
+}
+
+// indexers lists every indexer this machine has: its scheme, the extensions it
+// indexes, its name and version, and where it was found (poplin).
+func indexers() {
+	all := site.Indexers()
+	if site.FirstParty == "" {
+		fmt.Println("first-party indexers: not found. They're in indexers/ in a clone of phoropter, found from a binary built there, or from PHOROPTER_INDEXERS.")
+	}
+	if len(all) == 0 {
+		fmt.Println("No indexers here. File anchors with a quote work in any language; for symbols, the README's Indexers section says what to install, and indexers/README.md how to write one.")
+		return
+	}
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
+	fmt.Fprintln(w, "SCHEME\tEXTENSIONS\tINDEXER\tFOUND")
+	for _, i := range all {
+		found := i.Cwd
+		if found == "" {
+			found = i.Command[0]
+		}
+		if r, err := filepath.Rel(filepath.Dir(site.FirstParty), found); site.FirstParty != "" && i.Cwd != "" && err == nil {
+			found = r
+		}
+		fmt.Fprintf(w, "%s\t%s\t%s %s\t%s\n", i.Scheme, strings.Join(i.Extensions, " "), i.Indexer, i.Version, found)
+	}
+	w.Flush()
+}
+
+const menuHelp = `  r + enter   rebuild now
+  o + enter   open the site in the browser
+  u + enter   print the address
+  q + enter   quit
+  h + enter   show this`
+
+// menu reads a key and enter at a time, as Vite does. Keys alone would need
+// the terminal in raw mode (poplin).
+func menu(served *site.Served, stop chan<- os.Signal) {
+	in := bufio.NewScanner(os.Stdin)
+	for in.Scan() {
+		switch strings.TrimSpace(in.Text()) {
+		case "r":
+			served.Rebuild()
+		case "o":
+			open := map[string][]string{"darwin": {"open"}, "windows": {"rundll32", "url.dll,FileProtocolHandler"}}[runtime.GOOS]
+			if open == nil {
+				open = []string{"xdg-open"}
+			}
+			if err := exec.Command(open[0], append(open[1:], served.URL)...).Start(); err != nil {
+				fmt.Fprintf(os.Stderr, "phoropter: couldn't open a browser: %v\n", err)
+			}
+		case "u":
+			fmt.Println(served.URL)
+		case "q":
+			stop <- os.Interrupt
+			return
+		case "h":
+			fmt.Println(menuHelp)
+		case "":
+		default:
+			fmt.Println("press h + enter to show help")
 		}
 	}
 }

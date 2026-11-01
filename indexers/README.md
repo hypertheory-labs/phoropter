@@ -112,7 +112,9 @@ whether or not your indexer uses SCIP. That way anchors read alike in every lang
   A package name may not be unique in a repository: copies of a project in several
   solutions often share one. Index each project on its own, and where two define the
   same symbol, the first in path order wins. Never number overloads or otherwise
-  combine across copies; that invents symbols that exist nowhere.
+  combine across copies; that invents symbols that exist nowhere. The copies that lose
+  show themselves: `phoropter symbols` on one finds nothing, and names the file at the
+  first path that was indexed instead.
 - **`version`:** always `.`. Plans store symbols without versions, so a release doesn't
   break an anchor. Replace whatever version your tool produces with `.`.
 - **`descriptors`:** the path to the thing, each part ending in a suffix that says what
@@ -170,6 +172,8 @@ Phoropter looks for the indexer for a scheme in two places, in this order:
    how `gh` and `kubectl` find extensions, and there's nothing to configure. Install it
    anywhere on your `PATH`, make it executable, and phoropter finds it by its scheme.
    For example, `phoropter-index-roslyn` serves symbols starting with `roslyn`.
+
+`phoropter indexers` lists every indexer phoropter finds, and where it found each one.
 
 A machine without an indexer for a scheme still builds every page. That scheme's
 anchors show `no-index`, naming what's missing.

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
@@ -286,7 +287,7 @@ read at <time itemprop="readAt" datetime="%s">%s UTC</time>
 	}
 	var es []string
 	for _, e := range p.Doc.Entries {
-		es = append(es, entryHTML(here, &p.Doc, e)+extras(e.Slug))
+		es = append(es, entryAnchorsHTML(here, &p.Doc, e, alreadyHereHTML)+extras(e.Slug))
 	}
 	return layout(s, here, title, fmt.Sprintf(`
 <nav><a href="%s">%s at %s</a></nav>
@@ -368,13 +369,23 @@ func AnnotationHTML(a Annotation) string {
 // --- parts ---
 
 func entryHTML(here string, d *Doc, e *ResolvedEntry) string {
+	return entryAnchorsHTML(here, d, e, nil)
+}
+
+// entryAnchorsHTML is an entry with something after each anchor, for the
+// draft page (poplin).
+func entryAnchorsHTML(here string, d *Doc, e *ResolvedEntry, after func(string, *ResolvedAnchor) string) string {
 	heading := fmt.Sprintf(`<span itemprop="title">%s</span>`, inline(e.Title))
 	if e.Kind != "" {
 		heading = fmt.Sprintf(`<span class="kind kind-%s" itemprop="kind">%s</span>: <span itemprop="title">%s</span>`, strings.ToLower(e.Kind), esc(e.Kind), inline(e.Title))
 	}
 	var anchors []string
 	for _, a := range e.Resolved {
-		anchors = append(anchors, anchorHTML(here, d, a))
+		h := anchorHTML(here, d, a)
+		if after != nil {
+			h = strings.TrimSuffix(h, "\n</div>") + after(here, a) + "\n</div>"
+		}
+		anchors = append(anchors, h)
 	}
 	reason := ""
 	if e.Body != "" {
@@ -468,6 +479,47 @@ func kindTitle(e *ResolvedEntry) string {
 		return fmt.Sprintf("%s: %s", esc(e.Kind), inline(e.Title))
 	}
 	return inline(e.Title)
+}
+
+// alreadyHereHTML lists the landed entries at a draft anchor's place, in the
+// order shelf/draft-places.md gave (poplin): an open guess first, since this
+// work might be its test, then declines, then decisions, then the rest. Newest
+// first within each.
+func alreadyHereHTML(here string, ra *ResolvedAnchor) string {
+	if ra.Place == nil {
+		return ""
+	}
+	rank := func(e *ResolvedEntry) int {
+		switch e.Kind {
+		case "Guess":
+			if n := len(e.AnsweredBy); n == 0 || e.AnsweredBy[n-1].Entry.Verdict == "not tested" {
+				return 0
+			}
+			return 3
+		case "Decline":
+			return 1
+		case "Decision":
+			return 2
+		}
+		return 3
+	}
+	var refs []PlaceRef
+	seen := map[*ResolvedEntry]bool{}
+	for _, r := range ra.Place.Refs {
+		if !seen[r.Entry] {
+			seen[r.Entry] = true
+			refs = append(refs, r)
+		}
+	}
+	if len(refs) == 0 {
+		return ""
+	}
+	sort.SliceStable(refs, func(i, j int) bool { return rank(refs[i].Entry) < rank(refs[j].Entry) })
+	var items []string
+	for _, r := range refs {
+		items = append(items, fmt.Sprintf(`<a rel="already-here" itemprop="alreadyHere" href="%s#%s">%s</a> <span class="meta">in %s</span>`, Rel(here, r.Doc.Href), r.Entry.Slug, kindTitle(r.Entry), docName(EntryRef{Plan: r.Plan, Doc: r.Doc, Entry: r.Entry})))
+	}
+	return fmt.Sprintf("\n<p class=\"pair\">Already here: %s.</p>", strings.Join(items, "; "))
 }
 
 func anchorHTML(here string, d *Doc, ra *ResolvedAnchor) string {

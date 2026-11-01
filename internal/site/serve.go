@@ -10,15 +10,18 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"syscall"
+	"time"
 )
 
-// Serve builds the site once, then serves it read-only. A commit's site never
-// changes, so there's nothing to watch. The exceptions are in the repo's
-// working tree, under drafts/: the draft, read on every request to draft/
-// (loden), and linked from every page's header while it exists; and notes on
-// landed plans, shown on each plan's page and counted on the home page
-// (tarlatan, organza).
+// Serve builds the site, then serves it read-only. A commit's site never
+// changes, but HEAD does: served at HEAD, a request after HEAD moves builds the
+// new commit first and swaps it in whole (poplin). The other exceptions are in
+// the repo's working tree, under drafts/: the draft, read on every request to
+// draft/ (loden), and linked from every page's header while it exists; and
+// notes on landed plans, shown on each plan's page and counted on the home
+// page (tarlatan, organza).
 
 type ServeOptions struct {
 	Repo      *Repo
@@ -28,22 +31,88 @@ type ServeOptions struct {
 	ExactPort bool // otherwise a taken port moves to the next free one (batik)
 	Store     *Store
 	Guide     Guide
+	OnRebuild func(s *Site, pages int) // after a rebuild is swapped in
 }
 
 type Served struct {
 	Port   int
 	URL    string
 	Pages  int
-	Site   *Site
+	Site   *Site // as first built
 	Server *http.Server
+	live   *live
+}
+
+// Rebuild builds the site again now, at the ref it was served at.
+func (s *Served) Rebuild() error {
+	_, err := s.live.current(true)
+	return err
+}
+
+// live is what changes while serving: the site and the directory it's in.
+type live struct {
+	mu      sync.Mutex
+	o       ServeOptions
+	site    *Site
+	root    string
+	checked time.Time
+	failed  string // the commit a rebuild last failed at, so it isn't retried every second
+	n       int
+}
+
+// current is the site to serve this request from. At HEAD, it looks at most
+// once a second whether HEAD has moved; git rev-parse costs a few
+// milliseconds. A rebuild goes into a fresh directory, so no request sees half
+// a site, and a failed one leaves the last site up.
+func (l *live) current(force bool) (*handler, error) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	var err error
+	if force || (l.o.Ref == "HEAD" && time.Since(l.checked) >= time.Second) {
+		l.checked = time.Now()
+		sha := l.o.Repo.Resolve(l.o.Ref)
+		if force || (sha != "" && sha != l.site.Generated.SHA && sha != l.failed) {
+			if err = l.rebuild(); err != nil {
+				l.failed = sha
+				fmt.Fprintf(os.Stderr, "phoropter: couldn't rebuild at %s, still serving %s: %v\n", l.o.Repo.Short(sha), l.site.Generated.Short, err)
+			}
+		}
+	}
+	return &handler{site: l.site, root: l.root, repoDir: l.o.Repo.Dir}, err
+}
+
+func (l *live) rebuild() error {
+	l.n++
+	dir := fmt.Sprintf("%s.rebuild-%d", l.o.Out, l.n)
+	s, pages, err := Build(l.o.Repo, l.o.Ref, dir, l.o.Store, l.o.Guide)
+	if err != nil {
+		os.RemoveAll(dir)
+		return err
+	}
+	old := l.root
+	l.site, l.root, l.failed = s, dir, ""
+	os.RemoveAll(old)
+	if l.o.OnRebuild != nil {
+		l.o.OnRebuild(s, pages)
+	}
+	return nil
+}
+
+func (l *live) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	h, _ := l.current(false)
+	h.ServeHTTP(w, r)
 }
 
 func Serve(o ServeOptions) (*Served, error) {
+	old, _ := filepath.Glob(o.Out + ".rebuild-*")
+	for _, d := range old {
+		os.RemoveAll(d)
+	}
 	s, pages, err := Build(o.Repo, o.Ref, o.Out, o.Store, o.Guide)
 	if err != nil {
 		return nil, err
 	}
-	h := &handler{site: s, root: o.Out, repoDir: o.Repo.Dir}
+	h := &live{o: o, site: s, root: o.Out, checked: time.Now()}
 	port := o.Port
 	var ln net.Listener
 	for {
@@ -58,9 +127,10 @@ func Serve(o ServeOptions) (*Served, error) {
 	}
 	srv := &http.Server{Handler: h}
 	go srv.Serve(ln)
-	return &Served{Port: port, URL: fmt.Sprintf("http://localhost:%d/", port), Pages: pages, Site: s, Server: srv}, nil
+	return &Served{Port: port, URL: fmt.Sprintf("http://localhost:%d/", port), Pages: pages, Site: s, Server: srv, live: h}, nil
 }
 
+// handler serves one request from one site.
 type handler struct {
 	site    *Site
 	root    string

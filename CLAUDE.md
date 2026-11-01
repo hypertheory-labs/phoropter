@@ -56,7 +56,10 @@ pace with the work, not coverage.
 - **The command** (batik): `phoropter` in any repository serves it (port 4173, or the
   next free one; `phoropter url` prints where), `phoropter build` writes the static
   site, `phoropter index` commits the indexes plans need into `.phoropter/index/`, and
-  `phoropter ui` opens the TUI. Committing indexes is the one write into a repository,
+  `phoropter ui` opens the TUI. Served at HEAD, it follows HEAD; at a terminal it has a
+  key menu (`h` + enter), and in the background it reads nothing (poplin).
+  `phoropter guide` prints the guide with no server, and `phoropter indexers` lists what
+  this machine can index and where each was found. Committing indexes is the one write into a repository,
   and only when run on purpose. Other indexes are cached in `~/.cache/phoropter/`.
   `go install github.com/hypertheory-labs/phoropter@latest` installs it; here,
   `go build -o bin/phoropter .`, and Jeff's `~/.local/bin/phoropter` is a symlink to
@@ -65,7 +68,7 @@ pace with the work, not coverage.
 - **Indexers** (seersucker) are programs in `indexers/` (TypeScript, Go), or on `PATH` as
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols
-  <file>` lists symbols to anchor, and `phoropter index --check <dir>` tests an
+  <file>` lists symbols to anchor (and says why when there are none), and `phoropter index --check <dir>` tests an
   indexer. The Go one needs Go 1.25+ and scip-go, which moved to
   `github.com/scip-code/scip-go` (`go install …/cmd/scip-go@latest`); it reads 0.1 and
   0.2 alike.

@@ -2,7 +2,9 @@ package site
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -112,11 +114,37 @@ func TestBothFirstPartyIndexersPassCheck(t *testing.T) {
 		if info.Cwd == "" {
 			continue // on PATH, not first-party
 		}
-		ok, report := CheckIndexer(info.Command, info.Cwd, here)
+		repo := here
+		if info.Scheme == "scip-typescript" {
+			// phoropter has had no TypeScript project since organdy, so this
+			// one gets a small repository of its own. The check reads git, which
+			// go test's cache can't see: a cached pass hid this (poplin).
+			repo = tsRepo(t)
+		}
+		ok, report := CheckIndexer(info.Command, info.Cwd, repo)
 		if !ok {
 			t.Errorf("%s:\n%s", info.Indexer, strings.Join(report, "\n"))
 		}
 	}
+}
+
+func tsRepo(t *testing.T) *Repo {
+	dir := t.TempDir()
+	files := map[string]string{
+		"package.json":  `{ "name": "ts-sample", "version": "1.0.0" }`,
+		"tsconfig.json": `{ "compilerOptions": { "strict": true }, "include": ["src"] }`,
+		"src/panel.ts":  "export class Panel {\n  open(): void {\n    console.log('open')\n  }\n}\n\nexport function make(): Panel {\n  return new Panel()\n}\n",
+	}
+	for name, body := range files {
+		os.MkdirAll(filepath.Join(dir, filepath.Dir(name)), 0o755)
+		os.WriteFile(filepath.Join(dir, name), []byte(body), 0o644)
+	}
+	for _, args := range [][]string{{"init", "-q"}, {"add", "."}, {"-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "sample"}} {
+		if out, err := exec.Command("git", append([]string{"-C", dir}, args...)...).CombinedOutput(); err != nil {
+			t.Fatal(string(out))
+		}
+	}
+	return &Repo{Dir: dir}
 }
 
 func mustOut(name string, args ...string) string {

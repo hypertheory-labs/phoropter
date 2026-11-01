@@ -57,10 +57,7 @@ func TestSymbolsGroupsBySchemeAndPicksOne(t *testing.T) {
 		script := "#!/usr/bin/env node\nconst out = { indexer: '" + scheme + "-indexer', version: '0', scheme: '" + scheme + "', extensions: ['.go'] };\nif (process.argv[2] === '--describe') { console.log(JSON.stringify(out)); process.exit(0) }\nconsole.log(JSON.stringify({ ...out, packages: { p: { definitions: { '" + scheme + " gomod p . main#': ['main.go', 1, 2] } } } }));\n"
 		os.WriteFile(filepath.Join(bin, "phoropter-index-"+scheme), []byte(script), 0o755)
 	}
-	exe := filepath.Join(t.TempDir(), "phoropter")
-	if out, err := exec.Command("go", "build", "-o", exe, ".").CombinedOutput(); err != nil {
-		t.Fatal(string(out))
-	}
+	exe := build(t)
 	run := func(args ...string) string {
 		cmd := exec.Command(exe, append([]string{"symbols", "main.go"}, args...)...)
 		cmd.Env = append(os.Environ(), "PATH="+bin+":"+os.Getenv("PATH"), "PHOROPTER_INDEXERS="+t.TempDir())
@@ -73,5 +70,72 @@ func TestSymbolsGroupsBySchemeAndPicksOne(t *testing.T) {
 	}
 	if one := run("--scheme", "beta"); strings.Contains(one, "alpha") || !strings.HasPrefix(one, "1–2") {
 		t.Errorf("one:\n%s", one)
+	}
+}
+
+func build(t *testing.T) string {
+	exe := filepath.Join(t.TempDir(), "phoropter")
+	if out, err := exec.Command("go", "build", "-o", exe, ".").CombinedOutput(); err != nil {
+		t.Fatal(string(out))
+	}
+	return exe
+}
+
+// poplin: "nothing defined" says what phoropter can tell. The course
+// repository's shape: two copies of one project, diverged, and only the first
+// path's indexed; a Program.cs of top-level statements; and a file with
+// changes that aren't committed.
+func TestSymbolsSaysWhyNothingIsDefined(t *testing.T) {
+	repo := t.TempDir()
+	files := map[string]string{
+		"instructor/Software.Api/Vendors/Api.cs": "class Api {\n  void Get() {}\n  void Post() {}\n}\n",
+		"student/Software.Api/Vendors/Api.cs":    "class Api {\n  void Get() {}\n}\n",
+		"instructor/Software.Api/Program.cs":     "var app = Build();\napp.Run();\n",
+	}
+	for name, body := range files {
+		os.MkdirAll(filepath.Join(repo, filepath.Dir(name)), 0o755)
+		os.WriteFile(filepath.Join(repo, name), []byte(body), 0o644)
+	}
+	for _, args := range [][]string{{"init", "-q"}, {"add", "."}, {"-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "copies"}} {
+		if out, err := exec.Command("git", append([]string{"-C", repo}, args...)...).CombinedOutput(); err != nil {
+			t.Fatal(string(out))
+		}
+	}
+	bin := t.TempDir()
+	script := `#!/bin/sh
+if [ "$1" = --describe ]; then echo '{"indexer":"fake","version":"0","scheme":"fake","extensions":[".cs"]}'; exit 0; fi
+echo '{"indexer":"fake","version":"0","scheme":"fake","packages":{"Software.Api":{"definitions":{"fake nuget Software.Api . Software/Api/Vendors/Api#":["instructor/Software.Api/Vendors/Api.cs",1,4]}}}}'
+`
+	os.WriteFile(filepath.Join(bin, "phoropter-index-fake"), []byte(script), 0o755)
+	exe := build(t)
+	run := func(file string) string {
+		cmd := exec.Command(exe, "symbols", filepath.Join(repo, file), "--scheme", "fake")
+		cmd.Env = append(os.Environ(), "PATH="+bin+":"+os.Getenv("PATH"), "PHOROPTER_INDEXERS="+t.TempDir())
+		out, _ := cmd.CombinedOutput()
+		return string(out)
+	}
+	if out := run("student/Software.Api/Vendors/Api.cs"); !strings.Contains(out, "instructor/Software.Api/Vendors/Api.cs is indexed instead") {
+		t.Errorf("the losing copy:\n%s", out)
+	}
+	if out := run("instructor/Software.Api/Program.cs"); !strings.Contains(out, "no named declarations") || strings.Contains(out, "uncommitted") {
+		t.Errorf("top-level statements:\n%s", out)
+	}
+	os.WriteFile(filepath.Join(repo, "student/Software.Api/Vendors/Api.cs"), []byte("class Api {}\n"), 0o644)
+	if out := run("student/Software.Api/Vendors/Api.cs"); !strings.Contains(out, "changes that aren't committed") {
+		t.Errorf("a changed file:\n%s", out)
+	}
+}
+
+func TestCopyOf(t *testing.T) {
+	indexed := []string{"a/x/Vendors/Api.cs", "b/Other/Api.cs", "Program.cs"}
+	for rel, want := range map[string]string{
+		"s/x/Vendors/Api.cs": "a/x/Vendors/Api.cs",
+		"s/y/Vendors/Api.cs": "a/x/Vendors/Api.cs",
+		"s/Api.cs":           "",
+		"s/Program.cs":       "",
+	} {
+		if got := copyOf(rel, indexed); got != want {
+			t.Errorf("copyOf(%s) = %q, want %q", rel, got, want)
+		}
 	}
 }
