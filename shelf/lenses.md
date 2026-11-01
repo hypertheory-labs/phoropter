@@ -47,3 +47,11 @@ To weigh: where the dev server and the TUI show lenses (never on a built site, l
 notes); whether a lens can also hold places (a file, a symbol); and how this meets file
 mode (`shelf/file-pages.md`), where the stack of plans touching a file is a lens that
 phoropter computes.
+
+**Jeff, later the same day: file view version 1 is a lens.** Paste a relative path, and
+the TUI makes a lens of every plan and entry that touches that file. It keeps the guard
+in `shelf/file-pages.md`: you bring a path from somewhere (a stack trace, a diff, the
+agent), so it's a question, not browsing a tree. It needs two gaps closed so the lens is
+complete: a declared way to find a file's place from its path (`place-url-convention`),
+and the symbol anchors inside a file listed on its page (`symbol-file-unlinked`).
+Otherwise anchors on a class in that file are missing.
