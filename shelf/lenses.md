@@ -62,3 +62,21 @@ this, want to talk it through?"), and hand it to the agent. The lens stays state
 comes out of the conversation is testimony in the usual places: a revisit of the plan
 whose ground moved, a citation in the current draft, or nothing. Close to a note on a
 landed plan, but across several plans at once, and about an idea, not one plan.
+
+**Jeff and Claude, after trying a seed as a lens (2026-11-01):**
+- **A lens is a proto-plan.** Lens (gather, with a question) → conversation → draft or plan
+  → as-built. Each step is thrown away once the next holds what mattered, the way a
+  draft's notes go when it converts. The lens's items become the plan's anchors, so the
+  links survive in testimony, and the lens goes away.
+- **Nothing tracks state.** No statuses, no `blocked-by` or `waiting-for` keywords. "If
+  this starts to feel too much like a tracking/todo-list tool, developers will revolt"
+  (Jeff). A lens is markdown: anyone can paste it into their own notes.
+- **A shelf home for lenses waits.** `drafts/lenses/seed-draft-places.md` showed a seed
+  reads well as a lens. Its citations of loden's and marl's Declines become links, and a
+  Decline a seed cites is one someone expects to reopen. But the shelf is committed and
+  shared, and a second lens home is a bigger step than a trial shows the need for. Seeds
+  can be converted one at a time if it ever happens, never all at once.
+- **"Shouldn't it be a plan?"** Eventually. A seed's conversation material is reasoning
+  from before the decision; making it a plan early makes decisions nobody has made (calico).
+  When it lands, what mattered becomes sources and anchors, and the rest is dropped on
+  purpose.
