@@ -37,6 +37,8 @@ true.
   module, `github.com/hypertheory-labs/phoropter`). File anchors with a quote still
   work, with paths from the repository root (`tui/app/screens.go`). Plans from before a
   move anchor older paths and show `no-file` at later commits; they're read as written.
+- **Lenses** (percale): `lensesScreen`, `lensScreen` and `+`'s picker are in `app/lens.go`;
+  `notes.AppendLens` is the write. Pages are read by the profile's `lens`/`lensItem`.
 - **Drafts:** one, `drafts/plan.draft.md`, and notes on landed plans beside it in
   `drafts/` (tarlatan, organza). Serve the repository with
   `phoropter` from anywhere in it; `phoropter ui` finds that server (the port moves

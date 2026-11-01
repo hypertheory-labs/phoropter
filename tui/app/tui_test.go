@@ -2,6 +2,7 @@ package app
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -325,5 +326,67 @@ func TestLinksOut(t *testing.T) {
 	}
 	if opened[0] != clip[0] || !strings.HasPrefix(m.status, "opened ") {
 		t.Errorf("opened %s, status %q", opened[0], m.status)
+	}
+}
+
+// percale: L opens the lenses, a lens filters by kind, enter opens an entry,
+// and + adds what you're on to a lens file, never twice. The site is pages the
+// dev server served, with a lens of five lines, one of which doesn't resolve.
+func TestLenses(t *testing.T) {
+	c, err := substrate.NewClient("../testdata/phoropter-lenses", substrate.NewLedger())
+	if err != nil {
+		t.Fatal(err)
+	}
+	repo := t.TempDir()
+	if out, err := exec.Command("git", "-C", repo, "init", "-q").CombinedOutput(); err != nil {
+		t.Fatal(string(out))
+	}
+	m := New(c, c.Ledger)
+	m.dir = repo
+	m.Update(tea.WindowSizeMsg{Width: 140, Height: 40})
+	drive(t, m, m.Init())
+
+	press(t, m, "L")
+	if s := screenText(t, m); !strings.Contains(s, "Verdicts") || !strings.Contains(s, "5 items") {
+		t.Fatalf("lenses:\n%s", s)
+	}
+	press(t, m, "enter")
+	s := screenText(t, m)
+	if !strings.Contains(s, "all · 5 of 5") || !strings.Contains(s, "✗ plans/nope.md") || !strings.Contains(s, "Guess Following HEAD costs nothing") {
+		t.Fatalf("the lens:\n%s", s)
+	}
+	press(t, m, "f", "f")
+	if s := screenText(t, m); !strings.Contains(s, "Decline · 1 of 5") || !strings.Contains(s, "Opening the TUI from the server") || strings.Contains(s, "Following HEAD") {
+		t.Fatalf("declines only:\n%s", s)
+	}
+	press(t, m, "f")
+	if s := screenText(t, m); !strings.Contains(s, "open guesses · 0 of 5") {
+		t.Fatalf("no open guesses here, the one guess is disproved:\n%s", s)
+	}
+	press(t, m, "f", "enter")
+	if s := screenText(t, m); !strings.Contains(s, "The verdict is the answer") {
+		t.Fatalf("enter opens the entry:\n%s", s)
+	}
+
+	// + on that entry: a new lens by name, then again, which adds nothing.
+	press(t, m, "+")
+	if s := screenText(t, m); !strings.Contains(s, "Add to a lens") || !strings.Contains(s, "Verdicts") {
+		t.Fatalf("picker:\n%s", s)
+	}
+	for _, r := range "Grading" {
+		m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{r}})
+	}
+	press(t, m, "enter")
+	b, err := os.ReadFile(filepath.Join(repo, "drafts", "lenses", "grading.md"))
+	if err != nil || !strings.Contains(string(b), "# Grading\n\n- `plans/2026-10-30-burlap.md › The verdict is the answer's first word or words, when they're one of grommet's four`\n") || !strings.Contains(string(b), "repository: d2484b6") {
+		t.Fatalf("lens file (%v):\n%s", err, b)
+	}
+	press(t, m, "+")
+	if s := screenText(t, m); !strings.Contains(s, "lens: Grading") {
+		t.Fatalf("the last lens is offered:\n%s", s)
+	}
+	press(t, m, "enter")
+	if !strings.HasPrefix(m.status, "already in") {
+		t.Errorf("status %q", m.status)
 	}
 }

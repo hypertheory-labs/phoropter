@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What the first repository outside phoropter found · phoropter at 7722dfa</title>
+<link rel="profile" href="../../profile/">
+<link rel="help" href="../../guide/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="meta">7722dfaf77be1d668af43657763d0c01562994ac</span>
+<span class="links"><a class="home-link" href="../../">home</a>
+<a rel="lenses" href="../../lenses/">lenses</a>
+<a rel="help" href="../../guide/">guide</a>
+<a class="profile-link" href="../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="collection" href="../../">phoropter at 7722dfa</a></nav>
+<article itemscope>
+<h1 itemprop="title">What the first repository outside phoropter found</h1>
+<dl class="facts">
+<dt>Name</dt><dd itemprop="name">poplin</dd>
+
+<dt>Date</dt><dd><time itemprop="date" datetime="2026-11-01">2026-11-01</time>, added in <data itemprop="added" value="154d536255e6d048d59739035e5381e09aa298b8"><code>154d536</code></data> <time datetime="2026-11-01T16:43:10.000Z">16:43 UTC</time></dd>
+<dt>Base</dt><dd><data itemprop="base" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-11-01-poplin.md</code></dd>
+<dt>As built</dt><dd><a rel="as-built" itemprop="asBuilt" href="../../plans/poplin/as-built/">plans/2026-11-01-poplin.as-built.md</a></dd>
+
+
+</dl>
+<div class="intro" itemprop="intro"><p>Jeff used phoropter all morning on a .NET course repository, with another Claude, and
+that Claude kept notes for phoropter as it went. It's the first time a repository that
+isn't phoropter or mock-control has gone from draft to as-built. Most of it worked. What
+didn't is small, but each one cost a detour or would mislead the next reader. This plan
+takes the notes that are ready.</p>
+<p>One note changes the format, and gets its own draft next: how evidence that arrives
+after an as-built freezes answers an older guess. The note about whether Decision,
+Decline and Guess suit teaching decisions waits for a plan or two in that repository.</p>
+</div>
+<section class="entry" id="the-dev-server-follows-head" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-dev-server-follows-head"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The dev server follows HEAD</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter/internal/site`/Serve().</code> <a rel="anchored-at" itemprop="place" href="../../symbols/internal/site/serve.go/Serve/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">h := &amp;handler{site: s, root: o.Out, repoDir: o.Repo.Dir}</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/site/serve.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="46"><meta itemprop="endLine" content="46"></span><meta itemprop="startLine" content="41"><meta itemprop="endLine" content="62">
+<span class="note" itemprop="note">lines 41–62; quote at line 46</span>
+</figcaption>
+<meta itemprop="codeStart" content="43"><pre itemprop="code" data-start="43"><code style="counter-reset: line 42"><span class="line">	if err != nil {</span>
+<span class="line">		return nil, err</span>
+<span class="line">	}</span>
+<mark class="line">	h := &amp;handler{site: s, root: o.Out, repoDir: o.Repo.Dir}</mark>
+<span class="line">	port := o.Port</span>
+<span class="line">	var ln net.Listener</span>
+<span class="line">	for {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/site/serve.go</code>
+<meta itemprop="matches" content="0"><meta itemprop="startLine" content="106"><meta itemprop="endLine" content="131">
+<span class="note" itemprop="note">lines 106–131; quote not found at <code>15b4068</code>, so this is the declaration</span>
+</figcaption>
+<meta itemprop="codeStart" content="106"><pre itemprop="code" data-start="106"><code style="counter-reset: line 105"><span class="line">func Serve(o ServeOptions) (*Served, error) {</span>
+<span class="line">	old, _ := filepath.Glob(o.Out + &quot;.rebuild-*&quot;)</span>
+<span class="line">	for _, d := range old {</span>
+<span class="line">		os.RemoveAll(d)</span>
+<span class="line">	}</span>
+<span class="line">	s, pages, err := Build(o.Repo, o.Ref, o.Out, o.Store, o.Guide)</span>
+<span class="line">	if err != nil {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">internal/site/serve.go</code>
+<meta itemprop="matches" content="0"><meta itemprop="startLine" content="106"><meta itemprop="endLine" content="131"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, measured, then Claude and Jeff</span>):</strong> the server builds
+once, at the commit where it started. Six commits later, the home page still said &quot;at 6018106&quot;, and the
+draft page showed a generated commit older than the draft's own <code>base:</code>. That reads
+backwards, and a reader could take it to mean the repository hasn't moved. It's usually
+the agent that starts the server, in the background, so nobody's there to restart it.</p>
+<p>On a request, when <code>--at</code> is <code>HEAD</code> (the default) and HEAD has moved, the server builds
+the new commit into a fresh directory, then swaps it in, so no request sees half a site.
+It prints a line saying so, and updates the commit in its serving file. A server started
+at another commit stays there, since that's what was asked for. HEAD is checked on a
+request, at most once a second (Claude, and Jeff agreed): <code>git rev-parse</code> costs a few
+milliseconds, and a file watcher would rebuild for commits nobody looks at and needs
+another dependency.</p>
+</div>
+</section>
+<section class="entry" id="a-key-menu-when-the-server-runs-in-a-terminal-as-vite-has" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-key-menu-when-the-server-runs-in-a-terminal-as-vite-has"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A key menu when the server runs in a terminal, as Vite has</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter`/main().</code> <a rel="anchored-at" itemprop="place" href="../../symbols/main.go/main/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="190"><meta itemprop="endLine" content="190"></span><meta itemprop="startLine" content="50"><meta itemprop="endLine" content="194">
+<span class="note" itemprop="note">lines 50–194; quote at line 190</span>
+</figcaption>
+<meta itemprop="codeStart" content="187"><pre itemprop="code" data-start="187"><code style="counter-reset: line 186"><span class="line">		fmt.Printf(&quot;%s at %s: %d pages\nserving %s\n&quot;, served.Site.RepoName, served.Site.Generated.Short, served.Pages, served.URL)</span>
+<span class="line">		remind(served.Site, store)</span>
+<span class="line">		stop := make(chan os.Signal, 1)</span>
+<mark class="line">		signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)</mark>
+<span class="line">		&lt;-stop</span>
+<span class="line">		os.Remove(file)</span>
+<span class="line">	}</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="218"><meta itemprop="endLine" content="218"></span><meta itemprop="startLine" content="60"><meta itemprop="endLine" content="228">
+<span class="note" itemprop="note">lines 60–228; quote at line 218</span>
+</figcaption>
+<meta itemprop="codeStart" content="215"><pre itemprop="code" data-start="215"><code style="counter-reset: line 214"><span class="line">		fmt.Printf(&quot;%s at %s: %d pages\nserving %s\n&quot;, served.Site.RepoName, served.Site.Generated.Short, served.Pages, served.URL)</span>
+<span class="line">		remind(served.Site, store)</span>
+<span class="line">		stop := make(chan os.Signal, 1)</span>
+<mark class="line">		signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)</mark>
+<span class="line">		// The menu is for a person at a terminal. Run in the background, as an</span>
+<span class="line">		// agent usually runs it, nothing reads stdin (poplin).</span>
+<span class="line">		if term.IsTerminal(os.Stdin.Fd()) {</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="218"><meta itemprop="endLine" content="218"></span><meta itemprop="startLine" content="60"><meta itemprop="endLine" content="228"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> a person running <code>phoropter</code> should be able to restart it or get back
+to it without remembering commands. After the serving line, it prints <code>press h + enter to show help</code>, as Vite does. The keys:</p>
+<ul>
+<li><code>r</code>: rebuild now, at HEAD</li>
+<li><code>o</code>: open the site in the browser</li>
+<li><code>u</code>: print the address again</li>
+<li><code>q</code>: quit</li>
+<li><code>h</code>: list these</li>
+</ul>
+<p>Each key is followed by enter, as Vite does (Jeff chose it): keys alone need the terminal
+in raw mode, which changes how every line of the server's output prints and has to be
+undone on every way out, including a crash. The menu only appears when stdin is a
+terminal. Run in the background, by an agent, nothing reads stdin and nothing changes.</p>
+</div>
+</section>
+<section class="entry" id="opening-the-tui-from-the-server-s-menu" itemprop="entry" itemscope>
+<h2><a class="self" href="#opening-the-tui-from-the-server-s-menu"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Opening the TUI from the server's menu</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a <code>t</code> key that runs <code>phoropter ui</code> in the same terminal and
+returns to the server log on quit is appealing. But the server and the TUI would share
+one terminal, and the server's log lines would land on top of the TUI. It waits until
+someone wants it enough to work that out.</p>
+</div>
+</section>
+<section class="entry" id="nothing-defined-says-what-phoropter-can-tell" itemprop="entry" itemscope>
+<h2><a class="self" href="#nothing-defined-says-what-phoropter-can-tell"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">&quot;Nothing defined&quot; says what phoropter can tell</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter`/symbols().</code> <a rel="anchored-at" itemprop="place" href="../../symbols/main.go/symbols/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">fail(fmt.Sprintf(&quot;nothing defined in %s at %s (uncommitted changes aren't indexed)&quot;, rel, repo.Short(sha)))</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="277"><meta itemprop="endLine" content="277"></span><meta itemprop="startLine" content="213"><meta itemprop="endLine" content="296">
+<span class="note" itemprop="note">lines 213–296; quote at line 277</span>
+</figcaption>
+<meta itemprop="codeStart" content="274"><pre itemprop="code" data-start="274"><code style="counter-reset: line 273"><span class="line">		}</span>
+<span class="line">	}</span>
+<span class="line">	if len(headings) == 0 {</span>
+<mark class="line">		fail(fmt.Sprintf(&quot;nothing defined in %s at %s (uncommitted changes aren't indexed)&quot;, rel, repo.Short(sha)))</mark>
+<span class="line">	}</span>
+<span class="line">	for _, h := range headings {</span>
+<span class="line">		found := byScheme[h]</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="0"><meta itemprop="startLine" content="247"><meta itemprop="endLine" content="342">
+<span class="note" itemprop="note">lines 247–342; quote not found at <code>15b4068</code>, so this is the declaration</span>
+</figcaption>
+<meta itemprop="codeStart" content="247"><pre itemprop="code" data-start="247"><code style="counter-reset: line 246"><span class="line">func symbols(repo *site.Repo, root, target, at, scheme string) {</span>
+<span class="line">	rel, _ := filepath.Rel(root, abs(target))</span>
+<span class="line">	rel = filepath.ToSlash(rel)</span>
+<span class="line">	ext := filepath.Ext(rel)</span>
+<span class="line">	var all, candidates []site.IndexerInfo</span>
+<span class="line">	for _, i := range site.Indexers() {</span>
+<span class="line">		for _, e := range i.Extensions {</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="0"><meta itemprop="startLine" content="247"><meta itemprop="endLine" content="342"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, measured</span>):</strong> the message blamed uncommitted changes in
+two cases where both files were clean. In one, the file lost to a copy with the same
+project name, elsewhere in the repository. In the other, it was a <code>Program.cs</code> of
+top-level statements, which has no names to anchor. The other Claude ran the indexer by
+hand to find out. Top-level <code>Program.cs</code> is how every new ASP.NET Core app starts, so C#
+users will see this often.</p>
+<p>The message now says only what's true:</p>
+<ul>
+<li><strong>The file has uncommitted changes:</strong> say so, as now.</li>
+<li><strong>A file with the same path below some directory has definitions</strong> (<code>…/Vendors/Api.cs</code>
+and <code>instructor/…/Vendors/Api.cs</code>): name it, and say that copies with one package name
+are indexed at the first path. It works after copies diverge, which in a course repo
+they do as the session goes.</li>
+<li><strong>Otherwise:</strong> say the file has no named declarations, as with top-level statements,
+and that a file anchor with a quote reaches it.</li>
+</ul>
+</div>
+</section>
+<section class="entry" id="the-indexer-guide-says-how-a-collapsed-copy-shows-itself" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-indexer-guide-says-how-a-collapsed-copy-shows-itself"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The indexer guide says how a collapsed copy shows itself</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">indexers/README.md</code> <a rel="anchored-at" itemprop="place" href="../../files/indexers/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">same symbol, the first in path order wins. Never number overloads or otherwise</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="114"><meta itemprop="endLine" content="114"></span>
+<span class="note" itemprop="note">quote at line 114</span>
+</figcaption>
+<meta itemprop="codeStart" content="111"><pre itemprop="code" data-start="111"><code style="counter-reset: line 110"><span class="line"></span>
+<span class="line">  A package name may not be unique in a repository: copies of a project in several</span>
+<span class="line">  solutions often share one. Index each project on its own, and where two define the</span>
+<mark class="line">  same symbol, the first in path order wins. Never number overloads or otherwise</mark>
+<span class="line">  combine across copies; that invents symbols that exist nowhere.</span>
+<span class="line">- **`version`:** always `.`. Plans store symbols without versions, so a release doesn't</span>
+<span class="line">  break an anchor. Replace whatever version your tool produces with `.`.</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="114"><meta itemprop="endLine" content="114"></span>
+<span class="note" itemprop="note">quote at line 114</span>
+</figcaption>
+<meta itemprop="codeStart" content="111"><pre itemprop="code" data-start="111"><code style="counter-reset: line 110"><span class="line"></span>
+<span class="line">  A package name may not be unique in a repository: copies of a project in several</span>
+<span class="line">  solutions often share one. Index each project on its own, and where two define the</span>
+<mark class="line">  same symbol, the first in path order wins. Never number overloads or otherwise</mark>
+<span class="line">  combine across copies; that invents symbols that exist nowhere. The copies that lose</span>
+<span class="line">  show themselves: `phoropter symbols` on one finds nothing, and names the file at the</span>
+<span class="line">  first path that was indexed instead.</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">indexers/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="114"><meta itemprop="endLine" content="114"></span><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, measured</span>):</strong> the rule was right and the silence was
+the problem. A student's copy of <code>Software.Api</code> vanished from <code>phoropter symbols</code>,
+<code>missing</code> was empty, and nothing said why. The guide adds that <code>phoropter symbols</code> names
+the copy that won, so the reader writing a plan finds out at the moment it matters.</p>
+</div>
+</section>
+<section class="entry" id="an-indexer-contract-field-for-duplicate-packages" itemprop="entry" itemscope>
+<h2><a class="self" href="#an-indexer-contract-field-for-duplicate-packages"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">An indexer contract field for duplicate packages</span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> I suggested it first: the indexer would list the paths that
+lost. But phoropter can notice from what the indexer already prints, and the roslyn
+indexer lives in another repository, so changing the contract means changing it too. If
+the message above isn't enough, this is the next step.</p>
+</div>
+</section>
+<section class="entry" id="telling-copies-apart-or-a-phoropter-ignore" itemprop="entry" itemscope>
+<h2><a class="self" href="#telling-copies-apart-or-a-phoropter-ignore"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Telling copies apart, or a <code>.phoropter-ignore</code></span></a></h2>
+
+
+
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> Jeff raised an ignore file, and it would have handled the
+course repo: the student copy wasn't part of the story. Phoropter makes the checkout
+with <code>git archive</code>, so it could leave ignored paths out before indexing, read from each
+commit so older plans resolve as they did. But Jeff's previous course had fourteen lab
+starters, each with a <code>Practice.AppHost</code>, and there every copy <em>is</em> a story. Ignoring
+doesn't fit that. Telling copies apart might, but how is a design question with no
+repository to try it on. Jeff moved the student copy out, so neither is needed now.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-indexers-lists-what-this-machine-can-index" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-indexers-lists-what-this-machine-can-index"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>phoropter indexers</code> lists what this machine can index</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter`/usage.</code> <a rel="anchored-at" itemprop="place" href="../../symbols/main.go/usage/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">phoropter symbols &lt;file&gt; [--scheme &lt;scheme&gt;]</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="45"><meta itemprop="endLine" content="45"></span><meta itemprop="startLine" content="40"><meta itemprop="endLine" content="48">
+<span class="note" itemprop="note">lines 40–48; quote at line 45</span>
+</figcaption>
+<meta itemprop="codeStart" content="42"><pre itemprop="code" data-start="42"><code style="counter-reset: line 41"><span class="line">  phoropter build [path] [--at &lt;commit&gt;] [--out site]  write the static site</span>
+<span class="line">  phoropter index [path] [--at &lt;commit&gt;]               commit the indexes plans need into .phoropter/index/</span>
+<span class="line">  phoropter index --check &lt;program or indexer dir&gt;     check an indexer against indexers/README.md</span>
+<mark class="line">  phoropter symbols &lt;file&gt; [--scheme &lt;scheme&gt;]         list a file's symbols, ready for a plan's where:</mark>
+<span class="line">  phoropter url [path]                                 print the address phoropter is serving this repository at</span>
+<span class="line">  phoropter ui [site]                                  read the site in the terminal (default: the one phoropter url finds)</span>
+<span class="line">  phoropter ui gaps [site]                             crawl the site and print where it read past the profile`</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="53"><meta itemprop="endLine" content="53"></span><meta itemprop="startLine" content="48"><meta itemprop="endLine" content="58">
+<span class="note" itemprop="note">lines 48–58; quote at line 53</span>
+</figcaption>
+<meta itemprop="codeStart" content="50"><pre itemprop="code" data-start="50"><code style="counter-reset: line 49"><span class="line">  phoropter build [path] [--at &lt;commit&gt;] [--out site]  write the static site</span>
+<span class="line">  phoropter index [path] [--at &lt;commit&gt;]               commit the indexes plans need into .phoropter/index/</span>
+<span class="line">  phoropter index --check &lt;program or indexer dir&gt;     check an indexer against indexers/README.md</span>
+<mark class="line">  phoropter symbols &lt;file&gt; [--scheme &lt;scheme&gt;]         list a file's symbols, ready for a plan's where:</mark>
+<span class="line">  phoropter url [path]                                 print the address phoropter is serving this repository at</span>
+<span class="line">  phoropter indexers                                   list the indexers this machine has, and where they were found</span>
+<span class="line">  phoropter guide                                      print the guide to writing plans (no server needed)</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="53"><meta itemprop="endLine" content="53"></span><meta itemprop="startLine" content="48"><meta itemprop="endLine" content="58"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, measured</span>):</strong> nothing the other Claude read said how to
+get C# support on a new machine. <code>indexers/</code> holds only Go and TypeScript, and the
+README names roslyn as an example. One line per indexer: its scheme, its extensions,
+its name and version, and where it was found (<code>indexers/go</code>, or a path on <code>PATH</code>).
+With none, it points at the README's indexer list. The organdy as-built's honest miss
+(a <code>go install</code>ed binary finds no first-party indexers) shows up here too, plainly.</p>
+</div>
+</section>
+<section class="entry" id="the-guide-s-anchors-start-with-what-you-do-not-the-grammar" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-s-anchors-start-with-what-you-do-not-the-grammar"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The guide's anchors start with what you do, not the grammar</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md › Working with plans › 1. Write the plan › Anchors</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">Or a symbol, in SCIP's grammar, with the package version written as</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="82"><meta itemprop="endLine" content="82"></span>
+<span class="note" itemprop="note">quote at line 82</span>
+</figcaption>
+<meta itemprop="codeStart" content="79"><pre itemprop="code" data-start="79"><code style="counter-reset: line 78"><span class="line"></span>
+<span class="line">- `- where:` a file path, optionally narrowed with `›`: a heading path in markdown</span>
+<span class="line">  (`README.md › Setup › 1. Install`), or a key path in JSON (`package.json › version`).</span>
+<mark class="line">  Or a symbol, in SCIP's grammar, with the package version written as `.` so a</mark>
+<span class="line">  release doesn't change it: `phoropter symbols &lt;file&gt;` lists a file's symbols ready to</span>
+<span class="line">  paste. A symbol's first word picks the indexer that finds it; `indexers/README.md` in</span>
+<span class="line">  phoropter's repository says how indexers work and how to write one. Or another</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>15b4068</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, measured, then Jeff</span>):</strong> the other Claude read the
+guide, saw &quot;SCIP's grammar&quot; and a <code>scip-typescript</code> example, and went looking for
+scip-dotnet. The workflow was in the middle of a sentence about schemes. Jeff's view:
+if a careful reader got it wrong, the guide should be clearer. The symbol bullet now
+says: run <code>phoropter symbols &lt;file&gt;</code> and paste a line; you never choose or type a scheme;
+<code>phoropter indexers</code> says which languages this machine indexes. The grammar is for
+people writing indexers, and <code>indexers/README.md</code> has it.</p>
+</div>
+</section>
+<section class="entry" id="the-guide-s-citations-move-to-the-end" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-s-citations-move-to-the-end"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The guide's citations move to the end</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">This guide is the format, in the present tense. Each rule names the plan that decided it,</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="8"><meta itemprop="endLine" content="8"></span>
+<span class="note" itemprop="note">quote at line 8</span>
+</figcaption>
+<meta itemprop="codeStart" content="5"><pre itemprop="code" data-start="5"><code style="counter-reset: line 4"><span class="line">and where the reason came from. The code shows what was done. The plan shows why, in a</span>
+<span class="line">form you can argue with later.</span>
+<span class="line"></span>
+<mark class="line">This guide is the format, in the present tense. Each rule names the plan that decided it,</mark>
+<span class="line">so the reasoning is there when you want it. Phoropter, the tool serving this page, reads</span>
+<span class="line">plans written this way and links them to the code they're about.</span>
+<span class="line"></span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>15b4068</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, then Jeff</span>):</strong> on another repository's site, <em>(lanyard)</em>
+and <em>(grommet)</em> are names that mean nothing by design, mid-sentence, with nothing to
+click. The rules read fine without them. They keep their history in one closing section,
+&quot;Where these rules came from&quot;, a line per rule. Jeff wanted them kept, since they show
+each rule has a reason, as long as the guide says plainly that they're history: plans
+in other repositories, mostly private, and nothing a reader needs to look up.</p>
+</div>
+</section>
+<section class="entry" id="the-guide-says-an-answer-can-become-its-own-decision" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-guide-says-an-answer-can-become-its-own-decision"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The guide says an answer can become its own decision</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">guide.md › Working with plans › Drafts (optional)</code> <a rel="anchored-at" itemprop="place" href="../../files/guide.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">(the date is today, the day you say &quot;we're implementing this&quot;), folds each answer into</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="201"><meta itemprop="endLine" content="201"></span>
+<span class="note" itemprop="note">quote at line 201</span>
+</figcaption>
+<meta itemprop="codeStart" content="198"><pre itemprop="code" data-start="198"><code style="counter-reset: line 197"><span class="line"></span>
+<span class="line">When the pair is confident, the draft converts, whether or not every prompt is</span>
+<span class="line">answered, since silence means proceed. Converting writes `plans/YYYY-MM-DD-&lt;name&gt;.md`</span>
+<mark class="line">(the date is today, the day you say &quot;we're implementing this&quot;), folds each answer into</mark>
+<span class="line">its entry's reason, labels a fallback that became the decision (`Claude, unanswered, so</span>
+<span class="line">its fallback`), drops the prompts, and deletes the draft and its notes. The notes</span>
+<span class="line">aren't kept: they're mostly the questions that lined up someone's understanding, and</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="194"><meta itemprop="endLine" content="194"></span>
+<span class="note" itemprop="note">quote at line 194</span>
+</figcaption>
+<meta itemprop="codeStart" content="191"><pre itemprop="code" data-start="191"><code style="counter-reset: line 190"><span class="line"></span>
+<span class="line">When the pair is confident, the draft converts, whether or not every prompt is</span>
+<span class="line">answered, since silence means proceed. Converting writes `plans/YYYY-MM-DD-&lt;name&gt;.md`</span>
+<mark class="line">(the date is today, the day you say &quot;we're implementing this&quot;), folds each answer into</mark>
+<span class="line">its entry's reason, labels a fallback that became the decision (`Claude, unanswered, so</span>
+<span class="line">its fallback`), drops the prompts, and deletes the draft and its notes. The notes</span>
+<span class="line">aren't kept: they're mostly the questions that lined up someone's understanding, and</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">guide.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="194"><meta itemprop="endLine" content="194"></span><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes</span>):</strong> an answer declined a Question's premise and created
+new work, and &quot;folds each answer into its entry's reason&quot; didn't cover it. The other
+Claude made it a new Decision, which was right. One sentence says so.</p>
+</div>
+</section>
+<section class="entry" id="the-agent-block-says-who-runs-the-server-and-the-guide-doesn-t-need-one" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-agent-block-says-who-runs-the-server-and-the-guide-doesn-t-need-one"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">The agent block says who runs the server, and the guide doesn't need one</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">README.md › phoropter › Tell your agent</code> <a rel="anchored-at" itemprop="place" href="../../files/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">guide first: it's at `guide/` on the site (`phoropter url` prints the address), or</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="89"><meta itemprop="endLine" content="89"></span>
+<span class="note" itemprop="note">quote at line 89</span>
+</figcaption>
+<meta itemprop="codeStart" content="86"><pre itemprop="code" data-start="86"><code style="counter-reset: line 85"><span class="line">## Plans (phoropter)</span>
+<span class="line"></span>
+<span class="line">This repository records its decisions as plans, in phoropter's format. Read the</span>
+<mark class="line">guide first: it's at `guide/` on the site (`phoropter url` prints the address), or</mark>
+<span class="line">`guide.md` in phoropter's repository.</span>
+<span class="line"></span>
+<span class="line">- **Before non-trivial work, write a plan** in `plans/YYYY-MM-DD-&lt;name&gt;.md`: the</span></code></pre>
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">README.md</code>
+<meta itemprop="matches" content="0">
+<span class="note" itemprop="note">quote not found at <code>15b4068</code></span>
+</figcaption>
+
+</figure>
+<figure class="view status-not-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">not-found</span>
+<code class="file" itemprop="file">README.md</code>
+<meta itemprop="matches" content="0"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> neither the guide nor the agent block says who starts the server. Jeff
+ran it this morning, but usually it'd be the agent. And Jeff saw the catch: the guide is
+a page on the server, so it can't be where the agent learns to start the server. Today
+the block says &quot;read the guide at <code>guide/</code> on the site&quot;, which needs a server that may
+not be running.</p>
+<p>So the instructions live where the agent reads first, the block pasted into its
+<code>CLAUDE.md</code>: if <code>phoropter url</code> finds no server, start <code>phoropter</code> in the background and
+tell me the address. Following HEAD means one server lasts the session. And the guide
+stops depending on a server: it's already built into the binary, so <code>phoropter guide</code>
+prints it. The block says to read it that way.</p>
+</div>
+</section>
+<section class="entry" id="a-draft-shows-what-s-already-at-its-places" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-draft-shows-what-s-already-at-its-places"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">A draft shows what's already at its places</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter/internal/site`/anchorHTML().</code> <a rel="anchored-at" itemprop="place" href="../../symbols/internal/site/render.go/anchorHTML/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">place = fmt.Sprintf(` &lt;a rel=&quot;anchored-at&quot; itemprop=&quot;place&quot; href=&quot;%s&quot;&gt;%s page&lt;/a&gt;`, Rel(here, ra.Place.Href), ra.Place.Kind)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">base</span>
+<data itemprop="commit" value="51b503cd9008438bea83bc86fc6191c9c5b15560"><code>51b503c</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/site/render.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="481"><meta itemprop="endLine" content="481"></span><meta itemprop="startLine" content="473"><meta itemprop="endLine" content="509">
+<span class="note" itemprop="note">lines 473–509; quote at line 481</span>
+</figcaption>
+<meta itemprop="codeStart" content="478"><pre itemprop="code" data-start="478"><code style="counter-reset: line 477"><span class="line">	}</span>
+<span class="line">	place, target, quote, note, views, isNew := &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;</span>
+<span class="line">	if ra.Place != nil {</span>
+<mark class="line">		place = fmt.Sprintf(` &lt;a rel=&quot;anchored-at&quot; itemprop=&quot;place&quot; href=&quot;%s&quot;&gt;%s page&lt;/a&gt;`, Rel(here, ra.Place.Href), ra.Place.Kind)</mark>
+<span class="line">	}</span>
+<span class="line">	if ra.Entry != nil {</span>
+<span class="line">		target = fmt.Sprintf(`&lt;p class=&quot;target&quot;&gt;&lt;span class=&quot;label&quot;&gt;entry&lt;/span&gt; &lt;a rel=&quot;anchored-at&quot; itemprop=&quot;target&quot; href=&quot;%s#%s&quot;&gt;%s&lt;/a&gt; &lt;span class=&quot;meta&quot;&gt;in %s&lt;/span&gt;&lt;/p&gt;`, Rel(here, ra.Entry.Doc.Href), ra.Entry.Entry.Slug, kindTitle(ra.Entry.Entry), docName(*ra.Entry))</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/site/render.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="533"><meta itemprop="endLine" content="533"></span><meta itemprop="startLine" content="525"><meta itemprop="endLine" content="561">
+<span class="note" itemprop="note">lines 525–561; quote at line 533</span>
+</figcaption>
+<meta itemprop="codeStart" content="530"><pre itemprop="code" data-start="530"><code style="counter-reset: line 529"><span class="line">	}</span>
+<span class="line">	place, target, quote, note, views, isNew := &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;</span>
+<span class="line">	if ra.Place != nil {</span>
+<mark class="line">		place = fmt.Sprintf(` &lt;a rel=&quot;anchored-at&quot; itemprop=&quot;place&quot; href=&quot;%s&quot;&gt;%s page&lt;/a&gt;`, Rel(here, ra.Place.Href), ra.Place.Kind)</mark>
+<span class="line">	}</span>
+<span class="line">	if ra.Entry != nil {</span>
+<span class="line">		target = fmt.Sprintf(`&lt;p class=&quot;target&quot;&gt;&lt;span class=&quot;label&quot;&gt;entry&lt;/span&gt; &lt;a rel=&quot;anchored-at&quot; itemprop=&quot;target&quot; href=&quot;%s#%s&quot;&gt;%s&lt;/a&gt; &lt;span class=&quot;meta&quot;&gt;in %s&lt;/span&gt;&lt;/p&gt;`, Rel(here, ra.Entry.Doc.Href), ra.Entry.Entry.Slug, kindTitle(ra.Entry.Entry), docName(*ra.Entry))</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/site/render.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="533"><meta itemprop="endLine" content="533"></span><meta itemprop="startLine" content="525"><meta itemprop="endLine" content="561"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">the course repo's notes, and the seed in <code>shelf/draft-places.md</code></span>):</strong> Jeff wants
+plans to catch a new one that confuses an old one. A draft is where that's cheapest, and
+today it only links each anchor to its place page. Now, under each draft anchor, the
+landed entries already there are listed, in the seed's order: guesses not yet answered
+(or answered <code>not tested</code>, since this work might be the test), then declines, then
+decisions. Each is a link with its kind and plan, as microdata, so the agent writing the
+draft reads it too. The TUI can show it later; until then the gaps ledger will list it.
+A conflict between ideas with no shared anchor still takes a reader.</p>
+</div>
+</section>
+<section class="entry" id="following-head-costs-nothing-a-reader-notices" itemprop="entry" itemscope>
+<h2><a class="self" href="#following-head-costs-nothing-a-reader-notices"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Following HEAD costs nothing a reader notices</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/poplin/as-built/#following-head-costs-nothing-a-reader-notices">the as-built</a>: <strong class="verdict verdict-disproved" itemprop="verdict">disproved</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> on phoropter's own repository, with its indexes in the store, the first
+request after a commit takes more than 3 seconds, or requests between commits get
+measurably slower.</p>
+</div>
+</section>
+<section class="entry" id="the-new-message-finds-the-copy-that-won-in-the-course-repo-s-shape" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-new-message-finds-the-copy-that-won-in-the-course-repo-s-shape"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">The new message finds the copy that won in the course repo's shape</span></a></h2>
+<p class="pair">Answered in <a rel="answered-by" itemprop="answeredBy" href="../../plans/poplin/as-built/#the-new-message-finds-the-copy-that-won-in-the-course-repo-s-shape">the as-built</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> in a test with two copies of one package at different paths, diverged,
+<code>phoropter symbols</code> on the losing copy doesn't name the winning one.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

@@ -38,6 +38,8 @@ type Model struct {
 	dir        string // where to look for the draft's repository; "" is the working directory
 	authorName string
 
+	lastLens string // the lens + used last, offered next time
+
 	clip   func(string) error // the clipboard, and the browser; tests swap them
 	browse func(string) error
 }
@@ -99,6 +101,18 @@ func load(c *substrate.Client, dir, u string) (screen, error) {
 	}
 	main := p.Main
 	switch {
+	case substrate.IsLenses(p):
+		ls, err := c.Lenses(u)
+		if err != nil {
+			return nil, err
+		}
+		return &lensesScreen{lenses: ls}, nil
+	case substrate.IsLens(p):
+		l, err := c.Lens(u)
+		if err != nil {
+			return nil, err
+		}
+		return &lensScreen{lens: l}, nil
 	case main.Get("entry") != nil || main.Get("title") != nil:
 		d, err := c.Doc(u)
 		if err != nil {
@@ -296,6 +310,9 @@ const helpText = `Keys
   plan          j/k or tab entry · n/N next anchor · 1 2 3 or [ ] layer
                 J/K scroll the right pane · enter links from here · esc back
   place         j/k move · enter open that plan at its entry · esc back
+  lenses        L from the plan list · in a lens, f filters: all, Decisions,
+                Declines, open guesses · + on an entry or a plan adds it to a
+                lens (tab cycles yours; a new name starts one)
   draft         a answer the prompt, or note the entry (on About, the whole draft)
                 s skip a prompt on purpose · in a form: ctrl+s write, tab next
                 field, ctrl+e $EDITOR, esc cancel

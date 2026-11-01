@@ -76,6 +76,23 @@ A day's loop:
 branch when a teammate or a mentor should read a draft, or your notes on an old plan,
 before anything is decided.
 
+**Lenses:** a lens is your own subset of plans and entries, like "auth" or "what this
+work should keep in mind", kept in `drafts/lenses/<name>.md`. It's a title and one
+reference per line, the syntax a plan's `where:` uses, each optionally followed by a note
+to yourself:
+
+```markdown
+# Auth
+
+- `plans/2026-10-31-batik.md › The index store is committed only by phoropter index`
+- `plans/2026-11-01-poplin.md` — the whole plan
+```
+
+The dev server shows them at `lenses/`. In the TUI, `L` lists them, `f` filters one by
+kind (Decisions, Declines, open guesses), and `+` adds what you're on to one. A lens can
+be pasted into a ticket or a message as is. A built site never has lenses: they're a way
+of reading the plans, not part of them.
+
 **Symbol anchors:** `phoropter symbols <file>` lists a file's symbols, ready to paste
 into a plan's `where:`. When plans anchor symbols, run `phoropter index` and commit
 `.phoropter/index/`. Then the plans' anchors still resolve after the toolchain that could
@@ -109,6 +126,11 @@ guide first: `phoropter guide` prints it.
   current plan, or a reply.
 - **Never edit a landed plan.** Changing an old decision is a revisit: a new plan, with
   `revisits:`, saying what moved.
+- **Lenses** are my own subsets of plans, in `drafts/lenses/<name>.md`: a `# Title`, then
+  one reference per line, `` `plans/<file>.md › <entry title>` `` or a whole plan, each
+  optionally followed by ` — a note`. When I ask you to mark plans, write or extend a
+  lens and tell me what's in it and why. When a lens would help us look at something,
+  make one without being asked, and say so.
 - **To anchor a symbol,** `phoropter symbols <file>` lists the strings to paste. You
   never choose an indexer; `phoropter indexers` says which languages this machine has.
 - **You don't get a veto.** If you think an idea is wrong, say so up front in the

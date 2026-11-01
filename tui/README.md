@@ -40,6 +40,10 @@ can find the draft.
   `y` copies the address of what you're on (a plan's at the entry), `b` opens it in the
   browser, and `Y` copies its reference, `plans/<file>.md › <entry title>`, which
   outlasts the server's port (nainsook).
+- **Lenses** (percale): `L` from the plan list opens your lenses, from `drafts/lenses/`.
+  In a lens, `f` cycles all, Decisions, Declines, and open guesses. `+` on an entry or a
+  plan adds it to a lens, offering the last one; `tab` cycles yours, and a new name
+  starts one.
 
 To try a draft: from the repository root, `mkdir -p drafts && cp
 tui/testdata/sample.draft.md drafts/plan.draft.md`, run `phoropter`, and open the TUI

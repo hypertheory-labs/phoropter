@@ -65,6 +65,9 @@ pace with the work, not coverage.
   `go build -o bin/phoropter .`, and Jeff's `~/.local/bin/phoropter` is a symlink to
   `bin/phoropter`. A binary built in this repository finds `indexers/` by walking up
   from itself; anywhere else, indexers come from `PATH`.
+- **Lenses** (percale): a reader's own subsets of plans in `drafts/lenses/<name>.md`, one
+  reference per line in `where:` syntax. The dev server serves `lenses/` and links it from
+  every page; a built site never has them. The TUI lists, filters, and appends (`+`).
 - **Indexers** (seersucker) are programs in `indexers/` (TypeScript, Go), or on `PATH` as
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols

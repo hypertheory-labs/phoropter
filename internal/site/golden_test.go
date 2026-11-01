@@ -220,7 +220,8 @@ func TestGoldenServed(t *testing.T) {
 		res.Body.Close()
 		got[rel] = string(b)
 	}
-	// When the draft was read is the one value that differs by nature.
-	readAt := func(l string) bool { return strings.Contains(l, ".readAt[") }
-	compare(t, golden, got, readAt)
+	// When the draft was read is the one value that differs by nature. The
+	// lenses link came after the golden pages were made (percale).
+	skip := func(l string) bool { return strings.Contains(l, ".readAt[") || strings.HasPrefix(l, "link lenses ->") }
+	compare(t, golden, got, skip)
 }

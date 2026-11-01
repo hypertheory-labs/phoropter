@@ -323,3 +323,61 @@ func Author() string {
 	}
 	return "someone"
 }
+
+// ---- lenses (percale)
+
+// LensSlug is a lens's file name for the name someone typed.
+func LensSlug(name string) string {
+	var b strings.Builder
+	dash := false
+	for _, r := range strings.ToLower(strings.TrimSpace(name)) {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			b.WriteRune(r)
+			dash = false
+		} else if !dash && b.Len() > 0 {
+			b.WriteByte('-')
+			dash = true
+		}
+	}
+	return strings.TrimSuffix(b.String(), "-")
+}
+
+// AppendLens adds one reference to a lens in drafts/lenses/, making the lens
+// when it's new, with the repository's first commit and the name as its title.
+// It never changes a line already there, and a reference already in the lens
+// isn't added twice.
+func AppendLens(dir, name, ref, firstCommit string) (path string, added bool, err error) {
+	root, err := repoRoot(dir)
+	if err != nil {
+		return "", false, err
+	}
+	slug := LensSlug(name)
+	if slug == "" {
+		return "", false, errors.New("a lens needs a name")
+	}
+	path = filepath.Join(root, "drafts", "lenses", slug+".md")
+	span := "`" + ref + "`"
+	if strings.Contains(ref, "`") {
+		span = "`` " + ref + " ``"
+	}
+	b, err := os.ReadFile(path)
+	text := string(b)
+	switch {
+	case os.IsNotExist(err):
+		text = ""
+		if len(firstCommit) >= 7 {
+			text = "---\nrepository: " + firstCommit[:7] + "\n---\n\n"
+		}
+		text += "# " + strings.TrimSpace(name) + "\n\n"
+	case err != nil:
+		return "", false, err
+	case strings.Contains(text, span):
+		return path, false, nil
+	case text != "" && !strings.HasSuffix(text, "\n"):
+		text += "\n"
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return "", false, err
+	}
+	return path, true, os.WriteFile(path, []byte(text+"- "+span+"\n"), 0o644)
+}

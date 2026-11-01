@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As built: poplin · phoropter at 7722dfa</title>
+<link rel="profile" href="../../../profile/">
+<link rel="help" href="../../../guide/">
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<header class="provenance" itemscope>
+Generated from <span itemprop="repository">phoropter</span>
+at <data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="meta">7722dfaf77be1d668af43657763d0c01562994ac</span>
+<span class="links"><a class="home-link" href="../../../">home</a>
+<a rel="lenses" href="../../../lenses/">lenses</a>
+<a rel="help" href="../../../guide/">guide</a>
+<a class="profile-link" href="../../../profile/">profile</a></span>
+</header>
+<main>
+
+<nav><a rel="up" href="../../../plans/poplin/">What the first repository outside phoropter found</a></nav>
+<article itemscope>
+<h1 itemprop="title">As built: poplin</h1>
+<dl class="facts">
+<dt>Plan</dt><dd><a rel="up" itemprop="plan" href="../../../plans/poplin/">plans/2026-11-01-poplin.md</a></dd>
+<dt>Head</dt><dd><data itemprop="head" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data></dd>
+<dt>File</dt><dd><code itemprop="file">plans/2026-11-01-poplin.as-built.md</code></dd>
+
+</dl>
+<div class="intro" itemprop="intro"><p>Built the same afternoon as the draft. Jeff's notes confirmed every fallback: HEAD checked
+on a request, keys with enter, and the citations kept, at the end, saying plainly they're
+history.</p>
+<p>One finding from outside the plan. The check that both first-party indexers pass on
+phoropter's own repository had been failing since organdy deleted phoropter's last
+TypeScript project, and nobody saw it: the check reads git, which <code>go test</code>'s cache
+can't see, so a pass cached before the deletion kept being reported. Organdy's as-built
+said <code>go test ./...</code> passes, and for this one test that was the cache talking. The
+TypeScript indexer is now checked against a small TypeScript repository the test makes,
+and <code>CLAUDE.md</code> says to gate commits on <code>go test -count=1 ./...</code>.</p>
+<p>The draft's new list works, and on a busy file it's long: a draft anchoring <code>guide.md</code>
+gets eleven entries. They're the right eleven, in order, but if that's too many to read,
+grouping or a limit is a later plan.</p>
+</div>
+<section class="entry" id="a-rebuild-goes-into-a-directory-beside-the-first-and-the-old-one-is-removed" itemprop="entry" itemscope>
+<h2><a class="self" href="#a-rebuild-goes-into-a-directory-beside-the-first-and-the-old-one-is-removed"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A rebuild goes into a directory beside the first, and the old one is removed</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter/internal/site`/live#rebuild().</code> <a rel="anchored-at" itemprop="place" href="../../../symbols/internal/site/serve.go/live/rebuild/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">dir := fmt.Sprintf(&quot;%s.rebuild-%d&quot;, l.o.Out, l.n)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/site/serve.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="86"><meta itemprop="endLine" content="86"></span><meta itemprop="startLine" content="84"><meta itemprop="endLine" content="99">
+<span class="note" itemprop="note">lines 84–99; quote at line 86</span>
+</figcaption>
+<meta itemprop="codeStart" content="84"><pre itemprop="code" data-start="84"><code style="counter-reset: line 83"><span class="line">func (l *live) rebuild() error {</span>
+<span class="line">	l.n++</span>
+<mark class="line">	dir := fmt.Sprintf(&quot;%s.rebuild-%d&quot;, l.o.Out, l.n)</mark>
+<span class="line">	s, pages, err := Build(l.o.Repo, l.o.Ref, dir, l.o.Store, l.o.Guide)</span>
+<span class="line">	if err != nil {</span>
+<span class="line">		os.RemoveAll(dir)</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">internal/site/serve.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="86"><meta itemprop="endLine" content="86"></span><meta itemprop="startLine" content="84"><meta itemprop="endLine" content="99"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a fresh directory means no request reads a half-written
+site. Each one is removed once the next is swapped in, and a server starting up clears
+any left by one that was killed. A rebuild that fails leaves the last site up, says so on
+stderr, and isn't tried again until HEAD moves.</p>
+</div>
+</section>
+<section class="entry" id="phoropter-indexers-says-when-first-party-indexers-weren-t-found" itemprop="entry" itemscope>
+<h2><a class="self" href="#phoropter-indexers-says-when-first-party-indexers-weren-t-found"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title"><code>phoropter indexers</code> says when first-party indexers weren't found</span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">scip-go gomod github.com/hypertheory-labs/phoropter . `github.com/hypertheory-labs/phoropter`/indexers().</code> <a rel="anchored-at" itemprop="place" href="../../../symbols/main.go/indexers/">symbol page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">fmt.Println(&quot;first-party indexers: not found. They're in indexers/ in a clone of phoropter, found from a binary built there, or from PHOROPTER_INDEXERS.&quot;)</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="387"><meta itemprop="endLine" content="387"></span><meta itemprop="startLine" content="384"><meta itemprop="endLine" content="406">
+<span class="note" itemprop="note">lines 384–406; quote at line 387</span>
+</figcaption>
+<meta itemprop="codeStart" content="384"><pre itemprop="code" data-start="384"><code style="counter-reset: line 383"><span class="line">func indexers() {</span>
+<span class="line">	all := site.Indexers()</span>
+<span class="line">	if site.FirstParty == &quot;&quot; {</span>
+<mark class="line">		fmt.Println(&quot;first-party indexers: not found. They're in indexers/ in a clone of phoropter, found from a binary built there, or from PHOROPTER_INDEXERS.&quot;)</mark>
+<span class="line">	}</span>
+<span class="line">	if len(all) == 0 {</span>
+<span class="line">		fmt.Println(&quot;No indexers here. File anchors with a quote work in any language; for symbols, the README's Indexers section says what to install, and indexers/README.md how to write one.&quot;)</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">main.go</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="387"><meta itemprop="endLine" content="387"></span><meta itemprop="startLine" content="384"><meta itemprop="endLine" content="406"><meta itemprop="sameAs" content="15b4068">
+<span class="note" itemprop="note">same as at <code>15b4068</code></span>
+</figcaption>
+
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> organdy's honest miss is a <code>go install</code>ed binary that
+quietly can't index Go or TypeScript. Run from outside a clone with a bare <code>PATH</code>, this
+now says why before it says there are no indexers.</p>
+</div>
+</section>
+<section class="entry" id="the-tui-s-docs-lose-their-last-npx-phoropter" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-tui-s-docs-lose-their-last-npx-phoropter"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">The TUI's docs lose their last <code>npx phoropter</code></span></a></h2>
+
+
+<div class="anchor" itemprop="anchor" itemscope>
+
+<p class="where"><span class="label">where</span> <code itemprop="where">tui/README.md</code> <a rel="anchored-at" itemprop="place" href="../../../files/tui/README.md/">file page</a></p>
+<p class="quote"><span class="label">quote</span> <code itemprop="quote">tui/testdata/sample.draft.md drafts/plan.draft.md`, run `phoropter`, and open the TUI</code></p><div class="views"><figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">as-built head</span>
+<data itemprop="commit" value="15b4068f119c30b765af0fee2665a62473fc7a27"><code>15b4068</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">tui/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="42"><meta itemprop="endLine" content="42"></span>
+<span class="note" itemprop="note">quote at line 42</span>
+</figcaption>
+<meta itemprop="codeStart" content="39"><pre itemprop="code" data-start="39"><code style="counter-reset: line 38"><span class="line">- **Anywhere:** `r` reads the page again, `g` shows the gaps hit so far, `?` is help.</span>
+<span class="line"></span>
+<span class="line">To try a draft: from the repository root, `mkdir -p drafts &amp;&amp; cp</span>
+<mark class="line">tui/testdata/sample.draft.md drafts/plan.draft.md`, run `phoropter`, and open the TUI</mark>
+<span class="line">with `phoropter ui`, which finds the server itself.</span>
+<span class="line"></span>
+<span class="line">The TUI lives in phoropter's repository as `tui/` since dowlas (the TUI moves in). Its</span></code></pre>
+</figure>
+<figure class="view status-found" itemprop="view" itemscope>
+<figcaption>
+<span class="role" itemprop="role">generated</span>
+<data itemprop="commit" value="7722dfaf77be1d668af43657763d0c01562994ac"><code>7722dfa</code></data>
+<span class="status" itemprop="status">found</span>
+<code class="file" itemprop="file">tui/README.md</code>
+<meta itemprop="matches" content="1"><span itemprop="match" itemscope hidden><meta itemprop="startLine" content="45"><meta itemprop="endLine" content="45"></span>
+<span class="note" itemprop="note">quote at line 45</span>
+</figcaption>
+<meta itemprop="codeStart" content="42"><pre itemprop="code" data-start="42"><code style="counter-reset: line 41"><span class="line">  outlasts the server's port (nainsook).</span>
+<span class="line"></span>
+<span class="line">To try a draft: from the repository root, `mkdir -p drafts &amp;&amp; cp</span>
+<mark class="line">tui/testdata/sample.draft.md drafts/plan.draft.md`, run `phoropter`, and open the TUI</mark>
+<span class="line">with `phoropter ui`, which finds the server itself.</span>
+<span class="line"></span>
+<span class="line">The TUI lives in phoropter's repository as `tui/` since dowlas (the TUI moves in). Its</span></code></pre>
+</figure></div>
+</div>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> organdy deleted the TypeScript command, but <code>tui/README.md</code>
+and <code>tui/CLAUDE.md</code> still said to run <code>npx phoropter</code>. Now it's <code>phoropter</code>, and
+<code>phoropter ui</code> finds the server itself.</p>
+</div>
+</section>
+<section class="entry" id="following-head-costs-nothing-a-reader-notices" itemprop="entry" itemscope>
+<h2><a class="self" href="#following-head-costs-nothing-a-reader-notices"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Following HEAD costs nothing a reader notices</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/poplin/#following-head-costs-nothing-a-reader-notices">the plan’s guess</a>: <strong class="verdict verdict-disproved" itemprop="verdict">disproved</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude, measured</span>):</strong> disproved, on both counts. On phoropter's repository (98
+pages, indexes in the store), the first request after a commit took 5.9s, because it
+waits for the whole rebuild. Requests between commits went from under 1ms to about
+20-25ms, which is the once-a-second <code>git rev-parse</code>. Nobody notices the second. The first
+is noticeable. The fix is to keep serving the old site while the new one builds and
+swap it in when it's ready. Then no request waits, but for those few seconds a page says
+the old commit. That changes what this plan decided, so it's Jeff's call, not something
+the as-built quietly does.</p>
+</div>
+</section>
+<section class="entry" id="the-new-message-finds-the-copy-that-won-in-the-course-repo-s-shape" itemprop="entry" itemscope>
+<h2><a class="self" href="#the-new-message-finds-the-copy-that-won-in-the-course-repo-s-shape"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">The new message finds the copy that won in the course repo's shape</span></a></h2>
+<p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/poplin/#the-new-message-finds-the-copy-that-won-in-the-course-repo-s-shape">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
+
+
+<div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">Claude, measured</span>):</strong> held, in a test shaped like the course repository: two
+copies of <code>Software.Api</code> at <code>instructor/</code> and <code>student/</code>, diverged, a fake indexer that
+indexes only the first, and a <code>Program.cs</code> of top-level statements. <code>phoropter symbols</code>
+on the student copy names the instructor file, on <code>Program.cs</code> says it has no named
+declarations, and on an edited file says the changes aren't committed. Not yet tried
+with the real roslyn indexer on the course repository, since the student copy has moved
+out.</p>
+</div>
+</section>
+</article>
+</main>
+</body>
+</html>

@@ -83,7 +83,7 @@ func (s *listScreen) title() string {
 }
 
 func (s *listScreen) help() string {
-	return "j/k move · enter open · o oldest/newest first · y copy link · b browser · r refresh"
+	return "j/k move · enter open · o oldest/newest first · L lenses · y copy link · b browser · r refresh"
 }
 
 func (s *listScreen) refresh() ([]string, string) {
@@ -92,6 +92,12 @@ func (s *listScreen) refresh() ([]string, string) {
 
 func (s *listScreen) key(m *Model, k string) tea.Cmd {
 	switch k {
+	case "L":
+		if s.home.LensesURL == "" {
+			m.status = "lenses need phoropter's dev server, which reads drafts/lenses/"
+			return nil
+		}
+		return m.open(s.home.LensesURL)
 	case "o":
 		// The same plan stays chosen.
 		if s.cur > 0 {
@@ -267,12 +273,16 @@ type docScreen struct {
 	menu          []menuItem
 	menuOpen      bool
 	menuCur       int
-	form          *form // an answer or note being written, on a draft
+	form          *form       // an answer or note being written, on a draft
+	adding        *lensPicker // + choosing a lens (percale)
 }
 
-func (s *docScreen) capturing() bool { return s.form != nil }
+func (s *docScreen) capturing() bool { return s.form != nil || s.adding != nil }
 
 func (s *docScreen) capture(m *Model, msg tea.KeyMsg) tea.Cmd {
+	if s.adding != nil {
+		return s.captureLens(m, msg)
+	}
 	write, cancel, edit := s.form.key(msg)
 	switch {
 	case cancel:
@@ -448,6 +458,9 @@ func (s *docScreen) title() string {
 func (s *docScreen) accent() bool { return s.plan.Draft != nil }
 
 func (s *docScreen) help() string {
+	if s.adding != nil {
+		return "type a lens · tab cycle yours · enter add · esc cancel"
+	}
 	if s.form != nil {
 		return s.form.help()
 	}
@@ -457,7 +470,7 @@ func (s *docScreen) help() string {
 	if s.plan.Draft != nil {
 		return "j/k or tab move · a answer or note · s skip · n anchor · 1 2 3 layer · enter links · r refresh · esc back"
 	}
-	return "j/k or tab entry · a note · n anchor · 1 2 3 [ ] layer · enter links · y/Y copy link/ref · b browser · esc back"
+	return "j/k or tab entry · a note · + lens · n anchor · 1 2 3 [ ] layer · enter links · y/Y copy · b browser · esc back"
 }
 
 // refresh reads the plan and its as-built again, back at the same entry.
@@ -525,6 +538,8 @@ func (s *docScreen) key(m *Model, k string) tea.Cmd {
 		s.menuOpen, s.menuCur = true, 0
 	case "a":
 		s.annotate(m)
+	case "+":
+		s.collect(m)
 	case "s":
 		if r := s.rows[s.cur]; r.prompt != nil && r.doc.Draft != nil {
 			return m.write(s, newPromptForm(r.prompt, false), true)
@@ -612,6 +627,8 @@ func (s *docScreen) view(m *Model, w, h int) string {
 	rw := detailWidth(w)
 	detail := s.detail(rw)
 	switch {
+	case s.adding != nil:
+		detail = s.adding.view(rw)
 	case s.form != nil:
 		detail = s.form.view(rw)
 	case s.menuOpen:

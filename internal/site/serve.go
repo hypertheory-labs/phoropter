@@ -163,6 +163,14 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		send(w, r, "text/html; charset=utf-8", []byte(h.withDraftLink(DraftPage(h.site, d).HTML, "draft/")))
 		return
 	}
+	if p == "/lenses" {
+		http.Redirect(w, r, "/lenses/", http.StatusMovedPermanently)
+		return
+	}
+	if strings.HasPrefix(p, "/lenses/") {
+		h.serveLens(w, r, strings.Trim(strings.TrimPrefix(p, "/lenses/"), "/"))
+		return
+	}
 	file := filepath.Join(h.root, filepath.FromSlash(path.Clean("/"+p)))
 	root, _ := filepath.Abs(h.root)
 	if abs, _ := filepath.Abs(file); !strings.HasPrefix(abs, root) {
@@ -287,17 +295,39 @@ func (h *handler) withPlanNotes(page, here string) string {
 	return page
 }
 
+// serveLens: lenses are read from drafts/lenses/ on every request, like the
+// draft (percale).
+func (h *handler) serveLens(w http.ResponseWriter, r *http.Request, name string) {
+	lenses := ReadLenses(h.site, h.repoDir)
+	first := FirstCommit(&Repo{Dir: h.repoDir})
+	if name == "" {
+		send(w, r, "text/html; charset=utf-8", []byte(h.withDraftLink(LensesPage(h.site, lenses, first).HTML, "lenses/")))
+		return
+	}
+	for _, l := range lenses {
+		if l.Name == name {
+			here := "lenses/" + name + "/"
+			send(w, r, "text/html; charset=utf-8", []byte(h.withDraftLink(LensPage(h.site, l, first).HTML, here)))
+			return
+		}
+	}
+	text(w, http.StatusNotFound, fmt.Sprintf("no lens %s in %s\n", name, LensDir))
+}
+
 var homeLinkRE = regexp.MustCompile(`(<a class="home-link"[^>]*>home</a>)`)
 
-// withDraftLink: built pages don't know about the draft; the server adds the
-// link while one exists, relative to the page it's on.
+// withDraftLink: built pages don't know about the draft or lenses; the server
+// adds the links while they exist, relative to the page they're on.
 func (h *handler) withDraftLink(page, here string) string {
-	if !HasDraft(h.repoDir) {
-		return page
-	}
 	dir := here
 	if !strings.HasSuffix(here, "/") && here != "" {
 		dir = here[:strings.LastIndex(here, "/")+1]
 	}
-	return homeLinkRE.ReplaceAllString(page, "$1\n"+fmt.Sprintf(`<a rel="draft" href="%s">draft</a>`, Rel(dir, "draft/")))
+	var links []string
+	if HasDraft(h.repoDir) {
+		links = append(links, fmt.Sprintf(`<a rel="draft" href="%s">draft</a>`, Rel(dir, "draft/")))
+	}
+	// Always, so a reader can start a lens before there is one.
+	links = append(links, fmt.Sprintf(`<a rel="lenses" href="%s">lenses</a>`, Rel(dir, "lenses/")))
+	return homeLinkRE.ReplaceAllString(page, "$1\n"+strings.Join(links, "\n"))
 }
