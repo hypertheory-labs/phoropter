@@ -80,3 +80,9 @@ landed plan, but across several plans at once, and about an idea, not one plan.
   from before the decision; making it a plan early makes decisions nobody has made (calico).
   When it lands, what mattered becomes sources and anchors, and the rest is dropped on
   purpose.
+
+**Set operations (Jeff, 2026-11-01):** a lens is a set of references, so lenses combine.
+Intersection ("auth ∩ cms": where two concerns meet), difference ("auth − what we covered
+in class"), union. The kind filter is already one (lens ∩ Declines), and so is a draft's
+"already here" (its places ∩ landed entries). The agent can do these now by reading two
+lens pages. TUI keys for them wait until Jeff catches himself wanting one.
