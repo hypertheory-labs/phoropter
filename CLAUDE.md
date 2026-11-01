@@ -73,7 +73,9 @@ pace with the work, not coverage.
   `github.com/scip-code/scip-go` (`go install …/cmd/scip-go@latest`); it reads 0.1 and
   0.2 alike.
 - **Running:** `go test ./...` runs everything, the golden comparison included (the
-  tests read `../mock-control`, and skip what needs it when it isn't there).
+  tests read `../mock-control`, and skip what needs it when it isn't there). Gate a
+  commit on `go test -count=1 ./...`: many tests read git, which the test cache can't
+  see, and a cached pass hid a failing test from organdy to poplin.
   `phoropter ../mock-control --at 90c65b9` serves mock-control's older plans. `npm
   install` is only for the TypeScript indexer. The TUI's dependency pins (Bubble Tea
   v1.3.4, lipgloss v1.1.0, `charmbracelet/x/ansi` v0.8.0) still hold: `go mod tidy` can
