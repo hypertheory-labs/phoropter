@@ -20,6 +20,10 @@ pace with the work, not coverage.
   plan for a session. Never an approval gate; silence means proceed. Most work just
   goes. Run `phoropter` (`npx phoropter`, from anywhere in the repo) and it's at `draft/`; Jeff
   annotates in nvim. Convert when confident, and delete the draft and its notes.
+- **End of day:** when something's half-formed, leave it as the draft, so the next day
+  (and the next context) starts from a decision in progress, like a failing test left
+  before stepping away (Jeff). An invitation, not a quota: a day with nothing open ends
+  without one.
 - **Notes on landed plans: check `drafts/` at the start of a session.** A note on a
   landed plan (`drafts/<plan's file name>.notes.md`) says the plan matters to something
   now. Raise any you find before other work, and answer in kind: a revisit if its ground
