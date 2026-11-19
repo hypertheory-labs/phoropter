@@ -5,11 +5,9 @@ as `phoropter-index-<scheme>` (seersucker); the index store, committed by `phoro
 index` and cached otherwise (batik); the guide for writing one (dimity); and
 `phoropter doctor`, with indexers reporting their own `needs` (grosgrain). Still open:
 
-- **Installable indexers.** A `go install`ed phoropter finds none (organdy's as-built).
-  `indexers/go/`'s module is `phoropter-index-go`, so it can't be installed by name, and
-  the TypeScript one isn't a Go program. Grosgrain declined fixing this until its own
-  plan. Options: installable first-party indexers on `PATH`, or the Go indexer built
-  into the binary as a fallback.
+- **Installable indexers.** Tulle made the Go one installable (`go install
+  …/cmd/phoropter-index-scip-go@latest`). The TypeScript one still needs a clone: an npm
+  package is the likely shape, once the trial says a clone is the friction.
 - **Containers, for indexers only** (Jeff): "if we use containers, it's for the
   indexers, not the phoropter binary", because getting every indexer working on every
   platform may be hard. The contract allows it already: a `phoropter-index-go` that runs

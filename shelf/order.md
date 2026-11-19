@@ -6,12 +6,13 @@ shelf. The seeds keep their names, because landed plans cite them by name.
 
 1. **`trial.md`:** the goal. A fresh repository, `phoropter init`, a fresh agent, on
    Jeff's Windows VM. Everything above the line below is what it needs first.
-2. **`indexing.md`:** installable indexers, so phoropter isn't empty without a clone.
-3. **`windows.md`:** the trial runs on Windows, and three likely breakages are known.
+2. **`windows.md`:** the trial runs on Windows, and three likely breakages are known.
    Finding known bugs on the trial would waste it.
 
    *Then the trial. What it finds reorders everything below.*
 
+3. **`indexing.md`:** the TypeScript indexer installed without a clone (npm), and
+   containers. The trial says whether a clone hurts. Go installs since tulle.
 4. **`one-server.md`:** the server question, a revisit of batik's port decision. The
    trial says how much the extra terminal hurts.
 5. **`recipes.md`:** "give me a brief", and noticing a missing ambient plan. The trial's
