@@ -1,4 +1,5 @@
-// phoropter-index-go: phoropter's indexer for Go (seersucker). It runs scip-go
+// phoropter-index-go: phoropter's indexer for Go (seersucker), installed as
+// phoropter-index-scip-go for its scheme (tulle). It runs scip-go
 // on each Go module the anchors ask for, and prints the definitions as
 // phoropter's index JSON. See indexers/README.md for the contract.
 //

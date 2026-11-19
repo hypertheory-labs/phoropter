@@ -213,7 +213,8 @@ func TestDoctorSaysTheFixForEachLevel(t *testing.T) {
 		facts doctorFacts
 		want  string
 	}{
-		{"no clone", doctorFacts{git: "git", schemes: needsGo}, "git clone https://github.com/hypertheory-labs/phoropter"},
+		{"no clone, Go", doctorFacts{git: "git", schemes: needsGo}, "fix: go install github.com/hypertheory-labs/phoropter/cmd/phoropter-index-scip-go@latest"},
+		{"no clone, TypeScript", doctorFacts{git: "git", schemes: map[string]int{"scip-typescript": 1}}, "git clone https://github.com/hypertheory-labs/phoropter"},
 		{"no Go", doctorFacts{git: "git", firstParty: "/p/indexers", schemes: needsGo,
 			unavailable: []site.Unavailable{{Where: "/p/indexers/go"}}}, "runs on Go 1.25"},
 		{"no scip-go", doctorFacts{git: "git", firstParty: "/p/indexers", schemes: needsGo,
@@ -227,6 +228,11 @@ func TestDoctorSaysTheFixForEachLevel(t *testing.T) {
 		if !missing || !strings.Contains(out, c.want) {
 			t.Errorf("%s: missing=%v, want %q in:\n%s", c.name, missing, c.want, out)
 		}
+	}
+	installed := doctorFacts{git: "git", schemes: needsGo,
+		indexers: []site.IndexerInfo{{Indexer: "phoropter-index-go", Scheme: "scip-go"}}}
+	if out, missing := installed.report(); missing || strings.Contains(out, "isn't in a clone") {
+		t.Errorf("installed without a clone: missing=%v, and no clone is needed\n%s", missing, out)
 	}
 	ready := doctorFacts{git: "git", firstParty: "/p/indexers", schemes: needsGo,
 		indexers: []site.IndexerInfo{{Indexer: "phoropter-index-go", Scheme: "scip-go"}}}

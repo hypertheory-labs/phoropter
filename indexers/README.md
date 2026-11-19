@@ -180,8 +180,11 @@ Phoropter looks for the indexer for a scheme in two places, in this order:
 1. **`indexers/<name>/` in phoropter's own repository**, for first-party indexers. The
    directory holds an `indexer.json` naming the command, run from that directory:
    ```json
-   { "command": ["go", "run", "."] }
+   { "command": ["node", "index.ts"] }
    ```
+   Phoropter's Go indexer is also installable (`cmd/phoropter-index-scip-go`), and its
+   `indexers/go/indexer.json` runs that same code with `go run`, so a clone edits and
+   runs it in place.
 2. **A program on `PATH` named `phoropter-index-<scheme>`**, for any other indexer. That's
    how `gh` and `kubectl` find extensions, and there's nothing to configure. Install it
    anywhere on your `PATH`, make it executable, and phoropter finds it by its scheme.

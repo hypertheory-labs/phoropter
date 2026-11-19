@@ -79,7 +79,9 @@ pace with the work, not coverage.
   `phoropter-index-<scheme>`; a symbol's first word picks one. `indexers/README.md` is
   the contract, written so an agent can build one from it alone. `phoropter symbols
   <file>` lists symbols to anchor (and says why when there are none), and `phoropter index --check <dir>` tests an
-  indexer. The Go one needs Go 1.25+ and scip-go, which moved to
+  indexer. The Go one's code is `cmd/phoropter-index-scip-go/`, in phoropter's module, so `go
+  install` puts it on `PATH` (tulle); `indexers/go/indexer.json` runs it in a clone. It
+  needs Go 1.25+ and scip-go, which moved to
   `github.com/scip-code/scip-go` (`go install …/cmd/scip-go@latest`); it reads 0.1 and
   0.2 alike.
 - **Running:** `go test ./...` runs everything, the golden comparison included (the

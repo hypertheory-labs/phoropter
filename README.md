@@ -19,8 +19,8 @@ to build it.
 go install github.com/hypertheory-labs/phoropter@latest
 ```
 
-That binary has no indexers, so it anchors files and quotes but not symbols. For the
-Go and TypeScript indexers, which live in `indexers/`, install from a clone instead:
+That binary anchors files and quotes, but not symbols, until it has an indexer. The Go
+indexer installs the same way (below). For the TypeScript one, install from a clone:
 
 ```sh
 git clone https://github.com/hypertheory-labs/phoropter.git
@@ -36,7 +36,8 @@ anchor, and the command that would fix each. It runs none of them.
 **Indexers**, for anchors on symbols (a class, a method) rather than files and quotes.
 `phoropter doctor` says which of these a repository needs:
 - **TypeScript:** in a clone, Node 24+ and `npm install` (it runs scip-typescript).
-- **Go:** in a clone, Go 1.25+ and `go install github.com/scip-code/scip-go/cmd/scip-go@latest`.
+- **Go:** Go 1.25+, scip-go (`go install github.com/scip-code/scip-go/cmd/scip-go@latest`),
+  and, outside a clone, `go install github.com/hypertheory-labs/phoropter/cmd/phoropter-index-scip-go@latest`.
 - **C# / .NET:** install `phoropter-index-roslyn` on your `PATH`. It's a separate
   repository with an `install.sh`.
 - **Anything else:** see [`indexers/README.md`](indexers/README.md) to write one.

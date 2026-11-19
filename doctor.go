@@ -22,12 +22,13 @@ type doctorFacts struct {
 	schemes     map[string]int // symbol anchors in this repository's plans, by scheme
 }
 
-// firstPartySchemes are the indexers phoropter ships in indexers/, by
-// scheme, so doctor can say where to get them when a binary outside a clone
-// has none. Until they're installable on their own (grosgrain's Decline).
-var firstPartySchemes = map[string]struct{ lang, dir, toolchain string }{
-	"scip-go":         {"Go", "go", "Go 1.25 or newer (https://go.dev/dl)"},
-	"scip-typescript": {"TypeScript", "typescript", "Node.js 24 or newer (https://nodejs.org), as its package.json says"},
+// firstPartySchemes are the indexers phoropter ships, by scheme, so doctor
+// can say where to get them when a binary outside a clone has none. One with
+// an install command installs on its own (tulle); the rest need a clone.
+var firstPartySchemes = map[string]struct{ lang, dir, toolchain, install string }{
+	"scip-go": {"Go", "go", "Go 1.25 or newer (https://go.dev/dl)",
+		"go install github.com/hypertheory-labs/phoropter/cmd/phoropter-index-scip-go@latest"},
+	"scip-typescript": {"TypeScript", "typescript", "Node.js 24 or newer (https://nodejs.org), as its package.json says", ""},
 }
 
 // schemesInPlans counts the symbol anchors in the plans and as-builts at sha,
@@ -70,21 +71,29 @@ func (d doctorFacts) report() (string, bool) {
 		fix("install git (https://git-scm.com)")
 	}
 
+	byScheme := map[string]site.IndexerInfo{}
+	for _, i := range d.indexers {
+		byScheme[i.Scheme] = i
+	}
+	// Outside a clone, say so only when it costs this repository something:
+	// a scheme of ours that it anchors and nothing here indexes.
+	lacksOurs := false
+	for s := range d.schemes {
+		_, ours := firstPartySchemes[s]
+		_, found := byScheme[s]
+		lacksOurs = lacksOurs || (ours && !found)
+	}
 	if d.firstParty != "" {
 		fmt.Fprintf(&b, "ok    phoropter's own indexers, in %s\n", d.firstParty)
-	} else {
+	} else if lacksOurs {
 		b.WriteString("no    phoropter's own indexers (Go, TypeScript): this binary isn't in a clone of phoropter\n")
-		b.WriteString("    They're in indexers/ in a clone, found from a binary built there, or from\n" +
-			"    PHOROPTER_INDEXERS. A go install'ed phoropter has none yet.\n")
+		b.WriteString("    The Go one installs on its own with go install. The TypeScript one is in\n" +
+			"    indexers/ in a clone, found from a binary built there, or from PHOROPTER_INDEXERS.\n")
 	}
 	for _, u := range d.unavailable {
 		fmt.Fprintf(&b, "no    %s couldn't start: %v\n", shortPath(u.Where), u.Err)
 	}
 
-	byScheme := map[string]site.IndexerInfo{}
-	for _, i := range d.indexers {
-		byScheme[i.Scheme] = i
-	}
 	var schemes []string
 	for s := range d.schemes {
 		schemes = append(schemes, s)
@@ -103,7 +112,9 @@ func (d doctorFacts) report() (string, bool) {
 		case !ok:
 			fmt.Fprintf(&b, "no    %s, %s: no indexer here for it\n", s, n)
 			fp, ours := firstPartySchemes[s]
-			if ours && d.firstParty == "" {
+			if ours && d.firstParty == "" && fp.install != "" {
+				fix("%s, which runs on %s", fp.install, fp.toolchain)
+			} else if ours && d.firstParty == "" {
 				fix("phoropter's %s indexer is in a clone of phoropter: git clone https://github.com/hypertheory-labs/phoropter, "+
 					"then PHOROPTER_INDEXERS=<the clone>/indexers (or run a phoropter built in the clone)", fp.lang)
 			} else if ours && d.couldntStart(fp.dir) {
