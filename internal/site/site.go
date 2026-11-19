@@ -439,6 +439,39 @@ func placeKey(t Target) string {
 
 var segmentRE = regexp.MustCompile("[#./`()\\[\\]]+")
 
+// pathSafe says whether a place's address can be a directory on every
+// system (dupioni): an anchor's text becomes a page's path, and one that
+// can't be written stopped the whole site. The same rule everywhere, so a
+// site built on a Mac and on Windows has the same pages.
+func pathSafe(p string) bool {
+	if p == "" || strings.HasPrefix(p, "/") || strings.Contains(p, "\\") {
+		return false
+	}
+	for _, seg := range strings.Split(p, "/") {
+		if seg == "" || seg == "." || seg == ".." || strings.HasSuffix(seg, ".") || strings.HasSuffix(seg, " ") {
+			return false
+		}
+		if strings.ContainsAny(seg, `<>:"|?*`) {
+			return false
+		}
+		for _, r := range seg {
+			if r < 32 {
+				return false
+			}
+		}
+		base := strings.ToUpper(seg)
+		if i := strings.Index(base, "."); i >= 0 {
+			base = base[:i]
+		}
+		switch base {
+		case "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+			"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9":
+			return false
+		}
+	}
+	return true
+}
+
 func placeFor(places map[string]*Place, t Target, generatedIndex map[string]Definition) *Place {
 	key := placeKey(t)
 	if p, ok := places[key]; ok {
@@ -463,14 +496,21 @@ func placeFor(places map[string]*Place, t Target, generatedIndex map[string]Defi
 		}
 		href := "symbols/not-at-generated/" + Slugify(t.Symbol) + "/"
 		p = &Place{Key: key, Kind: "symbol", Label: name, Full: t.Symbol}
-		if ok {
+		if ok && pathSafe(strings.Join(append([]string{def.File}, segments...), "/")) {
 			href = "symbols/" + def.File + "/" + strings.Join(segments, "/") + "/"
+		} else if ok {
+			href = "symbols/not-a-path/" + Slugify(t.Symbol) + "/"
+		}
+		if ok {
 			d := def
 			p.Definition = &d
 		}
 		p.Href = href
 	} else {
 		p = &Place{Key: key, Kind: "file", Label: t.File, Full: t.File, Href: "files/" + t.File + "/"}
+		if !pathSafe(t.File) {
+			p.Href = "files/not-a-path/" + Slugify(t.File) + "/"
+		}
 	}
 	places[key] = p
 	return p

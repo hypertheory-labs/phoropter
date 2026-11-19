@@ -303,3 +303,27 @@ func TestFirstPartyForExtensions(t *testing.T) {
 		}
 	}
 }
+
+// The trial's plan anchored `*.lens files in the workspace` as a new path, and
+// the whole site failed to build on Windows. Now that place gets a page that
+// shows the text as written, and the rest builds (dupioni).
+func TestABadAnchorDoesntStopTheSite(t *testing.T) {
+	dir := t.TempDir()
+	os.MkdirAll(filepath.Join(dir, "plans"), 0o755)
+	os.WriteFile(filepath.Join(dir, "plans", "2026-11-19-marram.md"), []byte("---\nbase: HEAD\n---\n\n# Lenses\n\n## Decision: A lens file format\n- where (new): *.lens files in the workspace\n\n**Because (Copilot):** a test.\n"), 0o644)
+	for _, args := range [][]string{{"init", "-q"}, {"add", "."}, {"-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "x"}} {
+		if out, err := exec.Command("git", append([]string{"-C", dir}, args...)...).CombinedOutput(); err != nil {
+			t.Fatal(string(out))
+		}
+	}
+	out := t.TempDir()
+	cmd := exec.Command(build(t), "build", "--out", out)
+	cmd.Dir = dir
+	if b, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("build failed: %v\n%s", err, b)
+	}
+	page, err := os.ReadFile(filepath.Join(out, "files", "not-a-path", "lens-files-in-the-workspace", "index.html"))
+	if err != nil || !strings.Contains(string(page), "*.lens files in the workspace") {
+		t.Errorf("no page showing the anchor as written: %v", err)
+	}
+}
