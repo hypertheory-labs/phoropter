@@ -19,6 +19,15 @@ dedicated to running the server." Approaches considered in the cart:
   half and not the agent's.
 - No change, better words.
 
+From `shelf/ui-plugins.md`: Jeff thought closing the UI could stop the server too, simple
+and honest about what's running, with the caution that an agent reading the pages loses
+them mid-task. And `phoropter ui` could start a server when there's none and report the
+address (Jeff, on muslin's template), with either of us starting it, whoever's first.
+
+Jeff, 2026-11-19: moving from `http://localhost:4173/` to `http://localhost:4173/{repo}/`
+shouldn't break anything in a local repository. Worth checking: an agent or a bookmark
+that saved the old address, and the TUI given an address by hand.
+
 To settle in the draft:
 - Two repositories can share a name (every clone of a course repo does), so the path
   needs something to tell them apart.

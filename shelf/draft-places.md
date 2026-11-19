@@ -1,18 +1,12 @@
-# Seed: what's already at a draft's places
+# Seed: one page listing every entry
 
-From the TUI's brief (`tui/docs/for-phoropter.md`, section 3). Loden declined this
-ranking until "there's a draft to try it on". The TUI has written three plans as drafts
-since (ramie, batiste, challis), so the condition is met.
+Poplin landed this seed's first half: under each draft anchor, the landed entries
+already there, in order (open guesses, then declines, then decisions). Still open is the
+second half.
 
-For each place a draft anchors, the entries already there, in order of how much they
-matter to what's about to be done:
-- an unanswered guess, or one answered `not tested` (this work might be its test)
-- a decline (someone already turned this down; a decline leaves no commit)
-- a decision this would change (that's a revisit, not a step)
-- a drifted anchor
-
-The ranking is reasoning, so it belongs on the draft page, where the agent reads it
-too. Also: 16 of phoropter's 17 declines had no anchor, so no place page shows them. One
-page listing every entry, as microdata, would let an agent ask "has anyone turned down
-X?" in one fetch. Marl's condition for cross-plan pages (source and verdict exist) is
-met.
+**One page listing every entry, as microdata,** so an agent can ask "has anyone turned
+down X?" in one fetch, and a person can scan every Decline at once. Declines matter
+most: they leave no code behind, and when this seed was written, 16 of phoropter's 17
+declines had no anchor, so no place page showed them. Marl's condition for pages across
+plans (source and verdict exist) is met. It would also be the natural thing for search
+to read (`shelf/lenses.md`).
