@@ -189,3 +189,15 @@ func TestInitWalkthrough(t *testing.T) {
 		t.Errorf("fresh repository:\n%s", fresh)
 	}
 }
+
+// The README shows the pointer init prints, and the two mustn't drift apart:
+// a second copy that disagrees is what muslin set out to end.
+func TestREADMEShowsThePointerInitPrints(t *testing.T) {
+	b, err := os.ReadFile("README.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(b), pointer) {
+		t.Error("README.md's pointer isn't the one phoropter init prints")
+	}
+}

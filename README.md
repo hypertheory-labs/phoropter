@@ -43,11 +43,13 @@ None are needed to start. File anchors with a quote work in any language.
 
 ```sh
 cd ~/code/your-repo
+phoropter init   # once: your first plan, as a draft, and what to tell your agent
 phoropter
 ```
 
-It finds the repository's root, builds the site at `HEAD`, serves it on
-`http://localhost:4173/` (or the next free port), and prints the address.
+`phoropter init` prints what to do next. After that, `phoropter` finds the repository's
+root, builds the site at `HEAD`, serves it on `http://localhost:4173/` (or the next free
+port), and prints the address.
 `phoropter url` prints it again, from anywhere in the repository. As commits land, the
 site follows `HEAD`. In a terminal, `h` + enter lists keys to rebuild, open the
 browser, print the address, or quit. Usually your agent runs it, in the background, and
@@ -106,50 +108,27 @@ index those old commits is gone.
 ## Tell your agent
 
 Your repository's agent won't know about any of this unless its instructions say so.
-Paste this into its `CLAUDE.md` (or `AGENTS.md`), and adjust it to taste:
+`phoropter init` writes your repository's first plan, "How we work here", as a draft:
+the conventions this README used to list (when to write a plan, when a draft goes up,
+who runs the server, lenses, no veto), each as a Decision with phoropter's default.
+You and your agent work that draft like any other, and change what doesn't suit you.
+
+It also prints a pointer to paste into `CLAUDE.md` (or `AGENTS.md`). It doesn't edit
+them itself:
 
 ```markdown
 ## Plans (phoropter)
 
-This repository records its decisions as plans, in phoropter's format. Read the
-guide first: `phoropter guide` prints it.
-
-- **You run the server.** If `phoropter url` finds none, start `phoropter` in the
-  background and tell me the address. It follows HEAD, so one lasts the session.
-
-- **Before non-trivial work, write a plan** in `plans/YYYY-MM-DD-<name>.md`: the
-  decisions, the declines, and the guesses, each with its reason and an anchor to the
-  code it's about. Commit it before the work.
-- **When you're unsure, or I'd want to follow along, write a draft** instead:
-  `drafts/plan.draft.md`, with open questions as prompts, each with what happens if
-  nobody answers. Tell me it's up. My notes arrive in `drafts/plan.draft.notes.md`.
-  Don't edit the draft while notes exist; take them in by rewriting it, then delete
-  the notes. Convert it when we're confident. Silence means proceed.
-- **After the work, write the as-built** beside the plan.
-- **At the start of a session, look in `drafts/`** for notes on landed plans. Raise
-  them before other work, and answer each in kind: a revisit, a citation in the
-  current plan, or a reply.
-- **Never edit a landed plan.** Changing an old decision is a revisit: a new plan, with
-  `revisits:`, saying what moved.
-- **Lenses** are my own subsets of plans, in `drafts/lenses/<name>.md`: a `# Title`, then
-  one reference per line, `` `plans/<file>.md › <entry title>` `` or a whole plan, each
-  optionally followed by ` — a note` and indented lines under it. Use a double-backtick
-  span when a title has backticks.
-  - **When I name a lens** ("through the auth lens…"), read it first: `lenses/<name>/` on
-    the site, which resolves each line and says whether a guess is still open.
-  - **When I ask you to mark plans,** write or extend a lens and tell me what's in it and
-    why.
-  - **When a request runs into earlier decisions,** especially Declines, which leave no
-    code behind, gather them in a lens and tell me it's there, instead of arguing. Then
-    do what I decide. Two related entries fit in a sentence; a lens is for when there are
-    enough that it changes what I'd decide.
-  - **When a lens would help us look at something,** make one without being asked, and
-    say so.
-- **To anchor a symbol,** `phoropter symbols <file>` lists the strings to paste. You
-  never choose an indexer; `phoropter indexers` says which languages this machine has.
-- **You don't get a veto.** If you think an idea is wrong, say so up front in the
-  draft, plan it properly anyway, and let me decide.
+This repository records its decisions as plans. `phoropter guide` prints the
+format. The first plan, "How we work here" (the oldest in `plans/`, or
+`drafts/plan.draft.md` until it converts), says how we work. Read both before
+other work.
 ```
+
+Only the pointer is pasted, so only the pointer can go stale, and it names nothing that
+changes: the format comes from the binary, and the conventions from your own first plan.
+If you pasted the longer block this section used to hold, replace it with the pointer
+and run `phoropter init`.
 
 ## The TUI
 
