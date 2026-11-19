@@ -19,7 +19,8 @@ to build it.
 go install github.com/hypertheory-labs/phoropter@latest
 ```
 
-Or from a clone, which also finds the first-party indexers in `indexers/`:
+That binary has no indexers, so it anchors files and quotes but not symbols. For the
+Go and TypeScript indexers, which live in `indexers/`, install from a clone instead:
 
 ```sh
 git clone https://github.com/hypertheory-labs/phoropter.git
@@ -32,9 +33,10 @@ Check it with `phoropter help`. `phoropter guide` prints the plan format, and
 `phoropter doctor` says what this machine is missing for the languages its plans
 anchor, and the command that would fix each. It runs none of them.
 
-**Indexers**, for anchors on symbols (a class, a method) rather than files and quotes:
-- **TypeScript:** in a clone, `npm install` (it runs scip-typescript, which is Node).
-- **Go:** needs Go 1.25+ and `go install github.com/scip-code/scip-go/cmd/scip-go@latest`.
+**Indexers**, for anchors on symbols (a class, a method) rather than files and quotes.
+`phoropter doctor` says which of these a repository needs:
+- **TypeScript:** in a clone, Node 24+ and `npm install` (it runs scip-typescript).
+- **Go:** in a clone, Go 1.25+ and `go install github.com/scip-code/scip-go/cmd/scip-go@latest`.
 - **C# / .NET:** install `phoropter-index-roslyn` on your `PATH`. It's a separate
   repository with an `install.sh`.
 - **Anything else:** see [`indexers/README.md`](indexers/README.md) to write one.
@@ -51,12 +53,11 @@ phoropter
 
 `phoropter init` prints what to do next. After that, `phoropter` finds the repository's
 root, builds the site at `HEAD`, serves it on `http://localhost:4173/` (or the next free
-port), and prints the address.
-`phoropter url` prints it again, from anywhere in the repository. As commits land, the
-site follows `HEAD`. In a terminal, `h` + enter lists keys to rebuild, open the
-browser, print the address, or quit. Usually your agent runs it, in the background, and
-one server lasts the session. With no plans yet,
-the home page says how to start.
+port), and prints the address. `phoropter url` prints it again, from anywhere in the
+repository. As commits land, the site follows `HEAD`. In a terminal, `h` + enter lists
+keys to rebuild, open the browser, print the address, or quit. Usually your agent runs
+it, in the background, and one server lasts the session. With no plans yet, the home
+page says how to start.
 
 A day's loop:
 
@@ -88,7 +89,7 @@ to yourself:
 ```markdown
 # Auth
 
-- `plans/2026-10-31-batik.md › The index store is committed only by phoropter index`
+- ``plans/2026-10-31-batik.md › `phoropter index` is the one command that writes into the repository``
 - `plans/2026-11-01-poplin.md` — the whole plan
   - lines indented under an item are its note, in markdown
   - handy for prompt prep: what you want to talk through, and why
@@ -98,8 +99,7 @@ Prose after the list is the lens's own closing note.
 
 The dev server shows them at `lenses/`. In the TUI, `L` lists them, `f` filters one by
 kind (Decisions, Declines, open guesses), `+` adds what you're on to one, and `e` opens
-one in your editor. A lens can
-be pasted into a ticket or a message as is. A built site never has lenses: they're a way
+one in your editor. A lens can be pasted into a ticket or a message as is. A built site never has lenses: they're a way
 of reading the plans, not part of them.
 
 **Symbol anchors:** `phoropter symbols <file>` lists a file's symbols, ready to paste
