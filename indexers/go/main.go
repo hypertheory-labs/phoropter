@@ -42,7 +42,11 @@ type out struct {
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "--describe" {
-		emit(map[string]any{"indexer": "phoropter-index-go", "version": version, "scheme": "scip-go", "extensions": []string{".go"}})
+		describe := map[string]any{"indexer": "phoropter-index-go", "version": version, "scheme": "scip-go", "extensions": []string{".go"}}
+		if lookScipGo() == "" {
+			describe["needs"] = []map[string]string{{"what": "scip-go", "install": installScipGo}}
+		}
+		emit(describe)
 		return
 	}
 	if len(os.Args) < 2 {
@@ -211,7 +215,11 @@ func declEnds(path string) map[int32]int32 {
 	return ends
 }
 
-func findScipGo() string {
+const installScipGo = "go install github.com/scip-code/scip-go/cmd/scip-go@latest"
+
+// lookScipGo is scip-go's path, or "" when it isn't installed. --describe
+// asks it too, so phoropter doctor can say it's missing (grosgrain).
+func lookScipGo() string {
 	if p, err := exec.LookPath("scip-go"); err == nil {
 		return p
 	}
@@ -223,8 +231,15 @@ func findScipGo() string {
 	if p := filepath.Join(gopath, "bin", "scip-go"); fileExists(p) {
 		return p
 	}
-	fail("scip-go isn't installed: go install github.com/scip-code/scip-go/cmd/scip-go@latest")
 	return ""
+}
+
+func findScipGo() string {
+	p := lookScipGo()
+	if p == "" {
+		fail("scip-go isn't installed: " + installScipGo)
+	}
+	return p
 }
 
 func scipGoVersion(scipGo string) string {

@@ -19,7 +19,15 @@ const SCIP_TYPESCRIPT = '0.4.0';
 const require = createRequire(import.meta.url);
 
 if (process.argv[2] === '--describe') {
-  console.log(JSON.stringify({ indexer: 'phoropter-index-typescript', version: VERSION, scheme: 'scip-typescript', extensions: ['.ts', '.tsx', '.mts', '.cts'] }));
+  const describe: Record<string, unknown> = { indexer: 'phoropter-index-typescript', version: VERSION, scheme: 'scip-typescript', extensions: ['.ts', '.tsx', '.mts', '.cts'] };
+  // What this needs to run, for phoropter doctor (grosgrain): scip-typescript
+  // comes from npm install in phoropter's clone.
+  try {
+    require.resolve('@sourcegraph/scip-typescript/package.json');
+  } catch {
+    describe.needs = [{ what: `scip-typescript ${SCIP_TYPESCRIPT}`, install: `npm install, in ${dirname(dirname(import.meta.dirname))}` }];
+  }
+  console.log(JSON.stringify(describe));
   process.exit(0);
 }
 const dir = process.argv[2];

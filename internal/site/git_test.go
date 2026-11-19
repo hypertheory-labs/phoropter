@@ -56,3 +56,18 @@ func TestBatchReadsAsGitDoes(t *testing.T) {
 	check("after the batch died")
 	check("with a fresh batch")
 }
+
+// go run adds "exit status 1" below what the program said; the indexer's own
+// last line is the error (grosgrain).
+func TestLastLineSkipsGoRunsExitStatus(t *testing.T) {
+	for msg, want := range map[string]string{
+		"scip-go isn't installed: go install x\nexit status 1\n": "scip-go isn't installed: go install x",
+		"one\ntwo":        "two",
+		"exit status 2":   "exit status 2",
+		"  only line  \n": "only line",
+	} {
+		if got := lastLine(msg); got != want {
+			t.Errorf("lastLine(%q) = %q, want %q", msg, got, want)
+		}
+	}
+}

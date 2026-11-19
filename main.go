@@ -2,6 +2,7 @@
 //
 //	phoropter [path] [--at <commit>] [--port <n>]        serve the repository you're in
 //	phoropter init [path]                                write the first plan, how we work here, as a draft
+//	phoropter doctor [path]                              say what this machine lacks for the repository, and how to fix it
 //	phoropter build [path] [--at <commit>] [--out site]  write the static site
 //	phoropter index [path] [--at <commit>]               commit the indexes plans need
 //	phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
@@ -49,6 +50,7 @@ var guideMarkdown string
 const usage = `usage:
   phoropter [path] [--at <commit>] [--port <n>]        serve the repository you're in
   phoropter init [path]                                write this repository's first plan, how you work here, as a draft
+  phoropter doctor [path]                              say what this machine lacks for this repository, and the command for each
   phoropter build [path] [--at <commit>] [--out site]  write the static site
   phoropter index [path] [--at <commit>]               commit the indexes plans need into .phoropter/index/
   phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
@@ -64,7 +66,7 @@ func main() {
 	command := "serve"
 	if len(args) > 0 {
 		switch args[0] {
-		case "init", "build", "index", "url", "symbols", "ui", "indexers", "guide", "help", "-h", "--help":
+		case "init", "doctor", "build", "index", "url", "symbols", "ui", "indexers", "guide", "help", "-h", "--help":
 			command, args = args[0], args[1:]
 		}
 	}
@@ -116,6 +118,20 @@ func main() {
 	root := repoRoot(start)
 	if root == "" {
 		fail(fmt.Sprintf("it reads a git repository, and %s isn't in one", abs(start)))
+	}
+	if command == "doctor" {
+		repo := &site.Repo{Dir: root}
+		facts := doctorFacts{git: gitVersion(), firstParty: site.FirstParty, indexers: site.Indexers(),
+			unavailable: site.IndexersUnavailable(), schemes: map[string]int{}}
+		if sha := repo.Resolve("HEAD"); sha != "" {
+			facts.schemes = schemesInPlans(repo, sha)
+		}
+		out, missing := facts.report()
+		fmt.Print(out)
+		if missing {
+			os.Exit(1)
+		}
+		return
 	}
 	if command == "url" {
 		url := servingURL(root)
@@ -269,7 +285,7 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 		}
 	}
 	if len(all) == 0 {
-		fail(fmt.Sprintf("no indexer here handles %s files (see indexers/README.md)", ext))
+		fail(fmt.Sprintf("no indexer here handles %s files. phoropter doctor says what this repository needs.", ext))
 	}
 	for _, i := range all {
 		if scheme == "" || i.Scheme == scheme {
@@ -301,7 +317,7 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 	for _, info := range candidates {
 		o, err := site.RunIndexer(info.Command, info.Cwd, tree, nil)
 		if err != nil {
-			fail(err.Error())
+			fail(err.Error() + "\nphoropter doctor says what this repository needs.")
 		}
 		outputs = append(outputs, o)
 		var found []sym

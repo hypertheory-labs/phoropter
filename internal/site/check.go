@@ -102,7 +102,19 @@ func CheckIndexer(command []string, cwd string, repo *Repo) (bool, []string) {
 	if len(about.Extensions) == 0 {
 		problems = append(problems, "--describe lists no extensions, so phoropter symbols can never pick it")
 	}
+	for _, n := range about.Needs {
+		if n.What == "" || n.Install == "" {
+			problems = append(problems, "--describe has a need without both what and install, so phoropter doctor can't say how to fix it")
+		}
+	}
 	report = append(report, fmt.Sprintf("%s %s, scheme %s, for %s", about.Indexer, about.Version, about.Scheme, strings.Join(about.Extensions, " ")))
+	if len(about.Needs) > 0 {
+		var needs []string
+		for _, n := range about.Needs {
+			needs = append(needs, n.What)
+		}
+		report = append(report, "it says it needs "+strings.Join(needs, ", ")+", so the run below may fail")
+	}
 
 	sha := repo.Resolve("HEAD")
 	tree, err := repo.Checkout(sha)

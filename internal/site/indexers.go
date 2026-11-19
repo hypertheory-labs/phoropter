@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -30,8 +31,17 @@ type IndexerInfo struct {
 	Version    string   `json:"version"`
 	Scheme     string   `json:"scheme"`
 	Extensions []string `json:"extensions"`
-	Command    []string `json:"-"`
-	Cwd        string   `json:"-"`
+	// Needs is what the indexer couldn't find to run, each with the command
+	// that would fix it. Optional: an indexer that leaves it out has said
+	// nothing is missing, as far as it knows (grosgrain).
+	Needs   []Need   `json:"needs,omitempty"`
+	Command []string `json:"-"`
+	Cwd     string   `json:"-"`
+}
+
+type Need struct {
+	What    string `json:"what"`
+	Install string `json:"install"`
 }
 
 type IndexerOutput struct {
@@ -91,8 +101,23 @@ func Describe(command []string, cwd string) (IndexerInfo, error) {
 
 var (
 	known     []IndexerInfo
+	broken    []Unavailable
 	knownOnce sync.Once
 )
+
+// An Unavailable indexer was found but couldn't describe itself, usually
+// because its toolchain isn't here. Its anchors show no-index; phoropter
+// doctor says why (grosgrain).
+type Unavailable struct {
+	Where string
+	Err   error
+}
+
+// IndexersUnavailable is every indexer Indexers found and couldn't run.
+func IndexersUnavailable() []Unavailable {
+	Indexers()
+	return broken
+}
 
 // Indexers is every indexer this machine has: first-party ones, then any on PATH.
 func Indexers() []IndexerInfo {
@@ -114,8 +139,10 @@ func Indexers() []IndexerInfo {
 				if info, err := Describe(m.Command, dir); err == nil {
 					info.Command, info.Cwd = m.Command, dir
 					known = append(known, info)
+				} else {
+					// its toolchain isn't here; its anchors show no-index
+					broken = append(broken, Unavailable{Where: dir, Err: err})
 				}
-				// otherwise its toolchain isn't here; its anchors show no-index
 			}
 		}
 		for _, dir := range filepath.SplitList(os.Getenv("PATH")) {
@@ -139,6 +166,8 @@ func Indexers() []IndexerInfo {
 				if info, err := Describe([]string{path}, ""); err == nil {
 					info.Command = []string{path}
 					known = append(known, info)
+				} else {
+					broken = append(broken, Unavailable{Where: path, Err: err})
 				}
 			}
 		}
@@ -197,8 +226,7 @@ func RunIndexer(command []string, cwd, dir string, packages []string) (IndexerOu
 			if msg == "" {
 				msg = fmt.Sprintf("exited %d", exit.ExitCode())
 			}
-			lines := strings.Split(msg, "\n")
-			return IndexerOutput{}, errors.New(lines[len(lines)-1])
+			return IndexerOutput{}, errors.New(lastLine(msg))
 		}
 		return IndexerOutput{}, fmt.Errorf("couldn't run %s: %v", strings.Join(command, " "), err)
 	}
@@ -222,6 +250,19 @@ func DefinitionsOf(out IndexerOutput, pkg string) (map[string]Definition, bool) 
 		defs[symbol] = Definition{Symbol: symbol, File: file, StartLine: int(start), EndLine: int(end)}
 	}
 	return defs, true
+}
+
+// goRunExit is the line go run adds below a program that exits non-zero.
+var goRunExit = regexp.MustCompile(`^exit status \d+$`)
+
+// lastLine is an indexer's own last word: go run's "exit status 1" below it
+// isn't the indexer speaking, and hid what it said (grosgrain).
+func lastLine(msg string) string {
+	lines := strings.Split(strings.TrimSpace(msg), "\n")
+	if len(lines) > 1 && goRunExit.MatchString(strings.TrimSpace(lines[len(lines)-1])) {
+		lines = lines[:len(lines)-1]
+	}
+	return strings.TrimSpace(lines[len(lines)-1])
 }
 
 func firstLine(s string) string { return strings.SplitN(strings.TrimSpace(s), "\n", 2)[0] }

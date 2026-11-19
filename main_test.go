@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/hypertheory-labs/phoropter/internal/site"
 )
 
 func TestRepoRootWalksUpToGit(t *testing.T) {
@@ -199,5 +201,39 @@ func TestREADMEShowsThePointerInitPrints(t *testing.T) {
 	}
 	if !strings.Contains(string(b), pointer) {
 		t.Error("README.md's pointer isn't the one phoropter init prints")
+	}
+}
+
+// doctor names the fix at the level a newcomer is stuck at: no clone, a
+// clone without the toolchain, or the toolchain without the tool (grosgrain).
+func TestDoctorSaysTheFixForEachLevel(t *testing.T) {
+	needsGo := map[string]int{"scip-go": 2}
+	cases := []struct {
+		name  string
+		facts doctorFacts
+		want  string
+	}{
+		{"no clone", doctorFacts{git: "git", schemes: needsGo}, "git clone https://github.com/hypertheory-labs/phoropter"},
+		{"no Go", doctorFacts{git: "git", firstParty: "/p/indexers", schemes: needsGo,
+			unavailable: []site.Unavailable{{Where: "/p/indexers/go"}}}, "runs on Go 1.25"},
+		{"no scip-go", doctorFacts{git: "git", firstParty: "/p/indexers", schemes: needsGo,
+			indexers: []site.IndexerInfo{{Indexer: "phoropter-index-go", Scheme: "scip-go",
+				Needs: []site.Need{{What: "scip-go", Install: "go install scip-go"}}}}}, "fix: go install scip-go"},
+		{"someone else's scheme", doctorFacts{git: "git", firstParty: "/p/indexers", schemes: map[string]int{"roslyn": 1}},
+			"phoropter-index-roslyn on PATH"},
+	}
+	for _, c := range cases {
+		out, missing := c.facts.report()
+		if !missing || !strings.Contains(out, c.want) {
+			t.Errorf("%s: missing=%v, want %q in:\n%s", c.name, missing, c.want, out)
+		}
+	}
+	ready := doctorFacts{git: "git", firstParty: "/p/indexers", schemes: needsGo,
+		indexers: []site.IndexerInfo{{Indexer: "phoropter-index-go", Scheme: "scip-go"}}}
+	if out, missing := ready.report(); missing || !strings.Contains(out, "ok    scip-go, 2 symbol anchors") {
+		t.Errorf("ready: missing=%v\n%s", missing, out)
+	}
+	if out, missing := (doctorFacts{git: "git", schemes: map[string]int{}}).report(); missing || !strings.Contains(out, "no indexer is needed yet") {
+		t.Errorf("no symbols: missing=%v\n%s", missing, out)
 	}
 }
