@@ -120,7 +120,7 @@ func Serve(o ServeOptions) (*Served, error) {
 		if err == nil {
 			break
 		}
-		if o.ExactPort || !errors.Is(err, syscall.EADDRINUSE) || port >= o.Port+100 {
+		if o.ExactPort || !addrInUse(err) || port >= o.Port+100 {
 			return nil, err
 		}
 		port++
@@ -333,4 +333,13 @@ func (h *handler) withDraftLink(page, here string) string {
 		page = strings.Replace(page, welcomeStart, welcomeDraft(Rel(dir, "draft/")), 1)
 	}
 	return homeLinkRE.ReplaceAllString(page, "$1\n"+strings.Join(links, "\n"))
+}
+
+// wsaeaddrinuse is Windows's "address in use", which isn't syscall.EADDRINUSE
+// there (chiffon).
+const wsaeaddrinuse = syscall.Errno(10048)
+
+// addrInUse says a listen failed because the port is taken, on any system.
+func addrInUse(err error) bool {
+	return errors.Is(err, syscall.EADDRINUSE) || errors.Is(err, wsaeaddrinuse)
 }

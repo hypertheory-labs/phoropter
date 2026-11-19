@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"net"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -38,9 +40,19 @@ func TestServingURLFindsTheLiveServer(t *testing.T) {
 		os.WriteFile(f, b, 0o644)
 		return f
 	}
-	mine := write(os.Getpid(), "http://localhost:4174/", 1)
-	gone := write(1<<22+7, "http://localhost:4176/", 2)
-	if got := servingURL(root); got != "http://localhost:4174/" {
+	// Alive is a port that answers (chiffon), so the live one listens and the
+	// stopped one's port was open and is closed now.
+	live, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer live.Close()
+	stopped, _ := net.Listen("tcp", "127.0.0.1:0")
+	stopped.Close()
+	liveURL := fmt.Sprintf("http://localhost:%d/", live.Addr().(*net.TCPAddr).Port)
+	mine := write(os.Getpid(), liveURL, 1)
+	gone := write(1<<22+7, fmt.Sprintf("http://localhost:%d/", stopped.Addr().(*net.TCPAddr).Port), 2)
+	if got := servingURL(root); got != liveURL {
 		t.Errorf("url = %s", got)
 	}
 	if _, err := os.Stat(gone); err == nil {
@@ -241,5 +253,22 @@ func TestDoctorSaysTheFixForEachLevel(t *testing.T) {
 	}
 	if out, missing := (doctorFacts{git: "git", schemes: map[string]int{}}).report(); missing || !strings.Contains(out, "no indexer is needed yet") {
 		t.Errorf("no symbols: missing=%v\n%s", missing, out)
+	}
+}
+
+// phoropter url drops a record whose server is gone by asking its port, not
+// its process, which Windows can't signal (chiffon).
+func TestAnswersAsksThePort(t *testing.T) {
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	url := fmt.Sprintf("http://localhost:%d/", ln.Addr().(*net.TCPAddr).Port)
+	if !answers(url) {
+		t.Error("a listening port didn't answer")
+	}
+	ln.Close()
+	if answers(url) {
+		t.Error("a closed port answered")
 	}
 }

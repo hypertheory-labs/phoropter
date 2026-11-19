@@ -4,11 +4,14 @@
 package site
 
 import (
+	"archive/tar"
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -164,12 +167,73 @@ func (r *Repo) Checkout(sha string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	cmd := exec.Command("sh", "-c", `git -C "$1" archive "$2" | tar -x -C "$3"`, "sh", r.Dir, sha, dir)
-	if out, err := cmd.CombinedOutput(); err != nil {
+	cmd := exec.Command("git", "-C", r.Dir, "archive", sha)
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+	out, err := cmd.StdoutPipe()
+	if err == nil {
+		err = cmd.Start()
+	}
+	if err == nil {
+		err = untar(out, dir)
+		io.Copy(io.Discard, out)
+		if werr := cmd.Wait(); err == nil && werr != nil {
+			err = &exec.ExitError{Stderr: stderr.Bytes()}
+		}
+	}
+	if err != nil {
 		os.RemoveAll(dir)
-		return "", &exec.ExitError{Stderr: out}
+		return "", err
 	}
 	return dir, nil
+}
+
+// untar writes git archive's tar into dir, in Go rather than through sh and
+// tar, which PowerShell doesn't have (chiffon). An entry that would land
+// outside dir is refused; a symlink that can't be made (on Windows it takes
+// a privilege) is skipped.
+func untar(r io.Reader, dir string) error {
+	tr := tar.NewReader(r)
+	for {
+		h, err := tr.Next()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		name := filepath.FromSlash(h.Name)
+		if !filepath.IsLocal(name) {
+			return fmt.Errorf("git archive has an entry outside the checkout: %s", h.Name)
+		}
+		path := filepath.Join(dir, name)
+		switch h.Typeflag {
+		case tar.TypeDir:
+			if err := os.MkdirAll(path, 0o755); err != nil {
+				return err
+			}
+		case tar.TypeReg:
+			if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+				return err
+			}
+			f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.FileMode(h.Mode)&0o777|0o600)
+			if err != nil {
+				return err
+			}
+			_, err = io.Copy(f, tr)
+			if cerr := f.Close(); err == nil {
+				err = cerr
+			}
+			if err != nil {
+				return err
+			}
+		case tar.TypeSymlink:
+			os.MkdirAll(filepath.Dir(path), 0o755)
+			os.Symlink(h.Linkname, path)
+		}
+		// git archive's pax global header (the commit's id) and anything
+		// else needs nothing written.
+	}
 }
 
 func RemoveDir(dir string) { os.RemoveAll(dir) }

@@ -27,6 +27,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"net"
+	neturl "net/url"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -561,7 +563,7 @@ func servingURL(root string) string {
 			Started int64  `json:"started"`
 		}
 		json.Unmarshal(b, &info)
-		if p, err := os.FindProcess(info.PID); err != nil || p.Signal(syscall.Signal(0)) != nil {
+		if !answers(info.URL) {
 			os.Remove(filepath.Join(dir, name))
 			continue
 		}
@@ -570,6 +572,22 @@ func servingURL(root string) string {
 		}
 	}
 	return best
+}
+
+// answers says whether a server is listening at url's port (chiffon). A
+// connection, not a request, so it can't start a rebuild, and it works where
+// there's no signal 0 to send a process, as on Windows.
+func answers(url string) bool {
+	u, err := neturl.Parse(url)
+	if err != nil || u.Port() == "" {
+		return false
+	}
+	c, err := net.DialTimeout("tcp", "127.0.0.1:"+u.Port(), time.Second)
+	if err != nil {
+		return false
+	}
+	c.Close()
+	return true
 }
 
 // version is the binary's commit, from the build's own vcs stamp, saying so
