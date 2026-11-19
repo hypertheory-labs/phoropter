@@ -12,8 +12,11 @@ back incrementally, and naming approaches not taken, sized to the work.
   prints, the pointer and the draft, and nothing from here. A lens-like need showing up
   there on its own would be evidence. Pushing one in would test nothing.
 - **Ready when** a newcomer can get from nothing to annotating the first draft without
-  asking. After grosgrain, what's left is installable indexers and the server
-  (`shelf/one-server.md`).
+  asking. Since sateen, tulle and chiffon, nothing known is left;
+  the server (`shelf/one-server.md`) waits for the trial to say it hurts.
 - **A clean machine, ideally.** On Jeff's own, everything's installed and the friction
-  hides. The class VM is Windows, so it tests `shelf/windows.md` too.
+  hides. The class VM is Windows. Chiffon fixed the three Windows breakages a Mac could
+  find by reading; still to watch for there: path separators in anchors, each
+  indexer's toolchain on Windows, and the TUI's `clip` and `rundll32`, written but
+  never run.
 - **Not the LSP work:** that's a reader of phoropter, too close to test anything.
