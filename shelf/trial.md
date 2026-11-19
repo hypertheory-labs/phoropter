@@ -1,22 +1,28 @@
-# Seed: the first repository outside phoropter, set up fresh
+# Seed: the trial, and what's left of it
 
-From the persimmon cart (2026-11-19). Jeff's goal: a new repository, `phoropter init`, a
-fresh agent, and feedback from there brought back here. It tests muslin's four untested
-guesses: an agent with only the pointer, a person with only `init`'s output, looking
-back incrementally, and naming approaches not taken, sized to the work.
+The first repository outside phoropter, set up fresh: Jeff's Windows VM, 2026-11-19, a
+VS Code extension (ordered files, staging, without touching the file system), a fresh
+agent given only `init`'s pointer. The agent was Copilot in VS Code (it picked Claude
+Fable 5.5), reading AGENTS.md. It converted two plans: "How we work here", and a
+pipeline test that anchored a TypeScript symbol. What it found became plans: the
+TypeScript indexer's paths and the `symbols` → `doctor` loop, the guide's and pointer's
+wording, and `init`'s template on an empty repository.
 
-- **The project:** a VS Code extension with another explorer view. You order files the
-  way you'd want them read (F# style) without touching the file system, and drag files
-  into a virtual staging group. It's useful on its own, for the class and Jeff's work.
-- **It goes in not knowing it's a trial** (Jeff). The agent there gets only what `init`
-  prints, the pointer and the draft, and nothing from here. A lens-like need showing up
-  there on its own would be evidence. Pushing one in would test nothing.
-- **Ready when** a newcomer can get from nothing to annotating the first draft without
-  asking. Since sateen, tulle and chiffon, nothing known is left;
-  the server (`shelf/one-server.md`) waits for the trial to say it hurts.
-- **A clean machine, ideally.** On Jeff's own, everything's installed and the friction
-  hides. The class VM is Windows. Chiffon fixed the three Windows breakages a Mac could
-  find by reading; still to watch for there: path separators in anchors, each
-  indexer's toolchain on Windows, and the TUI's `clip` and `rundll32`, written but
-  never run.
-- **Not the LSP work:** that's a reader of phoropter, too close to test anything.
+What held: `init`'s refusals and walkthrough, `doctor`, the TUI in VS Code's terminal,
+`phoropter url` and indexing on Windows after chiffon, Node and scip-typescript on
+Windows once paths were fixed. The conversions were faithful: answers folded and
+attributed, an overruled Decline recorded honestly ("Copilot, then Jeff"), and the
+agent left its fix to phoropter's clone uncommitted, "that repository has its own
+plans". Two plans in, Jeff: it "seems much more entrained with the whole thing now".
+And told about ordered files, it said "oh, you mean sort of like lenses in phoropter":
+the concept reads to an outsider; whether a user needs one is the extension's question.
+
+Still open:
+- **A stale install.** `go install …@latest` right after a push gave a binary from before
+  it (Go's proxy lags), and nothing told the newcomer. `GOPROXY=direct` fixed it. Maybe
+  `doctor` says its own version, or compares it with the latest.
+- **Not observed:** a second server taking the next port on Windows, cleanly.
+- **The extension** stays in limbo there; Jeff won't build it on Windows if he can help it.
+  Whoever picks it up gets a repository already working this way.
+- **A second clean environment:** DevPod (Jeff has it) for a throwaway Linux machine,
+  if a later trial wants one.

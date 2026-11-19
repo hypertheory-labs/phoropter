@@ -16,3 +16,9 @@ To weigh: some repositories' plans shouldn't be public (opt in, never default); 
 serves under `/<repo>/`, and phoropter's links are relative, which should already work
 but needs checking; and whether it's a `phoropter publish` command, a workflow file
 that `init` writes, or just documentation.
+
+The demo (marigold, 2026-11-19): Jeff will show phoropter to a friend, Progressive's AI
+Capability Lead, and the repository is public now. "You can just generate the site, here
+it's the GitHub Pages page, you can see the history of every decision." And: annotate
+what the person watching says, in the format, as notes on the plans you're looking at
+or a lens. The format taking in the conversation about itself.
