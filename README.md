@@ -28,7 +28,9 @@ ln -s "$PWD/bin/phoropter" ~/.local/bin/phoropter   # any directory on your PATH
 ```
 
 Check it with `phoropter help`. `phoropter guide` prints the plan format, and
-`phoropter indexers` lists the languages it can index here.
+`phoropter indexers` lists the languages it can index here. In a repository,
+`phoropter doctor` says what this machine is missing for the languages its plans
+anchor, and the command that would fix each. It runs none of them.
 
 **Indexers**, for anchors on symbols (a class, a method) rather than files and quotes:
 - **TypeScript:** in a clone, `npm install` (it runs scip-typescript, which is Node).

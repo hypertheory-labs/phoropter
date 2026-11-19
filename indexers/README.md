@@ -34,6 +34,20 @@ Print one JSON object and exit 0:
   word are sent to this indexer. See below.
 - **`extensions`:** the file extensions it indexes. `phoropter symbols <file>` picks
   indexers by these.
+- **`needs`** (optional): what it couldn't find to run, each as `{ "what": …,
+  "install": … }`, the thing and the command that would get it. Leave it out when
+  nothing is missing, as far as you know. `phoropter doctor` shows it to whoever is
+  setting up, so check what you can cheaply (a tool on `PATH`, a package installed)
+  and don't index anything to find out. Still exit 0: an indexer that needs something
+  has still described itself.
+
+  ```json
+  { "indexer": "phoropter-index-go", "version": "0.1.0", "scheme": "scip-go", "extensions": [".go"],
+    "needs": [{ "what": "scip-go", "install": "go install github.com/scip-code/scip-go/cmd/scip-go@latest" }] }
+  ```
+
+  `needs` is about running at all. Packages that couldn't load at one commit go in
+  `missing`, in the output below.
 
 ### `<program> <dir> [package...]`
 
