@@ -27,7 +27,7 @@ type doctorFacts struct {
 // has none. Until they're installable on their own (grosgrain's Decline).
 var firstPartySchemes = map[string]struct{ lang, dir, toolchain string }{
 	"scip-go":         {"Go", "go", "Go 1.25 or newer (https://go.dev/dl)"},
-	"scip-typescript": {"TypeScript", "typescript", "a Node.js that runs .ts files directly, 23.6 or newer (https://nodejs.org)"},
+	"scip-typescript": {"TypeScript", "typescript", "Node.js 24 or newer (https://nodejs.org), as its package.json says"},
 }
 
 // schemesInPlans counts the symbol anchors in the plans and as-builts at sha,
