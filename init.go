@@ -23,7 +23,8 @@ const pointer = `## Plans (phoropter)
 This repository records its decisions as plans. ` + "`phoropter guide`" + ` prints the
 format. The first plan, "How we work here" (the oldest in ` + "`plans/`" + `, or
 ` + "`drafts/plan.draft.md`" + ` until it converts), says how we work. Read both before
-other work.`
+other work. While the first plan is still a draft, offer to work through it with the
+person before anything else.`
 
 const draftPath = "drafts/plan.draft.md"
 

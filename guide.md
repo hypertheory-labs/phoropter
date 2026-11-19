@@ -69,7 +69,8 @@ why, so the record has to show when nobody said. A reason the agent guessed stay
 labeled that way until someone confirms it.
 
 When a draft's open question went unanswered and its fallback became the decision, say
-so: `Claude, unanswered, so its fallback`.
+so, under the drafter's own name: `Claude, unanswered, so its fallback`, or `Copilot,
+unanswered, …`.
 
 ### Anchors
 
@@ -187,13 +188,20 @@ entry it belongs to, with what happens if nobody answers:
 ```
 
 `Select` lists its options as the first bulleted list; `Affirm` is yes or no. A draft
-can have no questions at all: "look, then tell me to go."
+can have no questions at all: "look, then tell me to go." The person answers in notes
+beside the draft, or in conversation. Don't turn a draft's prompts into a form: they're
+there to be thought about at the person's pace, in context.
+
+The notes quote the draft's lines, so while a notes file exists, the draft doesn't
+change. To answer the notes before converting, rewrite the draft taking in every note,
+then delete the notes file: all of them or none. A reply that isn't a rewrite (an
+answer, a confirmation) goes in conversation, and the draft stays as it is.
 
 When the pair is confident, the draft converts, whether or not every prompt is
 answered, since silence means proceed. Converting writes `plans/YYYY-MM-DD-<name>.md`
 (the date is today, the day you say "we're implementing this"), folds each answer into
-its entry's reason, labels a fallback that became the decision (`Claude, unanswered, so
-its fallback`), drops the prompts, and deletes the draft and its notes. The notes
+its entry's reason, labels a fallback that became the decision (`<the drafter>,
+unanswered, so its fallback`), drops the prompts, and deletes the draft and its notes. The notes
 aren't kept: they're mostly the questions that lined up someone's understanding, and
 what mattered from them is in the reasons now. An answer that turns down a question's
 premise, or creates work the draft didn't have, becomes an entry of its own, usually a
