@@ -38,3 +38,5 @@ shelf. The seeds keep their names, because landed plans cite them by name.
    first. After `affected.md`.
 19. **`identity.md`:** who's named in a plan, the model in metadata, identity sized to a
    context. Waits for a question that needs it.
+20. **`home-page.md`:** the home page is getting long (Jeff). Grouping before
+    paginating, and what the agent reads.
