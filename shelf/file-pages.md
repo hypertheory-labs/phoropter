@@ -23,3 +23,11 @@ reached from a plan: a "now" view (with its span lit), a place, or a lens. Then 
 of plans touching the file is there to explore. No tree view and no file picker: "if we
 add a tree-view file explorer, we've failed or given up." A file no plan leads to is a
 finding: nobody wrote down why it's that way.
+
+**Jeff, 2026-11-19 (persimmon cart): a reading mode in the TUI, maybe instead of an LSP.**
+Show the code with the plans that touch it visible. Make a lens while browsing. Zoom out
+from a plan's snippet to the code around it. Cycle with ctrl-up and ctrl-down through
+every plan that touches these lines. The reason: "anything in VS Code (or other LSP
+supporting editor) is assuming humans will want to edit the code." It keeps the guard:
+you arrive from a plan's place and explore outward. Gimlet declined an LSP adapter for
+v0, so an LSP would start as a revisit of that decline, and this may make it unneeded.

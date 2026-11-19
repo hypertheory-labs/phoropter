@@ -19,3 +19,15 @@ They're programs in `indexers/`, found only from a clone (or `PHOROPTER_INDEXERS
 `indexers/go/` can't be `go install`ed by name. The shipping plan needs one of:
 installable first-party indexers (`phoropter-index-go`, `phoropter-index-typescript` on
 `PATH`), or the Go indexer built into the binary as a fallback.
+
+**From grosgrain (2026-11-19):** `phoropter doctor` now says plainly that a binary outside
+a clone has no first-party indexers, and how to get them, and grosgrain declined fixing
+that until its own plan. That plan is probably next after the server.
+
+**Containers, for indexers only (Jeff, persimmon cart):** "if we use containers, it's for
+the indexers, not the phoropter binary", because getting every indexer working on every
+platform may be hard. The contract already allows it: a `phoropter-index-go` that runs
+scip-go in a container with the checkout mounted is just another indexer on `PATH`, and
+`doctor` could offer it beside the native install. The cost: an image to build and
+publish, Docker or Podman on the machine (admin rights, on the class's corporate
+machines), and old commits' toolchains, which make an image heavier, not lighter.
