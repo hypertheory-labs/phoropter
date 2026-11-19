@@ -329,5 +329,8 @@ func (h *handler) withDraftLink(page, here string) string {
 	}
 	// Always, so a reader can start a lens before there is one.
 	links = append(links, fmt.Sprintf(`<a rel="lenses" href="%s">lenses</a>`, Rel(dir, "lenses/")))
+	if HasDraft(h.repoDir) {
+		page = strings.Replace(page, welcomeStart, welcomeDraft(Rel(dir, "draft/")), 1)
+	}
 	return homeLinkRE.ReplaceAllString(page, "$1\n"+strings.Join(links, "\n"))
 }

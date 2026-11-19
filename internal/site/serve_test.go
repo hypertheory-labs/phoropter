@@ -120,3 +120,23 @@ func TestDraftShowsWhatsAlreadyHere(t *testing.T) {
 		}
 	}
 }
+
+// An empty repository's home page says to run init; once init has written
+// the draft, the dev server points at the draft instead (sateen).
+func TestWelcomeSaysInitThenTheDraft(t *testing.T) {
+	dir := t.TempDir()
+	page := `<a rel="home" href="./">home</a>` + "\n" + welcomeStart
+	h := &handler{repoDir: dir}
+	if got := h.withDraftLink(page, ""); !strings.Contains(got, "phoropter init") {
+		t.Errorf("no draft, but the welcome lost init:\n%s", got)
+	}
+	os.MkdirAll(filepath.Join(dir, "drafts"), 0o755)
+	os.WriteFile(filepath.Join(dir, DraftFile), []byte("# x\n"), 0o644)
+	got := h.withDraftLink(page, "")
+	if strings.Contains(got, "phoropter init") || !strings.Contains(got, `<a href="draft/">read it at`) {
+		t.Errorf("with a draft, the welcome should point at it:\n%s", got)
+	}
+	if n := strings.Count(got, `rel="draft"`); n > 1 {
+		t.Errorf("%d rel=draft links; the welcome's link shouldn't add one", n)
+	}
+}

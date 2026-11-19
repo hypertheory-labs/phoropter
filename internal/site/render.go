@@ -43,6 +43,14 @@ func RenderSite(s *Site, guide Guide) []Page {
 
 // --- pages ---
 
+// welcomeStart is the empty home page's next step (sateen). The dev server
+// swaps it for welcomeDraft when a draft is up, since init would refuse then.
+const welcomeStart = `<p>To start, run <code>phoropter init</code> in this repository. It writes your first plan, “How we work here,” as a draft for you and your agent to work through.</p>`
+
+func welcomeDraft(href string) string {
+	return fmt.Sprintf(`<p>Your first plan is a draft: <a href="%s">read it at <code>draft/</code></a>, annotate what you'd change, and work it through with your agent.</p>`, href)
+}
+
 func home(s *Site) Page {
 	here := ""
 	title := fmt.Sprintf("%s at %s", s.RepoName, s.Generated.Short)
@@ -67,6 +75,7 @@ func home(s *Site) Page {
 </li>`, Rel(here, pl.Href), esc(pl.Label), pl.Kind, entryCount(len(pl.Refs))))
 	}
 	planList := fmt.Sprintf(`<div class="welcome"><p>No plans here yet. That's how every repository starts.</p>
+`+welcomeStart+`
 <p>A plan is a markdown file in <code>plans/</code>, written before the work: what you decided, what you turned down, and what you're guessing, each with its reason. <a href="%s">The guide</a> says how, starting with “Write the plan.”</p>
 <p>When you want to think one through first, put a draft at <code>drafts/plan.draft.md</code>. While <code>phoropter</code> is serving, it's shown at <code>draft/</code>.</p></div>`, Rel(here, "guide/"))
 	if len(plans) > 0 {
