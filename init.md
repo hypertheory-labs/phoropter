@@ -9,8 +9,8 @@ and what we guessed, each with its reason. `phoropter guide` prints the format. 
 the first plan, and it's about us, not the code: how the person and the agent working
 here go about it. Every entry below is phoropter's default. Change any of them by
 answering its prompt, or annotate anything else. Whatever you leave alone converts as it
-is, since silence means proceed. Later, changing one of these is a revisit, with a
-reason, like any other plan.
+is, since silence means proceed. When in doubt, keep the default. If it causes friction
+later, that's the time to revisit it, with a reason, like any other plan.
 
 A note from the agent, before you start. I'm good at breadth: options, trade-offs, what
 other teams have done. I can't know your situation unless you tell me: what your
@@ -29,8 +29,10 @@ departed from the plan and what the guesses turned out to be. The format is in
 `phoropter guide`.
 
 ### Question: What's too small for a plan here?
-**If unanswered:** whatever nobody would ask about later: a typo, a dependency bump, a
-rename the editor did. When in doubt, the agent writes a short plan and says so.
+**If unanswered:** a plan whenever you'd want a second opinion before going ahead, and
+whenever a change would alter what an earlier plan decided. Not for a typo, a dependency
+bump, or a rename the editor did. When in doubt, the agent writes a short plan and says
+so.
 
 ## Decision: A draft goes up when the understanding is thin
 

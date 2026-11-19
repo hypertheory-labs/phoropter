@@ -21,3 +21,8 @@ the conversation about it, and Jeff's notes on the first plan's draft:
   `shelf/indexing.md`. They may share one way of being found.
 - **A short name.** "Phoropter" will be misspelled and aliased like `kubectl` (Jeff). A
   short command installed beside it is the shipping plan's question.
+- **`phoropter ui` starts the server when there's none (Jeff, 2026-11-19, on muslin's
+  template).** If a server is running, it reports the address; if not, it starts one and
+  reports that. Symmetry with the template's "the agent runs the server": either of us
+  starts it, whoever gets there first. For the server and TUI friction cart, with the
+  5.3s first request after a commit.
