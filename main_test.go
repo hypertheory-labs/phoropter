@@ -139,3 +139,53 @@ func TestCopyOf(t *testing.T) {
 		}
 	}
 }
+
+// init writes the template as the one draft, based at the commit given, and
+// never replaces a draft that's there (muslin).
+func TestInitWritesTheFirstDraftOnce(t *testing.T) {
+	root := t.TempDir()
+	if err := writeFirstDraft(root, "abc1234"); err != nil {
+		t.Fatal(err)
+	}
+	b, _ := os.ReadFile(filepath.Join(root, draftPath))
+	draft := string(b)
+	if !strings.HasPrefix(draft, "---\nbase: abc1234\n---\n") || strings.Contains(draft, "{{") {
+		t.Errorf("base not filled in:\n%.80s", draft)
+	}
+	if !strings.Contains(draft, "# How we work here") {
+		t.Error("not the template")
+	}
+	os.WriteFile(filepath.Join(root, draftPath), []byte("someone's draft"), 0o644)
+	if err := writeFirstDraft(root, "abc1234"); err != errDraftExists {
+		t.Errorf("err = %v, want errDraftExists", err)
+	}
+	if b, _ := os.ReadFile(filepath.Join(root, draftPath)); string(b) != "someone's draft" {
+		t.Error("replaced an existing draft")
+	}
+}
+
+// The walkthrough names the instructions file the repository has, carries
+// the pointer, and gives the address when a server is running.
+func TestInitWalkthrough(t *testing.T) {
+	root := t.TempDir()
+	if got := instructionsFile(root); !strings.Contains(got, "CLAUDE.md or AGENTS.md") {
+		t.Errorf("no instructions: %q", got)
+	}
+	os.WriteFile(filepath.Join(root, "AGENTS.md"), nil, 0o644)
+	if got := instructionsFile(root); got != "AGENTS.md" {
+		t.Errorf("AGENTS.md only: %q", got)
+	}
+	os.MkdirAll(filepath.Join(root, "plans"), 0o755)
+	for _, f := range []string{"2026-01-01-a.md", "2026-01-01-a.as-built.md", "2026-01-02-b.md"} {
+		os.WriteFile(filepath.Join(root, "plans", f), nil, 0o644)
+	}
+	served := initWalkthrough(root, "http://localhost:4191/", countPlans(root))
+	for _, want := range []string{"Paste this into AGENTS.md", "## Plans (phoropter)", "http://localhost:4191/draft/", "already has 2 plans"} {
+		if !strings.Contains(served, want) {
+			t.Errorf("walkthrough lacks %q:\n%s", want, served)
+		}
+	}
+	if fresh := initWalkthrough(t.TempDir(), "", 0); strings.Contains(fresh, "already has") || !strings.Contains(fresh, "Run phoropter") {
+		t.Errorf("fresh repository:\n%s", fresh)
+	}
+}

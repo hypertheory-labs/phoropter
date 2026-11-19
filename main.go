@@ -1,6 +1,7 @@
 // phoropter: read code through the plans that shaped it (organdy).
 //
 //	phoropter [path] [--at <commit>] [--port <n>]        serve the repository you're in
+//	phoropter init [path]                                write the first plan, how we work here, as a draft
 //	phoropter build [path] [--at <commit>] [--out site]  write the static site
 //	phoropter index [path] [--at <commit>]               commit the indexes plans need
 //	phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
@@ -47,6 +48,7 @@ var guideMarkdown string
 
 const usage = `usage:
   phoropter [path] [--at <commit>] [--port <n>]        serve the repository you're in
+  phoropter init [path]                                write this repository's first plan, how you work here, as a draft
   phoropter build [path] [--at <commit>] [--out site]  write the static site
   phoropter index [path] [--at <commit>]               commit the indexes plans need into .phoropter/index/
   phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
@@ -62,7 +64,7 @@ func main() {
 	command := "serve"
 	if len(args) > 0 {
 		switch args[0] {
-		case "build", "index", "url", "symbols", "ui", "indexers", "guide", "help", "-h", "--help":
+		case "init", "build", "index", "url", "symbols", "ui", "indexers", "guide", "help", "-h", "--help":
 			command, args = args[0], args[1:]
 		}
 	}
@@ -129,6 +131,16 @@ func main() {
 			fail(root + " has no commits yet; phoropter reads a repository at a commit")
 		}
 		fail(fmt.Sprintf("%s isn't a commit in %s", *at, root))
+	}
+	if command == "init" {
+		base := repo.Short(repo.Resolve("HEAD"))
+		if err := writeFirstDraft(root, base); err == errDraftExists {
+			fail("there's already a draft at " + draftPath + ", and a repository has one. Convert or delete it, then run init again.")
+		} else if err != nil {
+			fail(err.Error())
+		}
+		fmt.Print(initWalkthrough(root, servingURL(root), countPlans(root)))
+		return
 	}
 	store := site.NewStore(repo, "", nil)
 	guide := site.Guide{Markdown: guideMarkdown, Version: version()}
