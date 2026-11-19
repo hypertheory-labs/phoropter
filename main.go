@@ -287,7 +287,7 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 		}
 	}
 	if len(all) == 0 {
-		fail(fmt.Sprintf("no indexer here handles %s files. phoropter doctor says what this repository needs.", ext))
+		fail(noIndexerFor(ext))
 	}
 	for _, i := range all {
 		if scheme == "" || i.Scheme == scheme {
@@ -300,6 +300,17 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 			schemes = append(schemes, i.Scheme)
 		}
 		fail(fmt.Sprintf("no indexer for %s files has scheme %s; there's %s", ext, scheme, strings.Join(schemes, ", ")))
+	}
+	// An indexer that says what it needs won't run without it; say so here,
+	// not by way of doctor, which only knows what plans anchor (cambric).
+	for _, i := range candidates {
+		if len(i.Needs) > 0 {
+			var lines []string
+			for _, n := range i.Needs {
+				lines = append(lines, fmt.Sprintf("  %s: %s", n.What, n.Install))
+			}
+			fail(fmt.Sprintf("%s indexes %s files, and needs first:\n%s", i.Indexer, ext, strings.Join(lines, "\n")))
+		}
 	}
 	sha := repo.Resolve(at)
 	tree, err := repo.Checkout(sha)
@@ -340,8 +351,11 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 		}
 	}
 	if len(headings) == 0 {
-		var indexed []string
+		var indexed, empty []string
 		for _, o := range outputs {
+			if len(o.Packages) == 0 {
+				empty = append(empty, o.Scheme)
+			}
 			for _, p := range o.Packages {
 				for _, v := range p.Definitions {
 					if f, ok := v[0].(string); ok {
@@ -350,7 +364,7 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 				}
 			}
 		}
-		fail(nothingDefined(repo, rel, at, sha, indexed))
+		fail(nothingDefined(repo, rel, at, sha, indexed, empty))
 	}
 	for _, h := range headings {
 		found := byScheme[h]
@@ -374,12 +388,22 @@ func symbols(repo *site.Repo, root, target, at, scheme string) {
 // nothingDefined says why a file has no symbols, as far as phoropter can tell
 // (poplin): changes that aren't committed, a copy elsewhere whose package has
 // the same name and was indexed instead, or no named declarations at all.
-func nothingDefined(repo *site.Repo, rel, at, sha string, indexed []string) string {
+func nothingDefined(repo *site.Repo, rel, at, sha string, indexed, empty []string) string {
 	msg := fmt.Sprintf("nothing defined in %s at %s: ", rel, repo.Short(sha))
 	if at == "HEAD" {
 		if out, _ := exec.Command("git", "-C", repo.Dir, "status", "--porcelain", "--", rel).Output(); len(out) > 0 {
 			return msg + "it has changes that aren't committed, and only commits are indexed"
 		}
+	}
+	// An indexer that found no packages at all says nothing about this file's
+	// declarations; say what it looks for instead (cambric).
+	if len(indexed) == 0 && len(empty) > 0 {
+		what := "the packages its indexer reads"
+		if fp, ok := firstPartySchemes[empty[0]]; ok {
+			what = fp.pkg
+		}
+		return msg + "the " + empty[0] + " indexer found no packages in this repository. It indexes packages: " + what +
+			". Until there is one, a file anchor with a quote reaches this file"
 	}
 	if c := copyOf(rel, indexed); c != "" {
 		return msg + c + " is indexed instead. It looks like a copy, and when copies' packages share a name, only the first path is indexed (see indexers/README.md); a file anchor with a quote reaches this one"
@@ -588,6 +612,19 @@ func answers(url string) bool {
 	}
 	c.Close()
 	return true
+}
+
+// noIndexerFor says how to get an indexer for a file extension, rather than
+// sending you to doctor, which only knows what plans already anchor (cambric).
+func noIndexerFor(ext string) string {
+	msg := fmt.Sprintf("no indexer here handles %s files", ext)
+	s := firstPartyFor(ext)
+	if s == "" {
+		return msg + ". phoropter ships none for it; indexers/README.md in phoropter's repository says how to write one, " +
+			"and a file anchor with a quote works in any language"
+	}
+	d := doctorFacts{firstParty: site.FirstParty, indexers: site.Indexers(), unavailable: site.IndexersUnavailable()}
+	return msg + ". To get one: " + d.missingFix(s)
 }
 
 // version is the binary's commit, from the build's own vcs stamp, saying so

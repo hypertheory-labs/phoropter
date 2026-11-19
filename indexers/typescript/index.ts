@@ -12,7 +12,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
-import { dirname, join, relative } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 
 const VERSION = '0.1.0';
 const SCIP_TYPESCRIPT = '0.4.0';
@@ -37,6 +37,10 @@ if (!dir) fail('usage: node index.ts <dir> [package name...]');
 // for reading an index, so this reaches into dist. Pinned to 0.4.0.
 const { scip } = require('@sourcegraph/scip-typescript/dist/src/scip.js');
 const main = join(dirname(require.resolve('@sourcegraph/scip-typescript/package.json')), 'dist/src/main.js');
+
+// The contract's paths use /; on Windows, Node's and scip-typescript's use \
+// (cambric, found on the trial).
+const slash = (p: string): string => p.split(sep).join('/');
 
 // Every package.json outside node_modules, by its name.
 function packages(root: string): Map<string, string> {
@@ -78,7 +82,7 @@ try {
     const output = join(scratch, `${out.missing.length}-${Object.keys(out.packages).length}.scip`);
     execFileSync(process.execPath, [main, 'index', '--no-progress-bar', '--output', output, ...tsconfigs], { cwd: pkgDir, stdio: 'ignore' });
     const index = scip.Index.deserializeBinary(readFileSync(output));
-    const prefix = relative(dir, pkgDir);
+    const prefix = slash(relative(dir, pkgDir));
     const definitions: Record<string, [string, number, number]> = {};
     for (const doc of index.documents) {
       for (const occ of doc.occurrences) {
@@ -89,7 +93,7 @@ try {
         const key = parts.join(' ');
         if (key in definitions) continue;
         const r: number[] = occ.enclosing_range.length ? occ.enclosing_range : occ.range;
-        definitions[key] = [prefix ? `${prefix}/${doc.relative_path}` : doc.relative_path, r[0] + 1, (r.length === 4 ? r[2] : r[0]) + 1];
+        definitions[key] = [prefix ? `${prefix}/${slash(doc.relative_path)}` : slash(doc.relative_path), r[0] + 1, (r.length === 4 ? r[2] : r[0]) + 1];
       }
     }
     out.packages[name] = { definitions };

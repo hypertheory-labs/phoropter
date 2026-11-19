@@ -65,6 +65,15 @@ func TestCheckSaysWhatsWrong(t *testing.T) {
 	}
 }
 
+// A Windows path is named for what it is, not "isn't a file" (cambric).
+func TestCheckNamesABackslashPath(t *testing.T) {
+	ok, report := CheckIndexer(fake(`{ 'roslyn npm p . Site#': ['internal\\site\\site.go', 1, 1] }`), "", here)
+	text := strings.Join(report, "\n")
+	if ok || !strings.Contains(text, `internal\site\site.go uses \; the contract's paths use /`) {
+		t.Errorf("report:\n%s", text)
+	}
+}
+
 // Names an indexer makes up (.ctor) aren't looked for, and a few names a
 // language spells differently (op_Addition) are notes. Wrong ranges still
 // fail, because then nearly every name is missing.

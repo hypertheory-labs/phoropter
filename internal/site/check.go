@@ -166,6 +166,10 @@ func CheckIndexer(command []string, cwd string, repo *Repo) (bool, []string) {
 				continue
 			}
 			start, end := int(startF), int(endF)
+			if strings.Contains(file, `\`) {
+				say(fmt.Sprintf("%s uses \\; the contract's paths use /, so on Windows convert them", file))
+				continue
+			}
 			text, seen := lines[file]
 			if !seen {
 				if t, ok := repo.Show(sha, file); ok {

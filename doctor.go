@@ -23,12 +23,48 @@ type doctorFacts struct {
 }
 
 // firstPartySchemes are the indexers phoropter ships, by scheme, so doctor
-// can say where to get them when a binary outside a clone has none. One with
-// an install command installs on its own (tulle); the rest need a clone.
-var firstPartySchemes = map[string]struct{ lang, dir, toolchain, install string }{
+// and symbols can say where to get them when this machine has none. One with
+// an install command installs on its own (tulle); the rest need a clone. A
+// package is what each indexes, for when it finds none (cambric).
+var firstPartySchemes = map[string]struct {
+	lang, dir, toolchain, install, pkg string
+	exts                               []string
+}{
 	"scip-go": {"Go", "go", "Go 1.25 or newer (https://go.dev/dl)",
-		"go install github.com/hypertheory-labs/phoropter/cmd/phoropter-index-scip-go@latest"},
-	"scip-typescript": {"TypeScript", "typescript", "Node.js 24 or newer (https://nodejs.org), as its package.json says", ""},
+		"go install github.com/hypertheory-labs/phoropter/cmd/phoropter-index-scip-go@latest",
+		"a go.mod", []string{".go"}},
+	"scip-typescript": {"TypeScript", "typescript", "Node.js 24 or newer (https://nodejs.org), as its package.json says", "",
+		"a package.json with a name, and a tsconfig.json (or tsconfig.*.json) beside it", []string{".ts", ".tsx", ".mts", ".cts"}},
+}
+
+// firstPartyFor is the scheme of phoropter's own indexer for a file
+// extension, or "".
+func firstPartyFor(ext string) string {
+	for s, fp := range firstPartySchemes {
+		for _, e := range fp.exts {
+			if e == ext {
+				return s
+			}
+		}
+	}
+	return ""
+}
+
+// missingFix is how to get an indexer for scheme s on this machine: the line
+// doctor prints, and symbols too, so neither sends you to the other (cambric).
+func (d doctorFacts) missingFix(s string) string {
+	fp, ours := firstPartySchemes[s]
+	switch {
+	case ours && d.firstParty == "" && fp.install != "":
+		return fmt.Sprintf("%s, which runs on %s", fp.install, fp.toolchain)
+	case ours && d.firstParty == "":
+		return fmt.Sprintf("phoropter's %s indexer is in a clone of phoropter: git clone https://github.com/hypertheory-labs/phoropter, "+
+			"then PHOROPTER_INDEXERS=<the clone>/indexers (or run a phoropter built in the clone)", fp.lang)
+	case ours && d.couldntStart(fp.dir):
+		return fmt.Sprintf("phoropter's %s indexer runs on %s", fp.lang, fp.toolchain)
+	default:
+		return fmt.Sprintf("an indexer named phoropter-index-%s on PATH; indexers/README.md in phoropter's repository says how one works", s)
+	}
 }
 
 // schemesInPlans counts the symbol anchors in the plans and as-builts at sha,
@@ -101,7 +137,8 @@ func (d doctorFacts) report() (string, bool) {
 	sort.Strings(schemes)
 	if len(schemes) == 0 {
 		b.WriteString("\nThis repository's plans anchor no symbols, so no indexer is needed yet.\n" +
-			"File anchors with a quote work in any language.\n")
+			"File anchors with a quote work in any language. To anchor a symbol, phoropter symbols <file>\n" +
+			"lists what that file defines, or says what it needs first.\n")
 	} else {
 		b.WriteString("\nWhat this repository's plans anchor:\n")
 	}
@@ -111,17 +148,7 @@ func (d doctorFacts) report() (string, bool) {
 		switch {
 		case !ok:
 			fmt.Fprintf(&b, "no    %s, %s: no indexer here for it\n", s, n)
-			fp, ours := firstPartySchemes[s]
-			if ours && d.firstParty == "" && fp.install != "" {
-				fix("%s, which runs on %s", fp.install, fp.toolchain)
-			} else if ours && d.firstParty == "" {
-				fix("phoropter's %s indexer is in a clone of phoropter: git clone https://github.com/hypertheory-labs/phoropter, "+
-					"then PHOROPTER_INDEXERS=<the clone>/indexers (or run a phoropter built in the clone)", fp.lang)
-			} else if ours && d.couldntStart(fp.dir) {
-				fix("phoropter's %s indexer runs on %s", fp.lang, fp.toolchain)
-			} else {
-				fix("an indexer named phoropter-index-%s on PATH; indexers/README.md in phoropter's repository says how one works", s)
-			}
+			fix("%s", d.missingFix(s))
 		case len(i.Needs) > 0:
 			fmt.Fprintf(&b, "no    %s, %s: %s %s needs", s, n, i.Indexer, i.Version)
 			for _, need := range i.Needs {

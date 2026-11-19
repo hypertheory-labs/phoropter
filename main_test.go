@@ -272,3 +272,34 @@ func TestAnswersAsksThePort(t *testing.T) {
 		t.Error("a closed port answered")
 	}
 }
+
+// symbols says what an indexer needs, and how to get an indexer it doesn't
+// have, instead of sending you to doctor, which only knows what plans anchor
+// (cambric).
+func TestSymbolsSaysWhatItNeeds(t *testing.T) {
+	bin := t.TempDir()
+	script := "#!/usr/bin/env node\nconsole.log(JSON.stringify({ indexer: 'gamma-indexer', version: '0', scheme: 'gamma', extensions: ['.go'], needs: [{ what: 'gammac', install: 'brew install gammac' }] }));\n"
+	os.WriteFile(filepath.Join(bin, "phoropter-index-gamma"), []byte(script), 0o755)
+	exe := build(t)
+	run := func(file string, args ...string) string {
+		cmd := exec.Command(exe, append([]string{"symbols", file}, args...)...)
+		cmd.Env = append(os.Environ(), "PATH="+bin+":"+os.Getenv("PATH"), "PHOROPTER_INDEXERS="+t.TempDir())
+		out, _ := cmd.CombinedOutput()
+		return string(out)
+	}
+	if out := run("main.go", "--scheme", "gamma"); !strings.Contains(out, "gammac: brew install gammac") || strings.Contains(out, "doctor") {
+		t.Errorf("needs:\n%s", out)
+	}
+	if out := run("guide.md"); !strings.Contains(out, "indexers/README.md") || strings.Contains(out, "doctor") {
+		t.Errorf("no indexer for .md:\n%s", out)
+	}
+}
+
+// The fix for a missing indexer is the same from doctor and from symbols.
+func TestFirstPartyForExtensions(t *testing.T) {
+	for ext, want := range map[string]string{".go": "scip-go", ".tsx": "scip-typescript", ".rb": ""} {
+		if got := firstPartyFor(ext); got != want {
+			t.Errorf("%s: %q, want %q", ext, got, want)
+		}
+	}
+}
