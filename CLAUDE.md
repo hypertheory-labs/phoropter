@@ -59,9 +59,10 @@ pace with the work, not coverage.
   `phoropter ui` opens the TUI. Served at HEAD, it follows HEAD; at a terminal it has a
   key menu (`h` + enter), and in the background it reads nothing (poplin).
   `phoropter init` writes a repository's first plan, "How we work here", as a draft from
-  `init.md` (muslin). `phoropter guide` prints the guide with no server, and `phoropter indexers` lists what
-  this machine can index and where each was found. Committing indexes is the one write into a repository,
-  and only when run on purpose. Other indexes are cached in `~/.cache/phoropter/`.
+  `init.md` (muslin). `phoropter guide` prints the guide with no server, and `phoropter
+  indexers` lists what this machine can index and where each was found. `init`'s draft
+  and committed indexes are the only writes into a repository, each only when run on
+  purpose. Other indexes are cached in `~/.cache/phoropter/`.
   `go install github.com/hypertheory-labs/phoropter@latest` installs it; here,
   `go build -o bin/phoropter .`, and Jeff's `~/.local/bin/phoropter` is a symlink to
   `bin/phoropter`. A binary built in this repository finds `indexers/` by walking up
