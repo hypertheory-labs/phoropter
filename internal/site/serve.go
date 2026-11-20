@@ -57,6 +57,7 @@ type live struct {
 	root    string
 	checked time.Time
 	failed  string // the commit a rebuild last failed at, so it isn't retried every second
+	failure error  // why, for the notice on every page while HEAD is there (taffeta)
 	n       int
 }
 
@@ -71,14 +72,22 @@ func (l *live) current(force bool) (*handler, error) {
 	if force || (l.o.Ref == "HEAD" && time.Since(l.checked) >= time.Second) {
 		l.checked = time.Now()
 		sha := l.o.Repo.Resolve(l.o.Ref)
+		if sha == l.site.Generated.SHA && !force {
+			// HEAD came back to what's served, so the page is current again.
+			l.failed, l.failure = "", nil
+		}
 		if force || (sha != "" && sha != l.site.Generated.SHA && sha != l.failed) {
 			if err = l.rebuild(); err != nil {
-				l.failed = sha
+				l.failed, l.failure = sha, err
 				fmt.Fprintf(os.Stderr, "phoropter: couldn't rebuild at %s, still serving %s: %v\n", l.o.Repo.Short(sha), l.site.Generated.Short, err)
 			}
 		}
 	}
-	return &handler{site: l.site, root: l.root, repoDir: l.o.Repo.Dir}, err
+	h := &handler{site: l.site, root: l.root, repoDir: l.o.Repo.Dir}
+	if l.failure != nil {
+		h.stale = &stale{sha: l.failed, short: l.o.Repo.Short(l.failed), err: l.failure}
+	}
+	return h, err
 }
 
 func (l *live) rebuild() error {
@@ -90,7 +99,7 @@ func (l *live) rebuild() error {
 		return err
 	}
 	old := l.root
-	l.site, l.root, l.failed = s, dir, ""
+	l.site, l.root, l.failed, l.failure = s, dir, "", nil
 	os.RemoveAll(old)
 	if l.o.OnRebuild != nil {
 		l.o.OnRebuild(s, pages)
@@ -135,6 +144,7 @@ type handler struct {
 	site    *Site
 	root    string
 	repoDir string
+	stale   *stale // HEAD couldn't be built; nil when the site is current
 }
 
 var types = map[string]string{".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8"}
@@ -314,10 +324,23 @@ func (h *handler) serveLens(w http.ResponseWriter, r *http.Request, name string)
 	text(w, http.StatusNotFound, fmt.Sprintf("no lens %s in %s\n", name, LensDir))
 }
 
+// stale is a HEAD the server couldn't build, while it serves an older site.
+type stale struct {
+	sha, short string
+	err        error
+}
+
+// staleNotice says so under the header, for both readers (taffeta).
+func staleNotice(st *stale, served *Site) string {
+	return fmt.Sprintf(`<p class="stale" itemscope itemprop="stale">HEAD is at <data itemprop="commit" value="%s"><code>%s</code></data>, which couldn’t be built: <span itemprop="error">%s</span>. This page is from <code>%s</code>, the last commit that built. A new commit tries again, and so does <kbd>r</kbd> and enter where phoropter runs.</p>
+`, st.sha, esc(st.short), esc(st.err.Error()), esc(served.Generated.Short))
+}
+
 var homeLinkRE = regexp.MustCompile(`(<a class="home-link"[^>]*>home</a>)`)
 
 // withDraftLink: built pages don't know about the draft or lenses; the server
-// adds the links while they exist, relative to the page they're on.
+// adds the links while they exist, relative to the page they're on. It also
+// adds the notice when HEAD couldn't be built.
 func (h *handler) withDraftLink(page, here string) string {
 	dir := here
 	if !strings.HasSuffix(here, "/") && here != "" {
@@ -332,7 +355,11 @@ func (h *handler) withDraftLink(page, here string) string {
 	if HasDraft(h.repoDir) {
 		page = strings.Replace(page, welcomeStart, welcomeDraft(Rel(dir, "draft/")), 1)
 	}
-	return homeLinkRE.ReplaceAllString(page, "$1\n"+strings.Join(links, "\n"))
+	page = homeLinkRE.ReplaceAllString(page, "$1\n"+strings.Join(links, "\n"))
+	if h.stale != nil {
+		page = strings.Replace(page, "</header>\n", "</header>\n"+staleNotice(h.stale, h.site), 1)
+	}
+	return page
 }
 
 // wsaeaddrinuse is Windows's "address in use", which isn't syscall.EADDRINUSE

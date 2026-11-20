@@ -140,3 +140,71 @@ func TestWelcomeSaysInitThenTheDraft(t *testing.T) {
 		t.Errorf("%d rel=draft links; the welcome's link shouldn't add one", n)
 	}
 }
+
+// A rebuild that fails leaves the last site up, and every page says so until
+// one succeeds; HEAD coming back to the served commit clears it (taffeta).
+func TestAPageSaysHEADCouldntBeBuilt(t *testing.T) {
+	if os.Getuid() == 0 {
+		t.Skip("root can write a read-only directory")
+	}
+	dir := t.TempDir()
+	git := func(args ...string) string {
+		out, err := exec.Command("git", append([]string{"-C", dir, "-c", "user.name=t", "-c", "user.email=t@t"}, args...)...).CombinedOutput()
+		if err != nil {
+			t.Fatal(string(out))
+		}
+		return strings.TrimSpace(string(out))
+	}
+	commit := func(name string) string {
+		os.WriteFile(filepath.Join(dir, name), []byte(name+"\n"), 0o644)
+		git("add", name)
+		git("commit", "-q", "-m", name)
+		return git("rev-parse", "HEAD")
+	}
+	git("init", "-q")
+	first := commit("a.txt")
+	repo := &Repo{Dir: dir}
+	// A rebuild writes beside the site, so a read-only parent makes it fail.
+	parent := t.TempDir()
+	served, err := Serve(ServeOptions{Repo: repo, Ref: "HEAD", Out: filepath.Join(parent, "site"), Port: 4320, Store: NewStore(repo, t.TempDir(), nil), Guide: testGuide})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer served.Server.Close()
+	defer os.Chmod(parent, 0o755)
+	get := func(p string) string {
+		res, err := http.Get(served.URL + p)
+		if err != nil {
+			t.Fatal(err)
+		}
+		b, _ := io.ReadAll(res.Body)
+		res.Body.Close()
+		return string(b)
+	}
+	if strings.Contains(get(""), `itemprop="stale"`) {
+		t.Fatal("stale before anything failed")
+	}
+
+	os.Chmod(parent, 0o555)
+	second := commit("b.txt")
+	time.Sleep(1100 * time.Millisecond)
+	for _, p := range []string{"", "guide/", "lenses/"} {
+		page := get(p)
+		if !strings.Contains(page, `itemprop="stale"`) || !strings.Contains(page, `value="`+second+`"`) || !strings.Contains(page, `itemprop="commit" value="`+first+`"`) {
+			t.Errorf("%q doesn't say HEAD %s failed while serving %s:\n%.1500s", p, second[:7], first[:7], page)
+		}
+	}
+
+	git("reset", "-q", "--hard", first)
+	time.Sleep(1100 * time.Millisecond)
+	if strings.Contains(get(""), `itemprop="stale"`) {
+		t.Error("still stale with HEAD back at the served commit")
+	}
+
+	os.Chmod(parent, 0o755)
+	third := commit("c.txt")
+	time.Sleep(1100 * time.Millisecond)
+	if page := get(""); strings.Contains(page, `itemprop="stale"`) || !strings.Contains(page, `value="`+third+`"`) {
+		t.Errorf("after a commit that builds:\n%.1500s", page)
+	}
+}
