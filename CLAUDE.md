@@ -63,7 +63,7 @@ pace with the work, not coverage.
   `phoropter ui` opens the TUI. Served at HEAD, it follows HEAD; at a terminal it has a
   key menu (`h` + enter), and in the background it reads nothing (poplin).
   `phoropter init` writes a repository's first plan, "How we work here", as a draft from
-  `init.md` (muslin). `phoropter guide` prints the guide with no server, `phoropter
+  `init.md` (muslin), in a new repository's form when it has few commits and files (gingham). `phoropter guide` prints the guide with no server, `phoropter
   indexers` lists what this machine can index and where each was found, and `phoropter
   doctor` says what's missing for a repository and the fix for each, running nothing
   (grosgrain; indexers report their own needs in `--describe`). `init`'s draft

@@ -115,6 +115,8 @@ Your repository's agent won't know about any of this unless its instructions say
 the conventions this README used to list (when to write a plan, when a draft goes up,
 who runs the server, lenses, no veto), each as a Decision with phoropter's default.
 You and your agent work that draft like any other, and change what doesn't suit you.
+In a new repository (a few commits, a few files), the draft says so, and suggests that
+the next plan be how the project builds; `init` says which kind it saw.
 
 It also prints a pointer to paste into `CLAUDE.md` (or `AGENTS.md`). It doesn't edit
 them itself:

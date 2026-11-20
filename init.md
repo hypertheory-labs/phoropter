@@ -1,5 +1,5 @@
 ---
-base: {{base}}
+base: {{.Base}}
 ---
 
 # How we work here
@@ -10,7 +10,9 @@ the first plan, and it's about us, not the code: how the person and the agent wo
 here go about it. Every entry below is phoropter's default. Change any of them by
 answering its prompt, or annotate anything else. Whatever you leave alone converts as it
 is, since silence means proceed. When in doubt, keep the default. If it causes friction
-later, that's the time to revisit it, with a reason, like any other plan.
+later, that's the time to revisit it, with a reason, like any other plan.{{if .New}} This
+repository is new, so the plan after this one is usually how it builds: its packages,
+its build, and what an indexer needs to read it.{{end}}
 
 A note from the agent, before you start. I'm good at breadth: options, trade-offs, what
 other teams have done. I can't know your situation unless you tell me: what your
@@ -116,8 +118,10 @@ front, in the draft or the plan, plans it properly anyway, and lets you decide.
 
 ## Decision: Looking back happens when work touches old code
 
-**Because (phoropter's default):** the code here was written before these plans. When new
-work touches code no plan explains, the agent offers a little archaeology: what is this
+{{if .New}}**Because (phoropter's default):** nearly everything here will be born under a plan,
+but some code arrives without one: a scaffold, a starter, a vendored file. When work
+touches code no plan explains,{{else}}**Because (phoropter's default):** the code here was written before these plans. When new
+work touches code no plan explains,{{end}} the agent offers a little archaeology: what is this
 code in service of, and what would have made it this way? If you care, that becomes a
 plan deciding "we keep this" (or not), with the alternatives as Declines. It's a
 decision made now, not one pretended from back then.

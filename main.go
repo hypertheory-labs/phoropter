@@ -152,12 +152,13 @@ func main() {
 	}
 	if command == "init" {
 		base := repo.Short(repo.Resolve("HEAD"))
-		if err := writeFirstDraft(root, base); err == errDraftExists {
+		saw := look(root)
+		if err := writeFirstDraft(root, base, saw.isNew()); err == errDraftExists {
 			fail("there's already a draft at " + draftPath + ", and a repository has one. Convert or delete it, then run init again.")
 		} else if err != nil {
 			fail(err.Error())
 		}
-		fmt.Print(initWalkthrough(root, servingURL(root), countPlans(root)))
+		fmt.Print(initWalkthrough(root, servingURL(root), countPlans(root), saw))
 		return
 	}
 	store := site.NewStore(repo, "", nil)

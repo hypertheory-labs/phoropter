@@ -158,7 +158,7 @@ func TestCopyOf(t *testing.T) {
 // never replaces a draft that's there (muslin).
 func TestInitWritesTheFirstDraftOnce(t *testing.T) {
 	root := t.TempDir()
-	if err := writeFirstDraft(root, "abc1234"); err != nil {
+	if err := writeFirstDraft(root, "abc1234", false); err != nil {
 		t.Fatal(err)
 	}
 	b, _ := os.ReadFile(filepath.Join(root, draftPath))
@@ -170,7 +170,7 @@ func TestInitWritesTheFirstDraftOnce(t *testing.T) {
 		t.Error("not the template")
 	}
 	os.WriteFile(filepath.Join(root, draftPath), []byte("someone's draft"), 0o644)
-	if err := writeFirstDraft(root, "abc1234"); err != errDraftExists {
+	if err := writeFirstDraft(root, "abc1234", false); err != errDraftExists {
 		t.Errorf("err = %v, want errDraftExists", err)
 	}
 	if b, _ := os.ReadFile(filepath.Join(root, draftPath)); string(b) != "someone's draft" {
@@ -193,14 +193,66 @@ func TestInitWalkthrough(t *testing.T) {
 	for _, f := range []string{"2026-01-01-a.md", "2026-01-01-a.as-built.md", "2026-01-02-b.md"} {
 		os.WriteFile(filepath.Join(root, "plans", f), nil, 0o644)
 	}
-	served := initWalkthrough(root, "http://localhost:4191/", countPlans(root))
-	for _, want := range []string{"Paste this into AGENTS.md", "## Plans (phoropter)", "http://localhost:4191/draft/", "already has 2 plans"} {
+	served := initWalkthrough(root, "http://localhost:4191/", countPlans(root), seen{40, 120})
+	for _, want := range []string{"   AGENTS.md:", "\n----\n" + pointer + "\n----\n", "http://localhost:4191/draft/", "already has 2 plans", "has history (40 commits, 120 files)"} {
 		if !strings.Contains(served, want) {
 			t.Errorf("walkthrough lacks %q:\n%s", want, served)
 		}
 	}
-	if fresh := initWalkthrough(t.TempDir(), "", 0); strings.Contains(fresh, "already has") || !strings.Contains(fresh, "Run phoropter") {
+	if fresh := initWalkthrough(t.TempDir(), "", 0, seen{1, 0}); strings.Contains(fresh, "already has") || !strings.Contains(fresh, "Run phoropter") || !strings.Contains(fresh, "new repository (1 commit, no files yet") {
 		t.Errorf("fresh repository:\n%s", fresh)
+	}
+}
+
+// A new repository's first plan suggests the build plan and doesn't claim
+// code from before the plans; one with history gets muslin's text (gingham).
+func TestFirstPlanFitsTheRepository(t *testing.T) {
+	read := func(isNew bool) string {
+		root := t.TempDir()
+		if err := writeFirstDraft(root, "abc1234", isNew); err != nil {
+			t.Fatal(err)
+		}
+		b, _ := os.ReadFile(filepath.Join(root, draftPath))
+		return string(b)
+	}
+	fresh, old := read(true), read(false)
+	if !strings.Contains(fresh, "usually how it builds") || strings.Contains(fresh, "written before these plans") {
+		t.Errorf("new repository's draft:\n%s", fresh)
+	}
+	if strings.Contains(old, "usually how it builds") || !strings.Contains(old, "written before these plans") {
+		t.Errorf("history's draft:\n%s", old)
+	}
+	for _, d := range []string{fresh, old} {
+		if strings.Contains(d, "{{") || !strings.Contains(d, "the agent offers a little archaeology") {
+			t.Errorf("template not filled:\n%s", d)
+		}
+	}
+}
+
+// init counts commits and the files that aren't boilerplate, and draws
+// gingham's line at under 5 commits and at most 10 files.
+func TestLookCountsWhatIsntBoilerplate(t *testing.T) {
+	root := t.TempDir()
+	git := func(args ...string) {
+		cmd := exec.Command("git", append([]string{"-C", root, "-c", "user.name=t", "-c", "user.email=t@t"}, args...)...)
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("git %v: %v\n%s", args, err, out)
+		}
+	}
+	git("init", "-q")
+	for _, f := range []string{"README.md", "LICENSE", ".gitignore", "AGENTS.md", "main.ts", "docs/README.md"} {
+		os.MkdirAll(filepath.Dir(filepath.Join(root, f)), 0o755)
+		os.WriteFile(filepath.Join(root, f), []byte("x"), 0o644)
+	}
+	git("add", ".")
+	git("commit", "-q", "-m", "one")
+	if got := look(root); got != (seen{1, 2}) || !got.isNew() {
+		t.Errorf("look = %+v, want 1 commit and 2 files (main.ts, docs/README.md), new", got)
+	}
+	for _, s := range []seen{{5, 0}, {1, 11}} {
+		if s.isNew() {
+			t.Errorf("%+v counted as new", s)
+		}
 	}
 }
 
