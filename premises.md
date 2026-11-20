@@ -62,6 +62,10 @@ conversation, not an edit.
   whose contents nobody chose gets abandoned.
 - **Nothing is a gate.** Silence means proceed. The agent offers, names the other way,
   and has no veto, and wondering isn't asking.
+- **Small enough to need no training.** What takes days to learn gets enforced, and
+  what's enforced gets measured: that's how the cop sneaks in (Jeff). Every tool and
+  key added raises the cost of learning, so each one has to earn its place. A
+  newcomer's agent, given only the pointer, should be working the same day.
 - **No state.** Nothing is open or done, and nothing has an owner or a due date. If it
   feels like a tracker, developers revolt.
 - **A name says whom to ask, not who may change it.**
