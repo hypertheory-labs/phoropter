@@ -7,8 +7,8 @@ shelf. The seeds keep their names, because landed plans cite them by name.
 1. **`trial.md`:** done on 2026-11-19; what it found became plans. What's left: a
    stale-install check, and the extension in limbo.
 
-2. **`affected.md`:** `phoropter affected` and `--since`, the file's or the change's
-   plans. Reachable now, and most of the documentation seed.
+2. **`affected.md`:** built (chambray); left are the same answer as a page for the
+   TUI, and blame through trailers.
 3. **`indexing.md`:** the TypeScript indexer installed without a clone (npm), and
    containers. Go installs since tulle. On the trial a clone worked, and setting
    `PHOROPTER_INDEXERS` was the only friction.
