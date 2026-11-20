@@ -39,6 +39,10 @@ conversation, not an edit.
   "whose plans don't last?" and "who adapts the system well in transition?" (Jeff).
   The framing we can offer is that a revisit is the system working, and the warning
   sign is change that never acknowledged what it undid.
+- **The tool is accurate about facts and leaves the meaning to the reader.** Output that
+  says what something means gets taken at face value and closes off other readings. The
+  intelligence at the point of contact, a person or an agent, may ask things nobody here
+  imagined, if the output hands it commits and plans, not conclusions.
 - **History is evidence; plans are the reading.** Commits, blame and diffs support
   understanding how the code changed over time, but they aren't the main way to read
   it, so the log can be as messy as the work was.

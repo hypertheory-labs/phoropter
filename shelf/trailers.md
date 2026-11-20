@@ -14,8 +14,10 @@ breaks when two plans' work interleaves and vanishes in a squash.
   transaction):
   - blame with reasons: line → commit → plan, for every line the work touched, not only
     what a plan anchored (`shelf/file-pages.md`).
-  - unreconciled crossings: plan B's commits changed what plan A's Decision anchors,
-    and B neither revisits nor cites A. "I'm not sure we really reconciled that."
+  - crossings: plan B's commits changed what plan A's Decision anchors, laid side by
+    side with whether B revisits, cites or anchors A. The reader decides whether it was
+    reconciled ("I'm not sure we really reconciled that"); phoropter prints the facts,
+    not that word (`premises.md`). `git log -S` finds the commit that removed a quote.
   - work outside any plan: commits with no trailer, piling up in one area.
 - **Squash, reframed:** people squash to make the log readable, to revert as a unit, to
   hide noise. Here the plan carries the story, so the log can be as noisy as the work
