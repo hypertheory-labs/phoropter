@@ -14,3 +14,10 @@ missing. These are candidates, from Jeff's notes on muslin's template (2026-11-1
   when one is missing: "I'm about to do the version bump you asked for. No problem. But
   we don't have a plan for keeping this up to date. Should we?" It's an offer, like the
   template's looking back, not a rule.
+- **"Suggest a few lenses."** Jeff, 2026-11-20: ask a new-ish instance which lenses
+  might be worth looking at this code through. The agent reads the plans to answer, so
+  it's orientation that comes back usable. A thin lens is a finding offered as a fact
+  ("the testing lens has two things in it"), not a verdict ("your testing is weak"), the
+  way a file no plan leads to is. It offers a few, each with why, and the person picks;
+  more than that is the agent setting the agenda. To try on the next trial: an app Jeff
+  builds with phoropter, not phoropter itself.
