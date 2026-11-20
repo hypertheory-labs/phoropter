@@ -55,6 +55,14 @@ extension work):
   - **A polad is never applied.** It informs the draft and is discarded; the work is
     redone under the plan, so the plan isn't a caption on code already written.
 
+**Lenses over time** (Jeff and Claude, 2026-11-20): "what would the Windows lens have
+looked like in January 2023?" Two questions. The same lens read at an old commit
+(`--at`) is mechanical: which items weren't plans yet, which anchors were where. The lens
+someone would have built then, by an agent limited to that commit's plans, compares two
+judgments; phoropter can show them side by side and leave the reading. Topic lenses
+replace tags (`premises.md`); a demonstration is `drafts/lenses/windows.md`, where one
+entry grep missed (nainsook's `clip`) was found by asking what a Windows user would hit.
+
 The lines that set the limits, kept because they're Jeff's:
 - "If this starts to feel too much like a tracking/todo-list tool, developers will
   revolt." A lens has no state: no open or done, no date, no owner.

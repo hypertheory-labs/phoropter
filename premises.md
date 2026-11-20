@@ -58,6 +58,10 @@ conversation, not an edit.
 - **Specimens are ephemeral.** Drafts, lenses, polads and carts gather and propose, then
   get thrown away once something durable holds what mattered. Drift in them is age, not
   a defect.
+- **What a plan says is fixed; what it's about stays open.** A plan is testimony and
+  never changes, but which topics it bears on is decided each time a lens finds it
+  useful. No tags, no "this file is about X": write that down and it's about X forever,
+  even after it isn't (Jeff, after Wittgenstein: a plan's meaning is its use in a lens).
 - **Gathered by hand, not by query.** Someone chose what's in a lens. A smart folder
   whose contents nobody chose gets abandoned.
 - **Nothing is a gate.** Silence means proceed. The agent offers, names the other way,
