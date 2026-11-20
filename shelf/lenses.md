@@ -23,6 +23,38 @@ reasoning is in those plans. What's still open, from Jeff:
   committed and shared, and a second lens home is a bigger step than a trial showed the
   need for.
 
+**Code spans, and polads** (Jeff and Claude, 2026-11-20, from the trial's VS Code
+extension work):
+
+- **A lens is a set of specimens:** gathered to help draft a plan, pinned, likely to
+  drift, discarded by default. So a lens can hold code, not only plans: a span is the
+  anchor syntax a plan already uses (a file and a quote, or a symbol), never line
+  numbers. It's read at the working tree; a quote that no longer matches says so, and
+  that drift means the lens is old enough to throw away. The commit that matters is the
+  `base:` of the draft it feeds.
+- **Harpoon, not smart folders.** One active lens at a time, saved and switched between,
+  never shown as folders in an explorer. Jeff recoiled at "defined by a query": a smart
+  folder is a query nobody chose the contents of. So `affected` may print a lens, as a
+  snapshot to prune, and never refreshes one.
+- **Not Code Tour:** its failure is the labor. Adding a span costs what `+` costs, one
+  key on a selection or one line from the agent, with the note optional and later.
+- **Portable by being Markdown:** pasted in a chat, mailed, embedded in a doc. They live
+  in `drafts/lenses/` so they're ephemeral by default; nothing stops copying one out,
+  but phoropter doesn't make them a thing.
+- **"Which plans touch this span?"** on a code item, the overlapping anchors' plans: what
+  makes a span more than a bookmark. `affected` at the size of a span.
+- **A polad is a speculative change**, in `drafts/` too. Two uses:
+  - *Teaching:* a scratch projection of an idea, close to the real code's meaning but
+    written to get something understood, not to compile. This is where the device came
+    from, and it's the guard on the other use.
+  - *Blast radius:* "we're switching tokens to cookies; show me what it touches and
+    what it does to earlier plans." A polad as a commit on a throwaway branch or
+    worktree, with every anchor resolved there and compared with HEAD: which Decisions'
+    code moves or vanishes, which Declines sit by changed code, which open guesses it
+    would test. `affected --since` from the polad's side.
+  - **A polad is never applied.** It informs the draft and is discarded; the work is
+    redone under the plan, so the plan isn't a caption on code already written.
+
 The lines that set the limits, kept because they're Jeff's:
 - "If this starts to feel too much like a tracking/todo-list tool, developers will
   revolt." A lens has no state: no open or done, no date, no owner.
