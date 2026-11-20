@@ -19,3 +19,8 @@ example naming an entry that didn't exist, an install section older than `doctor
   computable: per thing decided, the newest Decision no revisit replaced.
 - **Not the cart's event log:** it's deleted on conversion, on purpose. A projection
   reads plans and as-builts only.
+- **A getting-started guide, at least** (Jeff, 2026-11-20, on gingham's draft): deciding
+  what counts as a "new" repository pushed him toward it. How to describe the first
+  plan to a person: it isn't configuration, it's hints for starting in this way of
+  working, and adjusting one later is trimming sails, not rebuilding. "Everything is
+  reversible" oversells it.
