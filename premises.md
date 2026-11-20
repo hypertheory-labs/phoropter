@@ -26,6 +26,9 @@ conversation, not an edit.
 - **Plans are testimony; tests are present tense.** The plan holds why, and what was
   turned down, frozen. The test holds that it's still true. A test can be blunt because
   its reason is one step away.
+- **History is evidence; plans are the reading.** Commits, blame and diffs support
+  understanding how the code changed over time, but they aren't the main way to read
+  it, so the log can be as messy as the work was.
 - **Change your mind in a new plan.** What was believed then stays readable.
 - **Specimens are ephemeral.** Drafts, lenses, polads and carts gather and propose, then
   get thrown away once something durable holds what mattered. Drift in them is age, not

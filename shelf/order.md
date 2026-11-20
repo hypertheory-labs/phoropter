@@ -43,3 +43,5 @@ shelf. The seeds keep their names, because landed plans cite them by name.
 21. **`tests.md`:** tests grounded in plans: an Answered entry anchoring the test that
     answered it, and a guess naming a test that could watch it. Maybe only guide
     sentences.
+22. **`trailers.md`:** a `Plan:` trailer and its readers (blame with reasons,
+    unreconciled crossings), landing together. This repository already writes them.

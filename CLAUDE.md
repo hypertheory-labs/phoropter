@@ -57,6 +57,9 @@ pace with the work, not coverage.
   package imports phoropter's own. It keeps a ledger of every place it had to read past
   the profile. Its gaps are phoropter's to close. A session working
   in `tui/` reads `tui/CLAUDE.md`. Its plans are in `plans/` with everyone's.
+- **`Plan:` trailers** (from 2026-11-20): a commit doing a plan's work ends with
+  `Plan: plans/<file>.md` above the co-author line; the plan's own commit and its
+  as-built's too. Nothing reads them yet (`shelf/trailers.md`); they're data first.
 - **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it
   short and true for the next session.
 - **The command** (batik): `phoropter` in any repository serves it (port 4173, or the
