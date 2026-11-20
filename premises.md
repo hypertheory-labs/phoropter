@@ -55,8 +55,3 @@ conversation, not an edit.
 - **A name says whom to ask, not who may change it.**
 - **A file is reached from a plan.** A file no plan leads to is a finding: nobody wrote
   down why it's that way.
-
-## Held loosely
-
-Candidates that aren't ground yet: written down so they can be argued with, and moved
-up once they've held. None at the moment.
