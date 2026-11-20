@@ -103,6 +103,11 @@ kind (Decisions, Declines, open guesses), `+` adds what you're on to one, and `e
 one in your editor. A lens can be pasted into a ticket or a message as is. A built site never has lenses: they're a way
 of reading the plans, not part of them.
 
+**What bears on a file or a change:** `phoropter affected <file>…` lists every plan
+entry anchored in those files, symbol anchors included, and `phoropter affected --since
+main` lists the entries your change touches, uncommitted edits included. It prints a
+lens, oldest plan first; `--out drafts/lenses/<name>.md` saves it.
+
 **Symbol anchors:** `phoropter symbols <file>` lists a file's symbols, ready to paste
 into a plan's `where:`. When plans anchor symbols, run `phoropter index` and commit
 `.phoropter/index/`. Then the plans' anchors still resolve after the toolchain that could

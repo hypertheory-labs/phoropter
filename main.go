@@ -7,6 +7,7 @@
 //	phoropter index [path] [--at <commit>]               commit the indexes plans need
 //	phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
 //	phoropter symbols <file> [--scheme <scheme>]         list a file's symbols, for a plan's where:
+//	phoropter affected <file>… | --since <ref> [--out f]  the plan entries anchored there, as a lens
 //	phoropter url [path]                                 print where phoropter is serving this repository
 //	phoropter indexers                                   list the indexers this machine has
 //	phoropter guide                                      print the plan format's guide
@@ -57,6 +58,8 @@ const usage = `usage:
   phoropter index [path] [--at <commit>]               commit the indexes plans need into .phoropter/index/
   phoropter index --check <program or indexer dir>     check an indexer against indexers/README.md
   phoropter symbols <file> [--scheme <scheme>]         list a file's symbols, ready for a plan's where:
+  phoropter affected <file>… [--out lens.md]           list the plan entries anchored in those files, as a lens
+  phoropter affected --since <ref> [--out lens.md]     list the entries a change since <ref> touches, uncommitted edits included
   phoropter url [path]                                 print the address phoropter is serving this repository at
   phoropter indexers                                   list the indexers this machine has, and where they were found
   phoropter guide                                      print the guide to writing plans (no server needed)
@@ -68,7 +71,7 @@ func main() {
 	command := "serve"
 	if len(args) > 0 {
 		switch args[0] {
-		case "init", "doctor", "build", "index", "url", "symbols", "ui", "indexers", "guide", "help", "-h", "--help":
+		case "init", "doctor", "build", "index", "url", "symbols", "affected", "ui", "indexers", "guide", "help", "-h", "--help":
 			command, args = args[0], args[1:]
 		}
 	}
@@ -95,6 +98,7 @@ func main() {
 	out := fs.String("out", "", "output directory")
 	check := fs.String("check", "", "indexer to check")
 	scheme := fs.String("scheme", "", "scheme for symbols")
+	since := fs.String("since", "", "the ref a change started from, for affected")
 	fs.Usage = func() { fmt.Fprintln(os.Stderr, usage) }
 	positionals := parseInterleaved(fs, args)
 	portSet := false
@@ -110,6 +114,14 @@ func main() {
 			fail("symbols needs a file")
 		}
 		target, positionals = positionals[0], positionals[1:]
+	}
+	var files []string
+	if command == "affected" {
+		// Every positional is a file; the repository is the one you're in.
+		if len(positionals) == 0 && *since == "" {
+			fail("affected needs a file, or --since <ref>")
+		}
+		files, positionals = positionals, nil
 	}
 	start, _ := os.Getwd()
 	if len(positionals) > 0 {
@@ -172,6 +184,8 @@ func main() {
 	}
 
 	switch {
+	case command == "affected":
+		affected(repo, root, files, *since, *at, *out, store)
 	case command == "symbols":
 		symbols(repo, root, target, *at, *scheme)
 	case command == "index" && *check != "":
@@ -682,4 +696,63 @@ func abs(p string) string {
 func fail(message string) {
 	fmt.Fprintln(os.Stderr, "phoropter:", message)
 	os.Exit(1)
+}
+
+// affected prints, or writes to out, the entries anchored in files, or on
+// lines changed since a ref, as a lens (chambray). It's a snapshot, yours to
+// prune.
+func affected(repo *site.Repo, root string, files []string, since, at, out string, store *site.Store) {
+	var touches func(string, [][2]int) bool
+	var title, intro, none string
+	if since != "" {
+		changed, base, err := site.ChangedSince(repo, since)
+		if err != nil {
+			fail(err.Error())
+		}
+		at = base
+		touches = changed.Touches
+		title = "Affected since " + since
+		intro = fmt.Sprintf("The plan entries anchored on lines changed since `%s` (from `%s`, where this left it, to the working tree), read at `%s`.", since, repo.Short(base), repo.Short(base))
+		none = fmt.Sprintf("Nothing changed since %s (from %s) is where a plan entry is anchored.", since, repo.Short(base))
+	} else {
+		var rel []string
+		for _, f := range files {
+			r, err := filepath.Rel(root, abs(f))
+			if err != nil || strings.HasPrefix(r, "..") {
+				fail(fmt.Sprintf("%s isn't in %s", f, root))
+			}
+			rel = append(rel, filepath.ToSlash(r))
+		}
+		touches = site.InFiles(rel)
+		title = "Affected: " + strings.Join(rel, ", ")
+		intro = fmt.Sprintf("The plan entries anchored in %s, read at `%s`.", strings.Join(rel, ", "), repo.Short(repo.Resolve(at)))
+		none = fmt.Sprintf("No plan entry is anchored in %s at %s.", strings.Join(rel, ", "), repo.Short(repo.Resolve(at)))
+	}
+	s, err := site.BuildSite(repo, at, store)
+	if err != nil {
+		fail(err.Error())
+	}
+	hits := site.Affected(s, touches)
+	if len(hits) == 0 {
+		fmt.Fprintln(os.Stderr, none)
+		return
+	}
+	var b strings.Builder
+	fmt.Fprintf(&b, "---\nrepository: %s\n---\n\n# %s\n\n%s\n\n", site.FirstCommit(repo), title, intro)
+	for _, h := range hits {
+		b.WriteString(site.LensLine(h) + "\n")
+	}
+	if out == "" {
+		fmt.Print(b.String())
+		return
+	}
+	f, err := os.OpenFile(out, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+	if err != nil {
+		fail(fmt.Sprintf("couldn't write %s: %v (it never replaces a file)", out, err))
+	}
+	defer f.Close()
+	if _, err := f.WriteString(b.String()); err != nil {
+		fail(err.Error())
+	}
+	fmt.Fprintf(os.Stderr, "Wrote %s: %s.\n", out, map[bool]string{true: "1 entry", false: fmt.Sprintf("%d entries", len(hits))}[len(hits) == 1])
 }

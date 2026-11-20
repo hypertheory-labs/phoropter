@@ -60,6 +60,9 @@ pace with the work, not coverage.
 - **`Plan:` trailers** (from 2026-11-20): a commit doing a plan's work ends with
   `Plan: plans/<file>.md` above the co-author line; the plan's own commit and its
   as-built's too. Nothing reads them yet (`shelf/trailers.md`); they're data first.
+- **Before editing a file, run `phoropter affected <file>`** (chambray), not grep: it
+  finds symbol anchors too, and prints the entries as a lens. Before committing,
+  `phoropter affected --since HEAD` lists the entries the change touches.
 - **Claude commits; Jeff pushes.** This file is Claude's: Jeff doesn't edit it. Keep it
   short and true for the next session.
 - **The command** (batik): `phoropter` in any repository serves it (port 4173, or the
