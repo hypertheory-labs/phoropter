@@ -43,6 +43,11 @@ conversation, not an edit.
   says what something means gets taken at face value and closes off other readings. The
   intelligence at the point of contact, a person or an agent, may ask things nobody here
   imagined, if the output hands it commits and plans, not conclusions.
+- **Altitude needs material at that altitude.** With only code, an honest answer stays
+  at the code: every call site, accurate and beside the point, Borges's map the size of
+  the empire ("too right isn't helpful", Jeff). Anything higher is invented from the
+  code. Plans are true material higher up, so a person or an agent can answer from a
+  distance ("here are the plans about our Redis") and come down to the code when asked.
 - **History is evidence; plans are the reading.** Commits, blame and diffs support
   understanding how the code changed over time, but they aren't the main way to read
   it, so the log can be as messy as the work was.
