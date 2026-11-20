@@ -36,6 +36,8 @@ Still open:
   anything without a plan is told to make a first commit without one. If it moves, the
   likely shape is a first plan with no `base:`, so the plan itself can be the first
   commit; that's a format change, so a guide change too.
+  Jeff's other shape: a `phoropter new` that scaffolds, runs `git init`, and makes the
+  first commit. Wait for something elegant to emerge.
 - **A stale install.** `go install …@latest` right after a push gave a binary from before
   it (Go's proxy lags), and nothing told the newcomer. `GOPROXY=direct` fixed it. Maybe
   `doctor` says its own version, or compares it with the latest.
