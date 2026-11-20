@@ -62,7 +62,7 @@ pace with the work, not coverage.
 - **The command** (batik): `phoropter` in any repository serves it (port 4173, or the
   next free one; `phoropter url` prints where), `phoropter build` writes the static
   site, `phoropter index` writes the indexes plans need into `.phoropter/index/`, to commit, and
-  `phoropter ui` opens the TUI. Served at HEAD, it follows HEAD; at a terminal it has a
+  `phoropter ui` opens the TUI. Served at HEAD, it follows HEAD, and when HEAD can't be built every page says so (taffeta); at a terminal it has a
   key menu (`h` + enter), and in the background it reads nothing (poplin).
   `phoropter init` writes a repository's first plan, "How we work here", as a draft from
   `init.md` (muslin), in a new repository's form when it has few commits and files (gingham). `phoropter guide` prints the guide with no server, `phoropter
