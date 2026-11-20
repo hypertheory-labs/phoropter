@@ -26,6 +26,19 @@ conversation, not an edit.
 - **Plans are testimony; tests are present tense.** The plan holds why, and what was
   turned down, frozen. The test holds that it's still true. A test can be blunt because
   its reason is one step away.
+- **Reasons can't be recovered later, only recorded now.** A smarter agent next year
+  will judge better whether a decision still holds, but only against what it was for.
+  We can't know the questions that will be asked; we can keep the reasons while they
+  exist. That's why the Because matters more than the Decision line above it.
+- **The developer mediates between what's believed and what the system does.** "The
+  system won't allow me" is usually a decision whose reason was lost. A plan lets the
+  refusal carry its reason, so someone can ask whether it's still true. When an agent
+  is told what but not why, a reason marked "not asked" shows where the why was
+  invented.
+- **We make things legible; we can't choose the questions.** The same record answers
+  "whose plans don't last?" and "who adapts the system well in transition?" (Jeff).
+  The framing we can offer is that a revisit is the system working, and the warning
+  sign is change that never acknowledged what it undid.
 - **History is evidence; plans are the reading.** Commits, blame and diffs support
   understanding how the code changed over time, but they aren't the main way to read
   it, so the log can be as messy as the work was.
@@ -42,3 +55,8 @@ conversation, not an edit.
 - **A name says whom to ask, not who may change it.**
 - **A file is reached from a plan.** A file no plan leads to is a finding: nobody wrote
   down why it's that way.
+
+## Held loosely
+
+Candidates that aren't ground yet: written down so they can be argued with, and moved
+up once they've held. None at the moment.
