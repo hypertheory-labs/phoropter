@@ -121,3 +121,52 @@ func TestAffectedFindsAnchoredEntries(t *testing.T) {
 		t.Errorf("line 4 changed, found %+v", hits)
 	}
 }
+
+// A quote that's gone says the last of its commits it was found at and the
+// commit that removed it, with that commit's Plan: trailer, and nothing about
+// what that means (madras).
+func TestAGoneQuoteSaysWhatRemovedIt(t *testing.T) {
+	dir := t.TempDir()
+	git := func(args ...string) string {
+		out, err := exec.Command("git", append([]string{"-C", dir, "-c", "user.name=t", "-c", "user.email=t@t"}, args...)...).CombinedOutput()
+		if err != nil {
+			t.Fatal(string(out))
+		}
+		return strings.TrimSpace(string(out))
+	}
+	write := func(name, text string) {
+		os.MkdirAll(filepath.Dir(filepath.Join(dir, name)), 0o755)
+		os.WriteFile(filepath.Join(dir, name), []byte(text), 0o644)
+	}
+	git("init", "-q")
+	write("a.txt", "one\nfour\n")
+	git("add", ".")
+	git("commit", "-q", "-m", "code")
+	base := git("rev-parse", "--short", "HEAD")
+	write("plans/2026-01-01-alpha.md", "---\nbase: "+base+"\n---\n\n# Alpha\n\n## Decision: Four stays four\n- where: `a.txt`\n- quote: `four`\n\n**Because (t):** it is.\n")
+	git("add", ".")
+	git("commit", "-q", "-m", "plan")
+	write("a.txt", "one\nFIVE\n")
+	git("commit", "-q", "-am", "beta: four becomes five\n\nPlan: plans/2026-01-02-beta.md")
+	removed := git("rev-parse", "--short", "HEAD")
+	repo := &Repo{Dir: dir}
+	s, err := BuildSite(repo, "HEAD", NewStore(repo, t.TempDir(), nil))
+	if err != nil {
+		t.Fatal(err)
+	}
+	hits := Affected(s, InFiles([]string{"a.txt"}))
+	if len(hits) != 1 {
+		t.Fatalf("hits: %+v", hits)
+	}
+	line := LensLine(hits[0])
+	for _, want := range []string{"last found at `" + base + "`", "removed in `" + removed + "`", "“beta: four becomes five”", "Plan: plans/2026-01-02-beta.md"} {
+		if !strings.Contains(line, want) {
+			t.Errorf("%q lacks %q", line, want)
+		}
+	}
+	for _, verdict := range []string{"drift", "own work", "reconciled"} {
+		if strings.Contains(line, verdict) {
+			t.Errorf("%q says what it means (%q)", line, verdict)
+		}
+	}
+}

@@ -17,6 +17,10 @@ type Hit struct {
 	File  string // where it's anchored, at the site's generated commit
 	Line  int    // its first line there, or 0 when it's the whole file
 	Gone  bool   // its quote isn't found there: about the file, on no lines of it
+	// For a quote that's gone (madras): the last of its own commits it was
+	// found at, and the newest commit since then that changed its count in
+	// the file, with that commit's subject and Plan: trailer. Facts only.
+	LastFound, Removed, RemovedSubject, RemovedPlan string
 }
 
 // span is what an anchor covers at the generated commit: a file, and its
@@ -31,16 +35,7 @@ type span struct {
 // commit. A symbol covers its definition; a quote found in a file covers its
 // matched lines; anything else covers the whole file.
 func anchoredSpan(place *Place, ref PlaceRef) span {
-	var gen *View
-	for _, ra := range ref.Entry.Resolved {
-		if ra.Place == place && ra.Anchor == ref.Anchor {
-			for _, v := range ra.Views {
-				if v.Role == "generated" {
-					gen = v
-				}
-			}
-		}
-	}
+	gen, _ := views(place, ref)
 	switch {
 	case place.Kind == "symbol" && gen != nil && gen.File != "" && gen.StartLine > 0:
 		return span{gen.File, [][2]int{{gen.StartLine, gen.EndLine}}}
@@ -63,6 +58,43 @@ func anchoredSpan(place *Place, ref PlaceRef) span {
 	return span{file: place.Full}
 }
 
+// views are ref's anchor at place at the generated commit, and the last of
+// its own commits (as-built head, then base) where its quote was found.
+func views(place *Place, ref PlaceRef) (gen, last *View) {
+	for _, ra := range ref.Entry.Resolved {
+		if ra.Place != place || ra.Anchor != ref.Anchor {
+			continue
+		}
+		for _, v := range ra.Views {
+			switch {
+			case v.Role == "generated":
+				gen = v
+			case v.Status == "found" && (last == nil || v.Role == "as-built head"):
+				last = v
+			}
+		}
+	}
+	return gen, last
+}
+
+// removedBy is the newest commit after since, up to at, that changed how
+// often quote occurs in file: git's pickaxe. Empty when it finds none.
+func removedBy(r *Repo, quote, since, at, file string) (sha, subject, plan string) {
+	out, err := r.git("log", "-S"+quote, "--format=%h%x1f%s%x1f%(trailers:key=Plan,valueonly,separator=%x2C )%x1e", since+".."+at, "--", file)
+	if err != nil {
+		return "", "", ""
+	}
+	first, _, _ := strings.Cut(out, "\x1e")
+	f := strings.Split(strings.TrimSpace(first), "\x1f")
+	if len(f) < 2 {
+		return "", "", ""
+	}
+	if len(f) > 2 {
+		plan = strings.TrimSpace(f[2])
+	}
+	return f[0], f[1], plan
+}
+
 // Affected lists the entries anchored where touches says yes, oldest plan
 // first, each entry once. touches gets a file and the lines an anchor covers
 // there (nil for the whole file).
@@ -81,6 +113,12 @@ func Affected(s *Site, touches func(file string, lines [][2]int) bool) []Hit {
 				h.Line = sp.lines[0][0]
 			}
 			h.Gone = sp.lines != nil && len(sp.lines) == 0
+			if h.Gone && s.Context != nil {
+				if _, last := views(place, ref); last != nil {
+					h.LastFound = last.Short
+					h.Removed, h.RemovedSubject, h.RemovedPlan = removedBy(s.Context.Repo, ref.Anchor.Quote, last.SHA, s.Generated.SHA, sp.file)
+				}
+			}
 			hits = append(hits, h)
 		}
 	}
@@ -211,7 +249,19 @@ func LensLine(h Hit) string {
 		where = fmt.Sprintf("%s:%d", h.File, h.Line)
 	}
 	if h.Gone {
-		return fmt.Sprintf("- %s — %s, at `%s`, though its quote isn't found there now", wrapSpan(h.Doc.File+" › "+h.Entry.Title), strings.ToLower(h.Entry.Kind), where)
+		// Commits and subjects, never what they mean (madras).
+		note := "its quote isn't found there now"
+		if h.LastFound != "" {
+			note = fmt.Sprintf("its quote was last found at `%s`", h.LastFound)
+		}
+		if h.Removed != "" {
+			note += fmt.Sprintf(", and removed in `%s` (“%s”", h.Removed, h.RemovedSubject)
+			if h.RemovedPlan != "" {
+				note += ", Plan: " + h.RemovedPlan
+			}
+			note += ")"
+		}
+		return fmt.Sprintf("- %s — %s, at `%s`; %s", wrapSpan(h.Doc.File+" › "+h.Entry.Title), strings.ToLower(h.Entry.Kind), where, note)
 	}
 	return fmt.Sprintf("- %s — %s, at `%s`", wrapSpan(h.Doc.File+" › "+h.Entry.Title), strings.ToLower(h.Entry.Kind), where)
 }
