@@ -5,6 +5,8 @@ an agent read code through the plans that shaped it. The thinking happens in
 `~/Projects/aide`; this repo is the product. The point is Jeff's understanding keeping
 pace with the work, not coverage.
 
+- **Premises:** `premises.md` is the ground this project lives in (Jeff's word, both
+  senses). Read it at the start of a session; changing one is a conversation first.
 - **Plans:** `plans/YYYY-MM-DD-<name>.md`, committed before the work and never edited
   after. Phoropter owns the format, and `guide.md` states it; every site serves it at
   `guide/`. Read it before writing a plan or changing how phoropter reads them. A

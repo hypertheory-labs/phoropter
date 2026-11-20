@@ -40,3 +40,6 @@ shelf. The seeds keep their names, because landed plans cite them by name.
    context. Waits for a question that needs it.
 20. **`home-page.md`:** the home page is getting long (Jeff). Grouping before
     paginating, and what the agent reads.
+21. **`tests.md`:** tests grounded in plans: an Answered entry anchoring the test that
+    answered it, and a guess naming a test that could watch it. Maybe only guide
+    sentences.
