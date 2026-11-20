@@ -46,6 +46,14 @@ conversation, not an edit.
 - **History is evidence; plans are the reading.** Commits, blame and diffs support
   understanding how the code changed over time, but they aren't the main way to read
   it, so the log can be as messy as the work was.
+- **A plan is enough to start, not a contract to finish.** It's written to be acted
+  on and learned from: departing from it is recorded in the as-built, not punished, and
+  what the work teaches can become the next plan the same afternoon. Nothing approves a
+  plan, and nothing measures how closely work followed one. If a plan reads as
+  approval or as a small waterfall, it's being used against its grain.
+- **Readers are disposable; the format and the profile last.** The TUI, the dev
+  server's pages, an editor extension: each reads the published pages and can be
+  rewritten from scratch, starting from its plans and the gaps it found, not its code.
 - **Change your mind in a new plan.** What was believed then stays readable.
 - **Specimens are ephemeral.** Drafts, lenses, polads and carts gather and propose, then
   get thrown away once something durable holds what mattered. Drift in them is age, not

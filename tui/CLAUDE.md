@@ -8,6 +8,9 @@ where its API is thin. It came into this repository with its history (dowlas: th
 moves in, as `tui/`). This file is Claude's; Jeff doesn't edit it. Keep it short and
 true.
 
+- **A rewrite is expected, about yearly** (Jeff, 2026-11-20). Keep what a rewrite
+  starts from: the profile, the ledger, and the TUI's plans. The code is the part that
+  gets thrown away (`premises.md`: readers are disposable).
 - **The boundary: the TUI reads only what phoropter serves.** It's tested against
   served or built pages. It never reads `src/`, and never imports or shells out to
   phoropter's code beyond running its dev server. The public API is the boundary, not
