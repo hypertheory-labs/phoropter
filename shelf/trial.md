@@ -30,8 +30,12 @@ unpushed history to fix the anchor, reasoning from the rule's purpose ("nobody's
 anchors move underneath them, because there was nobody").
 
 Still open:
-- **The pasted pointer kept `init`'s indentation**, so in AGENTS.md its paragraph is a
-  Markdown code block. `init` could print the pointer flush left, between rules.
+- **`init` needs a commit first.** In the VM, `git init` then `phoropter init` refused:
+  a plan's `base:` is a commit, and there wasn't one. Minor, and maybe it stays (Jeff,
+  2026-11-20). The cost lands on the person most bought in: the one who won't do
+  anything without a plan is told to make a first commit without one. If it moves, the
+  likely shape is a first plan with no `base:`, so the plan itself can be the first
+  commit; that's a format change, so a guide change too.
 - **A stale install.** `go install …@latest` right after a push gave a binary from before
   it (Go's proxy lags), and nothing told the newcomer. `GOPROXY=direct` fixed it. Maybe
   `doctor` says its own version, or compares it with the latest.
