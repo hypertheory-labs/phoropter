@@ -63,6 +63,13 @@ judgments; phoropter can show them side by side and leave the reading. Topic len
 replace tags (`premises.md`); a demonstration is `drafts/lenses/windows.md`, where one
 entry grep missed (nainsook's `clip`) was found by asking what a Windows user would hit.
 
+**Lenses stay ephemeral** (Jeff, then Claude, 2026-11-20). A stored old lens would pull
+the present toward staying true to it. A past lens can be rebuilt from the plans at that
+commit, so it's derived, never stored. What a lens's notes worked out, if it matters, is
+restated into a plan on purpose. Comparing then and now shows which reasons have
+expired; a decision whose reason belonged to its moment ("a hack") is what that
+comparison finds, and a revisit is what follows.
+
 The lines that set the limits, kept because they're Jeff's:
 - "If this starts to feel too much like a tracking/todo-list tool, developers will
   revolt." A lens has no state: no open or done, no date, no owner.
