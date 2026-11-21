@@ -24,3 +24,17 @@ persistent lens would be a photograph. What persists is the prescription, the
 conditions written in the plans, and the lens is ground fresh from it when asked
 ("which entries hold while we can't use Redis?"). `Holds while:` lines are what
 would make that lens findable by more than meaning.
+
+Same day, the many-reasons version (Jeff, then Claude): a stance many plans rest on
+("we're AWS-first, for the Amazon relationship") wants re-evaluating as a whole when it
+moves. Not a lens that plans get added to (maintained, so it drifts) and not a new kind
+of ambient plan (a plan from three years ago isn't present). Loom's venues already hold
+the stance in the present tense, edited when it changes, with a reason and a date
+(https://loom.hypertheory-labs.dev/bedrock/venues/). What a venue lacks is the link
+back, and phoropter has it: a plan whose decision rests on the stance anchors the
+document that holds it, as a file (narrowed with `›`), and that file's page lists every
+entry anchored there, the re-evaluation worklist, never maintained. Phoropter needs
+nothing new and names no `.loom` path: where a team keeps its stances is its own
+business. At most a guide sentence: "when a decision rests on a standing choice your
+team records somewhere, anchor that document." `Holds while:` is one reason's
+condition; an anchor to a stance is a condition many share.
