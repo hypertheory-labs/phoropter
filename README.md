@@ -58,7 +58,9 @@ port), and prints the address. `phoropter url` prints it again, from anywhere in
 repository. As commits land, the site follows `HEAD`. In a terminal, `h` + enter lists
 keys to rebuild, open the browser, print the address, or quit. Usually your agent runs
 it, in the background, and one server lasts the session. With no plans yet, the home
-page says how to start.
+page says how to start. After that it's short on purpose, since an agent reads it
+first: the recent plans, the open guesses, and the ways in. Every plan is at `plans/`,
+and every anchored file and symbol at `files/` and `symbols/`.
 
 A day's loop:
 

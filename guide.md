@@ -265,6 +265,12 @@ and `files/` and `symbols/` every place plans anchor. Each place lists the plans
 touch it, newest first. The [profile](../profile/) defines every link relation and microdata
 property, so an agent can read the same pages a person does.
 
+The same question works without a server. `phoropter affected <file>` lists every entry
+anchored in a file, symbol anchors included, which a search of `plans/` for its name
+misses. `phoropter affected --since <ref>` lists the entries a change touches,
+uncommitted edits included. Both print a lens, so the list can be pruned, annotated, or
+saved to `drafts/lenses/`.
+
 ## Where these rules came from
 
 Each rule here was decided in a plan, and those plans hold the reasons in full. They're
