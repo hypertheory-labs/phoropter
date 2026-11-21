@@ -28,7 +28,7 @@ at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><cod
 <dt>File</dt><dd><code itemprop="file">plans/2026-10-30-sorrel.as-built.md</code></dd>
 
 </dl>
-<div class="intro" itemprop="intro"><p>Nothing departed from the plan, so there&#39;s no <code>Changed:</code>. The code is one commit
+<div class="intro" itemprop="intro"><p>Nothing departed from the plan, so there's no <code>Changed:</code>. The code is one commit
 rather than several, because revisits and entry anchors share the same restructuring
 of <code>site.ts</code>.</p>
 </div>
@@ -75,13 +75,13 @@ of <code>site.ts</code>.</p>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> entries used to be built and resolved in one pass,
-plan by plan. Tallow anchors pumice, which comes earlier, but tallow&#39;s as-built anchors
-vellum&#39;s, which comes later, so one pass can&#39;t see it. Two passes: make every entry,
+plan by plan. Tallow anchors pumice, which comes earlier, but tallow's as-built anchors
+vellum's, which comes later, so one pass can't see it. Two passes: make every entry,
 then resolve the anchors.</p>
 </div>
 </section>
 <section class="entry" id="an-entry-anchor-s-link-is-the-target-property-apart-from-place" itemprop="entry" itemscope>
-<h2><a class="self" href="#an-entry-anchor-s-link-is-the-target-property-apart-from-place"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">An entry anchor&#39;s link is the <code>target</code> property, apart from <code>place</code></span></a></h2>
+<h2><a class="self" href="#an-entry-anchor-s-link-is-the-target-property-apart-from-place"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">An entry anchor's link is the <code>target</code> property, apart from <code>place</code></span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -123,8 +123,8 @@ then resolve the anchors.</p>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the rel is shared, as the plan says, but the microdata
-property says what&#39;s at the far end. <code>place</code> is a symbol or file page and <code>target</code> is
-another plan&#39;s entry, or a whole plan. An agent can follow <code>anchored-at</code> without
+property says what's at the far end. <code>place</code> is a symbol or file page and <code>target</code> is
+another plan's entry, or a whole plan. An agent can follow <code>anchored-at</code> without
 caring, or ask for one kind.</p>
 </div>
 </section>
@@ -172,8 +172,8 @@ caring, or ask for one kind.</p>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan said the search stays inside the entry. The
 entry runs from its <code>## Kind: title</code> line to the next <code>##</code>, with trailing blank lines
-dropped. It&#39;s shown whole, not as 3 lines of context, because an entry is short and its
-heading tells the reader which entry this is. For grommet&#39;s quote of lanyard, that&#39;s
+dropped. It's shown whole, not as 3 lines of context, because an entry is short and its
+heading tells the reader which entry this is. For grommet's quote of lanyard, that's
 lines 34 to 40, with line 39 highlighted.</p>
 </div>
 </section>
@@ -183,7 +183,7 @@ lines 34 to 40, with line 39 highlighted.</p>
 
 
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan gave entries an &quot;Anchored by&quot; line and said
-nothing about whole plans. The only such anchor is bodkin&#39;s, which is cross-repo from
+nothing about whole plans. The only such anchor is bodkin's, which is cross-repo from
 aide, so nothing here would exercise a back-link. It waits for an anchor that needs it.</p>
 </div>
 </section>
@@ -236,9 +236,9 @@ that contains backticks is a format question, and it belongs to aide.</p>
 
 
 <div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> held, on ten of ten: three in mock-control at <code>f02528f</code>, seven
-in aide at <code>248a2a5</code>. One of the ten matched only because phoropter&#39;s code-span
-unwrapping is lenient. Awl&#39;s anchor at grommet wraps a title containing backticks in
-single backticks, which CommonMark would split at the first inner backtick. That&#39;s the
+in aide at <code>248a2a5</code>. One of the ten matched only because phoropter's code-span
+unwrapping is lenient. Awl's anchor at grommet wraps a title containing backticks in
+single backticks, which CommonMark would split at the first inner backtick. That's the
 &quot;backticks written differently&quot; case in this guess, caught by the reader rather than
 the writer. If the unwrapping is ever made strict, that anchor stops matching.</p>
 </div>

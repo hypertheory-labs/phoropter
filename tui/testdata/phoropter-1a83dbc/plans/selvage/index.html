@@ -98,14 +98,14 @@ the rels and microdata are now a public API. The rest of the brief is on the she
 <span class="line">${code}</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> &quot;where in this excerpt is the quote?&quot; is answered
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui's brief</span>):</strong> &quot;where in this excerpt is the quote?&quot; is answered
 today only by a <code>&lt;mark&gt;</code> and a note that says &quot;quote at line 94&quot; in prose: 28 views in
 mock-control, 74 in phoropter. Each match becomes a <code>match</code> item with <code>startLine</code> and
 <code>endLine</code>, one per match, since <code>matches</code> can be more than 1. The note stays, for people.</p>
 </div>
 </section>
 <section class="entry" id="each-excerpt-s-first-line-is-a-property-beside-it" itemprop="entry" itemscope>
-<h2><a class="self" href="#each-excerpt-s-first-line-is-a-property-beside-it"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Each excerpt&#39;s first line is a property beside it</span></a></h2>
+<h2><a class="self" href="#each-excerpt-s-first-line-is-a-property-beside-it"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Each excerpt's first line is a property beside it</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -163,8 +163,8 @@ mock-control, 74 in phoropter. Each match becomes a <code>match</code> item with
 <span class="line">function layout(site: Site, here: string, title: string, main: string, header?: string): Page {</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief, then Claude, not asked</span>):</strong> a reader numbering an
-excerpt&#39;s lines needs where it starts, and <code>data-start</code> and <code>span.ln</code> aren&#39;t in the
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui's brief, then Claude, not asked</span>):</strong> a reader numbering an
+excerpt's lines needs where it starts, and <code>data-start</code> and <code>span.ln</code> aren't in the
 profile. A <code>codeStart</code> property, just before each <code>code</code> it describes. Microdata keeps
 properties in document order, so the nth <code>codeStart</code> belongs to the nth <code>code</code>, and the
 profile says so.</p>
@@ -175,7 +175,7 @@ profile says so.</p>
 
 
 
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it&#39;s the cleaner shape, but <code>code</code> would stop being a
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it's the cleaner shape, but <code>code</code> would stop being a
 property of the view and of the place, and phoropter-tui reads it there. The paired
 property gets the same information out without moving anything a reader already uses.</p>
 </div>
@@ -227,8 +227,8 @@ property gets the same information out without moving anything a reader already 
 
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> &quot;which plans are done, and which revisit something?&quot;
-shouldn&#39;t need opening each plan. The plan page already has <code>rel=&quot;as-built&quot; itemprop=&quot;asBuilt&quot;</code> and <code>rel=&quot;revisits&quot; itemprop=&quot;revisits&quot;</code>; the home list gets the
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui's brief</span>):</strong> &quot;which plans are done, and which revisit something?&quot;
+shouldn't need opening each plan. The plan page already has <code>rel=&quot;as-built&quot; itemprop=&quot;asBuilt&quot;</code> and <code>rel=&quot;revisits&quot; itemprop=&quot;revisits&quot;</code>; the home list gets the
 same. &quot;9 entries&quot; gets <code>entryCount</code>, on plans and places both.</p>
 </div>
 </section>
@@ -279,8 +279,8 @@ same. &quot;9 entries&quot; gets <code>entryCount</code>, on plans and places bo
 
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief</span>):</strong> on an anchor it&#39;s <code>&lt;meta content=&quot;true&quot;&gt;</code>, on a
-place page&#39;s item it&#39;s the text &quot;new&quot;. Both become the meta, with &quot;new&quot; still shown on
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui's brief</span>):</strong> on an anchor it's <code>&lt;meta content=&quot;true&quot;&gt;</code>, on a
+place page's item it's the text &quot;new&quot;. Both become the meta, with &quot;new&quot; still shown on
 the place page.</p>
 </div>
 </section>
@@ -343,10 +343,10 @@ the place page.</p>
 <span class="line">function frontmatterRest(fm: Record&lt;string, string&gt;, shown: string[]): string {</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui&#39;s brief, then Claude, not asked</span>):</strong> gimlet&#39;s base is &quot;none, a
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">phoropter-tui's brief, then Claude, not asked</span>):</strong> gimlet's base is &quot;none, a
 new repo&quot;, and the guide now says a squashed <code>head:</code> can stop being a commit. Both are
 written as they are. The profile says a <code>base</code> or <code>head</code> is a <code>&lt;data&gt;</code> with the full sha
-when it&#39;s a commit here, and the text as written otherwise.</p>
+when it's a commit here, and the text as written otherwise.</p>
 </div>
 </section>
 <section class="entry" id="once-phoropter-tui-reads-these-none-of-the-closed-gaps-need-prose-or-class-names" itemprop="entry" itemscope>
@@ -357,7 +357,7 @@ when it&#39;s a commit here, and the text as written otherwise.</p>
 <div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> after phoropter-tui switches to the new properties, any of
 <code>match-line-prose</code>, <code>line-numbers-unprofiled</code>, <code>home-as-built-unmarked</code>,
 <code>home-revisits-unmarked</code>, <code>home-entries-prose</code>, <code>new-two-shapes</code>, or <code>base-not-commit</code>
-still needs a workaround on fixtures rebuilt at this plan&#39;s head.</p>
+still needs a workaround on fixtures rebuilt at this plan's head.</p>
 </div>
 </section>
 </article>

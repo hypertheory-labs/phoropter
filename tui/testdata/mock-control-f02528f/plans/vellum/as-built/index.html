@@ -28,13 +28,13 @@ at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><cod
 <dt>File</dt><dd><code itemprop="file">plans/2026-10-30-vellum.as-built.md</code></dd>
 
 </dl>
-<div class="intro" itemprop="intro"><p>The first as-built in grommet&#39;s kinds (aide <code>plans/2026-10-30-grommet.md</code>). No entry
-departs from the plan, so there&#39;s no <code>Changed:</code>.</p>
+<div class="intro" itemprop="intro"><p>The first as-built in grommet's kinds (aide <code>plans/2026-10-30-grommet.md</code>). No entry
+departs from the plan, so there's no <code>Changed:</code>.</p>
 </div>
 <section class="entry" id="pin-msw-2-in-the-install-step-rather-than-support-msw-3" itemprop="entry" itemscope>
 <h2><a class="self" href="#pin-msw-2-in-the-install-step-rather-than-support-msw-3"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Pin MSW 2 in the install step, rather than support MSW 3</span></a></h2>
 
-<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../../plans/tallow/as-built/#plain-msw-in-the-install-step-undoing-vellum-s-pin">tallow's as-built, Chose: Plain <code>msw</code> in the install step, undoing vellum&#39;s pin</a>.</p>
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../../plans/tallow/as-built/#plain-msw-in-the-install-step-undoing-vellum-s-pin">tallow's as-built, Chose: Plain <code>msw</code> in the install step, undoing vellum's pin</a>.</p>
 <div class="anchor" itemprop="anchor" itemscope>
 
 <p class="where"><span class="label">where</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 1. Install</code> <a rel="anchored-at" itemprop="place" href="../../../files/projects/mock-control/README.md/">file page</a></p>
@@ -67,12 +67,12 @@ departs from the plan, so there&#39;s no <code>Changed:</code>.</p>
 
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured, then Claude, not asked</span>):</strong> step 1&#39;s plain <code>msw</code> installed 3.0.3, now
-npm&#39;s <code>latest</code>. npm allowed it although the package&#39;s peer range is <code>^2.15.0</code>; only
-<code>npm ls</code> called it invalid. Step 4&#39;s <code>worker.start({ onUnhandledRequest })</code> then fails
-to compile. The Requirements already said MSW 2; the command didn&#39;t. Supporting MSW 3
-was the other way out, and I didn&#39;t take it: the README&#39;s known limits were measured
-on 2.15, so a port is its own round with its own measurements, and it should be Jeff&#39;s
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured, then Claude, not asked</span>):</strong> step 1's plain <code>msw</code> installed 3.0.3, now
+npm's <code>latest</code>. npm allowed it although the package's peer range is <code>^2.15.0</code>; only
+<code>npm ls</code> called it invalid. Step 4's <code>worker.start({ onUnhandledRequest })</code> then fails
+to compile. The Requirements already said MSW 2; the command didn't. Supporting MSW 3
+was the other way out, and I didn't take it: the README's known limits were measured
+on 2.15, so a port is its own round with its own measurements, and it should be Jeff's
 call whether the class apps move.</p>
 </div>
 </section>
@@ -119,11 +119,11 @@ call whether the class apps move.</p>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> <code>ng new --style=tailwind</code> sets up Tailwind v4 but not daisyUI,
-and nothing in the README installed it; step 5&#39;s <code>@plugin &#39;daisyui&#39;</code> assumed it.</p>
+and nothing in the README installed it; step 5's <code>@plugin 'daisyui'</code> assumed it.</p>
 </div>
 </section>
 <section class="entry" id="say-the-example-s-catalog-and-findtitle-are-the-reader-s" itemprop="entry" itemscope>
-<h2><a class="self" href="#say-the-example-s-catalog-and-findtitle-are-the-reader-s"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Say the example&#39;s <code>catalog</code> and <code>findTitle</code> are the reader&#39;s</span></a></h2>
+<h2><a class="self" href="#say-the-example-s-catalog-and-findtitle-are-the-reader-s"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">Say the example's <code>catalog</code> and <code>findTitle</code> are the reader's</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -159,11 +159,11 @@ and nothing in the README installed it; step 5&#39;s <code>@plugin &#39;daisyui&
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> copied as written, step 2 fails with two &quot;Cannot find name&quot;
-errors. Most readers would guess they&#39;re placeholders. Saying so costs one line.</p>
+errors. Most readers would guess they're placeholders. Saying so costs one line.</p>
 </div>
 </section>
 <section class="entry" id="tailwind-finds-the-panel-s-classes-through-the-source-line" itemprop="entry" itemscope>
-<h2><a class="self" href="#tailwind-finds-the-panel-s-classes-through-the-source-line"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Tailwind finds the panel&#39;s classes through the <code>@source</code> line</span></a></h2>
+<h2><a class="self" href="#tailwind-finds-the-panel-s-classes-through-the-source-line"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">Tailwind finds the panel's classes through the <code>@source</code> line</span></a></h2>
 <p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/vellum/#tailwind-finds-the-panel-s-classes-through-the-source-line">the plan’s guess</a>: <strong class="verdict verdict-held" itemprop="verdict">held</strong>.</p>
 
 
@@ -173,19 +173,19 @@ errors. Most readers would guess they&#39;re placeholders. Saying so costs one l
 built CSS with the line, and none are without it (121 KB against 28 KB). Repeated in a
 second fresh app following the fixed README. Not checked: how it looks in a browser.
 The CSS is the evidence; nobody has seen the panel render outside this workspace yet.
-This also answers pumice&#39;s guess, and clears what pumice said publishing waits on.</p>
+This also answers pumice's guess, and clears what pumice said publishing waits on.</p>
 </div>
 </section>
 <section class="entry" id="the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say" itemprop="entry" itemscope>
-<h2><a class="self" href="#the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">The README&#39;s setup works without knowing anything it doesn&#39;t say</span></a></h2>
+<h2><a class="self" href="#the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say"><span class="kind kind-answered" itemprop="kind">Answered</span>: <span itemprop="title">The README's setup works without knowing anything it doesn't say</span></a></h2>
 <p class="pair">Answers <a rel="answers" itemprop="answers" href="../../../plans/vellum/#the-readme-s-setup-works-without-knowing-anything-it-doesn-t-say">the plan’s guess</a>: <strong class="verdict verdict-disproved" itemprop="verdict">disproved</strong>.</p>
 
 
 <div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> disproved, at step 1, and twice more. MSW 3 broke step 4,
-daisyUI was never installed, and the handler example didn&#39;t compile as written. Each is
+daisyUI was never installed, and the handler example didn't compile as written. Each is
 fixed in the README, and the fixed steps build in a second fresh app, in development
 and production. One thing I still had to know: <code>ng new --style=tailwind</code>. The README
-now says it, but whether a reader who doesn&#39;t know Angular&#39;s options needs more is a
+now says it, but whether a reader who doesn't know Angular's options needs more is a
 question only a reader can answer.</p>
 </div>
 </section>

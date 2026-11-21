@@ -13,8 +13,9 @@ var profileRels = [][3]string{
 	{`profile`, `registered`, `What do the rels and properties on this page mean? This document.`},
 	{`help`, `registered`, `How are plans written? From every page to the guide, which is the same on every site.`},
 	{`draft`, `phoropter`, `Is a plan being drafted? From every page to <code>draft/</code>, the repository’s one draft, while <code>plan.draft.md</code> exists. Only the dev server adds it; a built site never has a draft.`},
-	{`item`, `registered`, `What does this collection hold? From the home page to each plan and anchored place.`},
-	{`collection`, `registered`, `What is this a member of? From a plan or place to the home page.`},
+	{`item`, `registered`, `What does this collection hold? From a list to each plan or anchored place on it: the home page’s recent plans, and the full lists at <code>plans/</code>, <code>files/</code>, and <code>symbols/</code> (calico).`},
+	{`index`, `registered`, `Where is everything listed? From the home page to the full lists: every plan at <code>plans/</code>, oldest first, and every file and symbol plans point at, at <code>files/</code> and <code>symbols/</code>. The home page lists only recent plans (calico).`},
+	{`collection`, `registered`, `What is this a member of? From a plan, place, or full list to the home page.`},
 	{`up`, `registered`, `What is this part of? From an as-built page to its plan.`},
 	{`as-built`, `phoropter`, `What changed while this plan was being built? From a plan to its as-built file.`},
 	{`anchored-at`, `phoropter`, `Where does this entry point? From an anchor on an entry to the page for its symbol or file, or to another plan’s entry, or to a whole plan.`},
@@ -30,7 +31,7 @@ var profileRels = [][3]string{
 
 var profileProps = [][2]string{
 	{`(header)`, `Every page’s provenance, the item in its <code>&lt;header&gt;</code>: <code>repository</code> and <code>commit</code> (full sha in <code>value</code>).`},
-	{`plan`, `A plan: <code>title</code>, <code>name</code> and <code>date</code> (from its filename), <code>added</code> (the commit that added it, which orders plans), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items. On the home page, a plan has <code>entryCount</code> instead of its entries. When a <code>base</code> (or an as-built’s <code>head</code>) names a commit here, it’s a <code>&lt;data&gt;</code> whose value is the full sha. Otherwise its value is the text as written, like “none, a new repo”, or a commit a squash merge replaced; a missing base is “not given”.`},
+	{`plan`, `A plan: <code>title</code>, <code>name</code> and <code>date</code> (from its filename), <code>added</code> (the commit that added it, which orders plans), <code>cart</code> as written, <code>base</code>, <code>file</code>, <code>intro</code>, <code>asBuilt</code>, <code>revisits</code> and <code>revisitedBy</code> links, and its <code>entry</code> items. In a list, a plan has <code>entryCount</code> instead of its entries. When a <code>base</code> (or an as-built’s <code>head</code>) names a commit here, it’s a <code>&lt;data&gt;</code> whose value is the full sha. Otherwise its value is the text as written, like “none, a new repo”, or a commit a squash merge replaced; a missing base is “not given”.`},
 	{`asBuilt`, `An as-built file: <code>title</code>, <code>plan</code>, <code>head</code>, <code>file</code>, and its <code>entry</code> items.`},
 	{`entry`, `One entry: <code>kind</code> (Decision, Decline, Guess; in an as-built, Changed, Chose, Answered), <code>title</code>, <code>anchor</code> items, <code>reason</code>, <code>source</code> (the parenthesis after <em>Because</em> or <em>Answer</em>, exactly as written), <code>verdict</code> (an answer’s opening word: held, disproved, partly disproved, or not tested; on a guess, inside its <code>answeredBy</code> link’s sentence), <code>answers</code> or <code>answeredBy</code> links, and <code>anchoredBy</code> links from other plans’ entries.`},
 	{`anchor`, `Where an entry points: <code>where</code> as written, <code>quote</code> if any, <code>new</code> (content <code>true</code>) for <code>where (new)</code>, in the same shape wherever it appears, <code>note</code> when it is shown but not resolved, <code>place</code> (a symbol or file page) or <code>target</code> (another plan’s entry, or a whole plan), and one <code>view</code> per commit. An anchor at an entry has no views unless it has a quote, and then one, at the generated commit: plans and landed as-builts don’t change.`},
@@ -44,8 +45,9 @@ var profileProps = [][2]string{
 	{`lensItem`, `One line of a lens: <code>reference</code> as written (<code>plans/&lt;file&gt;.md</code>, or with <code>› &lt;entry title&gt;</code>), <code>note</code> when it has one (what follows the reference on its line, then the indented lines under it, as markdown), and either an <code>entry</code> link (<code>lens-item</code>) with <code>kind</code> (an entry’s, or Plan for a whole plan), <code>title</code>, <code>plan</code>, and for a guess its <code>status</code> (open, meaning unanswered or answered not tested, or its verdict; for an answer, its verdict), or a <code>problem</code> saying why it didn’t resolve.`},
 	{`firstCommit`, `On <code>lenses/</code>: this repository’s root commit, full sha in <code>value</code>, which a lens’s <code>repository</code> names.`},
 	{`stale`, `On every page as the dev server serves it, when HEAD couldn’t be built and the page is from an older commit (taffeta): <code>commit</code> (the HEAD that failed, full sha in <code>value</code>) and <code>error</code>. The header’s <code>commit</code> is still the page’s own. A built site never has it.`},
-	{`noteCount`, `On the home page as the dev server serves it, on a plan with notes in <code>drafts/</code>: how many (tarlatan; organza renamed it from <code>requestCount</code>).`},
-	{`place`, `A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code> with its <code>codeStart</code>, <code>entryCount</code> on the home page, and <code>anchoredBy</code> items.`},
+	{`openGuess`, `On the home page: a guess still open (unanswered, or answered not tested), newest plan first, with <code>url</code> (the entry on its plan’s page), <code>title</code>, and <code>plan</code> (calico).`},
+	{`noteCount`, `In the home page’s and <code>plans/</code>’s lists as the dev server serves them, on a plan with notes in <code>drafts/</code>: how many (tarlatan; organza renamed it from <code>requestCount</code>).`},
+	{`place`, `A symbol or file that plans anchor to: <code>name</code>, <code>kind</code>, <code>symbol</code> or <code>file</code>, a symbol’s whole definition at the generated commit as <code>code</code> with its <code>codeStart</code>, <code>entryCount</code> in a list, and <code>anchoredBy</code> items.`},
 }
 
 func profile(s *Site) Page {
@@ -60,7 +62,7 @@ func profile(s *Site) Page {
 	return layout(s, here, "Profile", fmt.Sprintf(`
 <nav><a href="%s">%s at %s</a></nav>
 <h1>Profile</h1>
-<p>Phoropter’s pages are its API. A person and an agent read the same HTML; structure is in <code>rel</code> links and microdata (items have no <code>itemtype</code>; property names are defined here). The top-level item in each page’s <code>&lt;main&gt;</code> is the plan, as-built, place, or home listing the page is about.</p>
+<p>Phoropter’s pages are its API. A person and an agent read the same HTML; structure is in <code>rel</code> links and microdata (items have no <code>itemtype</code>; property names are defined here). The top-level item in each page’s <code>&lt;main&gt;</code> is the plan, as-built, place, or list the page is about.</p>
 <h2>Link relations</h2>
 <dl class="defs">
 %s

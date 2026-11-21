@@ -235,15 +235,15 @@ func send(w http.ResponseWriter, r *http.Request, typ string, body []byte) {
 // withPlanNotes: built pages don't know about notes on landed plans. On a
 // plan's page, they go after the entries they quote, and notes on the whole
 // plan before the first entry. On the home page, each plan with notes says
-// how many.
+// how many, and so does the full list of plans (calico).
 func (h *handler) withPlanNotes(page, here string) string {
-	if here == "" {
+	if here == "" || here == "plans/" {
 		for _, p := range h.site.Plans {
 			notes, ok := ReadPlanNotes(h.repoDir, p)
 			if !ok {
 				continue
 			}
-			start := strings.Index(page, fmt.Sprintf(`itemprop="url" href="%s"`, p.Href))
+			start := strings.Index(page, fmt.Sprintf(`itemprop="url" href="%s"`, Rel(here, p.Href)))
 			if start == -1 {
 				continue
 			}

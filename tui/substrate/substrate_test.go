@@ -30,6 +30,7 @@ func TestHome(t *testing.T) {
 	for _, p := range h.Plans {
 		names = append(names, p.Name)
 	}
+	// Oldest first, as plans/ lists them; the home page has them newest first (calico).
 	if got := strings.Join(names, " "); got != "pumice vellum ferrule tallow" {
 		t.Errorf("plans = %s", got)
 	}

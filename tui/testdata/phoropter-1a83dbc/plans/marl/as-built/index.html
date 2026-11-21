@@ -19,7 +19,7 @@ at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><cod
 </header>
 <main>
 
-<nav><a rel="up" href="../../../plans/marl/">What an agent can read without reading prose: source, date, and the plan&#39;s own work</a></nav>
+<nav><a rel="up" href="../../../plans/marl/">What an agent can read without reading prose: source, date, and the plan's own work</a></nav>
 <article itemscope>
 <h1 itemprop="title">As built: marl</h1>
 <dl class="facts">
@@ -30,7 +30,7 @@ at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><cod
 </dl>
 <div class="intro" itemprop="intro"><p>The first plan put up as a draft in its cart before being committed. Jeff said &quot;go&quot;
 without annotating, so the plan was the draft with its two open questions turned into
-their fallbacks, labeled as such. Nothing departed from the plan, so there&#39;s no
+their fallbacks, labeled as such. Nothing departed from the plan, so there's no
 <code>Changed:</code>.</p>
 </div>
 <section class="entry" id="the-source-is-wrapped-in-place-inside-the-bold-lead" itemprop="entry" itemscope>
@@ -76,7 +76,7 @@ their fallbacks, labeled as such. Nothing departed from the plan, so there&#39;s
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a person reads &quot;Because (measured):&quot; exactly as before,
-and an agent finds <code>itemprop=&quot;source&quot;</code> holding &quot;measured.&quot; Only a reason&#39;s leading
+and an agent finds <code>itemprop=&quot;source&quot;</code> holding &quot;measured.&quot; Only a reason's leading
 <code>**Because (…):**</code> or <code>**Answer (…):**</code> counts. All 30 in mock-control at <code>f02528f</code> are
 marked.</p>
 </div>
@@ -123,10 +123,10 @@ marked.</p>
 <span class="line">function baseHtml(plan: Plan): string {</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the page is static and can&#39;t know the reader&#39;s
-timezone. The commit&#39;s time is what orders plans that share a date, so it&#39;s shown with
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the page is static and can't know the reader's
+timezone. The commit's time is what orders plans that share a date, so it's shown with
 its zone rather than in a guessed local one. Vellum is 17:23 UTC, which is 13:23 in
-Jeff&#39;s own timezone.</p>
+Jeff's own timezone.</p>
 </div>
 </section>
 <section class="entry" id="a-collapsed-view-keeps-its-status-and-its-commit" itemprop="entry" itemscope>
@@ -172,14 +172,14 @@ Jeff&#39;s own timezone.</p>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan said the generated view collapses to one line.
-It&#39;s still a view, with its role, commit, and status (<code>not-found</code> for tallow&#39;s
+It's still a view, with its role, commit, and status (<code>not-found</code> for tallow's
 Requirements quote), plus <code>sameAs</code> naming the head, and only the code is dropped. An
-agent reading three views gets three answers, and doesn&#39;t have to know a view went
+agent reading three views gets three answers, and doesn't have to know a view went
 missing.</p>
 </div>
 </section>
 <section class="entry" id="a-plan-s-anchors-reuse-the-as-built-s-role-name-as-built-head" itemprop="entry" itemscope>
-<h2><a class="self" href="#a-plan-s-anchors-reuse-the-as-built-s-role-name-as-built-head"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A plan&#39;s anchors reuse the as-built&#39;s role name, &quot;as-built head&quot;</span></a></h2>
+<h2><a class="self" href="#a-plan-s-anchors-reuse-the-as-built-s-role-name-as-built-head"><span class="kind kind-chose" itemprop="kind">Chose</span>: <span itemprop="title">A plan's anchors reuse the as-built's role name, &quot;as-built head&quot;</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -220,10 +220,10 @@ missing.</p>
 <span class="line">      if (d.before &amp;&amp; !commits.some((c) =&gt; c.sha === d.before!.sha)) commits.unshift(d.before);</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it&#39;s the same commit an as-built&#39;s own anchors already
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> it's the same commit an as-built's own anchors already
 call that, so one name means one thing. Pumice gets a third view as well, and it says
-something new: the selector quote is already gone at pumice&#39;s head <code>e92db76</code>, so
-pumice&#39;s own work renamed it, which its plan said it would.</p>
+something new: the selector quote is already gone at pumice's head <code>e92db76</code>, so
+pumice's own work renamed it, which its plan said it would.</p>
 </div>
 </section>
 <section class="entry" id="the-commit-that-added-a-plan-gives-the-order-people-mean" itemprop="entry" itemscope>
@@ -234,8 +234,8 @@ pumice&#39;s own work renamed it, which its plan said it would.</p>
 <div class="reason" itemprop="reason"><p><strong>Answer (<span itemprop="source">measured</span>):</strong> held, in three repos. In mock-control, backfilled pumice still
 sorts first; its file was added at <code>90c65b9</code>, a day after its work, but before any
 other plan. In aide, lanyard, grommet, bodkin, and awl all share a date, and their
-commits order them as they cite each other: bodkin&#39;s base is the commit that added
-grommet. Phoropter&#39;s five plans are in the order they were written. No case yet of a
+commits order them as they cite each other: bodkin's base is the commit that added
+grommet. Phoropter's five plans are in the order they were written. No case yet of a
 plan added later that was decided earlier, which is what would disprove it.</p>
 </div>
 </section>

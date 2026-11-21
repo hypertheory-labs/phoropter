@@ -34,7 +34,7 @@ at <data itemprop="commit" value="f02528f949ffc39b8517916cf2acf2da39abc7b7"><cod
 </dl>
 <div class="intro" itemprop="intro"><p>The class apps used mock-control from source, so installing it from npm had never been
 tried. We set out to make the README a setup guide for an Angular app, settle the
-package&#39;s public surface before the first publish, and find out whether it can stay out
+package's public surface before the first publish, and find out whether it can stay out
 of production builds.</p>
 </div>
 <section class="entry" id="the-readme-is-a-setup-guide-for-an-angular-app" itemprop="entry" itemscope>
@@ -90,9 +90,9 @@ not a promise to users.</p>
 </div>
 </section>
 <section class="entry" id="selectors-use-the-library-s-prefix-mock-panel" itemprop="entry" itemscope>
-<h2><a class="self" href="#selectors-use-the-library-s-prefix-mock-panel"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Selectors use the library&#39;s prefix, <code>mock-panel</code></span></a></h2>
+<h2><a class="self" href="#selectors-use-the-library-s-prefix-mock-panel"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Selectors use the library's prefix, <code>mock-panel</code></span></a></h2>
 
-<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/tallow/#ask-it-in-pumice-s-frame-what-s-cheapest-before-the-first-publish">tallow, Decision: Ask it in pumice&#39;s frame: what&#39;s cheapest before the first publish</a>.</p>
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/tallow/#ask-it-in-pumice-s-frame-what-s-cheapest-before-the-first-publish">tallow, Decision: Ask it in pumice's frame: what's cheapest before the first publish</a>.</p>
 <div class="anchor" itemprop="anchor" itemscope>
 
 <p class="where"><span class="label">where</span> <code itemprop="where">scip-typescript npm @hypertheory-labs/mock-control . src/lib/panel/`mock-panel.ts`/MockPanel#</code> <a rel="anchored-at" itemprop="place" href="../../symbols/projects/mock-control/src/lib/panel/mock-panel.ts/MockPanel/">symbol page</a></p>
@@ -167,13 +167,13 @@ is fine.</p>
 <p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> in a production build of the class app, the panel, store, handlers,
-and MSW land only in lazy chunks behind <code>isDevMode()</code>. They&#39;re emitted but never loaded.
+and MSW land only in lazy chunks behind <code>isDevMode()</code>. They're emitted but never loaded.
 File replacement removes them entirely, but it costs a stub file and <code>angular.json</code>
 changes, which is a lot to ask of a class app.</p>
 </div>
 </section>
 <section class="entry" id="analog-s-vite-plugin-to-keep-mocks-out-of-the-build" itemprop="entry" itemscope>
-<h2><a class="self" href="#analog-s-vite-plugin-to-keep-mocks-out-of-the-build"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Analog&#39;s Vite plugin to keep mocks out of the build</span></a></h2>
+<h2><a class="self" href="#analog-s-vite-plugin-to-keep-mocks-out-of-the-build"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">Analog's Vite plugin to keep mocks out of the build</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -181,11 +181,11 @@ changes, which is a lot to ask of a class app.</p>
 <p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › Leaving it out of the build entirely</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>
 <p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> the CLI&#39;s <code>fileReplacements</code> already does it.</p>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> the CLI's <code>fileReplacements</code> already does it.</p>
 </div>
 </section>
 <section class="entry" id="keep-daisyui-for-now-and-say-it-s-a-stopgap" itemprop="entry" itemscope>
-<h2><a class="self" href="#keep-daisyui-for-now-and-say-it-s-a-stopgap"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Keep daisyUI for now, and say it&#39;s a stopgap</span></a></h2>
+<h2><a class="self" href="#keep-daisyui-for-now-and-say-it-s-a-stopgap"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">Keep daisyUI for now, and say it's a stopgap</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -194,11 +194,11 @@ changes, which is a lot to ask of a class app.</p>
 <p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff</span>):</strong> the panel should get its own CSS, shared with stellar-ng-devtools, so
-both tools look the same and the contrast problems get fixed once. That&#39;s its own round.</p>
+both tools look the same and the contrast problems get fixed once. That's its own round.</p>
 </div>
 </section>
 <section class="entry" id="a-spike-compiling-the-panel-s-css-into-the-package" itemprop="entry" itemscope>
-<h2><a class="self" href="#a-spike-compiling-the-panel-s-css-into-the-package"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A spike compiling the panel&#39;s CSS into the package</span></a></h2>
+<h2><a class="self" href="#a-spike-compiling-the-panel-s-css-into-the-package"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A spike compiling the panel's CSS into the package</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -207,13 +207,13 @@ both tools look the same and the contrast problems get fixed once. That&#39;s it
 <p class="note" itemprop="note">made by the work, so there is nothing to resolve</p>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> with our own CSS coming, the spike would measure something
-we&#39;re about to throw away.</p>
+we're about to throw away.</p>
 </div>
 </section>
 <section class="entry" id="tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules" itemprop="entry" itemscope>
-<h2><a class="self" href="#tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Tailwind finds the panel&#39;s classes through an <code>@source</code> line into node_modules</span></a></h2>
+<h2><a class="self" href="#tailwind-finds-the-panel-s-classes-through-an-source-line-into-node-modules"><span class="kind kind-guess" itemprop="kind">Guess</span>: <span itemprop="title">Tailwind finds the panel's classes through an <code>@source</code> line into node_modules</span></a></h2>
 
-<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/vellum/#tailwind-finds-the-panel-s-classes-through-the-source-line">vellum, Guess: Tailwind finds the panel&#39;s classes through the <code>@source</code> line</a>.</p>
+<p class="pair">Anchored by <a rel="anchored-by" itemprop="anchoredBy" href="../../plans/vellum/#tailwind-finds-the-panel-s-classes-through-the-source-line">vellum, Guess: Tailwind finds the panel's classes through the <code>@source</code> line</a>.</p>
 <div class="anchor" itemprop="anchor" itemscope>
 <meta itemprop="new" content="true">
 <p class="where"><span class="label">where (new)</span> <code itemprop="where">projects/mock-control/README.md › mock-control › Setup › 5. Add the panel, deferred</code> <a rel="anchored-at" itemprop="place" href="../../files/projects/mock-control/README.md/">file page</a></p>

@@ -59,6 +59,13 @@ code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; fo
 }
 
 .meta { color: var(--muted); font-size: 0.875rem; }
+.stale {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid var(--missing);
+  background: var(--mark);
+  font-size: 0.875rem;
+}
 .provenance .links { float: right; }
 .provenance .links a + a { margin-left: 0.75rem; }
 .orientation, .guide { max-width: 46rem; }

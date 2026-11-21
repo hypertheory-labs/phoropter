@@ -162,8 +162,9 @@ type Page struct {
 	Commit     Ref
 	Draft      *Draft
 	AnchorsAt  Ref
-	DraftURL   string // rel="draft"
-	LensesURL  string // rel="lenses", on the dev server
+	DraftURL   string   // rel="draft"
+	LensesURL  string   // rel="lenses", on the dev server
+	IndexURLs  []string // rel="index": the home page's full lists (calico)
 	Main       *microdata.Item
 }
 
@@ -195,6 +196,9 @@ func (c *Client) Page(ref string) (*Page, error) {
 		if slices.Contains(l.Rel, "lenses") {
 			p.LensesURL = l.Href
 		}
+		if slices.Contains(l.Rel, "index") && !slices.Contains(p.IndexURLs, l.Href) {
+			p.IndexURLs = append(p.IndexURLs, l.Href)
+		}
 	}
 	if p.Main == nil {
 		return nil, fmt.Errorf("%s: no item in <main>", u)
@@ -208,7 +212,28 @@ func (c *Client) Home() (*Home, error) {
 		return nil, err
 	}
 	h := &Home{URL: p.URL, Repository: p.Repository, Commit: p.Commit, DraftURL: p.DraftURL, LensesURL: p.LensesURL}
-	for _, it := range p.Main.Items("plan") {
+	// The full lists are behind the home page's index links, whichever is
+	// which (calico). A site built before them lists everything on the home
+	// page itself.
+	lists := []*microdata.Item{p.Main}
+	if len(p.IndexURLs) > 0 {
+		lists = nil
+		for _, u := range p.IndexURLs {
+			l, err := c.Page(u)
+			if err != nil {
+				return nil, err
+			}
+			lists = append(lists, l.Main)
+		}
+	}
+	for _, list := range lists {
+		h.read(list)
+	}
+	return h, nil
+}
+
+func (h *Home) read(list *microdata.Item) {
+	for _, it := range list.Items("plan") {
 		s := PlanSummary{
 			URL:         it.Str("url"),
 			Title:       prose(it.Get("title")),
@@ -223,12 +248,11 @@ func (c *Client) Home() (*Home, error) {
 		s.Entries, _ = strconv.Atoi(it.Str("entryCount"))
 		h.Plans = append(h.Plans, s)
 	}
-	for _, it := range p.Main.Items("place") {
+	for _, it := range list.Items("place") {
 		s := PlaceSummary{URL: it.Str("url"), Name: it.Str("name"), Kind: it.Str("kind")}
 		s.Entries, _ = strconv.Atoi(it.Str("entryCount"))
 		h.Places = append(h.Places, s)
 	}
-	return h, nil
 }
 
 // Doc reads a plan or as-built page.

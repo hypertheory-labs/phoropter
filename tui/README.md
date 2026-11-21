@@ -57,7 +57,9 @@ before the move is in `docs/for-phoropter.md`, superseded by seeds in the root
 `shelf/`.
 
 `testdata/` holds sites built by phoropter (`phoropter build <repo> --at <commit> --out
-…`) from mock-control at `f02528f` and phoropter at `1a83dbc`, both built by phoropter at
-`1a83dbc`, so tests don't need a server. Rebuild them when the profile changes.
+…`) from mock-control at `f02528f` and phoropter at `1a83dbc`, both rebuilt by phoropter with
+calico's full lists (2026-11-21), so tests don't need a server. Rebuild them when the profile changes.
 `mock-control-draft/` is a draft page from phoropter's dev server, and
-`mock-control-draft.source.md` is the draft it was served from.
+`mock-control-draft.source.md` is the draft it was served from. Its home page, and
+`phoropter-lenses/`'s, are from before calico, so they also test reading a home page with
+no `index` links.

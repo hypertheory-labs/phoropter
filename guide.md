@@ -237,7 +237,7 @@ person can always ask for a revisit.
 On a branch, committed notes are how a teammate says "look at my branch, here's what
 I'm thinking about this old plan." Some teams keep a long-lived branch for this kind of
 work. That's a way of working, not a rule. Phoropter's dev server shows a plan's notes
-on its page, after the entries they quote, and counts them on the home page. A built
+on its page, after the entries they quote, and counts them in the lists of plans. A built
 site never shows them.
 
 ## Older plans
@@ -259,9 +259,10 @@ merged, not squashed. Not yet seen in a real repository.
 ## Reading the site
 
 Every page says which repository and commit it was generated from. Served by
-`phoropter`, the site follows HEAD as commits land. The home page lists
-plans oldest first and the places they anchor; each place lists the plans that touch
-it, newest first. The [profile](../profile/) defines every link relation and microdata
+`phoropter`, the site follows HEAD as commits land. The home page has the
+recent plans, the open guesses, and the ways in; `plans/` lists every plan oldest first,
+and `files/` and `symbols/` every place plans anchor. Each place lists the plans that
+touch it, newest first. The [profile](../profile/) defines every link relation and microdata
 property, so an agent can read the same pages a person does.
 
 ## Where these rules came from

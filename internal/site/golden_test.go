@@ -9,11 +9,13 @@ package site
 import (
 	"fmt"
 	"io"
+	"maps"
 	"net/http"
 	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 	"testing"
@@ -116,6 +118,76 @@ func compare(t *testing.T, golden, got map[string]string, skip func(line string)
 	t.Logf("%d pages compared; %d with prose differences", len(golden), proseDiffs)
 }
 
+// lists are the pages that hold, since calico, what the Node version's home
+// page listed: every plan at plans/, every file and symbol at files/ and
+// symbols/.
+var lists = []string{"plans/index.html", "files/index.html", "symbols/index.html"}
+
+// homeMoved is calico's deliberate change to the golden sites: the golden home
+// page's plan and place items are, exactly, the items on Go's three lists.
+// Both home pages and the lists are then left out of the page-by-page
+// comparison, since the golden site has no lists and its home page is gone.
+func homeMoved(t *testing.T, golden, got map[string]string) {
+	t.Helper()
+	g := listed(t, golden["index.html"], "index.html")
+	var h []string
+	for _, rel := range lists {
+		page, ok := got[rel]
+		if !ok {
+			t.Errorf("page %s: not in Go's site", rel)
+			continue
+		}
+		h = append(h, listed(t, page, rel)...)
+	}
+	if d := diff(g, h, nil); d != "" {
+		t.Errorf("the golden home page's items aren't the lists' items:\n%s", d)
+	}
+	delete(golden, "index.html")
+	delete(got, "index.html")
+	for _, rel := range lists {
+		delete(got, rel)
+	}
+}
+
+// listed is each plan and place item on a page, flattened to one line.
+func listed(t *testing.T, page, rel string) []string {
+	root, err := html.Parse(strings.NewReader(page))
+	if err != nil {
+		t.Fatal(err)
+	}
+	base, _ := url.Parse("http://site/" + rel)
+	var out []string
+	for _, it := range microdata.Parse(root, base).Items {
+		for _, name := range []string{"plan", "place"} {
+			for _, v := range it.Props[name] {
+				if v.Item != nil {
+					out = append(out, name+" "+flat(v.Item))
+				}
+			}
+		}
+	}
+	return out
+}
+
+func flat(it *microdata.Item) string {
+	names := make([]string, 0, len(it.Props))
+	for n := range it.Props {
+		names = append(names, n)
+	}
+	sort.Strings(names)
+	var parts []string
+	for _, n := range names {
+		for _, v := range it.Props[n] {
+			if v.Item != nil {
+				parts = append(parts, n+"{"+flat(v.Item)+"}")
+			} else {
+				parts = append(parts, n+"="+microdata.Squash(v.Text))
+			}
+		}
+	}
+	return strings.Join(parts, " ")
+}
+
 func diff(a, b []string, skip func(string) bool) string {
 	count := map[string]int{}
 	for _, l := range a {
@@ -179,11 +251,15 @@ func TestGoldenMockControl(t *testing.T) {
 	if _, err := os.Stat(mockControl); err != nil {
 		t.Skip("no ../mock-control")
 	}
-	compare(t, pagesIn(t, "../../testdata/golden/mock-control-f02528f"), buildGolden(t, mockControl, "f02528f"), nil)
+	golden, got := pagesIn(t, "../../testdata/golden/mock-control-f02528f"), buildGolden(t, mockControl, "f02528f")
+	homeMoved(t, golden, got)
+	compare(t, golden, got, nil)
 }
 
 func TestGoldenPhoropter(t *testing.T) {
-	compare(t, pagesIn(t, "../../testdata/golden/phoropter-8b23da6"), buildGolden(t, "../..", "8b23da6"), nil)
+	golden, got := pagesIn(t, "../../testdata/golden/phoropter-8b23da6"), buildGolden(t, "../..", "8b23da6")
+	homeMoved(t, golden, got)
+	compare(t, golden, got, nil)
 }
 
 // The dev server's pages: a draft with prompts and notes, and a landed plan
@@ -211,7 +287,7 @@ func TestGoldenServed(t *testing.T) {
 	defer served.Server.Close()
 	got := map[string]string{}
 	golden := pagesIn(t, "../../testdata/golden/served-mock-control")
-	for rel := range golden {
+	for _, rel := range append(slices.Collect(maps.Keys(golden)), lists...) {
 		res, err := http.Get(served.URL + strings.TrimSuffix(rel, "index.html"))
 		if err != nil {
 			t.Fatal(err)
@@ -223,5 +299,6 @@ func TestGoldenServed(t *testing.T) {
 	// When the draft was read is the one value that differs by nature. The
 	// lenses link came after the golden pages were made (percale).
 	skip := func(l string) bool { return strings.Contains(l, ".readAt[") || strings.HasPrefix(l, "link lenses ->") }
+	homeMoved(t, golden, got)
 	compare(t, golden, got, skip)
 }

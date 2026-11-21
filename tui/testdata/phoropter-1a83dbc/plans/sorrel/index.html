@@ -32,13 +32,13 @@ at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><cod
 
 
 </dl>
-<div class="intro" itemprop="intro"><p>Plans have started pointing at each other. Tallow revisits pumice (bodkin&#39;s
-<code>revisits:</code>), and entries anchor to other plans&#39; entries: three in mock-control at
+<div class="intro" itemprop="intro"><p>Plans have started pointing at each other. Tallow revisits pumice (bodkin's
+<code>revisits:</code>), and entries anchor to other plans' entries: three in mock-control at
 <code>f02528f</code>, seven in aide at <code>248a2a5</code>. Phoropter treats each of those as an anchor into
 a markdown file and says &quot;no quote, so nothing to search for,&quot; while the entry it
 means already has a page address. This plan makes them links.</p>
 <p>What an agent can query without reading prose (sources, verdicts, dates, and the rest
-from Jeff&#39;s daily in this cart) is the next cart&#39;s question, not this one&#39;s.</p>
+from Jeff's daily in this cart) is the next cart's question, not this one's.</p>
 </div>
 <section class="entry" id="revisits-is-a-revisits-link-and-the-revisited-plan-shows-revisited-by" itemprop="entry" itemscope>
 <h2><a class="self" href="#revisits-is-a-revisits-link-and-the-revisited-plan-shows-revisited-by"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title"><code>revisits:</code> is a <code>revisits</code> link, and the revisited plan shows <code>revisited-by</code></span></a></h2>
@@ -89,8 +89,8 @@ from Jeff&#39;s daily in this cart) is the next cart&#39;s question, not this on
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">bodkin, Jeff</span>):</strong> bodkin names the rels and says the old plan shows
 <code>revisited-by</code> without being edited, which a generated page gets for free. Both go in
-the plan&#39;s facts list, and the home page says &quot;revisits pumice&quot; beside tallow. A
-<code>revisits:</code> naming a plan this site doesn&#39;t have is shown as written, with a plain
+the plan's facts list, and the home page says &quot;revisits pumice&quot; beside tallow. A
+<code>revisits:</code> naming a plan this site doesn't have is shown as written, with a plain
 note.</p>
 </div>
 </section>
@@ -148,10 +148,10 @@ note.</p>
 </figure></div>
 </div>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">measured</span>):</strong> all ten such anchors in mock-control and aide match their target
-entry&#39;s title exactly, backticks included. Matching is exact, the same as an answer
+entry's title exactly, backticks included. Matching is exact, the same as an answer
 and its guess. If no entry in that plan or as-built has the title, the page says &quot;no
-entry titled this in pumice.&quot; Anchors that name entries don&#39;t make a file page for the
-plan&#39;s markdown.</p>
+entry titled this in pumice.&quot; Anchors that name entries don't make a file page for the
+plan's markdown.</p>
 </div>
 </section>
 <section class="entry" id="these-anchors-reuse-anchored-at-and-anchored-by" itemprop="entry" itemscope>
@@ -208,7 +208,7 @@ lead to an entry as well as to a symbol or file.</p>
 </div>
 </section>
 <section class="entry" id="an-entry-anchor-shows-the-target-s-kind-and-title-linked-not-views-at-two-commits" itemprop="entry" itemscope>
-<h2><a class="self" href="#an-entry-anchor-shows-the-target-s-kind-and-title-linked-not-views-at-two-commits"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An entry anchor shows the target&#39;s kind and title, linked, not views at two commits</span></a></h2>
+<h2><a class="self" href="#an-entry-anchor-shows-the-target-s-kind-and-title-linked-not-views-at-two-commits"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An entry anchor shows the target's kind and title, linked, not views at two commits</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -266,22 +266,22 @@ lead to an entry as well as to a symbol or file.</p>
 <span class="line">      ra.views = collapse(commits.map((c) =&gt; resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? cx.indexFor(c, packages) : undefined)));</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, and aide&#39;s awl</span>):</strong> a plan is frozen when committed, and an as-built
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff, and aide's awl</span>):</strong> a plan is frozen when committed, and an as-built
 when its work lands, so both ends of the anchor are frozen. Two views would show the
-same text twice. It&#39;s resolved at the generated commit, and the anchor names the plan
+same text twice. It's resolved at the generated commit, and the anchor names the plan
 it points into.</p>
 </div>
 </section>
 <section class="entry" id="an-entry-anchor-with-a-quote-also-shows-the-entry-s-text-the-quote-highlighted" itemprop="entry" itemscope>
-<h2><a class="self" href="#an-entry-anchor-with-a-quote-also-shows-the-entry-s-text-the-quote-highlighted"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An entry anchor with a quote also shows the entry&#39;s text, the quote highlighted</span></a></h2>
+<h2><a class="self" href="#an-entry-anchor-with-a-quote-also-shows-the-entry-s-text-the-quote-highlighted"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An entry anchor with a quote also shows the entry's text, the quote highlighted</span></a></h2>
 
 
 
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude&#39;s fallback, agreed by Jeff</span>):</strong> grommet anchors lanyard&#39;s entry &quot;What
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude's fallback, agreed by Jeff</span>):</strong> grommet anchors lanyard's entry &quot;What
 changed during the work goes in <code>&lt;plan&gt;.as-built.md</code>, beside it&quot; with the quote
-<code>Its entries are `Changed:`.</code>, which says which sentence it meant. It&#39;s one view, at
+<code>Its entries are `Changed:`.</code>, which says which sentence it meant. It's one view, at
 the generated commit, and the search stays inside the target entry, as gimlet keeps a
-quote inside its anchor&#39;s file. If the quote isn&#39;t in the entry, it says so.</p>
+quote inside its anchor's file. If the quote isn't in the entry, it says so.</p>
 </div>
 </section>
 <section class="entry" id="the-target-entry-lists-what-anchors-it-under-its-heading" itemprop="entry" itemscope>
@@ -290,29 +290,29 @@ quote inside its anchor&#39;s file. If the quote isn&#39;t in the entry, it says
 
 
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, unanswered, so its fallback</span>):</strong> the same place and shape as &quot;Answered
-in the as-built&quot;: &quot;Anchored by&quot;, then each anchoring entry, linked, with its plan&#39;s
+in the as-built&quot;: &quot;Anchored by&quot;, then each anchoring entry, linked, with its plan's
 name.</p>
 </div>
 </section>
 <section class="entry" id="an-anchor-at-a-whole-plan-file-links-to-the-plan-s-page-and-keeps-its-quote-search" itemprop="entry" itemscope>
-<h2><a class="self" href="#an-anchor-at-a-whole-plan-file-links-to-the-plan-s-page-and-keeps-its-quote-search"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An anchor at a whole plan file links to the plan&#39;s page, and keeps its quote search</span></a></h2>
+<h2><a class="self" href="#an-anchor-at-a-whole-plan-file-links-to-the-plan-s-page-and-keeps-its-quote-search"><span class="kind kind-decision" itemprop="kind">Decision</span>: <span itemprop="title">An anchor at a whole plan file links to the plan's page, and keeps its quote search</span></a></h2>
 
 
 
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, unanswered, so its fallback</span>):</strong> a quote into a plan&#39;s frontmatter is
-evidence like any other. Untested: the only one, bodkin&#39;s anchor at tallow, is
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, unanswered, so its fallback</span>):</strong> a quote into a plan's frontmatter is
+evidence like any other. Untested: the only one, bodkin's anchor at tallow, is
 cross-repo from aide.</p>
 </div>
 </section>
 <section class="entry" id="a-transitive-link-from-pumice-s-guess-straight-to-vellum-s-answer" itemprop="entry" itemscope>
-<h2><a class="self" href="#a-transitive-link-from-pumice-s-guess-straight-to-vellum-s-answer"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A transitive link from pumice&#39;s guess straight to vellum&#39;s answer</span></a></h2>
+<h2><a class="self" href="#a-transitive-link-from-pumice-s-guess-straight-to-vellum-s-answer"><span class="kind kind-decline" itemprop="kind">Decline</span>: <span itemprop="title">A transitive link from pumice's guess straight to vellum's answer</span></a></h2>
 
 
 
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, unanswered, so its fallback</span>):</strong> quince declined this as the cart&#39;s
-question, and two hops now cover it. Vellum&#39;s guess anchors pumice&#39;s, and is answered
-in vellum&#39;s as-built. A link that skips a hop would say vellum answered pumice&#39;s guess,
-which only vellum&#39;s prose says.</p>
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, unanswered, so its fallback</span>):</strong> quince declined this as the cart's
+question, and two hops now cover it. Vellum's guess anchors pumice's, and is answered
+in vellum's as-built. A link that skips a hop would say vellum answered pumice's guess,
+which only vellum's prose says.</p>
 </div>
 </section>
 <section class="entry" id="sources-verdicts-dates-orientation-absolute-urls-and-cross-plan-pages" itemprop="entry" itemscope>
@@ -321,7 +321,7 @@ which only vellum&#39;s prose says.</p>
 
 
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Jeff and Claude</span>):</strong> Jeff raised them in this cart, and we agreed on most of
-how. They&#39;re about what an agent can query, not links between plans, and a cart that
+how. They're about what an agent can query, not links between plans, and a cart that
 wants two plans splits. They go to the shelf at conversion.</p>
 </div>
 </section>
@@ -331,7 +331,7 @@ wants two plans splits. They go to the shelf at conversion.</p>
 
 
 <div class="reason" itemprop="reason"><p><strong>Disproved if:</strong> an anchor fails to match an entry it plainly means, through a typo, a
-rephrase, or backticks written differently. Plans are frozen, so a title can&#39;t drift
+rephrase, or backticks written differently. Plans are frozen, so a title can't drift
 after the fact; a miss can only come from how the anchor was written.</p>
 </div>
 </section>

@@ -28,7 +28,9 @@ type Guide struct {
 }
 
 func RenderSite(s *Site, guide Guide) []Page {
-	pages := []Page{home(s), profile(s), guidePage(s, guide)}
+	pages := []Page{home(s), profile(s), guidePage(s, guide), plansPage(s),
+		placesPage(s, "files/", "file", "Files", "Every file a plan points at, each with a page listing the entries anchored there.", "No plan points at a file."),
+		placesPage(s, "symbols/", "symbol", "Symbols", "Every symbol a plan points at, each with a page listing the entries anchored there.", "No plan points at a symbol.")}
 	for _, p := range s.Plans {
 		pages = append(pages, planPage(s, p))
 		if p.AsBuilt != nil {
@@ -51,57 +53,152 @@ func welcomeDraft(href string) string {
 	return fmt.Sprintf(`<p>Your first plan is a draft: <a href="%s">read it at <code>draft/</code></a>, annotate what you'd change, and work it through with your agent.</p>`, href)
 }
 
+// planItem and placeItem are one plan or place in a list, the same wherever
+// they're listed (calico): the home page's recent plans, and the full lists.
+func planItem(here string, p *Plan) string {
+	asBuilt, revisits := "", ""
+	if p.AsBuilt != nil {
+		asBuilt = fmt.Sprintf(`, with <a rel="as-built" itemprop="asBuilt" href="%s">an as-built</a>`, Rel(here, p.AsBuilt.Href))
+	}
+	if p.Revisits != nil {
+		revisits = fmt.Sprintf(`, revisits <a rel="revisits" itemprop="revisits" href="%s">%s</a>`, Rel(here, p.Revisits.Href), esc(p.Revisits.Name))
+	}
+	return fmt.Sprintf(`<li itemprop="plan" itemscope>
+  <a rel="item" itemprop="url" href="%s"><span itemprop="title">%s</span></a>
+  <span class="meta"><span itemprop="name">%s</span>, %s, base %s, %s%s%s</span>
+</li>`, Rel(here, p.Href), inline(p.Doc.Doc.Title), esc(p.Name), whenHTML(p), baseHTML(p), entryCount(len(p.Doc.Entries)), asBuilt, revisits)
+}
+
+func placeItem(here string, pl *Place) string {
+	return fmt.Sprintf(`<li itemprop="place" itemscope>
+  <a rel="item" itemprop="url" href="%s"><code itemprop="name">%s</code></a>
+  <span class="meta"><span itemprop="kind">%s</span>, %s</span>
+</li>`, Rel(here, pl.Href), esc(pl.Label), pl.Kind, entryCount(len(pl.Refs)))
+}
+
+// recentPlans are the plans of the most recent day with a plan, and of any
+// day within a week of it, newest first. With no dated plan, the newest one.
+func recentPlans(s *Site) []*Plan {
+	var latest time.Time
+	for _, p := range s.Plans {
+		if d, err := time.Parse("2006-01-02", p.Date); err == nil && d.After(latest) {
+			latest = d
+		}
+	}
+	var recent []*Plan
+	for i := len(s.Plans) - 1; i >= 0; i-- {
+		p := s.Plans[i]
+		d, err := time.Parse("2006-01-02", p.Date)
+		if latest.IsZero() || err == nil && !d.Before(latest.AddDate(0, 0, -7)) {
+			recent = append(recent, p)
+		}
+		if latest.IsZero() {
+			break
+		}
+	}
+	sort.SliceStable(recent, func(i, j int) bool { return recent[i].Date > recent[j].Date })
+	return recent
+}
+
 func home(s *Site) Page {
 	here := ""
 	title := fmt.Sprintf("%s at %s", s.RepoName, s.Generated.Short)
-	var plans, places []string
-	for _, p := range s.Plans {
-		asBuilt, revisits := "", ""
-		if p.AsBuilt != nil {
-			asBuilt = fmt.Sprintf(`, with <a rel="as-built" itemprop="asBuilt" href="%s">an as-built</a>`, Rel(here, p.AsBuilt.Href))
-		}
-		if p.Revisits != nil {
-			revisits = fmt.Sprintf(`, revisits <a rel="revisits" itemprop="revisits" href="%s">%s</a>`, Rel(here, p.Revisits.Href), esc(p.Revisits.Name))
-		}
-		plans = append(plans, fmt.Sprintf(`<li itemprop="plan" itemscope>
-  <a rel="item" itemprop="url" href="%s"><span itemprop="title">%s</span></a>
-  <span class="meta"><span itemprop="name">%s</span>, %s, base %s, %s%s%s</span>
-</li>`, Rel(here, p.Href), inline(p.Doc.Doc.Title), esc(p.Name), whenHTML(p), baseHTML(p), entryCount(len(p.Doc.Entries)), asBuilt, revisits))
-	}
-	for _, pl := range s.Places {
-		places = append(places, fmt.Sprintf(`<li itemprop="place" itemscope>
-  <a rel="item" itemprop="url" href="%s"><code itemprop="name">%s</code></a>
-  <span class="meta"><span itemprop="kind">%s</span>, %s</span>
-</li>`, Rel(here, pl.Href), esc(pl.Label), pl.Kind, entryCount(len(pl.Refs))))
-	}
-	planList := fmt.Sprintf(`<div class="welcome"><p>No plans here yet. That's how every repository starts.</p>
+	if len(s.Plans) == 0 {
+		return layout(s, here, title, fmt.Sprintf(`
+<h1>%s</h1>
+<div class="welcome"><p>No plans here yet. That's how every repository starts.</p>
 `+welcomeStart+`
 <p>A plan is a markdown file in <code>plans/</code>, written before the work: what you decided, what you turned down, and what you're guessing, each with its reason. <a href="%s">The guide</a> says how, starting with “Write the plan.”</p>
-<p>When you want to think one through first, put a draft at <code>drafts/plan.draft.md</code>. While <code>phoropter</code> is serving, it's shown at <code>draft/</code>.</p></div>`, Rel(here, "guide/"))
-	if len(plans) > 0 {
-		planList = `<ul class="list">` + strings.Join(plans, "\n") + `</ul>`
+<p>When you want to think one through first, put a draft at <code>drafts/plan.draft.md</code>. While <code>phoropter</code> is serving, it's shown at <code>draft/</code>.</p></div>
+<div itemscope>
+<p>The <a rel="index" href="%s">plans</a>, <a rel="index" href="%s">files</a>, and <a rel="index" href="%s">symbols</a> plans point at are listed in full when there are some.</p>
+</div>`, esc(title), Rel(here, "guide/"), Rel(here, "plans/"), Rel(here, "files/"), Rel(here, "symbols/")), "")
 	}
-	placeList := `<p>Nothing is anchored.</p>`
-	if len(places) > 0 {
-		placeList = `<ul class="list">` + strings.Join(places, "\n") + `</ul>`
+	var recent []string
+	for _, p := range recentPlans(s) {
+		recent = append(recent, planItem(here, p))
+	}
+	var open []string
+	for i := len(s.Plans) - 1; i >= 0; i-- {
+		p := s.Plans[i]
+		for _, e := range p.Doc.Entries {
+			if openGuess(e) {
+				open = append(open, fmt.Sprintf(`<li itemprop="openGuess" itemscope><a itemprop="url" href="%s#%s"><span itemprop="title">%s</span></a> <span class="meta">in <span itemprop="plan">%s</span></span></li>`, Rel(here, p.Href), e.Slug, inline(e.Title), esc(p.Name)))
+			}
+		}
+	}
+	openList := `<p>None: every guess here has been answered with a verdict.</p>`
+	if len(open) > 0 {
+		openList = `<ul class="list">` + strings.Join(open, "\n") + `</ul>`
+	}
+	files, symbols := 0, 0
+	for _, pl := range s.Places {
+		if pl.Kind == "symbol" {
+			symbols++
+		} else {
+			files++
+		}
 	}
 	return layout(s, here, title, fmt.Sprintf(`
 <h1>%s</h1>
 <div class="orientation">
-<p>This is <strong>%s</strong> read through its plans: the plans and their as-built files in <code>plans/</code>, each anchored to the code it was about, at commit <code>%s</code>. Nothing here is written to; it’s generated from git.</p>
-<p>To find out why some code is the way it is, start from a file or symbol under <em>Anchored places</em>, which lists the plans that touch it, newest first. To read the history, start from <em>Plans</em>, oldest first. The <a rel="help" href="%s">guide</a> says how plans are written, and the <a href="%s">profile</a> defines every link relation and microdata property on these pages.</p>
+<p>This is <strong>%s</strong> read through its plans: the plans and their as-built files in <code>plans/</code>, each anchored to the code it was about, at commit <code>%s</code>. Nothing here is written to; it’s generated from git. The <a rel="help" href="%s">guide</a> says how plans are written, and the <a href="%s">profile</a> defines every link relation and microdata property on these pages.</p>
 </div>
 <div itemscope>
 <section>
-<h2>Plans</h2>
+<h2>Recent plans</h2>
+<ul class="list">%s</ul>
+<p>All <a rel="index" href="%s">%d plans</a>, oldest first.</p>
+</section>
+<section>
+<h2>Open guesses</h2>
+<p>Unanswered, or answered “not tested”: what later work might test. Newest plan first.</p>
 %s
 </section>
 <section>
-<h2>Anchored places</h2>
-<p>Each symbol or file a plan points at has a page listing the plans there.</p>
-%s
+<h2>Ways in</h2>
+<ul>
+<li>From a place: <code>phoropter affected &lt;file&gt;</code> lists every entry anchored in a file, symbols included. Each of the <a rel="index" href="%s">%d files</a> and <a rel="index" href="%s">%d symbols</a> plans point at has a page listing them.</li>
+<li>From a change: <code>phoropter affected --since &lt;ref&gt;</code> lists the entries a change touches.</li>
+<li>From a topic: a lens, a reader’s own list of entries in <code>drafts/lenses/</code>, which an agent makes by meaning when asked. While <code>phoropter</code> is serving, they’re at <code>lenses/</code>.</li>
+</ul>
 </section>
-</div>`, esc(title), esc(s.RepoName), esc(s.Generated.Short), Rel(here, "guide/"), Rel(here, "profile/"), planList, placeList), "")
+</div>`, esc(title), esc(s.RepoName), esc(s.Generated.Short), Rel(here, "guide/"), Rel(here, "profile/"), strings.Join(recent, "\n"), Rel(here, "plans/"), len(s.Plans), openList, Rel(here, "files/"), files, Rel(here, "symbols/"), symbols), "")
+}
+
+// listPage is one of the full lists the home page links with rel="index":
+// every plan, every file, or every symbol (calico).
+func listPage(s *Site, here, title, intro string, items []string, none string) Page {
+	list := `<p>` + none + `</p>`
+	if len(items) > 0 {
+		list = `<ul class="list">` + strings.Join(items, "\n") + `</ul>`
+	}
+	return layout(s, here, title, fmt.Sprintf(`
+<nav><a rel="collection" href="%s">%s at %s</a></nav>
+<h1>%s</h1>
+<p>%s</p>
+<div itemscope>
+%s
+</div>`, Rel(here, ""), esc(s.RepoName), esc(s.Generated.Short), esc(title), intro, list), "")
+}
+
+func plansPage(s *Site) Page {
+	here := "plans/"
+	var items []string
+	for _, p := range s.Plans {
+		items = append(items, planItem(here, p))
+	}
+	return listPage(s, here, "Plans", "Every plan here, oldest first, in the order they were added.", items, "No plans here yet.")
+}
+
+func placesPage(s *Site, here, kind, title, intro, none string) Page {
+	var items []string
+	for _, pl := range s.Places {
+		if pl.Kind == kind {
+			items = append(items, placeItem(here, pl))
+		}
+	}
+	return listPage(s, here, title, intro, items, none)
 }
 
 func planPage(s *Site, p *Plan) Page {

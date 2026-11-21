@@ -29,7 +29,7 @@ at <data itemprop="commit" value="1a83dbc6bce50d8051eecafbdcf86a9d21d89799"><cod
 
 </dl>
 <div class="intro" itemprop="intro"><p>Built in one session. Nothing needed asking; everything below is a call the plan left
-to the builder, or a gap it didn&#39;t cover. Run with <code>npm run dev</code> (mock-control at
+to the builder, or a gap it didn't cover. Run with <code>npm run dev</code> (mock-control at
 <code>90c65b9</code>, beside this repo) or <code>node src/build.ts &lt;repo&gt; [commit]</code>.</p>
 </div>
 <section class="entry" id="libraries-and-layout" itemprop="entry" itemscope>
@@ -77,15 +77,15 @@ to the builder, or a gap it didn&#39;t cover. Run with <code>npm run dev</code> 
 <code>.ts</code> files directly, so there is no build step; <code>tsc</code> only checks. <code>marked</code> parses
 plans and renders prose. The index is read with the protobuf bindings scip-typescript
 already ships, a deep import into its <code>dist</code>, pinned to 0.4.0. The spike went through
-the <code>scip</code> CLI and SQLite instead; that&#39;s a second binary to install for one lookup,
-so I didn&#39;t. Modules are one per step: <code>plan</code>, <code>git</code>, <code>scip</code>, <code>resolve</code>, <code>site</code>,
-<code>render</code>, <code>build</code>, <code>serve</code>. The site&#39;s URLs are <code>plans/&lt;cart&gt;/</code>,
+the <code>scip</code> CLI and SQLite instead; that's a second binary to install for one lookup,
+so I didn't. Modules are one per step: <code>plan</code>, <code>git</code>, <code>scip</code>, <code>resolve</code>, <code>site</code>,
+<code>render</code>, <code>build</code>, <code>serve</code>. The site's URLs are <code>plans/&lt;cart&gt;/</code>,
 <code>plans/&lt;cart&gt;/as-built/</code>, <code>files/&lt;path&gt;/</code>, <code>symbols/&lt;file&gt;/&lt;descriptor&gt;/</code>, and
 <code>profile/</code>, with relative links so the output also opens from <code>file://</code>.</p>
 </div>
 </section>
 <section class="entry" id="as-built-anchors-are-shown-at-the-as-built-s-head-not-the-plan-s-base" itemprop="entry" itemscope>
-<h2><a class="self" href="#as-built-anchors-are-shown-at-the-as-built-s-head-not-the-plan-s-base"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">As-built anchors are shown at the as-built&#39;s <code>head</code>, not the plan&#39;s base</span></a></h2>
+<h2><a class="self" href="#as-built-anchors-are-shown-at-the-as-built-s-head-not-the-plan-s-base"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">As-built anchors are shown at the as-built's <code>head</code>, not the plan's base</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -120,16 +120,16 @@ so I didn&#39;t. Modules are one per step: <code>plan</code>, <code>git</code>, 
 
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan says each anchor is shown at the plan&#39;s base,
-but pumice&#39;s as-built anchors were written after the work. Its <code>assets</code> quote doesn&#39;t
-exist at the base, so showing it there would make the as-built look wrong. Pumice&#39;s
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan says each anchor is shown at the plan's base,
+but pumice's as-built anchors were written after the work. Its <code>assets</code> quote doesn't
+exist at the base, so showing it there would make the as-built look wrong. Pumice's
 as-built has a <code>head:</code> field (not in lanyard), so its anchors are shown at that commit
 and at the generated one. Without a <code>head</code>, only the generated commit is shown. This
 file has a <code>head</code> for the same reason.</p>
 </div>
 </section>
 <section class="entry" id="a-scip-anchor-s-quote-is-also-looked-for-inside-the-symbol-s-range" itemprop="entry" itemscope>
-<h2><a class="self" href="#a-scip-anchor-s-quote-is-also-looked-for-inside-the-symbol-s-range"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">A SCIP anchor&#39;s quote is also looked for inside the symbol&#39;s range</span></a></h2>
+<h2><a class="self" href="#a-scip-anchor-s-quote-is-also-looked-for-inside-the-symbol-s-range"><span class="kind kind-changed" itemprop="kind">Changed</span>: <span itemprop="title">A SCIP anchor's quote is also looked for inside the symbol's range</span></a></h2>
 
 
 <div class="anchor" itemprop="anchor" itemscope>
@@ -164,10 +164,10 @@ file has a <code>head</code> for the same reason.</p>
 
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> pumice&#39;s SCIP anchor has a quote, and <code>MockPanel#</code>&#39;s
-range is lines 9 to 152. Without the quote, a reader can&#39;t tell which of 144 lines the
-entry meant. The quote&#39;s lines are highlighted and the view says whether it was found,
-which is how &quot;matches at <code>da023f1</code> and not at <code>90c65b9</code>&quot; shows up on the page. It&#39;s
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> pumice's SCIP anchor has a quote, and <code>MockPanel#</code>'s
+range is lines 9 to 152. Without the quote, a reader can't tell which of 144 lines the
+entry meant. The quote's lines are highlighted and the view says whether it was found,
+which is how &quot;matches at <code>da023f1</code> and not at <code>90c65b9</code>&quot; shows up on the page. It's
 still not a drift judgment: both sides are shown and neither is marked wrong.</p>
 </div>
 </section>
@@ -213,10 +213,10 @@ still not a drift judgment: both sides are shown and neither is marked wrong.</p
 <span class="line">      ra.views = collapse(commits.map((c) =&gt; resolveAt(repo, t, anchor.quote, c, t.kind === 'symbol' ? cx.indexFor(c, packages) : undefined)));</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> pumice&#39;s first as-built entry anchors a README heading
-path with no quote. The plan&#39;s rule is the quote, so there&#39;s nothing to search for.
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> pumice's first as-built entry anchors a README heading
+path with no quote. The plan's rule is the quote, so there's nothing to search for.
 Resolving the heading path itself (walking the markdown headings) was the obvious
-alternative; I declined it because the plan chose quotes, and it&#39;s a second resolver
+alternative; I declined it because the plan chose quotes, and it's a second resolver
 for one anchor.</p>
 </div>
 </section>
@@ -256,12 +256,12 @@ for one anchor.</p>
 
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan didn&#39;t say, and mock-control&#39;s root
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> the plan didn't say, and mock-control's root
 <code>tsconfig.json</code> has no files of its own. A SCIP symbol names its package, so each
 directory whose <code>package.json</code> has that name is indexed, using its <code>tsconfig.json</code>, or
-every <code>tsconfig*.json</code> beside it if there isn&#39;t one. Commits are indexed only when an
+every <code>tsconfig*.json</code> beside it if there isn't one. Commits are indexed only when an
 anchor needs them, once each, into a temp checkout from <code>git archive</code>. No cache: about
-0.4 seconds a commit didn&#39;t earn one.</p>
+0.4 seconds a commit didn't earn one.</p>
 </div>
 </section>
 <section class="entry" id="microdata-items-have-no-itemtype" itemprop="entry" itemscope>
@@ -309,7 +309,7 @@ anchor needs them, once each, into a temp checkout from <code>git archive</code>
 <div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> microdata wants <code>itemtype</code> to be an absolute URL, and
 the site has no fixed host, nor a domain I should invent. Items are typed by where they
 sit and by their properties, and the profile defines the names. Worth a decision once
-there&#39;s somewhere real to point.</p>
+there's somewhere real to point.</p>
 </div>
 </section>
 <section class="entry" id="reverse-pages-list-where-new-anchors-too" itemprop="entry" itemscope>
@@ -354,9 +354,9 @@ there&#39;s somewhere real to point.</p>
 <span class="line">      }</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a new anchor still names a file, and pumice&#39;s are
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> a new anchor still names a file, and pumice's are
 mostly in the README. Leaving them off would hide most of what pumice did to that file.
-They&#39;re marked <code>new</code> and not resolved, as the plan says.</p>
+They're marked <code>new</code> and not resolved, as the plan says.</p>
 </div>
 </section>
 <section class="entry" id="a-cross-repo-prefix-that-names-this-repo-is-read-as-local" itemprop="entry" itemscope>
@@ -401,8 +401,8 @@ They&#39;re marked <code>new</code> and not resolved, as the plan says.</p>
 <span class="line">  const [file, ...path] = where.split(' › ');</span></code></pre>
 </figure></div>
 </div>
-<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> gimlet&#39;s own anchor is <code>mock-control: plans/...</code>.
-Built against mock-control, that&#39;s not another repo. The repo&#39;s name is its directory&#39;s
+<div class="reason" itemprop="reason"><p><strong>Because (<span itemprop="source">Claude, not asked</span>):</strong> gimlet's own anchor is <code>mock-control: plans/...</code>.
+Built against mock-control, that's not another repo. The repo's name is its directory's
 name, since mock-control has no remote.</p>
 </div>
 </section>
@@ -411,10 +411,10 @@ name, since mock-control has no remote.</p>
 
 
 
-<div class="reason" itemprop="reason"><p><strong>The plan is enough of a brief:</strong> I didn&#39;t have to ask anything. But by its own
-&quot;Disproved if,&quot; it&#39;s partly disproved: the as-built <code>head</code> question is a gap a brief
-would have had to answer. The rest above are builder&#39;s calls the plan invited.</p>
-<p><strong>Quote search is enough for anchors that aren&#39;t SCIP symbols:</strong> not disproved, on a
+<div class="reason" itemprop="reason"><p><strong>The plan is enough of a brief:</strong> I didn't have to ask anything. But by its own
+&quot;Disproved if,&quot; it's partly disproved: the as-built <code>head</code> question is a gap a brief
+would have had to answer. The rest above are builder's calls the plan invited.</p>
+<p><strong>Quote search is enough for anchors that aren't SCIP symbols:</strong> not disproved, on a
 small sample. At their own commits, all three non-SCIP quotes match exactly once
 (README line 94 at <code>da023f1</code>, <code>package.json</code> line 3, the <code>assets</code> line 176 at <code>e92db76</code>),
 and the page highlights the line. Three quotes in one plan is thin evidence. When a
