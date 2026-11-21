@@ -6,7 +6,10 @@ premises in both senses, propositions and a place to live). Changing one is a
 conversation, not an edit.
 
 - **Understanding keeps pace with the work.** Coverage, speed and output come second
-  to whether the person still knows what the code is for.
+  to whether the person still knows what the code is for. When a name won't come or
+  the next line isn't obvious, that's usually the first sign it's slipping, not a lapse
+  of memory: stop and ask, before completion smooths it over. The friction carried
+  information.
 - **The proposal comes before the artifact.** A plan is a speculative code review, and
   a polad is a speculative diff. What happened (the as-built, the diff) is read against
   what was proposed. Without the proposal there's nothing to read it against.
@@ -23,6 +26,11 @@ conversation, not an edit.
 - **Disagreement needs an address.** Declines show the road not taken, Questions ask,
   and Guesses name their disproof. Then challenging means checking a condition, not
   contradicting a person.
+- **A record makes not-knowing cheap to say.** "I thought we decided X" costs a lookup,
+  not standing. Without a record, confusion is a social risk, and people hide it; with
+  one, it's the start of checking (Jeff, after misremembering who starts the server).
+  It holds for the agent too: "I guessed" is easy to say where guesses are written
+  down.
 - **Plans are testimony; tests are present tense.** The plan holds why, and what was
   turned down, frozen. The test holds that it's still true. A test can be blunt because
   its reason is one step away.
