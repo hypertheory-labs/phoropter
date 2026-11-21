@@ -10,3 +10,12 @@
   helps is open guesses near the code, then Declines, then what changed recently. The
   full plan list is somewhere you go, not where you land. For the rewrite, if not
   sooner.
+- **Started in the wrong directory, it reads one repository and writes to another**
+  (Jeff, 2026-11-21). The server ran in `../phoropter-containers`; the TUI started
+  elsewhere, found no server for that repository, fell back to `localhost:4173`, and
+  showed the other one's draft. Notes write to the working directory, so annotating
+  failed (the draft's sha256 check refused, which is the right failure). Two things pick
+  "which repository": the URL and the working directory. The blind fallback to 4173 is
+  the singleton assumption; in a repository with no server, saying so ("nothing is
+  serving this repository: run `phoropter` here, or give an address") beats guessing.
+  Bears on `one-server.md` both ways.
