@@ -15,7 +15,13 @@ index` and cached otherwise (batik); the guide for writing one (dimity); and
   could offer it beside the native install. The cost: an image to build and publish,
   Docker or Podman on the machine (admin rights, on the class's corporate machines), and
   old commits' toolchains, which make an image heavier, not lighter. Jeff, 2026-11-19 (tulle): "one more nickel toward 'or you can just docker run this
-  thing'", since .NET and Java will each add a toolchain, and that's going to get weird.
+  thing'", since .NET and Java will each add a toolchain, and that's going to get weird. Jeff, 2026-11-21, after asking about C++ for an
+  ESP32 repository: "much more appealing". scip-clang (Sourcegraph, beta) has binaries
+  for x86_64 Linux and macOS only, Windows "being explored", so a container is the
+  only way it runs on Windows. It also needs a `compile_commands.json`, so for an old
+  commit the container has to configure the build before indexing, which is the "old
+  commits" problem below in its sharpest form. And its Linux binary is x86_64, so on
+  Apple Silicon or a Jetson the container runs emulated.
 - **Old commits.** Toolchains and module downloads for a commit years old are the hard
   part. The committed store answers for commits already indexed; nothing yet helps with
   one that isn't.
