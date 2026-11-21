@@ -42,3 +42,12 @@ Jeff, 2026-11-21, answering calico's question about the home page's rel: "do you
 this is a good time to revisit the `/{repo-name}/` thing? I feel like we barely thought
 through that." Calico kept it out (every link is relative, so a prefix moves none of
 them) and named it the next draft.
+
+Jeff, later the same day: he stopped the server, ran `phoropter url`, and expected it to
+start one. Poplin's actual decision is that the *agent* starts it when `url` finds none,
+an instruction in the pointer, and "`url` makes sure one is running" was only this
+seed's lean. A global server can't live in a captured terminal, so something like
+`phoropter url --open` (Jeff, unsure). And from the Windows trial: Jeff started the server
+himself, which confused the agent a little, and it made sense that he did: a person may
+want to read drafts and plans, or make a lens, before bringing an agent in. Who starts
+it is part of the person-and-agent dance we don't know enough about yet, so this waits.
