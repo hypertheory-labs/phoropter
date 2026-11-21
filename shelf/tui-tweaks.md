@@ -18,4 +18,6 @@
   "which repository": the URL and the working directory. The blind fallback to 4173 is
   the singleton assumption; in a repository with no server, saying so ("nothing is
   serving this repository: run `phoropter` here, or give an address") beats guessing.
-  Bears on `one-server.md` both ways.
+  Bears on `one-server.md` both ways. Jeff: reading from anywhere is right; say so
+  with a banner, something like "not in this repository: read only", rather than
+  letting the first write fail.
