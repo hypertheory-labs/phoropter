@@ -37,3 +37,8 @@ To settle in the draft:
   `shelf/pages.md` has the same `/<repo>/` question, so check it once for both.
 - It changes poplin's "in the background it reads nothing" and batik's server. It's a
   revisit, asked in batik's frame.
+
+Jeff, 2026-11-21, answering calico's question about the home page's rel: "do you think
+this is a good time to revisit the `/{repo-name}/` thing? I feel like we barely thought
+through that." Calico kept it out (every link is relative, so a prefix moves none of
+them) and named it the next draft.

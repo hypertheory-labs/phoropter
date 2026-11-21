@@ -13,7 +13,8 @@ shelf. The seeds keep their names, because landed plans cite them by name.
    containers. Go installs since tulle. On the trial a clone worked, and setting
    `PHOROPTER_INDEXERS` was the only friction.
 4. **`one-server.md`:** the server question, a revisit of batik's port decision. On the
-   trial, the one collision (agent and Jeff on 4173) came from a stale binary's `url`.
+   trial, the one collision (agent and Jeff on 4173) came from a stale binary's `url`. Next
+   after calico (Jeff asked, 2026-11-21).
 5. **`recipes.md`:** "give me a brief", and noticing a missing ambient plan. The trial's
    first sessions will show which recipes an agent misses.
 6. **`pages.md`:** the repository is public now, and Jeff has a demo coming. Cheap to
